@@ -33,7 +33,6 @@ import {
 import { authFirebase as auth, db, storage } from '../config/firebase';
 
 // get Doc Firebase
-
 export const getSingleDocumentFirebase = async (collectionName, docName) => {
   try {
     const docRef = doc(db, collectionName, docName);
