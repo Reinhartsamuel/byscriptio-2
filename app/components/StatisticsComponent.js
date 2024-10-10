@@ -9,7 +9,7 @@ const statistics = [
     prefix: 'IDR ',
     suffix: ' B',
   },
-  { title: 'Trades', value: '10000', prefix: '', suffix: '' },
+  { title: 'Trades', value: '10201', prefix: '', suffix: '' },
   { title: 'Account Growth', value: 'to', prefix: '', suffix: '' },
 ];
 
