@@ -351,8 +351,8 @@ export async function POST(request) {
         return {
           to: [
             {
-              email: x?.value?.email || x?.email || '',
-              name: x?.value?.name || x?.name || '',
+              name: x?.value?.name || '',
+              email: x?.value?.email || '',
             },
           ],
           htmlContent: tradeExecutedTemplate({
