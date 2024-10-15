@@ -22,7 +22,8 @@ const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 //     "email_token": "52c6860e-5814-47ed-a5ae-663d78446439",
 //     "delay_seconds": 0,
 //     "pair": "USDT_BTC”,
-//     "trading_plan_id" : “XMA_USDT_BTC”
+//     "trading_plan_id" : “XMA_USDT_BTC”,
+//     "flag" : "testing"
 //   }
 
 // THIS IS WHAT SHOULD BE SENT TO 3COMMAS :
@@ -193,6 +194,7 @@ export async function POST(request) {
       ...body,
       type: 'autotrade',
       createdAt: new Date(),
+      flag : body?.flag || ''
       // result: result.map((x) => x?.status),
     });
     // console.log(body);

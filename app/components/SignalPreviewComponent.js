@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import PairImageComponent from './ui/PairImageComponent';
+// import { getCollectionFirebase } from '../utils/firebaseApi';
 
 const SignalPreviewComponent = () => {
   const [data, setData] = useState([]);
@@ -24,7 +25,7 @@ const SignalPreviewComponent = () => {
     const q = query(
       collection(db, 'webhooks'),
       orderBy('createdAt', 'desc'),
-      where('trading_plan_name', '!=', 'TESTING 3'),
+      where('flag', '!=', 'testing'),
       limit(10)
     );
     const unsubscribe = onSnapshot(
@@ -44,6 +45,22 @@ const SignalPreviewComponent = () => {
       }
     );
     return () => unsubscribe();
+
+    // async function fetchData() {
+    //   try {
+    //     const a = await getCollectionFirebase('webhooks', [
+    //       { field: 'flag', operator: '!=', value : 'testing' },
+    //     ], { field: 'createdAt', direction: 'desc' }, 10);
+    //     setData(a)
+    //   } catch (error) {
+    //     console.log(error.message, '::::error onsnapshot');
+    //     setErrorMsg(error.message);
+    //     setLoading(false);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // }
+    // fetchData();
   }, []);
 
   if (loading)
@@ -57,6 +74,7 @@ const SignalPreviewComponent = () => {
   return (
     <>
       <div className='relative overflow-x-auto shadow-md sm:rounded-lg'>
+      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         <table className='w-full xl:w-3/5 text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
           <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
