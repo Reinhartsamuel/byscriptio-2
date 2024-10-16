@@ -26,7 +26,7 @@ const tradingPlans = [
 export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const { exchanges_accounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
-  const { user, customer, ipLocation} = useUserStore();
+  const { user, customer, ipLocation } = useUserStore();
   const [data, setData] = useState({
     uid: authFirebase.currentUser?.uid,
     name: authFirebase.currentUser?.displayName,
@@ -36,8 +36,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
     exchange_thumbnail: '',
     status: 'REQUESTED',
     trading_plan_pair: [],
-    autotrader_name: moment().format('YYYY-MM-DD') +
-    '-' +moment().unix()
+    autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
   });
   const [loading, setLoading] = useState(false);
 
@@ -56,34 +55,42 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
         text: 'Please select trading plan and asset pair!',
       });
 
+    const addDataToAutotraderCollection = {
+      ...data,
+      trading_plan_pair: data.trading_plan_pair.filter(
+        (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
+      ),
+    };
+    
+    // return console.log(addDataToAutotraderCollection,'addDataToAutotraderCollection')
     try {
       setLoading(true);
-      await addDocumentFirebase('dca_bots', data, 'byScript');
+      await addDocumentFirebase('dca_bots', addDataToAutotraderCollection, 'byScript');
       getAutotraders(data?.email);
       await fetch('/api/email', {
-        method : 'POST',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name : authFirebase.currentUser?.displayName,
-          email : authFirebase.currentUser?.email,
+          name: authFirebase.currentUser?.displayName,
+          email: authFirebase.currentUser?.email,
           subject: `Request Add Autotrader`,
           htmlContent: autotraderRequestTemplate({
             requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
-            autotrader_name : data?.autotrader_name,
-            exchange_thumbnail : data?.exchange_thumbnail,
+            autotrader_name: data?.autotrader_name,
+            exchange_thumbnail: data?.exchange_thumbnail,
             tradeAmount: data?.tradeAmount,
             trading_plan_pair: data?.trading_plan_pair,
-          })
+          }),
         }),
-      })
+      });
 
       await addActivityLog({
-        customerId : customer?.id || null,
-        uid : user?.id || null,
-        ipLocation : ipLocation,
-        type : 'REQUEST AUTOTRADER'
+        customerId: customer?.id || null,
+        uid: user?.id || null,
+        ipLocation: ipLocation,
+        type: 'REQUEST AUTOTRADER',
       });
       Swal.fire({
         icon: 'success',
@@ -208,7 +215,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       setSelectedPairs([...selectedPairs, JSON.parse(value)]);
       const tpp = [...data.trading_plan_pair];
       tpp.push(selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair);
-      console.log(tpp, 'tpp');
+      // console.log(tpp, 'tpp');
       setData({ ...data, trading_plan_pair: tpp });
     } else {
       setSelectedPairs(
@@ -217,6 +224,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       const tppToDelete =
         selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair;
       const tpp = data.trading_plan_pair?.filter((x) => x !== tppToDelete);
+      // console.log(tpp, 'tpp');
       setData({ ...data, trading_plan_pair: tpp });
     }
   };
