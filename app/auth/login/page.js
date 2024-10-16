@@ -2,13 +2,37 @@
 import Spinner from '@/app/components/ui/Spinner';
 import { handleLoginGoogle } from '@/app/services/login';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginEmailComponent from './LoginEmailComponent';
+import { useUserStore } from '@/app/store/userStore';
 // import TurnstileWidget from '@/app/components/TurnstileWidget';
 
 const page = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { ipLocation, setIpLocation, setUser, setCustomer } = useUserStore();
+
+  async function getLocationIp() {
+    try {
+      const locationFetch = await fetch('http://ip-api.com/json');
+      const locationResult = await locationFetch.json();
+
+      const ipFetch = await fetch('https://api.ipify.org/?format=json');
+      const { ip: ipResult } = await ipFetch.json();
+
+      setIpLocation({
+        ip: ipResult,
+        location: locationResult,
+        userAgent: navigator.userAgent,
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getLocationIp();
+  }, []);
 
   return (
     <>
@@ -59,7 +83,9 @@ const page = () => {
               }`}
               disabled={loading}
               cursor={loading ? 'not-allowed' : 'pointer'}
-              onClick={() => handleLoginGoogle({ setLoading, router })}
+              onClick={() =>
+                handleLoginGoogle({ setLoading, router, ipLocation, setUser, setCustomer })
+              }
             >
               {loading ? (
                 <Spinner />

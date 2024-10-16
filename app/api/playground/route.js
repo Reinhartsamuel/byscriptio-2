@@ -86,8 +86,8 @@ export async function GET() {
     // });
     let arr  = []
     const colRef = adminDb
-    .collection('dca_bots')
-    .orderBy('createdAt', 'desc')
+    .collection('webhooks')
+    .where('trading_plan_id', '==', 'XMA')
     .limit(100);
 
     const snapshot = await colRef.get();
@@ -95,20 +95,9 @@ export async function GET() {
       arr.push({ id: doc.id, ...doc.data() });
     });
 
-    const result = await Promise.all(arr.map(async (x) => {
-      const cityRef = adminDb.collection('dca_bots').doc(x?.id);
-      const updateData = {
-        autotrader_name : moment.unix(x?.createdAt?.seconds).format('YYYY-MM-DD') +
-        '-' +
-        x?.createdAt?.seconds,
-        lastUpdated : new Date(),
-       }
-       if (x.autotrader_name) updateData.autotrader_name_old = x.autotrader_name;
-      return await cityRef.update(updateData);
-    }))
   return Response.json({
     status : 'okelah',
-    result
+    arr
   })
 
   } catch (error) {

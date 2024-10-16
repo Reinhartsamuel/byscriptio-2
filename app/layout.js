@@ -2,6 +2,7 @@ import './globals.css';
 import { Suspense } from 'react';
 import localfont from 'next/font/local';
 import Spinner from './components/ui/Spinner';
+import React from 'react'
 
 const ecoCoding = localfont({
   src: [

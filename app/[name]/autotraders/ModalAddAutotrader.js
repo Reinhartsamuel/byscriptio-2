@@ -15,6 +15,8 @@ import {
 import PairImageComponent from '@/app/components/ui/PairImageComponent';
 import moment from 'moment';
 import autotraderRequestTemplate from '@/app/utils/emailHtmlTemplates/autotraderRequestTemplate';
+import { addActivityLog } from '@/app/utils/activityLog';
+import { useUserStore } from '@/app/store/userStore';
 
 const tradingPlans = [
   { name: 'XMA', id: 'XMA' },
@@ -24,6 +26,7 @@ const tradingPlans = [
 export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const { exchanges_accounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
+  const { user, customer, ipLocation} = useUserStore();
   const [data, setData] = useState({
     uid: authFirebase.currentUser?.uid,
     name: authFirebase.currentUser?.displayName,
@@ -75,6 +78,13 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
           })
         }),
       })
+
+      await addActivityLog({
+        customerId : customer?.id || null,
+        uid : user?.id || null,
+        ipLocation : ipLocation,
+        type : 'REQUEST AUTOTRADER'
+      });
       Swal.fire({
         icon: 'success',
         text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',

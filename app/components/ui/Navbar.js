@@ -1,5 +1,7 @@
 'use client';
 import { authFirebase } from '@/app/config/firebase';
+import { useUserStore } from '@/app/store/userStore';
+import { addActivityLog } from '@/app/utils/activityLog';
 import {
   Disclosure,
   DisclosureButton,
@@ -9,10 +11,11 @@ import {
   MenuItem,
   MenuItems,
 } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -30,10 +33,18 @@ function classNames(...classes) {
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const { customer, ipLocation, clearIpLocation } = useUserStore();
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
-      router.push('/')
+      await addActivityLog({
+        customerId: customer.id || null,
+        uid: user.id || null,
+        ipLocation: ipLocation,
+        type: 'LOGOUT',
+      });
+      clearIpLocation();
+      router.push('/');
     } catch (error) {
       window.alert(error.message);
     }
@@ -106,8 +117,10 @@ export default function Navbar() {
             <div className='flex gap-4 items-center justify-center'>
               {/* <button onClick={() => console.log(user)}>cek</button> */}
               {!user ? (
-                <button className='relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
-                onClick={() => router.push('auth/login')}>
+                <button
+                  className='relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
+                  onClick={() => router.push('auth/login')}
+                >
                   <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
                   <span className='inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 text-sm font-medium text-white backdrop-blur-3xl'>
                     Sign In
@@ -116,21 +129,27 @@ export default function Navbar() {
               ) : (
                 <Menu as='div' className='relative ml-3'>
                   <MenuButton className='relative text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
-                  <span className='absolute -inset-1.5' />
+                    <span className='absolute -inset-1.5' />
                     <span className='sr-only'>Open user menu</span>
-                   
+
                     <div className='flex gap-2'>
-                      {user &&<div className="flex flex-col items-center">
-                        <p className='text-gray-200'>{user?.displayName}</p>
-                        <p className='text-gray-300 text-sm font-light'>Pro plan</p>
-                      </div>}
-                    <img
-                      alt=''
-                      src={user?.photoURL || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'}
-                      className='h-8 w-8 rounded-full'
-                    />
+                      {user && (
+                        <div className='flex flex-col items-center'>
+                          <p className='text-gray-200'>{user?.displayName}</p>
+                          <p className='text-gray-300 text-sm font-light'>
+                            Pro plan
+                          </p>
+                        </div>
+                      )}
+                      <img
+                        alt=''
+                        src={
+                          user?.photoURL ||
+                          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+                        }
+                        className='h-8 w-8 rounded-full'
+                      />
                     </div>
-                    
                   </MenuButton>
 
                   <MenuItems
@@ -139,7 +158,13 @@ export default function Navbar() {
                   >
                     <MenuItem cursor={'pointer'}>
                       <a
-                        href={user && (user?.displayName?.replace(' ','-') || user?.email?.split('@')[0])?.toLowerCase()}
+                        href={
+                          user &&
+                          (
+                            user?.displayName?.replace(' ', '-') ||
+                            user?.email?.split('@')[0]
+                          )?.toLowerCase()
+                        }
                         className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600'
                       >
                         Dashboard
