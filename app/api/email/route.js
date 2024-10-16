@@ -27,7 +27,7 @@ export async function POST(request) {
     //   htmlContent: htmlContent,
     // };
 
-    console.log(body);
+    // console.log(body);
     const emailBody = {
       sender: {
         name: 'byScript.io',
