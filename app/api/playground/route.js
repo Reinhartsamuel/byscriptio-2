@@ -1,10 +1,10 @@
-import { adminDb } from '@/lib/firebase-admin-config';
-import { FieldValue } from 'firebase-admin/firestore';
-import moment from 'moment';
-import { headers } from 'next/headers';
-import { userAgent } from 'next/server';
+// import { adminDb } from '@/lib/firebase-admin-config';
+// import { FieldValue } from 'firebase-admin/firestore';
+// import moment from 'moment';
+// import { headers } from 'next/headers';
+// import { userAgent } from 'next/server';
 
-const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
+// const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 // export async function GET (request) {
 //     try {
 //         const test =  userAgent(request);
@@ -84,20 +84,10 @@ export async function GET() {
     //   status: 'success',
     //   data: logsArr,
     // });
-    let arr  = []
-    const colRef = adminDb
-    .collection('webhooks')
-    .where('trading_plan_id', '==', 'XMA')
-    .limit(100);
-
-    const snapshot = await colRef.get();
-    snapshot.forEach((doc) => {
-      arr.push({ id: doc.id, ...doc.data() });
-    });
 
   return Response.json({
     status : 'okelah',
-    arr
+    // arr
   })
 
   } catch (error) {
