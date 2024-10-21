@@ -13,7 +13,7 @@ export const useAutotraderStore = create((set) => ({
       { field: 'createdAt', direction: 'desc' },
       5
     );
-    console.log(data, 'fetch autotraders from store');
+    // console.log(data, 'fetch autotraders from store');
     return set(() => ({
       autotraders: data,
     }));

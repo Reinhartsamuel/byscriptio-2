@@ -1,4 +1,5 @@
-import { updateDocumentFirebase } from '../utils/firebaseApi';
+import { authFirebase } from '../config/firebase';
+import { getCollectionFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function useStartStopAction({ setLoading, detail, setDetail }) {
@@ -6,6 +7,23 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
       // return console.log(detail, 'this is detail');
       setLoading(true);
       try {
+        // check if action === 'start', only 1 active autotrader is allowed
+        // check if action === 'start', only 1 active autotrader is allowed
+        // check if action === 'start', only 1 active autotrader is allowed
+        // check if action === 'start', only 1 active autotrader is allowed
+        if (action === 'start') {
+          const findActiveAutotrader =  await getCollectionFirebase('dca_bots', [{field : 'status', operator :'==', value : 'ACTIVE'}, {field : 'email', operator : '==', value : authFirebase.currentUser?.email}]);
+          console.log({findActiveAutotrader});
+          if (Array.isArray(findActiveAutotrader) && findActiveAutotrader?.length > 0) {
+            setLoading(false);
+            return Swal.fire({
+              icon : 'warning',
+              title: 'Your account already activated one autotrader',
+              text : 'You only have maximum of 1 (one) active autotrader, please contact our support team for further information'
+            })
+          }
+        }
+
         const body = {
           action,
           bot_id: detail.bot_id,
