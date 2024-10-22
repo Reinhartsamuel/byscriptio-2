@@ -10,6 +10,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import useStartStopAction from '@/app/hooks/startStopActionHook';
 import ForceActionComponent from '@/app/components/ForceActionComponent';
+import DeleteAutotraderComponent from '@/app/components/DeleteAutotraderComponent';
+import TradeHistoryTable from './detail/[id]/TradeHistoryTable';
 
 export default function ModalDetailAutotrader({
   detail,
@@ -114,7 +116,12 @@ export default function ModalDetailAutotrader({
                 <div className='flex gap-2 '>
                   <button
                     onClick={() => handleStartStop('start')}
-                    disabled={detail?.status === 'ACTIVE' || detail?.status === 'REQUESTED' ? true : loading}
+                    disabled={
+                      detail?.status === 'ACTIVE' ||
+                      detail?.status === 'REQUESTED'
+                        ? true
+                        : loading
+                    }
                     className={cn(
                       'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white ',
                       detail?.status === 'STOPPED'
@@ -154,19 +161,22 @@ export default function ModalDetailAutotrader({
               </div>
             </div>
           </div>
-          <ForceActionComponent detail={detail} />
-
-          {/* <div className='flex flex-col gap-4 w-full overflow-scroll'>
-            <div className='rounded-lg bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1'>
-              <h1>Trade History</h1>
-              <TradeHistoryComponent
-                bot_id={detail?.bot_id}
-                text={'sm'}
-                trading_plan_pair={detail?.trading_plan_pair}
-              />
-            </div>
-          </div> */}
+          <div className='block'>
+            <ForceActionComponent detail={detail} />
+            <DeleteAutotraderComponent detail={detail} />
+          </div>
         </div>
+        {/* <div className='flex flex-col gap-2 w-full overflow-scroll'> */}
+          <TradeHistoryTable
+            conditions={[
+              {
+                field: 'bot_id',
+                operator: '==',
+                value: detail?.bot_id || null,
+              },
+            ]}
+          />
+        {/* </div> */}
       </Modal>
     </>
   );

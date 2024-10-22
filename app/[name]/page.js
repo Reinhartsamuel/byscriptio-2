@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { authFirebase } from '../config/firebase';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import TradeHistoryComponent from './autotraders/detail/[id]/TradeHistoryComponent';
 import { useExchangeStore } from '../store/exchangesStore';
 import { useAutotraderStore } from '../store/autotraderStore';
+import CombinedTradeHistoryComponent from '../components/CombinedTradeHistoryComponent';
 
 // const SubscriptionComponent = dynamic(() => import('./SubscriptionComponent'), {
 //   ssr: false,
@@ -52,7 +52,7 @@ const page = ({ params }) => {
   return (
     <>
       <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
-        <div className="fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]" />
+        <div className='fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
         <div className='mt-10 mx-6'>
           <h1 className='text-3xl font-bold text-slate-100'>
             Selamat datang, {params?.name?.split('-')?.join(' ')}!
@@ -69,11 +69,7 @@ const page = ({ params }) => {
           <SubscriptionComponent />
           <BillingHistoryComponent />
         </div> */}
-           <TradeHistoryComponent
-              bot_id={'15455557'}
-              trading_plan_pair={['XMA_USDT_ETH']}
-              email={user?.email}
-            />
+            <CombinedTradeHistoryComponent />
           </div>
           <div className=''>
             <AutotraderBotComponent />

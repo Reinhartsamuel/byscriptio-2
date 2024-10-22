@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaBoltLightning } from 'react-icons/fa6';
 import { IoMdClose } from 'react-icons/io';
-import TradeHistoryComponent from './TradeHistoryComponent';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { IoEnter, IoExit } from 'react-icons/io5';
 import Spinner from '@/app/components/ui/Spinner';
@@ -212,11 +211,7 @@ const page = ({ params }) => {
         <div className='flex flex-col gap-4 w-full overflow-scroll'>
           <div className='rounded-lg bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1'>
             <h1>Trade History</h1>
-            <TradeHistoryComponent
-            bot_id={detail?.bot_id}
-              text={'sm'}
-              trading_plan_pair={detail?.trading_plan_pair}
-            />
+           
           </div>
         </div>
       </div>
