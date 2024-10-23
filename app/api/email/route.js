@@ -21,6 +21,7 @@ export async function POST(request) {
       subject:body.subject,
       htmlContent:body.htmlContent,
     };
+    if (body?.bcc) emailBody.bcc = body.bcc;
 
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'post',

@@ -92,6 +92,10 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
             trading_plan_pair: data?.trading_plan_pair,
             trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
           }),
+          bcc: [
+            { name: 'Reinhart', email: 'reinhartsams@gmail.com' },
+            { name: 'Edwin', email: 'edwinfardyanto@gmail.com' },
+          ],
         }),
       });
 
