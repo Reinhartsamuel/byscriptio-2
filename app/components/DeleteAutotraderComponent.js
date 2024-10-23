@@ -7,10 +7,16 @@ import {
 } from '../utils/firebaseApi';
 import Spinner from './ui/Spinner';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { addActivityLog } from '../utils/activityLog';
+import { useUserStore } from '../store/userStore';
+import { authFirebase } from '../config/firebase';
+import { useAutotraderStore } from '../store/autotraderStore';
 
-const DeleteAutotraderComponent = ({ detail }) => {
+const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user, customer, ipLocation } = useUserStore();
+  const { getAutotraders } = useAutotraderStore();
   useEffect(() => {
     setShowDelete(false);
     return () => setShowDelete(false);
@@ -38,15 +44,29 @@ const DeleteAutotraderComponent = ({ detail }) => {
 
   async function deleteAutotrader() {
     setLoading(true);
-    console.log(`deleting id ${detail.id}`);
+    // console.log(`deleting id ${detail.id}`);
     try {
       await deleteDocumentFirebase('dca_bots', detail.id);
       // await getAutotraders()
-      window.location.reload()
+      await addActivityLog({
+        customerId: customer?.id || null,
+        uid: user?.id || null,
+        ipLocation: ipLocation,
+        type: 'DELETE AUTOTRADER',
+        userAgent: navigator?.userAgent,
+      });
+      // window.location.reload()
       Swal.fire({
         title: 'Deleted!',
         text: 'autotrader has been deleted.',
         icon: 'success',
+        showConfirmButton: true,
+      }).then((
+        // result
+      ) => {
+        // console.log(result, 'resultt');
+        getAutotraders(authFirebase.currentUser?.email);
+        setOpenModal(false);
       });
     } catch (error) {
       return Swal.fire({
@@ -143,4 +163,5 @@ export default DeleteAutotraderComponent;
 
 DeleteAutotraderComponent.propTypes = {
   detail: PropTypes.any,
+  setOpenModal: PropTypes.any,
 };

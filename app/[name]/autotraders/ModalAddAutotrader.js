@@ -61,11 +61,15 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
         (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
       ),
     };
-    
+
     // return console.log(addDataToAutotraderCollection,'addDataToAutotraderCollection')
     try {
       setLoading(true);
-      await addDocumentFirebase('dca_bots', addDataToAutotraderCollection, 'byScript');
+      await addDocumentFirebase(
+        'dca_bots',
+        addDataToAutotraderCollection,
+        'byScript'
+      );
       getAutotraders(data?.email);
       await fetch('/api/email', {
         method: 'POST',
@@ -79,9 +83,14 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
           htmlContent: autotraderRequestTemplate({
             requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
             autotrader_name: data?.autotrader_name,
-            exchange_thumbnail: data?.exchange_thumbnail,
+            exchange_thumbnail:
+              data?.exchange_name === 'GATE'
+                ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
+                : data?.exchange_thumbnail,
+            exchange_name: data?.exchange_name,
             tradeAmount: data?.tradeAmount,
             trading_plan_pair: data?.trading_plan_pair,
+            trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
           }),
         }),
       });
@@ -312,6 +321,24 @@ function TradingPlanSelectComponent({ data, setData }) {
       </div>
     </div>
   );
+}
+
+function extractUniqueStrategies(tradingStrategies) {
+  // Use a Set to store unique strategy names
+  const uniqueStrategies = new Set();
+
+  // Iterate through the trading strategies
+  tradingStrategies.forEach((strategy) => {
+    // Extract the strategy name (before the first underscore)
+    const strategyName = strategy.split('_')[0];
+    uniqueStrategies.add(strategyName);
+  });
+
+  // Convert the Set back to an array and join into a string
+  const strategyArray = Array.from(uniqueStrategies);
+  return strategyArray.length === 1
+    ? strategyArray[0]
+    : strategyArray.join(', ');
 }
 
 ModalAddAutotrader.propTypes = {

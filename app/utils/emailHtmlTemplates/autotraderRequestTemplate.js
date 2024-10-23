@@ -1,5 +1,5 @@
 export default function autotraderRequestTemplate(props) {
-    return `
+  return `
            <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -103,7 +103,9 @@ export default function autotraderRequestTemplate(props) {
           <tr>
             <td>Exchange</td>
             <td>
-              <img alt='exchange' src=${props?.exchange_thumbnail} style='width:5rem;object-fit:contain;' />
+              <img alt="${props?.exchange_name}" src="${
+                props?.exchange_thumbnail
+              }" style='width:5rem;object-fit:contain;' />
             </td>
           </tr>
           <tr>
@@ -121,7 +123,11 @@ export default function autotraderRequestTemplate(props) {
           <tr>
             <td>Pairs</td>
             <td>
-            ${props?.trading_plan_pair?.length}
+            ${
+              props?.trading_plan_pair?.length > 1
+                ? props?.trading_plan_pair?.join(', ')
+                : props?.trading_plan_pair[0]
+            }
             </td>
           </tr>
         </table>
@@ -134,5 +140,4 @@ export default function autotraderRequestTemplate(props) {
   </body>
 </html>
     `;
-  }
-  
+}

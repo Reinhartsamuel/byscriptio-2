@@ -37,7 +37,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
         });
         const res = await result.json();
         if (result.status === 200 || res.status === 'success') {
-          console.log('id bot:::::::', detail?.id);
+          // console.log('id bot:::::::', detail?.id);
           await updateDocumentFirebase('dca_bots', detail?.id, {
             status:
               action === 'start'

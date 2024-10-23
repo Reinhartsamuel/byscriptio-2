@@ -16,6 +16,7 @@
     "@sweetalert2/theme-dark": "^5.0.18",
     "@sweetalert2/themes": "^5.0.18",
     "@tabler/icons-react": "^3.10.0",
+    "3commas-api-node": "^1.2.0",
     "axios": "^1.7.3",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",

@@ -124,9 +124,14 @@ export default function ModalDetailAutotrader({
                     }
                     className={cn(
                       'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white ',
-                      detail?.status === 'STOPPED'
-                        ? 'cursor-pointer bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-500 transition duration-200'
-                        : 'cursor-not-allowed bg-gray-600'
+                      (
+                        detail?.status === 'ACTIVE' ||
+                        detail?.status === 'REQUESTED'
+                          ? true
+                          : loading
+                      )
+                        ? 'cursor-not-allowed bg-gray-600'
+                        : 'cursor-pointer bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-500 transition duration-200'
                     )}
                   >
                     {loading ? (
@@ -140,12 +145,12 @@ export default function ModalDetailAutotrader({
                   </button>
                   <button
                     onClick={() => handleStartStop('stop')}
-                    disabled={detail?.status === 'STOPPED' ? true : loading}
+                    disabled={loading || detail?.status === 'STOPPED'}
                     className={cn(
                       'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white',
-                      detail?.status === 'ACTIVE'
-                        ? 'cursor-pointer bg-red-600 hover:bg-red-700 active:bg-red-500 transition duration-200'
-                        : 'cursor-not-allowed  bg-gray-600'
+                      loading || detail?.status === 'STOPPED'
+                        ? 'cursor-not-allowed  bg-gray-600'
+                        : 'cursor-pointer bg-red-600 hover:bg-red-700 active:bg-red-500 transition duration-200'
                     )}
                   >
                     {loading ? (
@@ -163,19 +168,19 @@ export default function ModalDetailAutotrader({
           </div>
           <div className='block'>
             <ForceActionComponent detail={detail} />
-            <DeleteAutotraderComponent detail={detail} />
+            <DeleteAutotraderComponent detail={detail} setOpenModal={setOpenModal} />
           </div>
         </div>
         {/* <div className='flex flex-col gap-2 w-full overflow-scroll'> */}
-          <TradeHistoryTable
-            conditions={[
-              {
-                field: 'bot_id',
-                operator: '==',
-                value: detail?.bot_id || null,
-              },
-            ]}
-          />
+        <TradeHistoryTable
+          conditions={[
+            {
+              field: 'bot_id',
+              operator: '==',
+              value: detail?.bot_id || null,
+            },
+          ]}
+        />
         {/* </div> */}
       </Modal>
     </>
