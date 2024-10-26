@@ -2,6 +2,7 @@
 import { authFirebase } from '@/app/config/firebase';
 import { useUserStore } from '@/app/store/userStore';
 import { addActivityLog } from '@/app/utils/activityLog';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import {
   Disclosure,
   DisclosureButton,
@@ -33,7 +34,7 @@ function classNames(...classes) {
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const router = useRouter();
-  const { customer, ipLocation, clearIpLocation } = useUserStore();
+  const { customer, ipLocation, clearIpLocation, setCustomer } = useUserStore();
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
@@ -54,6 +55,8 @@ export default function Navbar() {
     onAuthStateChanged(authFirebase, (user) => {
       if (user) {
         setUser(user);
+        const name = user?.displayName || user?.email?.split('@')[0];
+        router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         // ...
@@ -65,6 +68,28 @@ export default function Navbar() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    (async function () {
+      if (!customer) {
+        try {
+          const customerFromDatabase = await getCollectionFirebase(
+            'customers',
+            [
+              {
+                field: 'email',
+                operator: '==',
+                value: authFirebase.currentUser?.email,
+              },
+            ]
+          );
+          setCustomer(customerFromDatabase[0]);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    })();
+  }, [authFirebase.currentUser]);
   return (
     <Disclosure as='nav'>
       <div className='px-2 border-b-[1px] border-b-slate-700 md:px-5'>

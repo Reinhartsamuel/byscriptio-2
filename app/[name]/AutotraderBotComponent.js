@@ -187,7 +187,7 @@ const AutotraderBotComponent = () => {
   };
 
   return (
-    <div className='mx-6 mt-10'>
+    <div className='mx-2 lg:mx-6 mt-10'>
       <div className='flex items-center gap-4'>
         <h2 className='text-xl text-bold text-slate-200 font-bold'>
           Autotrader

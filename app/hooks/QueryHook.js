@@ -6,6 +6,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from 'firebase/firestore';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { authFirebase, db } from '../config/firebase';
@@ -17,7 +18,7 @@ const useFetchData = ({
   collectionName = 'webhooks',
   conditions = [],
   dependencies = [],
-  authRequired = true
+  authRequired = true,
 }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,8 +26,6 @@ const useFetchData = ({
   const [hasMore, setHasMore] = useState(true);
   const [lastVisible, setLastVisible] = useState({});
 
-
-  
   const fetchData = async () => {
     if (authRequired && !authFirebase.currentUser?.email) {
       // console.log('auth required and no user');
@@ -64,19 +63,42 @@ const useFetchData = ({
       // console.log('type is getDocs');
       fetchData();
     } else if (type === 'onSnapshot') {
+      setLoading(true);
       // console.log('type is onSnapshot');
-      const q = query(
-        collection(db, collectionName),
-        orderBy('createdAt', 'desc'),
-        limit(limitQuery)
+      const colRef = collection(db, collectionName);
+      const queryLimit = 10; // Set your desired limit here
+
+      const createQueryWithConditions = (colRef, conditions, queryLimit) => {
+        let firestoreQuery = query(colRef, orderBy('createdAt', 'desc'));
+
+        // Apply each condition using `where()`
+        conditions.forEach((cond) => {
+          firestoreQuery = query(
+            firestoreQuery,
+            where(cond.field, cond.operator, cond.value)
+          );
+        });
+
+        // Apply the limit
+        firestoreQuery = query(firestoreQuery, limit(queryLimit));
+
+        return firestoreQuery;
+      };
+
+      // Create the query using the conditions and the limit
+      const firestoreQuery = createQueryWithConditions(
+        colRef,
+        conditions,
+        queryLimit
       );
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
+      unsubscribe = onSnapshot(firestoreQuery, (querySnapshot) => {
         const arr = [];
         querySnapshot.forEach((doc) => {
           arr.push({ id: doc.id, ...doc.data() });
         });
         setData(arr);
       });
+      setLoading(false);
       return () => unsubscribe();
     }
   }, [...dependencies]);
