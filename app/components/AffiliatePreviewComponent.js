@@ -6,6 +6,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import AffiliateeComponent from './AffiliateeComponent';
+import useFetchData from '../hooks/QueryHook';
+import { priceFormat } from '../utils/priceFormat';
 const AffiliatePreviewComponent = () => {
   const { customer } = useUserStore();
   const [realtimeData, setRealtimeData] = useState({});
@@ -29,6 +31,21 @@ const AffiliatePreviewComponent = () => {
     }
   }
 
+  const { data: childrenAffiliate,error } = useFetchData({
+    type: 'getDocs',
+    collectionName: 'subscriptions',
+    conditions: [
+      {
+        field: 'affiliatorCustomerId',
+        operator: '==',
+        value: customer?.id || '',
+      },
+    ],
+    authRequired: true,
+    dependencies: [customer?.id],
+    limitQuery:200
+  });
+
   useEffect(() => {
     let unsub = () => {};
     if (customer?.id) {
@@ -45,6 +62,7 @@ const AffiliatePreviewComponent = () => {
       <h2 className='text-xl my-5 font-bold text-slate-200 font-bold'>
         Affiliate Program
       </h2>
+      {error && <p>{error.message}</p>}
       <div className='w-full grid grid-cols-2 lg:grid-cols-4 gap-2'>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
           <p className='text-gray-200 font-light'>Active Referrals</p>
@@ -60,7 +78,7 @@ const AffiliatePreviewComponent = () => {
         </div>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
           <p className='text-gray-200 font-light'>Conversion</p>
-          <h3 className='text-xl font-bold'>{realtimeData.conversion || 0}</h3>
+          <h3 className='text-xl font-bold'>Rp {priceFormat(childrenAffiliate?.filter((x) => x?.paymentStatus === 'PAID')?.reduce((a, b) => a + b?.price, 0) || 0)}</h3>
         </div>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
           <p className='text-gray-200 font-light'>Income</p>
@@ -93,7 +111,7 @@ const AffiliatePreviewComponent = () => {
           </button>
         </div>
       </div>
-      <AffiliateeComponent />
+      <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
     </div>
   );
 };
