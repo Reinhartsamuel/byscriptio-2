@@ -8,6 +8,7 @@ import { db } from '../config/firebase';
 import AffiliateeComponent from './AffiliateeComponent';
 import useFetchData from '../hooks/QueryHook';
 import { priceFormat } from '../utils/priceFormat';
+import moment from 'moment';
 const AffiliatePreviewComponent = () => {
   const { customer } = useUserStore();
   const [realtimeData, setRealtimeData] = useState({});
@@ -67,7 +68,7 @@ const AffiliatePreviewComponent = () => {
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
           <p className='text-gray-200 font-light'>Active Referrals</p>
           <h3 className='text-xl font-bold'>
-            {realtimeData.activeReferrals || 0}
+            {childrenAffiliate?.filter((x) => x?.paymentStatus === 'PAID' && moment.unix(x?.createdAt?.seconds).isBefore(moment.unix(x?.expiredAt?.seconds)))?.length || 0}
           </h3>
         </div>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
