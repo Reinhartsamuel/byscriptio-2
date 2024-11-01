@@ -15,19 +15,20 @@ const AffiliateeComponent = ({ childrenAffiliate }) => {
           <thead className='top-0 right-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
               <th scope='col' className='px-2 py-1 text-xs'>
-                name
+                customer
               </th>
+             
               <th scope='col' className='px-2 py-1 text-xs'>
-                email
-              </th>
-              <th scope='col' className='px-2 py-1 text-xs'>
-                joined at
+                payment date
               </th>
               <th scope='col' className='px-2 py-1 text-xs'>
                 subscribe purchase
               </th>
               <th scope='col' className='px-2 py-1 text-xs'>
                 payment status
+              </th>
+              <th scope='col' className='px-2 py-1 text-xs'>
+                commission
               </th>
               {/* <th scope='col' className='px-2 py-1 text-xs'>
               id
@@ -50,11 +51,11 @@ const AffiliateeComponent = ({ childrenAffiliate }) => {
                         }
                         alt='Rounded avatar'
                       />
+                      <div className='flex flex-col'>
                       <p>{x?.name}</p>
+                      <p>{x?.email}</p>
+                      </div>
                     </div>
-                  </td>
-                  <td className='px-2 py-1 text-xs font-medium text-gray-900 whitespace-nowrap dark:text-gray-300'>
-                    {x?.email}
                   </td>
                   <td className='px-2 py-1 text-xs'>
                     {moment
@@ -70,6 +71,9 @@ const AffiliateeComponent = ({ childrenAffiliate }) => {
                   </td>
                   <td className={cn('px-2 py-1 text-xs whitespace-nowrap', x?.paymentStatus === 'PAID' ? 'text-green-500 font-bold' : 'text-red-500 font-bold')}>
                     {x?.paymentStatus}
+                  </td>
+                  <td>
+                    <p className='text-green-600 text-sm'>30%</p>
                   </td>
                 </tr>
               ))

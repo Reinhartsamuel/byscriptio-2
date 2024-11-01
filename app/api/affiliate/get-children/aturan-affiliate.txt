@@ -1,0 +1,23 @@
+const customerData = {
+    id: '',
+    name: '',
+    email: '',
+    affiliatorCustomerId : '',
+    affiliator : {
+        name : '',
+        email : '',
+        level : 1
+    }
+}
+
+const affiliatorCustomerData : 
+
+user signup steps: 
+1. check if there's affiliator id in the link
+2. get affiliator customer data, check if there's any affiliatorCustomerId in the affiliator 
+customer data
+3. if any, return to step 2
+4. include inside the customer data of the new
+user
+5. check if any kontol is present
+
