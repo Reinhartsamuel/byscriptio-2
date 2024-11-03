@@ -22,13 +22,16 @@ const AffiliateeComponent = ({ childrenAffiliate }) => {
                 payment date
               </th>
               <th scope='col' className='px-2 py-1 text-xs'>
-                subscribe purchase
+                affiliate purchase
               </th>
               <th scope='col' className='px-2 py-1 text-xs'>
                 payment status
               </th>
               <th scope='col' className='px-2 py-1 text-xs'>
                 commission
+              </th>
+              <th scope='col' className='px-2 py-1 text-xs'>
+                level
               </th>
               {/* <th scope='col' className='px-2 py-1 text-xs'>
               id
@@ -65,15 +68,18 @@ const AffiliateeComponent = ({ childrenAffiliate }) => {
                   <td className='px-2 py-1 text-xs whitespace-nowrap'>
                     <div className='flex flex-col'>
                       <p className='font-bold text-md'>{x?.productName}</p>
-                      <p className='text-green-500 font-bold'> Rp {priceFormat(x?.price)}</p>
+                      <p className='font-bold'> Rp {priceFormat(x?.price)}</p>
                     </div>
                    
                   </td>
-                  <td className={cn('px-2 py-1 text-xs whitespace-nowrap', x?.paymentStatus === 'PAID' ? 'text-green-500 font-bold' : 'text-red-500 font-bold')}>
+                  <td className={cn('px-2 py-1 text-xs whitespace-nowrap', x?.paymentStatus === 'PAID' ? 'text-green-600 font-bold' : 'text-red-500 font-bold')}>
                     {x?.paymentStatus}
                   </td>
                   <td>
-                    <p className='text-green-600 text-sm'>30%</p>
+                    <p className='text-green-500 text-lg font-bold align-center'>Rp {priceFormat(x?.affiliateCommission)} <span className='text-sm font-normal text-gray-400'>({x?.affiliatePercentage}%)</span></p>
+                  </td>
+                  <td>
+                   {x?.affiliateLevel}
                   </td>
                 </tr>
               ))

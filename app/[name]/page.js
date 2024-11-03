@@ -43,7 +43,17 @@ const page = ({ params }) => {
     });
   }, []);
 
-
+  const handleTestClick = async ()=> {
+    try {
+      const res = await fetch('/api/affiliate/signup-affiliate', {
+        method: 'GET',
+      });
+      const result = await res.json();
+      console.log('result', result);
+    } catch (error) {
+      window.alert(error.message);
+    }
+  }
   useEffect(() => {
     if (user?.email) {
       getExchangeAccounts(user.email);
@@ -60,7 +70,7 @@ const page = ({ params }) => {
       <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
         <div className='fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
         <div className='mt-10 mx-2 lg:mx-6'>
-          <h1 className='text-3xl font-bold text-slate-100'>
+          <h1 className='text-3xl font-bold text-slate-100' onClick={handleTestClick}>
             Selamat datang, {params?.name?.split('-')?.join(' ')}!
           </h1>
           <h3 className='font-extralight text-sm text-gray-300 leading--5'>

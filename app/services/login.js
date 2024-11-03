@@ -83,7 +83,16 @@ export const handleLoginGoogle = async ({
         token,
         affiliatorCustomerId : getCookie('affiliateId'),
       };
-      customerId = await addDocumentFirebase('customers', newCustomerData);
+      const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
+        method : 'POST',
+        body : JSON.stringify({
+          ...newCustomerData
+        })
+      });
+
+      const {customerId} = await resAddAffiliateCustomer.json();
+      console.log(customerId, 'customerIdcustomerIdcustomerIdcustomerId');
+      // customerId = await addDocumentFirebase('customers', newCustomerData);
       setCustomer({
         id: customerId,
         ...newCustomerData,

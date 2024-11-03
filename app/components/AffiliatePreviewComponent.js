@@ -9,6 +9,7 @@ import useFetchData from '../hooks/QueryHook';
 import { priceFormat } from '../utils/priceFormat';
 import moment from 'moment';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import WithdrawableComponent from './WithdrawableComponent';
 
 const AffiliatePreviewComponent = () => {
   const { customer } = useUserStore();
@@ -123,14 +124,7 @@ const AffiliatePreviewComponent = () => {
             </button>
           </div>
         </div>
-        <div className='mt-5 w-full rounded-lg bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
-          <div className='flex w-full justify-between'>
-            <p className='text-gray-400 text-sm'>Withdrawable:</p>
-            <button onClick={() => Swal.fire({icon:'warning', text:'Withdrawal not available'})} type="button" className="py-1 px-2 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Withdraw</button>
-
-          </div>
-          <h3 className='text-xl font-bold'>Rp {realtimeData.income || 0}</h3>
-        </div>
+        <WithdrawableComponent customer={customer} />
       </div>
       <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
     </div>
