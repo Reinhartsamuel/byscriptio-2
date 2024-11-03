@@ -5,6 +5,7 @@ export async function GET(request) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const customerId = searchParams.get('customerId');
+    if (!customerId) throw new Error('no customer id');
 
     // STEP 1. FIND LATEST WITHDRAWAL
     let listOfWithdrawals = [];
@@ -23,11 +24,15 @@ export async function GET(request) {
     // AND paymentStatus == PAID
     // AND createdAt isAfter listOfWithdrawals[0].createdAt
     // SUM affiliateCommission
-    const coll = adminDb
+    let coll = adminDb
       .collection('subscriptions')
       .where('affiliatorCustomerId', '==', customerId)
-      .where('paymentStatus', '==', 'PAID')
-      .where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
+      .where('paymentStatus', '==', 'PAID');
+
+    // Check if listOfWithdrawals is not empty
+    if (listOfWithdrawals?.length > 0) {
+      coll = coll.where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
+    }
     const sumAggregateQuery = coll.aggregate({
       affiliateCommissionSum: AggregateField.sum('affiliateCommission'),
     });
@@ -40,9 +45,9 @@ export async function GET(request) {
     return Response.json({
       status: true,
       data: {
-        withdrawable :  sumSnapshot.data().affiliateCommissionSum,
+        withdrawable: sumSnapshot.data().affiliateCommissionSum,
         customerId,
-        lastWithdrawal : listOfWithdrawals[0],
+        lastWithdrawal: listOfWithdrawals[0],
       },
     });
   } catch (error) {

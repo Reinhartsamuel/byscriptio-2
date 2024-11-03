@@ -10,12 +10,13 @@ const WithdrawableComponent = ({ customer }) => {
   useEffect(() => {
     async function getWithdrawal() {
       try {
+        if (!customer?.id) return;
         const res = await fetch(
           `/api/affiliate/get-withdrawable/?customerId=${customer?.id}`
         );
-        const data = await res.json();
-        console.log(data, 'withdrawal data');
-        if (!data?.status) {
+        const {status, data} = await res.json();
+        // console.log(data, 'withdrawal data');
+        if (!status) {
             return setData({});
         }
         setData(data);
@@ -24,14 +25,14 @@ const WithdrawableComponent = ({ customer }) => {
       }
     }
     getWithdrawal();
-  }, []);
+  }, [customer?.id]);
   return (
     <div className='mt-5 w-full rounded-lg bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
       <div className='flex w-full justify-between'>
         <p className='text-gray-400 text-sm'>Withdrawable:</p>
         <button
           onClick={() =>
-            Swal.fire({ icon: 'warning', text: 'Withdrawal not available' })
+            Swal.fire({ icon: 'warning', text: 'Withdrawal coming soon' })
           }
           type='button'
           className='py-1 px-2 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
