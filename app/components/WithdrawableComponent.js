@@ -14,6 +14,10 @@ const WithdrawableComponent = ({ customer }) => {
           `/api/affiliate/get-withdrawable/?customerId=${customer?.id}`
         );
         const data = await res.json();
+        console.log(data, 'withdrawal data');
+        if (!data?.status) {
+            return setData({});
+        }
         setData(data);
       } catch (error) {
         console.log(error.message);
@@ -35,13 +39,13 @@ const WithdrawableComponent = ({ customer }) => {
           Withdraw
         </button>
       </div>
-      {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+      <pre>{JSON.stringify(data, null, 2)}</pre>
       <div className="flex w-full justify-between">
           <h3 className='text-xl font-bold'>
             Rp {priceFormat(data?.withdrawable)}
           </h3>
-          <p className='text-gray-400 text-sm'>Last withdraw {moment(data?.paidAt).format('DD MMM YYYY')}
-          </p>
+          {data?.lastWithdrawal && <p className='text-gray-400 text-sm'>Last withdraw {moment(data?.paidAt).format('DD MMM YYYY')}
+          </p>}
       </div>
     </div>
   );
