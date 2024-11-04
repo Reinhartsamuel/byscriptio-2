@@ -1,17 +1,19 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { FaRegCopy } from 'react-icons/fa6';
-import { useUserStore } from '../store/userStore';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../config/firebase';
-import AffiliateeComponent from './AffiliateeComponent';
-import useFetchData from '../hooks/QueryHook';
-import { priceFormat } from '../utils/priceFormat';
-import moment from 'moment';
+import AffiliateeComponent from '@/app/components/AffiliateeComponent';
+import WithdrawableComponent from '@/app/components/WithdrawableComponent';
+import { priceFormat } from '@/app/utils/priceFormat';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import WithdrawableComponent from './WithdrawableComponent';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useUserStore } from '@/app/store/userStore';
+import useFetchData from '@/app/hooks/QueryHook';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '@/app/config/firebase';
+import { FaRegCopy } from 'react-icons/fa6';
+import AffiliateWithdrawalListComponent from '@/app/components/AffiliateWithdrawalListComponent';
+// import { FaRegCopy } from 'react-icons/fa6';
 
-const AffiliatePreviewComponent = () => {
+const page = async () => {
   const { customer } = useUserStore();
   const [origin, setOrigin] = useState('');
 
@@ -61,7 +63,6 @@ const AffiliatePreviewComponent = () => {
     }
     return () => unsub();
   }, [customer?.id]);
-
   useEffect(() => {
     // This code runs only on the client side
     setOrigin(window.location.origin);
@@ -72,7 +73,7 @@ const AffiliatePreviewComponent = () => {
       <h2 className='text-xl my-5 font-bold text-slate-200 font-bold'>
         Affiliate Program
       </h2>
-      {error && <p>{error.message}</p>}
+      {error && <p className='text-red-500'>{error.message}</p>}
       <div className='w-full grid grid-cols-2 lg:grid-cols-3 gap-2'>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
           <p className='text-gray-200 font-light'>Total Referal</p>
@@ -104,7 +105,6 @@ const AffiliatePreviewComponent = () => {
           </h3>
         </div>
       </div>
-
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-4'>
         <div className='mt-2 lg:mt-5 w-full rounded-lg bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
           <p
@@ -121,9 +121,7 @@ const AffiliatePreviewComponent = () => {
             />
             <button
               onClick={() =>
-                copyTextToClipboard(
-                  `${origin}/auth/login?c=${customer?.id}`
-                )
+                copyTextToClipboard(`${origin}/auth/login?c=${customer?.id}`)
               }
               className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
             >
@@ -133,9 +131,12 @@ const AffiliatePreviewComponent = () => {
         </div>
         <WithdrawableComponent customer={customer} />
       </div>
-      <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-4'>
+        <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
+        {customer?.id && <AffiliateWithdrawalListComponent customerId={customer?.id} />}
+      </div>
     </div>
   );
 };
 
-export default AffiliatePreviewComponent;
+export default page;

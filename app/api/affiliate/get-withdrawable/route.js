@@ -12,7 +12,7 @@ export async function GET(request) {
     const snapshot = await adminDb
       .collection('affiliate_withdrawals')
       .where('customerId', '==', customerId)
-      .where('paymentStatus', '==', 'PAID')
+    //   .where('paymentStatus', '==', 'PAID')
       .orderBy('createdAt', 'desc')
       .limit(1)
       .get();
@@ -48,6 +48,7 @@ export async function GET(request) {
         withdrawable: sumSnapshot.data().affiliateCommissionSum,
         customerId,
         lastWithdrawal: listOfWithdrawals[0],
+        xx: listOfWithdrawals,
       },
     });
   } catch (error) {
