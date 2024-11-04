@@ -2,6 +2,7 @@
 import { authFirebase } from '@/app/config/firebase';
 import { useUserStore } from '@/app/store/userStore';
 import { addActivityLog } from '@/app/utils/activityLog';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import {
   Disclosure,
   DisclosureButton,
@@ -32,8 +33,10 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
+  const [menuNavigation, setMenuNavigation] = useState(navigation);
+  const [userPackage, setUserPackage] = useState(null);
   const router = useRouter();
-  const { customer, ipLocation, clearIpLocation } = useUserStore();
+  const { customer, ipLocation, clearIpLocation, setCustomer } = useUserStore();
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
@@ -54,6 +57,19 @@ export default function Navbar() {
     onAuthStateChanged(authFirebase, (user) => {
       if (user) {
         setUser(user);
+        const name =
+          user?.displayName?.split(' ')?.join('-') ||
+          user?.email?.split('@')[0];
+        if (window.location.origin + '/' === window.location.href) {
+          router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
+        }
+
+        setMenuNavigation([
+          { name: 'Dashboard', href: `/${name}` },
+          { name: 'Affiliate', href: `/${name}/affiliate` },
+          { name: 'Autotraders', href: `/${name}/autotraders` },
+          { name: 'Exchanges', href: `/${name}/exchanges` },
+        ]);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         // ...
@@ -65,6 +81,75 @@ export default function Navbar() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    (async function () {
+      if (!customer) {
+        try {
+          const findLastSubscription = await getCollectionFirebase(
+            'subscriptions',
+            [
+              {
+                field: 'email',
+                operator: '==',
+                value: authFirebase.currentUser?.email,
+              },
+              {
+                field: 'paymentStatus',
+                operator: '==',
+                value: 'PAID',
+              },
+            ],
+            { field: 'createdAt', direction: 'desc' },
+            1
+          );
+          console.log(findLastSubscription, 'findLastSubscription');
+          const customerFromDatabase = await getCollectionFirebase(
+            'customers',
+            [
+              {
+                field: 'email',
+                operator: '==',
+                value: authFirebase.currentUser?.email,
+              },
+            ]
+          );
+          setCustomer(customerFromDatabase[0]);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    })();
+  }, [authFirebase.currentUser]);
+  useEffect(() => {
+    (async function () {
+      if (customer?.id) {
+        try {
+          const findLastSubscription = await getCollectionFirebase(
+            'subscriptions',
+            [
+              {
+                field: 'email',
+                operator: '==',
+                value: authFirebase.currentUser?.email,
+              },
+              {
+                field: 'paymentStatus',
+                operator: '==',
+                value: 'PAID',
+              },
+            ],
+            { field: 'createdAt', direction: 'desc' },
+            1
+          );
+          if (findLastSubscription?.length > 0)
+            setUserPackage(findLastSubscription[0]);
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    })();
+  }, [customer?.id]);
   return (
     <Disclosure as='nav'>
       <div className='px-2 border-b-[1px] border-b-slate-700 md:px-5'>
@@ -94,7 +179,7 @@ export default function Navbar() {
             </div>
             <div className='hidden sm:ml-6 sm:block'>
               <div className='flex space-x-4'>
-                {navigation.map((item) => (
+                {menuNavigation.map((item) => (
                   <a
                     key={item.name}
                     href={item.href}
@@ -136,9 +221,11 @@ export default function Navbar() {
                       {user && (
                         <div className='flex flex-col items-center'>
                           <p className='text-gray-200'>{user?.displayName}</p>
-                          <p className='text-gray-300 text-sm font-light'>
-                            Pro plan
-                          </p>
+                          {userPackage && (
+                            <p className='text-gray-400 text-sm font-light'>
+                              {userPackage?.productName}
+                            </p>
+                          )}
                         </div>
                       )}
                       <img
@@ -156,9 +243,9 @@ export default function Navbar() {
                     transition
                     className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in'
                   >
-                    <MenuItem cursor={'pointer'}>
+                    {/* <MenuItem cursor={'pointer'} onClick={() => router.push(`/`)}>
                       <a
-                        href={
+                        href={'https://'+ window.location?.origin +'/'+
                           user &&
                           (
                             user?.displayName?.replace(' ', '-') ||
@@ -169,15 +256,17 @@ export default function Navbar() {
                       >
                         Dashboard
                       </a>
-                    </MenuItem>
-                    <MenuItem cursor={'pointer'}>
-                      <a
-                        href='#'
-                        className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600'
-                      >
-                        Settings
-                      </a>
-                    </MenuItem>
+                    </MenuItem> */}
+                    {menuNavigation.map((x, i) => (
+                      <MenuItem key={i} cursor={'pointer'}>
+                        <a
+                          href={x?.href}
+                          className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600 cursor-pointer'
+                        >
+                          {x?.name}
+                        </a>
+                      </MenuItem>
+                    ))}
                     <MenuItem cursor={'pointer'}>
                       <a
                         onClick={handleLogout}
@@ -196,7 +285,7 @@ export default function Navbar() {
 
       <DisclosurePanel className='sm:hidden'>
         <div className='space-y-1 px-2 pb-3 pt-2'>
-          {navigation.map((item) => (
+          {menuNavigation.map((item) => (
             <DisclosureButton
               key={item.name}
               as='a'

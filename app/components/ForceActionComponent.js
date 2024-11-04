@@ -19,7 +19,7 @@ export default function ForceActionComponent({ detail }) {
   }, []);
 
   return (
-    <div className='rounded-lg bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap'>
+    <div className='rounded-lg bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
       <h1>Force Entry / Exit</h1>
       <div className='flex flex-col gap-0'>
         {
@@ -50,7 +50,7 @@ export default function ForceActionComponent({ detail }) {
         }
       </div>
 
-      <div className='flex flex-col lg:flex-row gap-2'>
+      <div className='flex flex-row gap-2 justify-between'>
         <button
           onClick={() => handleForce('entry')}
           disabled={detail?.status !== 'ACTIVE'}

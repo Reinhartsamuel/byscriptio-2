@@ -92,6 +92,7 @@ const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
       // if yes, DO NOT DELETE!!
       if (detail.bot_id) {
         const findLastSignal = await getLatestSignal(detail.bot_id);
+        // console.log(findLastSignal[0], 'findLastSignal[0]');
         const lastAction =
           findLastSignal[0]?.response?.value?.action === 'close_at_market_price'
             ? 'SELL'

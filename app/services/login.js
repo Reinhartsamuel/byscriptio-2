@@ -15,6 +15,7 @@ import { increment } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import checkExchangesAutotraders from './checkExchangesAutotraders';
 import { addActivityLog } from '../utils/activityLog';
+import { getCookie } from 'cookies-next';
 
 const provider = new GoogleAuthProvider();
 
@@ -25,6 +26,7 @@ export const handleLoginGoogle = async ({
   setUser,
   setCustomer,
 }) => {
+// return console.log(getCookie('affiliateId'), 'cookie anjing');
   setLoading(true);
   try {
     //GOOGLE LOGIN
@@ -56,6 +58,7 @@ export const handleLoginGoogle = async ({
         createdAt: new Date(),
         photoURL: user.photoURL,
         token,
+        affiliatorCustomerId : getCookie('affiliateId'),
       };
       await setDocumentFirebase('users', user.uid, newUserData);
       setUser(newUserData);
@@ -78,8 +81,18 @@ export const handleLoginGoogle = async ({
         isNewUser: true,
         photoURL: user.photoURL,
         token,
+        affiliatorCustomerId : getCookie('affiliateId'),
       };
-      customerId = await addDocumentFirebase('customers', newCustomerData);
+      const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
+        method : 'POST',
+        body : JSON.stringify({
+          ...newCustomerData
+        })
+      });
+
+      const {customerId} = await resAddAffiliateCustomer.json();
+      console.log(customerId, 'customerIdcustomerIdcustomerIdcustomerId');
+      // customerId = await addDocumentFirebase('customers', newCustomerData);
       setCustomer({
         id: customerId,
         ...newCustomerData,
@@ -107,7 +120,7 @@ export const handleLoginGoogle = async ({
 
     const name = user?.displayName || user?.email?.split('@')[0];
     router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
-    const isNewUser = findUser?.length === 0 && findCustomer?.length === 0;
+    const isNewUser = !findUser && findCustomer?.length === 0;
     try {
       fetch(isNewUser ? '/api/email/login/new-user' : '/api/email/login', {
         method: 'post',

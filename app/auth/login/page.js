@@ -1,17 +1,23 @@
 'use client';
 import Spinner from '@/app/components/ui/Spinner';
 import { handleLoginGoogle } from '@/app/services/login';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import LoginEmailComponent from './LoginEmailComponent';
 import { useUserStore } from '@/app/store/userStore';
+import { setCookie, getCookie } from 'cookies-next';
+import { updateDocumentFirebase } from '@/app/utils/firebaseApi';
+import { increment } from 'firebase/firestore';
+
 // import TurnstileWidget from '@/app/components/TurnstileWidget';
 
 const page = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { ipLocation, setIpLocation, setUser, setCustomer } = useUserStore();
+  const searchParams = useSearchParams();
 
+  const affiliateid = searchParams.get('c'); // c represents customer id in database
   async function getLocationIp() {
     try {
       const locationFetch = await fetch('http://ip-api.com/json');
@@ -30,9 +36,39 @@ const page = () => {
     }
   }
 
+  async function saveCookies() {
+    if (!affiliateid) return;
+    setCookie('affiliateId', affiliateid);
+  }
+
+  async function getCookies() {
+    const cookie = getCookie('affiliateId');
+    console.log(cookie, 'cookie');
+  }
+
+  async function incrementClicks() {
+    try {
+      console.count('updating clicks');
+      await updateDocumentFirebase('customers', affiliateid, {
+        affiliateClicks: increment(1),
+      });
+      // console.count('updating clicks x');
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     getLocationIp();
+    saveCookies();
   }, []);
+
+  useEffect(() => {
+    if (affiliateid) {
+      incrementClicks(); // Call incrementClicks only if affiliateid is present
+    }
+    console.log(affiliateid)
+  }, [affiliateid]);
 
   return (
     <>
@@ -54,7 +90,9 @@ const page = () => {
             src='https://i.ibb.co.com/RB9rQy3/Whats-App-Image-2024-05-19-at-16-02-06.jpg'
             className='h-20 w-auto rounded-lg'
           />
-          <h3>Ubah Trading Manual Jadi Trading Otomatis 🚀 🚀</h3>
+          <h3 onClick={getCookies}>
+            Ubah Trading Manual Jadi Trading Otomatis 🚀 🚀
+          </h3>
         </div>
         <div className='h-full w-full md:w-[50%] bg-white'>
           <div
@@ -84,7 +122,13 @@ const page = () => {
               disabled={loading}
               cursor={loading ? 'not-allowed' : 'pointer'}
               onClick={() =>
-                handleLoginGoogle({ setLoading, router, ipLocation, setUser, setCustomer })
+                handleLoginGoogle({
+                  setLoading,
+                  router,
+                  ipLocation,
+                  setUser,
+                  setCustomer,
+                })
               }
             >
               {loading ? (

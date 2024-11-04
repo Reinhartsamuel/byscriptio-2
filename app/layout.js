@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
           fallback={
             <div className='w-full h-screen flex justify-center items-center'>
               <Spinner />
+              <p className='text-gray-400 font-ecoCoding'>byScript.io</p>
             </div>
           }
         >
