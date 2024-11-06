@@ -36,7 +36,13 @@ export default function Navbar() {
   const [menuNavigation, setMenuNavigation] = useState(navigation);
   const [userPackage, setUserPackage] = useState(null);
   const router = useRouter();
-  const { customer, ipLocation, clearIpLocation, setCustomer } = useUserStore();
+  const {
+    customer,
+    ipLocation,
+    clearIpLocation,
+    setCustomer,
+    setUserPackage: setUserPackageToStore,
+  } = useUserStore();
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
@@ -86,7 +92,7 @@ export default function Navbar() {
     (async function () {
       if (!customer) {
         try {
-          const findLastSubscription = await getCollectionFirebase(
+          let findLastSubscription = await getCollectionFirebase(
             'subscriptions',
             [
               {
@@ -144,6 +150,7 @@ export default function Navbar() {
           );
           if (findLastSubscription?.length > 0)
             setUserPackage(findLastSubscription[0]);
+          setUserPackageToStore(findLastSubscription[0]);
         } catch (error) {
           console.log(error.message);
         }

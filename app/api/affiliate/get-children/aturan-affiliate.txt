@@ -19,5 +19,5 @@ customer data
 3. if any, return to step 2
 4. include inside the customer data of the new
 user
-5. check if any kontol is present
+5. check if any  is present
 

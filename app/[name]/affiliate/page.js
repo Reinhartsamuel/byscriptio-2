@@ -11,10 +11,11 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '@/app/config/firebase';
 import { FaRegCopy } from 'react-icons/fa6';
 import AffiliateWithdrawalListComponent from '@/app/components/AffiliateWithdrawalListComponent';
+import { PricingComponent } from '@/app/components/PricingComponent';
 // import { FaRegCopy } from 'react-icons/fa6';
 
 const page = async () => {
-  const { customer } = useUserStore();
+  const { customer, userPackage } = useUserStore();
   const [origin, setOrigin] = useState('');
 
   const [realtimeData, setRealtimeData] = useState({});
@@ -67,6 +68,10 @@ const page = async () => {
     // This code runs only on the client side
     setOrigin(window.location.origin);
   }, []);
+
+  if (customer && !userPackage) {
+    return <PricingComponent />
+  }
 
   return (
     <div className='mt-10 mx-2 lg:mx-6'>
@@ -131,7 +136,7 @@ const page = async () => {
         </div>
         <WithdrawableComponent customer={customer} />
       </div>
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-4'>
+      <div className='grid grid-cols-1 gap-0'>
         <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
         {customer?.id && <AffiliateWithdrawalListComponent customerId={customer?.id} />}
       </div>
