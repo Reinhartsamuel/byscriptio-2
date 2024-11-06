@@ -66,7 +66,7 @@ const page = async () => {
   }, [customer?.id]);
   useEffect(() => {
     // This code runs only on the client side
-    setOrigin(window.location.origin);
+    setOrigin(window?.location.origin);
   }, []);
 
   if (customer && !userPackage) {

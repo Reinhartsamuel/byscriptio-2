@@ -189,7 +189,7 @@ const SummaryComponent = ({ setIndex, data, setData }) => {
               <button
                 className='bg-green-500 text-white font-bold py-2 px-4 rounded'
                 onClick={() =>
-                  window.open(
+                  window?.open(
                     `https://wa.me/6281313383848/?text=Halo kak, saya ${
                       data?.name
                     } sudah mendaftar onboarding byScript dan pada hari ${moment(

@@ -55,7 +55,7 @@ export default function Navbar() {
       clearIpLocation();
       router.push('/');
     } catch (error) {
-      window.alert(error.message);
+      window?.alert(error.message);
     }
   };
 
@@ -66,7 +66,7 @@ export default function Navbar() {
         const name =
           user?.displayName?.split(' ')?.join('-') ||
           user?.email?.split('@')[0];
-        if (window.location.origin + '/' === window.location.href) {
+        if (window?.location.origin + '/' === window?.location.href) {
           router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
         }
 
@@ -252,7 +252,7 @@ export default function Navbar() {
                   >
                     {/* <MenuItem cursor={'pointer'} onClick={() => router.push(`/`)}>
                       <a
-                        href={'https://'+ window.location?.origin +'/'+
+                        href={'https://'+ window?.location?.origin +'/'+
                           user &&
                           (
                             user?.displayName?.replace(' ', '-') ||

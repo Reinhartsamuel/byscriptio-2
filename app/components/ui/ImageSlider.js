@@ -59,7 +59,7 @@ export const ImagesSlider = ({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
+    window?.addEventListener("keydown", handleKeyDown);
 
     // autoplay
     let interval;;
@@ -70,7 +70,7 @@ export const ImagesSlider = ({
     }
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window?.removeEventListener("keydown", handleKeyDown);
       clearInterval(interval);
     };
   }, []);

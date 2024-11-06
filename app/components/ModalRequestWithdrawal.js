@@ -1,3 +1,4 @@
+'use client'
 import { cn } from '@/lib/util';
 import Modal from './ui/Modal';
 import React, { useEffect, useState } from 'react';
@@ -37,8 +38,8 @@ export default function ModalRequestWithdrawal({
         });
         Swal.fire('Success', 'Withdrawal request has been sent, please wait for fund to be transferred to your bank account.', 'success');
         setReqWithdrawModal(false);
-        if (!window.location?.href?.includes('affiliate')) {
-          router.push(window.location?.pathname + '/affiliate')
+        if (!window?.location?.href?.includes('affiliate')) {
+          router.push(window?.location?.pathname + '/affiliate')
         }
     } catch (error) {
         Swal.fire('Error', error.message, 'error');

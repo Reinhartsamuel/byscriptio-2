@@ -99,7 +99,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
             Before purchasing anything on{' '}
             <span className='font-ecoCoding'>byScript.io</span>, please read the{' '}
             <a
-              href={`${window.location?.origin}/termsConditions`}
+              href={`https://byscript.io/termsConditions`}
               target='_blank'
               rel='noreferrer'
               className='underline text-blue-500'
@@ -113,7 +113,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
             <p>
               I have read and agree to the{' '}
               <a
-                href={`${window.location?.origin}/termsConditions`}
+                href={`https://byscript.io/termsConditions`}
                 target='_blank'
                 rel='noreferrer'
                 className='underline text-blue-500'

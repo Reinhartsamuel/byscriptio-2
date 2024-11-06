@@ -55,7 +55,7 @@ const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
         type: 'DELETE AUTOTRADER',
         userAgent: navigator?.userAgent,
       });
-      // window.location.reload()
+      // window?.location.reload()
       Swal.fire({
         title: 'Deleted!',
         text: 'autotrader has been deleted.',
