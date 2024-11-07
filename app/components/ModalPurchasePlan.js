@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './ui/Modal';
 import { cn } from '@/lib/util';
 import Spinner from './ui/Spinner';
@@ -11,36 +11,15 @@ import calculateCommission from '../utils/calculateCommission';
 import { uploadFileCompressed } from '../utils/imageUpload';
 import { authFirebase } from '../config/firebase';
 import { addDocumentFirebase } from '../utils/firebaseApi';
+import { priceFormat } from '../utils/priceFormat';
 
 const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [checkReadTc, setCheckReadTc] = useState(false);
 
-  const [data, setData] = useState({
-    productId: detail?.id,
-    productName: detail?.name,
-    price: parseInt(detail?.price || 0),
-    affiliateCommission: customer?.affiliatorCustomerId
-      ? calculateCommission(
-          customer?.affiliateLevel,
-          parseInt(detail?.price) || 0
-        ).amount
-      : 0,
-    affiliatePercentage: customer?.affiliatorCustomerId
-      ? calculateCommission(
-          customer?.affiliateLevel,
-          parseInt(detail?.price) || 0
-        ).percentage
-      : 0,
-      affiliator : customer?.affiliator || {},
-    receiptUrl: '',
-    uid: authFirebase.currentUser?.uid || customer?.uid,
-    name: authFirebase.currentUser?.displayName || customer?.name,
-    email: authFirebase.currentUser?.email || customer?.email,
-    customerId: customer?.id,
-    paymentStatus : 'WAITING'
-  });
+  const [data, setData] = useState({});
 
   async function copyTextToClipboard(text) {
     if (!navigator.clipboard) {
@@ -76,18 +55,51 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   };
 
   async function handleSubmit() {
-    setLoading(true);
+    // console.log(detail, 'detail');
+    // console.log(data, 'data');
+    if (!checkReadTc)
+      return Swal.fire('', 'Please check the Terms and Conditions', 'warning');
+    
     try {
-      console.log(data);
+      setLoading(true);
       await addDocumentFirebase('subscriptions', {...data}, 'byscript')
       Swal.fire('Your purchase is being processed. Please wait until we confirm your payment. For help please contact WA 0813 1338 3848 - Edwin');
       setPurchaseModal(false);
     } catch (error) {
       console.error(error.message, 'errrorrr handleupload');
+      Swal.fire('',error.message , 'error');
     } finally {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    setData({
+      productId: detail?.id,
+      productName: detail?.name,
+      price: parseInt(detail?.price || 0),
+      affiliateCommission: customer?.affiliatorCustomerId
+        ? calculateCommission(
+            customer?.affiliateLevel,
+            parseInt(detail?.price) || 0
+          ).amount
+        : 0,
+      affiliatePercentage: customer?.affiliatorCustomerId
+        ? calculateCommission(
+            customer?.affiliateLevel,
+            parseInt(detail?.price) || 0
+          ).percentage
+        : 0,
+      affiliator: customer?.affiliator || {},
+      receiptUrl: '',
+      uid: authFirebase.currentUser?.uid || customer?.uid,
+      name: authFirebase.currentUser?.displayName || customer?.name,
+      email: authFirebase.currentUser?.email || customer?.email,
+      customerId: customer?.id,
+      paymentStatus: 'WAITING',
+    });
+  }, [detail]);
+
   return (
     <Modal open={purchaseModal} onClose={() => setPurchaseModal(false)}>
       <div className='flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600'>
@@ -108,20 +120,6 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
             </a>{' '}
             of our <span className='font-ecoCoding'>byScript.io</span>
           </p>
-          <div className='flex gap-2'>
-            <input type='checkbox' />
-            <p>
-              I have read and agree to the{' '}
-              <a
-                href={`https://byscript.io/termsConditions`}
-                target='_blank'
-                rel='noreferrer'
-                className='underline text-blue-500'
-              >
-                Terms and Conditions
-              </a>{' '}
-            </p>
-          </div>
         </div>
       </div>
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
@@ -129,7 +127,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
         <div className='flex flex-col border-2 rounded-sm border-gray-500 p-4'>
           <h2 className='text-xl text-orange-400'>{detail?.name}</h2>
           <div className='flex items-center'>
-            <h2 className='text-3xl font-bold text-gray-50'>{detail?.price}</h2>
+            <h2 className='text-3xl font-bold text-gray-50'>Rp {priceFormat(detail?.price)}</h2>
             <button
               onClick={() => copyTextToClipboard(detail?.price)}
               className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
@@ -253,6 +251,23 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
           </label>
         </div>
       )}
+      <div className='flex gap-2'>
+        <input
+          type='checkbox'
+          onChange={(e) => setCheckReadTc(e.target.checked)}
+        />
+        <p>
+          I have read and agree to the{' '}
+          <a
+            href={`https://byscript.io/termsConditions`}
+            target='_blank'
+            rel='noreferrer'
+            className='underline text-blue-500'
+          >
+            Terms and Conditions
+          </a>{' '}
+        </p>
+      </div>
 
       <div className='flex flex-wrap gap-1 justify-end items-center p-4 md:p-5 border-t border-gray-200 dark:border-gray-600'>
         <button
