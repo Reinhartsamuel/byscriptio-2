@@ -6,12 +6,11 @@ import { priceFormat } from '../utils/priceFormat';
 import ModalPurchasePlan from './ModalPurchasePlan';
 import { useRouter } from 'next/navigation';
 
-
 export function PricingComponent() {
   const [prices, setPrices] = useState([]);
   const [purchaseModal, setPurchaseModal] = useState(false);
   const [detail, setDetail] = useState(null);
-  const {router} = useRouter();
+  const { router } = useRouter();
   const getPricing = async () => {
     try {
       const arr = [];
@@ -34,7 +33,6 @@ export function PricingComponent() {
     }
   };
 
-
   const handlePurchase = (plan) => {
     console.log(plan, 'plan');
     setDetail(plan);
@@ -43,7 +41,7 @@ export function PricingComponent() {
     } else {
       router.push('/new');
     }
-  }
+  };
 
   useEffect(() => {
     getPricing();
@@ -56,7 +54,7 @@ export function PricingComponent() {
             Plans
           </h2>
           <p className='mb-5 font-light text-gray-500 sm:text-xl dark:text-gray-400'>
-           Please select the plan that is right for you
+            Please select the plan that is right for you
           </p>
         </div>
         <div className='space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0'>
@@ -143,13 +141,17 @@ export function PricingComponent() {
                   onClick={() => handlePurchase(x)}
                   className='text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900'
                 >
-                  Get started
+                  Buy Now
                 </button>
               </div>
             ))}
         </div>
       </div>
-      <ModalPurchasePlan purchaseModal={purchaseModal} setPurchaseModal={setPurchaseModal} detail={detail} />
+      <ModalPurchasePlan
+        purchaseModal={purchaseModal}
+        setPurchaseModal={setPurchaseModal}
+        detail={detail}
+      />
     </section>
   );
 }
