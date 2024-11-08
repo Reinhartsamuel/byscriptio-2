@@ -7,7 +7,6 @@ import dynamic from 'next/dynamic';
 import { useExchangeStore } from '../store/exchangesStore';
 import { useAutotraderStore } from '../store/autotraderStore';
 import CombinedTradeHistoryComponent from '../components/CombinedTradeHistoryComponent';
-import AffiliatePreviewComponent from '../components/AffiliatePreviewComponent';
 import { useUserStore } from '../store/userStore';
 import { PricingComponent } from '../components/PricingComponent';
 import moment from 'moment';
@@ -85,7 +84,6 @@ const page = ({ params }) => {
           <div className=''>
             <AutotraderBotComponent />
           </div>
-        <AffiliatePreviewComponent />
 
         </div>
       </div>

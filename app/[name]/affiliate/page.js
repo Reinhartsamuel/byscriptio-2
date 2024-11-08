@@ -50,8 +50,8 @@ const page = async () => {
       },
     ],
     authRequired: true,
-    dependencies: [customer?.id],
     limitQuery: 200,
+    dependencies: [customer?.id],
   });
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const page = async () => {
         <WithdrawableComponent customer={customer} />
       </div>
       <div className='grid grid-cols-1 gap-0'>
-        <AffiliateeComponent childrenAffiliate={childrenAffiliate} />
+        {customer?.id && <AffiliateeComponent childrenAffiliate={childrenAffiliate} />}
         {customer?.id && <AffiliateWithdrawalListComponent customerId={customer?.id} />}
       </div>
     </div>

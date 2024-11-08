@@ -55,14 +55,21 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   };
 
   async function handleSubmit() {
-    // console.log(detail, 'detail');
-    // console.log(data, 'data');
+    console.log(detail, 'detail');
+    console.log(data, 'data');
     if (!checkReadTc)
       return Swal.fire('', 'Please check the Terms and Conditions', 'warning');
     
     try {
       setLoading(true);
-      await addDocumentFirebase('subscriptions', {...data}, 'byscript')
+      await addDocumentFirebase('subscriptions', {...data}, 'byscript');
+      await fetch('/api/email/purchase/new', {
+        method : 'POST',
+        headers : {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(data)
+      })
       Swal.fire('Your purchase is being processed. Please wait until we confirm your payment. For help please contact WA 0813 1338 3848 - Edwin');
       setPurchaseModal(false);
     } catch (error) {
@@ -91,6 +98,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
           ).percentage
         : 0,
       affiliator: customer?.affiliator || {},
+      affiliatorCustomerId: customer?.affiliatorCustomerId || '',
       receiptUrl: '',
       uid: authFirebase.currentUser?.uid || customer?.uid,
       name: authFirebase.currentUser?.displayName || customer?.name,
