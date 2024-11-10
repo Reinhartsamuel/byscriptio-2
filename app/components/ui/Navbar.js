@@ -42,13 +42,14 @@ export default function Navbar() {
     clearIpLocation,
     setCustomer,
     setUserPackage: setUserPackageToStore,
+    // userPackage: userPackageFromStore,
   } = useUserStore();
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
       await addActivityLog({
-        customerId: customer.id || null,
-        uid: user.id || null,
+        customerId: customer?.id || null,
+        uid: authFirebase.currentUser?.uid || user?.id || null,
         ipLocation: ipLocation,
         type: 'LOGOUT',
       });
@@ -207,17 +208,22 @@ export default function Navbar() {
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
             {/* Profile dropdown */}
             <div className='flex gap-4 items-center justify-center'>
-              {/* <button onClick={() => console.log(user)}>cek</button> */}
+              <button onClick={() => {
+                // console.log(userPackageFromStore,'userPackageFromStore')
+                console.log(customer,'customer')
+                }}>cek</button>
               {!user ? (
-                <button
-                  className='relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
-                  onClick={() => router.push('auth/login')}
-                >
-                  <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-                  <span className='inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 text-sm font-medium text-white backdrop-blur-3xl'>
-                    Sign In
-                  </span>
-                </button>
+                <a href="/auth/login">
+                  <button
+                    className='relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
+                    // onClick={() => router.push('auth/login')}
+                  >
+                    <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
+                    <span className='inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 text-sm font-medium text-white backdrop-blur-3xl'>
+                      Sign In
+                    </span>
+                  </button>
+                </a>
               ) : (
                 <Menu as='div' className='relative ml-3'>
                   <MenuButton className='relative text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>

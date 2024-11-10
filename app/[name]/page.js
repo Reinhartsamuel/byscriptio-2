@@ -29,67 +29,78 @@ const ExchangesComponent = dynamic(() => import('./ExchangesComponent'), {
   ssr: false,
 });
 
-const page = ({ params }) => {
-  const [user, setUser] = useState(null);
-  const router = useRouter();
-  const { getExchangeAccounts } = useExchangeStore();
-  const { getAutotraders } = useAutotraderStore();
-  const { customer, userPackage } = useUserStore();
-  useEffect(() => {
-    onAuthStateChanged(authFirebase, (user) => {
-      if (!user) {
-        // console.log('no user, signing out!!!!');
-        authFirebase.signOut();
-        return router.push('/auth/login');
+const page = () =>
+  // { params }
+  {
+    const [user, setUser] = useState(null);
+    const [showPricing, setShowPricing] = useState(false);
+    const router = useRouter();
+    const { getExchangeAccounts } = useExchangeStore();
+    const { getAutotraders } = useAutotraderStore();
+    const { customer, userPackage } = useUserStore();
+    useEffect(() => {
+      onAuthStateChanged(authFirebase, (user) => {
+        if (!user) {
+          // console.log('no user, signing out!!!!');
+          authFirebase.signOut();
+          return router.push('/auth/login');
+        }
+        setUser(user);
+      });
+    }, []);
+
+    useEffect(() => {
+      if (user?.email) {
+        getExchangeAccounts(user.email);
+        getAutotraders(user.email);
       }
-      setUser(user);
-    });
-  }, []);
+    }, [user]);
 
-
-  useEffect(() => {
-    if (user?.email) {
-      getExchangeAccounts(user.email);
-      getAutotraders(user.email);
+    if (!user) {
+      return null;
+      // } else if (customer && !userPackage) {
+    } else if (showPricing) {
+      return <PricingComponent />;
     }
-  }, [user]);
 
-  if (!user) {
-    return null;
-  } else if (customer && !userPackage) {
-    return <PricingComponent />
-  }
-
-  return (
-    <>
-      <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
-        <div className='fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
-        <div className='mt-10 mx-2 lg:mx-6'>
-          <h1 className='text-3xl font-bold text-slate-100'>
-           Welcome, {params?.name?.split('-')?.join(' ')}!
-          </h1>
-          <h3 className='font-extralight text-sm text-gray-300 leading--5'>
-           Welcome to <span className='font-ecoCoding text-indigo-500'>byScript</span> dashboard. Your active subscription is {userPackage?.productName} until {moment.unix(userPackage?.expiredAt?.seconds).format('DD MMMM YYYY')}
-          </h3>
-        </div>
-        <div className='block'>
-          <div className='grid grid-cols-1 lg:grid-cols-2'>
-            <ExchangesComponent />
-            {/* <div className='grid grid-cols-1 mt-10 mx-6 gap-2 lg:grid-cols-2'>
+    return (
+      <>
+        <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
+          <div className='fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
+          <div className='mt-10 mx-2 lg:mx-6'>
+            <h1 className='text-3xl font-bold text-slate-100'>
+              {/* Welcome, {params?.name?.split('-')?.join(' ')}! */}
+              Welcome {customer?.name && ', ' + customer?.name}!
+            </h1>
+            <h3 className='font-extralight text-sm text-gray-300 leading--5'>
+              Welcome to{' '}
+              <span className='font-ecoCoding text-indigo-500'>byScript</span>{' '}
+              dashboard. 
+              
+              {userPackage ? ` Your active subscription is ${userPackage?.productName}${' '}
+              until${' '}
+              ${moment
+                .unix(userPackage?.expiredAt?.seconds)
+                .format('DD MMMM YYYY')}` : 'You don\'t have any active subscription. Please purchase first.'}
+            </h3>
+          </div>
+          <div className='block'>
+            <div className='grid grid-cols-1 lg:grid-cols-2'>
+              <ExchangesComponent setShowPricing={setShowPricing} />
+              {/* <div className='grid grid-cols-1 mt-10 mx-6 gap-2 lg:grid-cols-2'>
           <SubscriptionComponent />
           <BillingHistoryComponent />
         </div> */}
-            <CombinedTradeHistoryComponent />
+              <CombinedTradeHistoryComponent />
+            </div>
+            <div className=''>
+              <AutotraderBotComponent setShowPricing={setShowPricing} />
+            </div>
           </div>
-          <div className=''>
-            <AutotraderBotComponent />
-          </div>
-
         </div>
-      </div>
-      {/* <ActivitiesComponent /> */}
-    </>
-  );
-};
+        {/* <ActivitiesComponent /> */}
+      </>
+    );
+  };
 
 export default page;

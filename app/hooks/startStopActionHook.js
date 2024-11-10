@@ -5,6 +5,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 export default function useStartStopAction({ setLoading, detail, setDetail }) {
     async function handleStartStop(action) {
       // return console.log(detail, 'this is detail');
+      if (detail?.status === 'REQUESTED') throw new Error('Autotrader is on REQUESTED');
       setLoading(true);
       try {
         // check if action === 'start', only 1 active autotrader is allowed

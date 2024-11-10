@@ -11,9 +11,11 @@ import { exchanges } from '../dummy';
 import Modal from '../components/ui/Modal';
 import PropTypes from 'prop-types';
 import useCountDocuments from '../hooks/CountHook';
+import { useUserStore } from '../store/userStore';
 
-const ExchangesComponent = () => {
+const ExchangesComponent = ({ setShowPricing }) => {
   const [openModal, setOpenModal] = useState(false);
+  const { userPackage } = useUserStore();
 
   // const [loading, setLoading] = useState(false);
   // const [exchanges, setExchanges] = useState([]);
@@ -48,6 +50,11 @@ const ExchangesComponent = () => {
     dependencies: [authFirebase.currentUser?.email],
   });
 
+  function handleAddExchange() {
+    if (!userPackage) return setShowPricing(true);
+    setOpenModal(true);
+  }
+
   if (!authFirebase.currentUser)
     return (
       <div className='w-full h-screen flex flex-col items-center justify-center'>
@@ -72,7 +79,7 @@ const ExchangesComponent = () => {
         </div>
 
         <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
-          {counttt || 0} akun exchange tersambung
+          {counttt || 0} connected exchange accounts
         </p>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
           {exchanges.map(
@@ -107,7 +114,7 @@ const ExchangesComponent = () => {
                 ) : (
                   <button
                     className='flex w-full justify-end text-sm underline text-gray-400'
-                    onClick={() => setOpenModal(true)}
+                    onClick={handleAddExchange}
                   >
                     Connect
                   </button>
@@ -367,4 +374,7 @@ function ModalAddExchange({ openModal, setOpenModal }) {
 ModalAddExchange.propTypes = {
   openModal: PropTypes.bool,
   setOpenModal: PropTypes.func,
+};
+ExchangesComponent.propTypes = {
+  setShowPricing: PropTypes.func,
 };

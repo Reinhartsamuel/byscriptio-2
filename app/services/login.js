@@ -15,7 +15,7 @@ import { increment } from 'firebase/firestore';
 import Swal from 'sweetalert2';
 import checkExchangesAutotraders from './checkExchangesAutotraders';
 import { addActivityLog } from '../utils/activityLog';
-import { getCookie } from 'cookies-next';
+import { getCookie, hasCookie } from 'cookies-next';
 
 const provider = new GoogleAuthProvider();
 
@@ -58,7 +58,7 @@ export const handleLoginGoogle = async ({
         createdAt: new Date(),
         photoURL: user.photoURL,
         token,
-        affiliatorCustomerId : getCookie('affiliateId'),
+        affiliatorCustomerId : hasCookie('affiliateId') ? getCookie('affiliateId') : null,
       };
       await setDocumentFirebase('users', user.uid, newUserData);
       setUser(newUserData);
@@ -81,17 +81,22 @@ export const handleLoginGoogle = async ({
         isNewUser: true,
         photoURL: user.photoURL,
         token,
-        affiliatorCustomerId : getCookie('affiliateId'),
+        affiliatorCustomerId : hasCookie('affiliateId') ? getCookie('affiliateId') : null,
       };
-      const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
-        method : 'POST',
-        body : JSON.stringify({
-          ...newCustomerData
-        })
-      });
 
-      const {customerId} = await resAddAffiliateCustomer.json();
-      console.log(customerId, 'customerIdcustomerIdcustomerIdcustomerId');
+      if (newCustomerData.affiliatorCustomerId) {
+        const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
+          method : 'POST',
+          body : JSON.stringify({
+            ...newCustomerData
+          })
+        });
+        const result = await resAddAffiliateCustomer.json();
+        customerId = result.customerId;
+        console.log(customerId, 'customerIdcustomerIdcustomerIdcustomerId');
+      } else {
+        customerId = await addDocumentFirebase('customers', newCustomerData);
+      }
       // customerId = await addDocumentFirebase('customers', newCustomerData);
       setCustomer({
         id: customerId,

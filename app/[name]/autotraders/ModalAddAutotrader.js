@@ -27,7 +27,7 @@ const tradingPlans = [
 export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const { exchanges_accounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
-  const { user, customer, ipLocation } = useUserStore();
+  const { user, customer, ipLocation, userPackage } = useUserStore();
   const [data, setData] = useState({
     uid: authFirebase.currentUser?.uid,
     name: authFirebase.currentUser?.displayName,
@@ -42,6 +42,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    if (!userPackage) throw new Error("You don't have an active package");
     setLoading(false);
     if (!data?.exchange_name || !data?.exchange_thumbnail)
       return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });

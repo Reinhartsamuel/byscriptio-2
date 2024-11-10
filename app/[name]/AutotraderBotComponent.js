@@ -11,6 +11,8 @@ import ModalDetailAutotrader from './autotraders/ModalDetailAutotrader';
 import ModalAddAutotrader from './autotraders/ModalAddAutotrader';
 import { useAutotraderStore } from '../store/autotraderStore';
 import useCountDocuments from '../hooks/CountHook';
+import { useUserStore } from '../store/userStore';
+import PropTypes from 'prop-types';
 
 // const yaitulah = [
 //   {
@@ -155,12 +157,13 @@ import useCountDocuments from '../hooks/CountHook';
 //   },
 // ];
 
-const AutotraderBotComponent = () => {
+const AutotraderBotComponent = ({ setShowPricing }) => {
   const params = useParams();
   const [addModal, setAddModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [detail, setDetail] = useState({});
-  const { autotraders:data } = useAutotraderStore();
+  const { autotraders: data } = useAutotraderStore();
+  const { userPackage } = useUserStore();
 
   const { count: counttt } = useCountDocuments({
     collectionName: 'dca_bots',
@@ -186,6 +189,11 @@ const AutotraderBotComponent = () => {
     setDetail(data);
   };
 
+  const handleAddAutotrader = () => {
+    if (!userPackage) return setShowPricing(true);
+    setAddModal(true);
+  };
+
   return (
     <div className='mx-2 lg:mx-6 mt-10'>
       <div className='flex items-center gap-4'>
@@ -194,29 +202,26 @@ const AutotraderBotComponent = () => {
         </h2>
         <button
           // onClick={() => router.push(`${params?.name}/autotraders/new`)}
-          onClick={() => setAddModal(true)}
+          onClick={handleAddAutotrader}
           type='button'
           className='text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-lg p-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 min-w-[3rem]'
         >
           +
         </button>
       </div>
-{/* 
+      {/* 
       <p>data:{JSON.stringify(data)}</p>
       <br />
       <p>autotraders:{JSON.stringify(autotraders)}</p> */}
 
       {counttt === 0 ? (
-        <p>
-          Kamu belum mempunyai akun autotrader, silakan{' '}
-          <span className='font-medium text-blue-600 dark:text-blue-500 hover:underline'>
-            <a href={params?.name + '/autotraders/new'}>buat di sini</a>
-          </span>
+        <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
+          You don&apos;t have any autotrader.
         </p>
       ) : (
         <>
           <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
-            {counttt||0} akun autotrader
+            {counttt || 0} autotraders
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
             {data?.map((x, i) => (
@@ -228,9 +233,12 @@ const AutotraderBotComponent = () => {
                 <div className='flex w-full justify-between'>
                   <div className='flex flex-col'>
                     <h4 className='uppercase font-extrabold text-sm text-slate-200'>
-                      {x?.autotrader_name || moment.unix(x?.createdAt?.seconds).format('YYYY-MM-DD') +
-                        '-' +
-                        x?.createdAt?.seconds}
+                      {x?.autotrader_name ||
+                        moment
+                          .unix(x?.createdAt?.seconds)
+                          .format('YYYY-MM-DD') +
+                          '-' +
+                          x?.createdAt?.seconds}
                     </h4>
                   </div>
                   <p className='text-slate-200 text-[0.75rem] font-thin'>
@@ -306,3 +314,7 @@ const AutotraderBotComponent = () => {
 };
 
 export default AutotraderBotComponent;
+
+AutotraderBotComponent.propTypes = {
+  setShowPricing: PropTypes.func,
+};

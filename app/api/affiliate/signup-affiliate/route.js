@@ -20,31 +20,31 @@ import { cookies } from 'next/headers';
 const listOfCustomers = [];
 
 async function getCustomerData(id) {
-    const customerRef = adminDb.collection('customers').doc(id);
-    const doc = await customerRef.get();
-    if (!doc.exists) {
-      return null;
-    } else {
-      return {id : doc.id, ...doc.data()};
-    }
+  const customerRef = adminDb.collection('customers').doc(id);
+  const doc = await customerRef.get();
+  if (!doc.exists) {
+    return null;
+  } else {
+    return { id: doc.id, ...doc.data() };
+  }
 }
 
 async function getAffiliateTree(customers, affiliatorId) {
-    console.log('getAffiliateTree');
-    let level = 1;
-    const affiliatorData = await getCustomerData(affiliatorId);
-    customers.push({
-      ...affiliatorData,
-      level,
-    });
-    if (affiliatorData?.affiliatorCustomerId) {
-      for (const customer of customers) {
-        customer.level += 1;
-      }
-      await getAffiliateTree(customers, affiliatorData?.affiliatorCustomerId);
-    } else {
-      return;
+  console.log('getAffiliateTree');
+  let level = 1;
+  const affiliatorData = await getCustomerData(affiliatorId);
+  customers.push({
+    ...affiliatorData,
+    level,
+  });
+  if (affiliatorData?.affiliatorCustomerId) {
+    for (const customer of customers) {
+      customer.level += 1;
     }
+    await getAffiliateTree(customers, affiliatorData?.affiliatorCustomerId);
+  } else {
+    return;
+  }
 }
 
 export async function POST(request) {
@@ -74,8 +74,10 @@ export async function POST(request) {
       photoURL: body?.photoURL || '',
       token: body?.token || null,
       affiliatorCustomerId,
-      affiliateLevel: finalAffiliatorData?.level || 1,
     };
+    if (newCustomerData.affiliatorCustomerId) {
+      newCustomerData.affiliateLevel = finalAffiliatorData?.level || 1;
+    }
 
     // console.log(body, 'body');
     // console.log(moment.unix(body?.createdAt?.seconds).toDate(),'moment.unix(body?.createdAt?.seconds).toDate()');
@@ -83,6 +85,7 @@ export async function POST(request) {
     // console.log(listOfCustomers, 'listOfCustomers');
     // console.log(finalAffiliatorData, 'finalAffiliatorData');
     if (finalAffiliatorData) newCustomerData.affiliator = finalAffiliatorData;
+    console.log(newCustomerData, ':::newCustomerData');
     const resAdd = await adminDb.collection('customers').add(newCustomerData);
     const customerId = resAdd?.id;
     console.log(resAdd?.id, 'resAdd?.id');
