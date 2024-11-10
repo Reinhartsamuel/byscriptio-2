@@ -208,10 +208,10 @@ export default function Navbar() {
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
             {/* Profile dropdown */}
             <div className='flex gap-4 items-center justify-center'>
-              <button onClick={() => {
+              {/* <button onClick={() => {
                 // console.log(userPackageFromStore,'userPackageFromStore')
                 console.log(customer,'customer')
-                }}>cek</button>
+                }}>cek</button> */}
               {!user ? (
                 <a href="/auth/login">
                   <button
