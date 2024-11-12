@@ -197,7 +197,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
   return (
     <div className='mx-2 lg:mx-6 mt-10'>
       <div className='flex items-center gap-4'>
-        <h2 className='text-xl text-bold text-slate-200 font-bold'>
+        <h2 className='text-xl text-bold text-slate-800 dark:text-slate-200 font-bold'>
           Autotrader
         </h2>
         <button
@@ -215,24 +215,24 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
       <p>autotraders:{JSON.stringify(autotraders)}</p> */}
 
       {counttt === 0 ? (
-        <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
+        <p className='text-[0.75rem] font-light text-gray-800 dark:text-slate-200 mb-4'>
           You don&apos;t have any autotrader.
         </p>
       ) : (
         <>
-          <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
+          <p className='text-[0.75rem] font-light text-gray-800 dark:text-slate-200 mb-4'>
             {counttt || 0} autotraders
           </p>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
             {data?.map((x, i) => (
               <div
-                className='w-full rounded-lg bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4 ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 cursor-pointer'
+                className='w-full rounded-lg bg-gray-200 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4 ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 cursor-pointer'
                 key={i}
                 onClick={() => handleDetail(x)}
               >
                 <div className='flex w-full justify-between'>
                   <div className='flex flex-col'>
-                    <h4 className='uppercase font-extrabold text-sm text-slate-200'>
+                    <h4 className='uppercase font-extrabold text-sm text-gray-800 dark:text-slate-200'>
                       {x?.autotrader_name ||
                         moment
                           .unix(x?.createdAt?.seconds)
@@ -241,14 +241,14 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
                           x?.createdAt?.seconds}
                     </h4>
                   </div>
-                  <p className='text-slate-200 text-[0.75rem] font-thin'>
+                  <p className='text-gray-900 dark:text-slate-200 text-[0.75rem] font-light'>
                     {moment.unix(x?.createdAt.seconds).fromNow()}
                   </p>
                 </div>
-                <div className='w-full flex justify-between items-center rounded-xl bg-slate-600 p-2 '>
+                <div className='w-full flex justify-between items-center rounded-xl bg-slate-100 dark:bg-slate-600 p-2 '>
                   <div className='flex gap-1 items-center'>
-                    <RiRobot2Fill size={20} color='white' />
-                    <p className='text-slate-200 text-[1rem]'>
+                    <RiRobot2Fill size={20} color='dark:white red' />
+                    <p className='text-gray-900 dark:text-slate-200 text-[1rem]'>
                       Status :{' '}
                       <span
                         className={cn(

@@ -66,13 +66,13 @@ const page = () =>
     return (
       <>
         <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
-          <div className='fixed top-0 left-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
+          <div className='fixed top-0 left-0 z-[-2] h-screen w-screen dark:bg-neutral-950  bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
           <div className='mt-10 mx-2 lg:mx-6'>
-            <h1 className='text-3xl font-bold text-slate-100'>
+            <h1 className='text-3xl font-bold text-slate-900 dark:text-slate-100'>
               {/* Welcome, {params?.name?.split('-')?.join(' ')}! */}
               Welcome {customer?.name && ', ' + customer?.name}!
             </h1>
-            <h3 className='font-extralight text-sm text-gray-300 leading--5'>
+            <h3 className='font-light text-sm text-gray-800 dark:text-gray-300 leading--5'>
               Welcome to{' '}
               <span className='font-ecoCoding text-indigo-500'>byScript</span>{' '}
               dashboard. 

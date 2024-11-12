@@ -4,6 +4,7 @@
 // import { headers } from 'next/headers';
 // import { userAgent } from 'next/server';
 
+
 // const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 // export async function GET (request) {
 //     try {
@@ -30,64 +31,11 @@
 
 export async function GET() {
   try {
-    // let logsArr = [];
-
-    // const citiesRef = adminDb
-    //   .collection('3commas_logs')
-    //   .orderBy('createdAt', 'desc')
-    //   .limit(50);
-    // const snapshot = await citiesRef.get();
-    // snapshot.forEach((doc) => {
-    //   logsArr.push({ id: doc.id, ...doc.data() });
-    // });
-
-    // await Promise.all(
-    //   logsArr.map(async (x) => {
-    //     let botsArr = [];
-
-    //     const bot_id = x?.bot_id;
-    //     console.log(bot_id, 'bot_id');
-    //     console.log(typeof bot_id, 'typeof bot_id');
-
-    //     const citiesRef = adminDb
-    //       .collection('dca_bots')
-    //       .where('bot_id', '==', bot_id);
-    //     const snapshot = await citiesRef.get();
-    //     snapshot.forEach((doc) => {
-    //       botsArr.push({ id: doc.id, ...doc.data() });
-    //     });
-    //     const botData = botsArr[0];
-    //     // console.log(
-    //     //   'this is the logs id:::::',
-    //     //   x.id,
-    //     //   'this is the bot id and bot_id::::',
-    //     //   botData?.id,
-    //     //   botData?.bot_id,
-    //     //   'uid orang::::',
-    //     //   botData?.uid,
-    //     //   botData?.email,
-    //     //   botData?.name
-    //     // );
-    //     console.log('botData::::::',botData);
-    //     const cityRef = adminDb.collection('3commas_logs').doc(x?.id);
-    //     await cityRef.update({
-    //       name: botData?.name || '',
-    //       email: botData?.email || '',
-    //       uid: botData?.uid || '',
-    //       exchange_name :botData?.exchange_name || '',
-    //           exchange_thumbnail :botData?.exchange_thumbnail || '',
-    //           autotraderCreatedAt :botData?.createdAt || '',
-    //     });
-    //   })
-    // );
-    // return Response.json({
-    //   status: 'success',
-    //   data: logsArr,
-    // });
-
+    const arr = [];
   return Response.json({
     status : 'okelah',
-    // arr
+    arr,
+
   })
 
   } catch (error) {

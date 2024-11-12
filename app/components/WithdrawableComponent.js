@@ -29,16 +29,16 @@ const WithdrawableComponent = ({ customer }) => {
     getWithdrawal();
   }, [customer?.id]);
   return (
-    <div className='mt-2 lg:mt-5 w-full rounded-lg bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
+    <div className='mt-2 lg:mt-5 w-full rounded-lg  dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
       <div className='flex w-full justify-between'>
-        <p className='text-gray-400 text-sm'>Withdrawable:</p>
+        <p className='text-gray-600 dark:text-gray-400 text-sm'>Withdrawable:</p>
         <button
           onClick={() =>
             // Swal.fire({ icon: 'warning', text: 'Withdrawal coming soon' })
             setReqWithdrawModal(true)
           }
           type='button'
-          className='py-1 px-2 me-2 mb-2 text-sm font-medium text-green-500 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700  focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          className='py-1 px-2 me-2 mb-2 text-sm font-medium text-green-600 dark:text-green-500 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700  focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
         >
           Withdraw
         </button>

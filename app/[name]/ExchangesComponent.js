@@ -52,7 +52,8 @@ const ExchangesComponent = ({ setShowPricing }) => {
 
   function handleAddExchange() {
     if (!userPackage) return setShowPricing(true);
-    setOpenModal(true);
+    if (window) window.open('https://client.3commas.io/signup/byscript_exchange_connect-6c8cbefd', '_blank');
+    // setOpenModal(true);
   }
 
   if (!authFirebase.currentUser)
@@ -66,7 +67,7 @@ const ExchangesComponent = ({ setShowPricing }) => {
     <>
       <div className='mx-2 lg:mx-6 mt-10'>
         <div className='flex items-center gap-4'>
-          <h2 className='text-xl font-bold text-slate-200 font-bold'>
+          <h2 className='text-xl font-bold text-slate-800 dark:text-slate-200 font-bold'>
             Exhcange
           </h2>
           {/* <button
@@ -78,7 +79,7 @@ const ExchangesComponent = ({ setShowPricing }) => {
           </button> */}
         </div>
 
-        <p className='text-[0.75rem] font-light text-slate-200 mb-4'>
+        <p className='text-[0.75rem] font-light text-slate-800 dark:text-slate-200 mb-4'>
           {counttt || 0} connected exchange accounts
         </p>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
@@ -89,19 +90,19 @@ const ExchangesComponent = ({ setShowPricing }) => {
             ) => (
               <div
                 key={i}
-                className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700 max-h-[5rem]'
+                className='flex flex-col justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[6rem]'
               >
                 <img
                   alt={exchange?.exchange_name}
                   src={exchange.exchange_thumbnail}
-                  className='w-[6rem] object-contain'
+                  className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-transparent dark:rounded-none'
                 />
                 {exchange_accounts?.some(
                   (x) => x?.exchange_name === exchange.exchange_name
                 ) ? (
                   <div className='flex w-full justify-between'>
-                    <p className='text-green-200 text-sm'>connected</p>
-                    <p className='text-gray-200 text-sm'>
+                    <p className='text-green-600 dark:text-green-200 text-sm'>connected</p>
+                    <p className='text-gray-600 dark:text-gray-200 text-sm'>
                       {moment
                         .unix(
                           exchange_accounts?.find(
@@ -113,7 +114,7 @@ const ExchangesComponent = ({ setShowPricing }) => {
                   </div>
                 ) : (
                   <button
-                    className='flex w-full justify-end text-sm underline text-gray-400'
+                    className='flex w-full justify-end text-sm underline text-gray-600 dark:text-gray-400'
                     onClick={handleAddExchange}
                   >
                     Connect
@@ -128,81 +129,6 @@ const ExchangesComponent = ({ setShowPricing }) => {
       </div>
 
       <ModalAddExchange openModal={openModal} setOpenModal={setOpenModal} />
-
-      {/* MODAL */}
-      {/* {openModal && (
-        <div className='overflow-y-auto overflow-x-hidden  left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full'>
-          <div className='relative p-4 w-full max-w-2xl max-h-full'>
-            <div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
-              <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600'>
-                <div className='flex flex-col gap-2'>
-                  <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
-                    Connect Exchange
-                  </h3>
-                  <p className='font-extralight text-sm text-slate-400'>
-                    Silakan jadwalkan onboarding untuk connect exhcange, wajib
-                    memilih jadwal pukul 11.00 - 17.00 Senin - Jumat
-                  </p>
-                </div>
-                <button
-                  type='button'
-                  className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white'
-                  data-modal-hide='default-modal'
-                  onClick={() => setOpenModal(false)}
-                >
-                  <svg
-                    className='w-3 h-3'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 14 14'
-                  >
-                    <path
-                      stroke='currentColor'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6'
-                    />
-                  </svg>
-                  <span className='sr-only'>Close modal</span>
-                </button>
-              </div>
-              <div className='p-4 md:p-5 space-y-4'>
-                <p>
-                  Pilih Tanggal dan Waktu:{moment().format('YYYY-MM-DDTHH:mm')}
-                </p>
-                <input
-                  type={'datetime-local'}
-                  className='bg-gray-500 rounded text-white px-5 py-2'
-                  min={moment().format('YYYY-MM-DDTHH:mm')}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                />
-              </div>
-              <div className='flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600'>
-                <button
-                  onClick={handleSubmit}
-                  data-modal-hide='default-modal'
-                  type='button'
-                  className={cn(
-                    'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
-                    loading && 'cursor-not-allowed opacity-50'
-                  )}
-                >
-                  {loading ? <Spinner /> : 'Request Onboarding'}
-                </button>
-                <button
-                  onClick={() => setOpenModal(false)}
-                  type='button'
-                  className='py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
     </>
   );
 };
@@ -325,9 +251,9 @@ function ModalAddExchange({ openModal, setOpenModal }) {
   };
   return (
     <Modal open={openModal} onClose={() => setOpenModal(false)}>
-      <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600'>
+      <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600'>
         <div className='flex flex-col gap-2'>
-          <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+          <h3 className='text-xl font-semibold text-white'>
             Connect Exchange
           </h3>
           <p className='font-extralight text-sm text-slate-400'>
@@ -347,14 +273,14 @@ function ModalAddExchange({ openModal, setOpenModal }) {
         />
       </div>
       {/* <!-- Modal footer --> */}
-      <div className='flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600'>
+      <div className='flex items-center p-4 md:p-5 border-t rounded-b border-gray-600'>
         <button
           onClick={handleSubmit}
           data-modal-hide='default-modal'
           disabled={loading}
           type='button'
           className={cn(
-            'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800',
+            'text-white   focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800',
             loading && 'cursor-not-allowed opacity-50'
           )}
         >
@@ -363,7 +289,7 @@ function ModalAddExchange({ openModal, setOpenModal }) {
         <button
           onClick={() => setOpenModal(false)}
           type='button'
-          className='py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
+          className='py-2.5 px-5 ms-3 text-sm font-medium focus:outline-none rounded-lg border hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700'
         >
           Cancel
         </button>

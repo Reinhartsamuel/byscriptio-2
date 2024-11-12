@@ -132,7 +132,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
           <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
             Add New Autotrader
           </h3>
-          <p className='font-extralight text-sm text-slate-400 whitespace-wrap'>
+          <p className='font-light text-sm text-gray-800 dark:text-slate-400 whitespace-wrap'>
             Silakan pilih exchange yang sudah tersambung. Jika belum ada, kamu
             bisa menambahkan di menu Exchange
           </p>
@@ -142,7 +142,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
         <div className='flex flex-col gap-1'>
-          <p className='text-gray-100 font-bold'>Exchange</p>
+          <p className='text-gray-800 dark:text-gray-100 font-bold'>Exchange</p>
           {Array.isArray(exchanges_accounts) &&
           exchanges_accounts?.length > 0 ? (
             exchanges_accounts?.map((exchange, i) => (
@@ -164,7 +164,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 />
                 <img
-                  className='w-[6rem] object-contain'
+                  className='w-[8rem] rounded-md object-contain p-2 bg-gray-500 dark:bg-transparent'
                   src={
                     exchange?.exchange_name === 'GATE'
                       ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
@@ -179,7 +179,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
           )}
         </div>
         <div className='flex flex-col gap-1'>
-          <label htmlFor='first_name' className='text-gray-100 font-bold'>
+          <label htmlFor='first_name' className='text-gray-800 dark:text-gray-100 font-bold'>
             Trade Amount
           </label>
           <div className='flex'>
@@ -320,7 +320,7 @@ function TradingPlanSelectComponent({ data, setData }) {
               </div>
             ))
           ) : (
-            <p className='text-xs text-gray-200 italic'>No pair available</p>
+            <p className='text-xs text-dark-800 dark:text-gray-200 italic'>No pair available</p>
           )}
         </div>
         {errorMsg && <p className='text-red-500 text-sm italic'>{errorMsg}</p>}

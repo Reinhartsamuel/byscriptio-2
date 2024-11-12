@@ -90,7 +90,7 @@ const page = () => {
             src='https://i.ibb.co.com/RB9rQy3/Whats-App-Image-2024-05-19-at-16-02-06.jpg'
             className='h-20 w-auto rounded-lg'
           />
-          <h3 onClick={getCookies}>
+          <h3 className='text-gray-100' onClick={getCookies}>
             Ubah Trading Manual Jadi Trading Otomatis 🚀 🚀
           </h3>
         </div>

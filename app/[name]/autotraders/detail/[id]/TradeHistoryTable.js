@@ -68,7 +68,7 @@ const TradeHistoryTable = (props) => {
 
   return (
     <>
-      <div className='p-2 lg:px-4 bg-gray-800 rounded'>
+      <div className='p-2 lg:px-4 dark:bg-gray-800 rounded'>
         <div className='max-h-96 overflow-scroll'>
           <table className='w-full overflow-scroll text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
             <thead className='top-0 right-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>

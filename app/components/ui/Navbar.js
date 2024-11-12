@@ -159,7 +159,9 @@ export default function Navbar() {
     })();
   }, [customer?.id]);
   return (
-    <Disclosure as='nav'>
+    <Disclosure as='nav'
+    className='bg-black dark:bg-transparent'
+    >
       <div className='px-2 border-b-[1px] border-b-slate-700 md:px-5'>
         <div className='relative flex h-16 items-center justify-between'>
           <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
@@ -213,15 +215,12 @@ export default function Navbar() {
                 console.log(customer,'customer')
                 }}>cek</button> */}
               {!user ? (
-                <a href="/auth/login">
-                  <button
-                    className='relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'
-                    // onClick={() => router.push('auth/login')}
-                  >
-                    <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
-                    <span className='inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-3 text-sm font-medium text-white backdrop-blur-3xl'>
-                      Sign In
-                    </span>
+                <a href='/auth/login'>
+                  <button className='p-[3px] relative'>
+                    <div className='absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg' />
+                    <div className='px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent'>
+                      Sign Up
+                    </div>
                   </button>
                 </a>
               ) : (

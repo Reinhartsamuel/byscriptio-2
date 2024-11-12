@@ -19,6 +19,7 @@ export default function ModalRequestWithdrawal({
   const [loading, setLoading] = useState(false);
   const [bankCode, setBankCode] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
+   const [accountName, setAccountName] = useState('');
   const { customer } = useUserStore();
   const router = useRouter();
 
@@ -34,7 +35,8 @@ export default function ModalRequestWithdrawal({
             bank : bankCode,
             accountNumber,
             paymentStatus : 'REQUESTED',
-            receipt:''
+            receipt:'',
+            accountName
         });
         Swal.fire('Success', 'Withdrawal request has been sent, please wait for fund to be transferred to your bank account.', 'success');
         setReqWithdrawModal(false);
@@ -97,7 +99,7 @@ export default function ModalRequestWithdrawal({
           <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
             Request Withdrawal
           </h3>
-          <p className='font-extralight text-sm text-slate-400 whitespace-wrap'>
+          <p className='font-extralight text-sm text-slate-600 dark:text-slate-400 whitespace-wrap'>
             Your withdrawable balance is Rp {priceFormat(data?.withdrawable)}
           </p>
         </div>
@@ -106,13 +108,13 @@ export default function ModalRequestWithdrawal({
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
         <div className='flex flex-col gap-1'>
-          <p className='text-gray-100 font-bold'>
+          <p className='text-gray-800 dark:text-gray-100 font-bold'>
             Withdrawal can take up to 2-3 working days. Once disbursed, you will
             be notified.
           </p>
         </div>
         <div className='flex flex-col gap-1'>
-          <label htmlFor='first_name' className='text-gray-200'>
+          <label htmlFor='first_name' className='text-gray-600 dark:text-gray-200'>
             Your withdrawable balance is{' '}
             <span className='text-green-500'>
               Rp {priceFormat(data?.withdrawable)}
@@ -120,7 +122,7 @@ export default function ModalRequestWithdrawal({
           </label>
         </div>
         <div className='flex flex-col gap-1 mt-10'>
-          <label htmlFor='first_name' className='text-gray-400'>
+          <label htmlFor='first_name' className='text-gray-600 dark:text-gray-400'>
             Select Bank:
           </label>
 
@@ -142,7 +144,7 @@ export default function ModalRequestWithdrawal({
           </form>
         </div>
         <div className='flex flex-col gap-1 mt-10'>
-          <label htmlFor='first_name' className='text-gray-100 font-bold'>
+          <label htmlFor='first_name' className='text-gray-600 dark:text-gray-400 font-bold'>
             Account Number (no. rekening) :
           </label>
           <div className='flex'>
@@ -150,6 +152,18 @@ export default function ModalRequestWithdrawal({
               type='number'
               className='rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
               onChange={(e) => setAccountNumber(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className='flex flex-col gap-1 mt-10'>
+          <label htmlFor='first_name' className='text-gray-600 dark:text-gray-400 font-bold'>
+            Account Name (atas nama) :
+          </label>
+          <div className='flex'>
+            <input
+              type='text'
+              className='rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+              onChange={(e) => setAccountName(e.target.value)}
             />
           </div>
         </div>
