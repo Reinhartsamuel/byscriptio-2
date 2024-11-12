@@ -42,7 +42,8 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    // if (!userPackage) throw new Error("You don't have an active package");
+    try {
+      // if (!userPackage) throw new Error("You don't have an active package");
     setLoading(false);
     if (!data?.exchange_name || !data?.exchange_thumbnail)
       return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });
@@ -65,7 +66,6 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
     };
 
     // return console.log(addDataToAutotraderCollection,'addDataToAutotraderCollection')
-    try {
       setLoading(true);
       await addDocumentFirebase(
         'dca_bots',
