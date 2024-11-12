@@ -190,7 +190,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
   };
 
   const handleAddAutotrader = () => {
-    if (!userPackage) return setShowPricing(true);
+    // if (!userPackage) return setShowPricing(true);
     setAddModal(true);
   };
 

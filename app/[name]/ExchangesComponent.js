@@ -51,7 +51,7 @@ const ExchangesComponent = ({ setShowPricing }) => {
   });
 
   function handleAddExchange() {
-    if (!userPackage) return setShowPricing(true);
+    // if (!userPackage) return setShowPricing(true);
     if (window) window.open('https://client.3commas.io/signup/byscript_exchange_connect-6c8cbefd', '_blank');
     // setOpenModal(true);
   }
