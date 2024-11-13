@@ -32,10 +32,10 @@ export default function ModalDetailAutotrader({
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <div className='w-full flex flex-col items-start gap-2 lg:flex-row'>
           <div className='flex flex-col gap-4 w-full'>
-            <div className='rounded-lg bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1'>
-              <div className='flex flex-col gap-2 divide-y divide-slate-700'>
+            <div className='rounded-lg dark:bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1'>
+              <div className='flex flex-col gap-2 divide-y divide-slate-200 dark:divide-slate-700'>
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>Status</p>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Status</p>
                   <p
                     className={cn(
                       'font-bold text-sm',
@@ -52,25 +52,25 @@ export default function ModalDetailAutotrader({
                   </p>
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>Created at</p>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Created at</p>
+                  <p className='dark:text-gray-100 font-light text-sm'>
                     {moment
                       .unix(detail?.createdAt?.seconds)
                       .format('HH:mm DD MMMM YYYY')}
                   </p>
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
                     Last updated
                   </p>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='dark:text-gray-100 font-light text-sm'>
                     {moment
                       .unix(detail?.lastUpdated?.seconds)
                       .format('HH:mm DD MMMM YYYY')}
                   </p>
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>Exchange</p>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Exchange</p>
                   <img
                     alt={'exchange'}
                     src={
@@ -82,25 +82,25 @@ export default function ModalDetailAutotrader({
                   />
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
                     Trade amount
                   </p>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='dark:text-gray-100 font-light text-sm'>
                     USD {detail?.tradeAmount}
                   </p>
                 </div>
 
                 <div className='flex w-full justify-between min-h-10 items-end'>
-                  <p className='text-gray-100 font-light text-sm'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
                     Pairs: {detail?.trading_plan_pair?.length}
                   </p>
                   <div className='flex flex-col justify-center'>
                     {detail?.trading_plan_pair?.map((x, i) => (
                       <div key={i} className='flex gap-2 items-center'>
-                        <p className='text-gray-100 font-light text-sm'>
+                        <p className='dark:text-gray-100 font-light text-sm'>
                           {x?.split('_')?.shift()}
                         </p>
-                        <p className='text-gray-100 font-light text-sm'>
+                        <p className='dark:text-gray-100 font-light text-sm'>
                           {x?.split('_')?.slice(1)?.join('_')}
                         </p>
                         <PairImageComponent
@@ -112,7 +112,7 @@ export default function ModalDetailAutotrader({
                 </div>
               </div>
               <div className='mt-10 flex flex-col gap-2'>
-                <h1>Start / stop autotrader</h1>
+                <h1 className='text-2xl text-gray-700 dark:text-gray-200 font-bold'>Start / stop autotrader</h1>
                 <div className='flex gap-2 '>
                   <button
                     onClick={() => handleStartStop('start')}

@@ -8,7 +8,9 @@ import { cn } from '@/lib/util';
 const AffiliateeComponent = ({ childrenAffiliate }) => {
   return (
     <div className='mt-5 w-full rounded-lg dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
-      <p className='text-gray-600 dark:text-gray-400 text-sm'>Affiliate</p>
+      <p className='text-gray-700 dark:text-gray-200 text-sm'>
+        Purchases by affiliatee
+      </p>
       <div className='overflow-scroll'>
         <table className='w-full overflow-scroll text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
           <thead className='top-0 right-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>

@@ -19,8 +19,8 @@ export default function ForceActionComponent({ detail }) {
   }, []);
 
   return (
-    <div className='rounded-lg bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
-      <h1>Force Entry / Exit</h1>
+    <div className='rounded-lg dark:bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
+      <h1 className='text-gray-700 dark:text-gray-200'>Force Entry / Exit</h1>
       <div className='flex flex-col gap-0'>
         {
           [

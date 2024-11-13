@@ -14,6 +14,7 @@ import {
 } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { onAuthStateChanged } from 'firebase/auth';
+import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import React from 'react';
@@ -159,9 +160,7 @@ export default function Navbar() {
     })();
   }, [customer?.id]);
   return (
-    <Disclosure as='nav'
-    className='bg-black dark:bg-transparent'
-    >
+    <Disclosure as='nav' className='bg-black dark:bg-transparent'>
       <div className='px-2 border-b-[1px] border-b-slate-700 md:px-5'>
         <div className='relative flex h-16 items-center justify-between'>
           <div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
@@ -230,16 +229,18 @@ export default function Navbar() {
                     <span className='sr-only'>Open user menu</span>
 
                     <div className='flex gap-2'>
-                      {user && (
-                        <div className='flex flex-col items-center'>
-                          <p className='text-gray-200'>{user?.displayName}</p>
-                          {userPackage && (
-                            <p className='text-gray-400 text-sm font-light'>
-                              {userPackage?.productName}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                      <div className='hidden lg:block'>
+                        {user && (
+                          <div className='flex flex-col items-center'>
+                            <p className='text-gray-200'>{user?.displayName}</p>
+                            {userPackage && (
+                              <p className='text-gray-400 text-sm font-light'>
+                                {userPackage?.productName}
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
                       <img
                         alt=''
                         src={
@@ -269,6 +270,24 @@ export default function Navbar() {
                         Dashboard
                       </a>
                     </MenuItem> */}
+                    <MenuItem cursor={'pointer'}>
+                      <a
+                        href=''
+                        className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600 cursor-pointer'
+                      >
+                        <div className='flex flex-col'>
+                          <p className='text-gray-400 text-sm font-light'>
+                            {userPackage?.productName}
+                          </p>
+                          <p className='text-xs text-gray-400'>
+                            Until{' '}
+                            {moment
+                              .unix(userPackage?.expiredAt?.seconds)
+                              .format('DD MMM YYYY')}
+                          </p>
+                        </div>
+                      </a>
+                    </MenuItem>
                     {menuNavigation.map((x, i) => (
                       <MenuItem key={i} cursor={'pointer'}>
                         <a

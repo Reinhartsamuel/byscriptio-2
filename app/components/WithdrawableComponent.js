@@ -31,7 +31,7 @@ const WithdrawableComponent = ({ customer }) => {
   return (
     <div className='mt-2 lg:mt-5 w-full rounded-lg  dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
       <div className='flex w-full justify-between'>
-        <p className='text-gray-600 dark:text-gray-400 text-sm'>Withdrawable:</p>
+        <p className='text-gray-700 dark:text-gray-200 text-sm'>Withdrawable:</p>
         <button
           onClick={() =>
             // Swal.fire({ icon: 'warning', text: 'Withdrawal coming soon' })
@@ -50,7 +50,7 @@ const WithdrawableComponent = ({ customer }) => {
         </h3>
         {data?.lastWithdrawal && (
           <p className='text-gray-400 text-sm'>
-            Last withdraw {moment(data?.paidAt).format('DD MMM YYYY')}
+            Last withdraw {moment.unix(data?.lastWithdrawal?.createdAt?.['_seconds']).format('DD MMM YYYY')}
           </p>
         )}
       </div>

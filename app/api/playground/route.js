@@ -4,6 +4,7 @@
 // import { headers } from 'next/headers';
 // import { userAgent } from 'next/server';
 
+import { adminDb } from '@/lib/firebase-admin-config';
 
 // const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 // export async function GET (request) {
@@ -32,12 +33,24 @@
 export async function GET() {
   try {
     const arr = [];
-  return Response.json({
-    status : 'okelah',
-    arr,
 
-  })
+    const snapshot = await adminDb
+      .collection('subscriptions')
+      .where('affiliatorCustomerId', '==', 'boMEZRhEzgDxLVtf9ZaG')
+      .get();
 
+    snapshot.forEach((doc) => {
+      arr.push({
+        id: doc.id,
+        ...doc.data(),
+      });
+    });
+
+    // console.log(arr, 'arr');
+    return Response.json({
+      status: 'okelah',
+      arr
+    });
   } catch (error) {
     return Response.json({
       error: error.message,
@@ -45,6 +58,12 @@ export async function GET() {
     });
   }
 }
+
+// 1. andrew william foto ok
+// 2. filip natanael
+// 3. yudea chandra foto ok
+// 4. patrick agustinus nugroho foto ok
+// 5. michelle chintya
 
 // export async function POST(request) {
 //   try {

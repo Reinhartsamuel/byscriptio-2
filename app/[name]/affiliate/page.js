@@ -3,22 +3,18 @@ import AffiliateeComponent from '@/app/components/AffiliateeComponent';
 import WithdrawableComponent from '@/app/components/WithdrawableComponent';
 import { priceFormat } from '@/app/utils/priceFormat';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useUserStore } from '@/app/store/userStore';
 import useFetchData from '@/app/hooks/QueryHook';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '@/app/config/firebase';
 import { FaRegCopy } from 'react-icons/fa6';
 import AffiliateWithdrawalListComponent from '@/app/components/AffiliateWithdrawalListComponent';
 import { PricingComponent } from '@/app/components/PricingComponent';
+import useCountDocuments from '@/app/hooks/CountHook';
 // import { FaRegCopy } from 'react-icons/fa6';
 
 const page = async () => {
   const { customer, userPackage } = useUserStore();
-  const [origin, setOrigin] = useState('');
 
-  const [realtimeData, setRealtimeData] = useState({});
 
   async function copyTextToClipboard(text) {
     if (!navigator.clipboard) {
@@ -54,20 +50,22 @@ const page = async () => {
     dependencies: [customer?.id],
   });
 
-  useEffect(() => {
-    let unsub = () => {};
-    if (customer?.id) {
-      unsub = onSnapshot(doc(db, 'customers', customer.id), (doc) => {
-        // console.log('Current data: ', { id: doc.id, ...doc.data() });
-        setRealtimeData({ id: doc.id, ...doc.data() });
-      });
-    }
-    return () => unsub();
-  }, [customer?.id]);
-  useEffect(() => {
-    // This code runs only on the client side
-    setOrigin(window?.location.origin);
-  }, []);
+  const {count : totalReferral} = useCountDocuments({
+    conditions : [{field : 'affiliatorCustomerId', operator : '==', value : customer?.id || ''}],
+    dependencies : [customer?.id],
+    authRequired:true
+  })
+  const {count : activeReferrals} = useCountDocuments({
+    conditions : [
+      {field : 'affiliatorCustomerId', operator : '==', value : customer?.id || ''},
+      {field : 'paymentStatus', operator : '==', value : 'PAID'},
+      {field : 'expiredAt', operator : '>', value : new Date()},
+    ],
+    collectionName:'subscriptions',
+    dependencies : [customer?.id],
+    authRequired:true
+  })
+
 
   if (customer && !userPackage) {
     return <PricingComponent />;
@@ -85,7 +83,7 @@ const page = async () => {
             Total Referal
           </p>
           <h3 className='text-xl font-bold'>
-            {realtimeData.affiliateClicks || 0}
+           {totalReferral || 0}
           </h3>
         </div>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
@@ -93,13 +91,7 @@ const page = async () => {
             Active Referrals
           </p>
           <h3 className='text-xl font-bold'>
-            {childrenAffiliate?.filter(
-              (x) =>
-                x?.paymentStatus === 'PAID' &&
-                moment
-                  .unix(x?.createdAt?.seconds)
-                  .isBefore(moment.unix(x?.expiredAt?.seconds))
-            )?.length || 0}
+           {activeReferrals}
           </h3>
         </div>
         <div className='flex flex-col justify-between gap-2 w-full p-2 lg:p-4 border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'>
@@ -126,11 +118,11 @@ const page = async () => {
             <input
               readOnly
               className='bg-gray-50 border border-gray-200 text-gray-500 dark:text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              value={`${origin}/auth/login?c=${customer?.id}`}
+              value={`https://byscript.io/auth/login?c=${customer?.id}`}
             />
             <button
               onClick={() =>
-                copyTextToClipboard(`${origin}/auth/login?c=${customer?.id}`)
+                copyTextToClipboard(`https://byscript.io/auth/login?c=${customer?.id}`)
               }
               className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
             >
