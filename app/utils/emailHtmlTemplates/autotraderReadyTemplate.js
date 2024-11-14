@@ -82,7 +82,7 @@ export default function autotraderReadyTemplate(props) {
           style='padding:0;background-color:white;' /></div> -->
           <div class="main">
             <div class="container">
-              <h2> Autotrader Ready! </h2>
+              <h2> Autotrader is now active and ready! </h2>
               <br />
               <br />
               <table>

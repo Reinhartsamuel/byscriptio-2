@@ -16,7 +16,7 @@ export async function POST(request) {
           name: body?.name,
         },
       ],
-      subject: 'Autotrader Ready to be Activated',
+      subject: 'Autotrader is Active!! - byScript',
       htmlContent: autotraderReadyTemplate({
         name: body?.name,
         requestedAt : moment.unix(body?.createdAt?.seconds).format('ddd DD MMM YYYY HH:mm:ss'),
