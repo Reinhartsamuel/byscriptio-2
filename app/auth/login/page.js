@@ -110,7 +110,7 @@ const page = () => {
             <div className='relative my-4 flex w-full items-center text-xs uppercase text-slate-900'>
               <div className='w-full flex h-0 border-[0.5px] border-slate-300' />
               <span className='bg-background wrap-no-wrap px-2 text-muted-foreground whitespace-nowrap'>
-                atau masuk dengan
+                Login with google
               </span>
               <div className='w-full flex h-0 border-[0.5px] border-slate-300' />
             </div>

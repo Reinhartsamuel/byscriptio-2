@@ -18,9 +18,7 @@ const users = pgTable(
       avatar: text('avatar'),
       background_photo: text('background_photo'),
       bio: text('bio'),
-      total_followers: integer('total_followers').default(0),
-      total_likes: integer('total_likes').default(0),
-      total_subscribers: integer('total_subscribers').default(0),
+      external_customer_id : text('external_customer_id').unique(),    
     },
     (table) => ({
       // Indexes
@@ -32,5 +30,28 @@ const users = pgTable(
       ),
     })
   );
+
+//   // Autotrader table
+//   const autotraders = pgTable(
+//     'autotraders',
+//     {
+//       id: serial('id').primaryKey(),
+//       created_at: timestamp('created_at').defaultNow().notNull(),
+//       updated_at: timestamp('updated_at'),
+//       user_id : serial('user_id').notNull().references(() => users.id, {onDelete: 'cascade', onUpdate: 'cascade'}),
+//       exchange_id : serial('exchange_id')
+//     }
+//   );
+
+//   // Exchanges table
+//   const exchanges = pgTable(
+//     'exchanges',
+//     {
+//       id: serial('id').primaryKey(),
+//       created_at: timestamp('created_at').defaultNow().notNull(),
+//       updated_at: timestamp('updated_at'),
+//       user_id : serial('user_id').notNull().references(() => users.id, {onDelete: 'cascade', onUpdate: 'cascade'}),
+//     }
+//   );
 
   export { users }
