@@ -1,21 +1,28 @@
+'use client';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getCollectionFirebase } from '../utils/firebaseApi';
 import moment from 'moment';
 import { priceFormat } from '../utils/priceFormat';
 import { cn } from '@/lib/util';
 
 const AffiliateWithdrawalListComponent = async ({ customerId }) => {
-  let conditions = [];
-  if (customerId)
-    conditions = [
-      {
-        field: 'customerId',
-        operator: '==',
-        value: customerId,
-      },
-    ];
-  const data = await getCollectionFirebase('affiliate_withdrawals', conditions);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      try {
+        if (!customerId) return;
+        const data = await getCollectionFirebase(
+          'affiliate_withdrawals',
+          [{ field: 'customerId', operator: '==', value: customerId }]
+        );
+        setData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  }, []);
 
   function statusColor(status) {
     switch (status) {
@@ -30,8 +37,10 @@ const AffiliateWithdrawalListComponent = async ({ customerId }) => {
     }
   }
   return (
-    <div className='mt-5 w-full rounded-lg bg-gray-50 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4'>
-      <p className='text-gray-600dark:text-gray-400 text-sm'>Withdrawal History</p>
+    <div className='mt-5 w-full bg-gray-50 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4'>
+      <p className='text-gray-600dark:text-gray-400 text-sm'>
+        Withdrawal History
+      </p>
       {/* <pre>{JSON.stringify(conditions, null, 2)}</pre>
       <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <div className='overflow-scroll'>

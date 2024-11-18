@@ -7,7 +7,7 @@ import { cn } from '@/lib/util';
 
 const AffiliateeComponent = ({ childrenAffiliate }) => {
   return (
-    <div className='mt-5 w-full rounded-lg dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
+    <div className='mt-5 w-full  p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
       <p className='text-gray-700 dark:text-gray-200 text-sm'>
         Purchases by affiliatee
       </p>

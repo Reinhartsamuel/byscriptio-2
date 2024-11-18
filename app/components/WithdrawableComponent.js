@@ -29,7 +29,7 @@ const WithdrawableComponent = ({ customer }) => {
     getWithdrawal();
   }, [customer?.id]);
   return (
-    <div className='mt-2 lg:mt-5 w-full rounded-lg  dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
+    <div className='px-2 lg:px-5 w-full font-sans flex flex-col gap-4 cursor-pointer'>
       <div className='flex w-full justify-between'>
         <p className='text-gray-700 dark:text-gray-200 text-sm'>Withdrawable:</p>
         <button

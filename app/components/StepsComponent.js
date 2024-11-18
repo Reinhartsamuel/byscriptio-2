@@ -40,7 +40,7 @@ const dummyContent = [
     description: (
       <>
         <p>
-         Sebelum kamu melakukan trading algoritma dengan byScript, kamu harus sudah mempunyai akun exchange yang akan dipasang bot dari byscript. Juka belum punya, silakan daftar di 
+         Sebelum kamu melakukan trading algoritma dengan byScript, kamu harus sudah mempunyai akun exchange yang akan dipasang bot dari byscript. Jika belum punya, silakan daftar di 
          <i>centralized crypto exchange</i> favorit kamu
         </p>
         <div className='w-full flex justify-center items-center mt-5'>
@@ -74,7 +74,7 @@ const dummyContent = [
     description: (
       <>
         <p>
-          Setelah kamu mendaftar akun exchange dan memilih pair coin yang akan ditradingkan, kamu sudah tingal duduk santai dan 
+          Setelah kamu mendaftar akun exchange dan memilih pair coin yang akan ditradingkan, kamu sudah tinggal duduk santai dan 
           autotrade akan berjalan secara otomatis.
         </p>
         <h3 className='text-lg font-bold'>Happy Trading!💰💰</h3>
