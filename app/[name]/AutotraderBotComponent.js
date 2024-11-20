@@ -302,7 +302,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
           </div>
         </>
       )}
-      <ModalAddAutotrader addModal={addModal} setAddModal={setAddModal} />
+      <ModalAddAutotrader addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} />
       <ModalDetailAutotrader
         openModal={detailModal}
         setOpenModal={setDetailModal}

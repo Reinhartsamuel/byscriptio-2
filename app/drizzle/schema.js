@@ -6,7 +6,7 @@ const users = pgTable(
     'users',
     {
       id: serial('id').primaryKey(),
-      auth_uid: text('auth_uid').unique().notNull(),
+      auth_uid: text('auth_uid').notNull(),
       auth_provider: text('auth_provider').notNull(), // email, google, facebook
       name: text('name').notNull(),
       email: text('email').unique().notNull(),

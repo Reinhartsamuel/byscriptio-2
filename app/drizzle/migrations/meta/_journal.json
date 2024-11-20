@@ -15,6 +15,13 @@
       "when": 1731672105810,
       "tag": "0001_magenta_wolverine",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1732016965670,
+      "tag": "0002_massive_hulk",
+      "breakpoints": true
     }
   ]
 }

@@ -199,6 +199,10 @@ export async function POST(request) {
     });
     // console.log(body);
 
+    if (body?.flag === 'testing') return new Response(JSON.stringify({
+      status : true
+    }), {
+      status: 200,})
     // trading_plan_id is constructed of trading plan name and pair
     const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;
 
