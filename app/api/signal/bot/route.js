@@ -194,15 +194,11 @@ export async function POST(request) {
       ...body,
       type: 'autotrade',
       createdAt: new Date(),
-      flag : body?.flag || ''
+      flag: body?.flag || '',
       // result: result.map((x) => x?.status),
     });
     // console.log(body);
 
-    if (body?.flag === 'testing') return new Response(JSON.stringify({
-      status : true
-    }), {
-      status: 200,})
     // trading_plan_id is constructed of trading plan name and pair
     const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;
 
@@ -276,6 +272,44 @@ export async function POST(request) {
       autotraderLookups.push({ id: doc.id, ...doc.data() });
     });
 
+    
+
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    if (body?.flag === 'testing')
+      return new Response(
+        JSON.stringify({
+          status: true,
+        }),
+        {
+          status: 200,
+        }
+      );
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+    // RETURN IF THERE'S TESTING FLAG
+
+
+
+
+
     const result = await Promise.allSettled(
       autotraderLookups?.map(async (autotraderData) => {
         const sendBodyTo3Commas = {
@@ -294,7 +328,13 @@ export async function POST(request) {
           body: JSON.stringify(sendBodyTo3Commas),
         });
         const returnValue = await res.text();
-        return {  ...autotraderData,...sendBodyTo3Commas, ...returnValue, statusCode: res.status, sendBodyTo3Commas };
+        return {
+          ...autotraderData,
+          ...sendBodyTo3Commas,
+          ...returnValue,
+          statusCode: res.status,
+          sendBodyTo3Commas,
+        };
       })
     );
     // return Response.json({
@@ -316,33 +356,38 @@ export async function POST(request) {
             response: x,
             autotradePostBody: x?.sendBodyTo3Commas || null,
             webhookId: addWebhookResult?.id || '',
-            bot_id: x?.value?.sendBodyTo3Commas?.bot_id?.toString() || x?.value?.bot_id?.toString() || '',
+            bot_id:
+              x?.value?.sendBodyTo3Commas?.bot_id?.toString() ||
+              x?.value?.bot_id?.toString() ||
+              '',
             type: 'autotrade',
             exchange_thumbnail: x?.value?.exchange_thumbnail || '',
-            exchange_name : x?.value?.exchange_name || '',
+            exchange_name: x?.value?.exchange_name || '',
             name: x?.value?.name || '',
-            email : x?.value?.email || '',
-            uid : x?.value?.uid || '',
-            autotrader_name :  x?.autotrader_name || moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-              '-' +
-              x?.value?.createdAt?.seconds
+            email: x?.value?.email || '',
+            uid: x?.value?.uid || '',
+            autotrader_name:
+              x?.autotrader_name ||
+              moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
+                '-' +
+                x?.value?.createdAt?.seconds,
           });
         })
       );
 
-    //------------------------------ SEND EMAIL ------------------------------
-    //------------------------------ SEND EMAIL ------------------------------
-    //------------------------------ SEND EMAIL ------------------------------
-    //------------------------------ SEND EMAIL ------------------------------
-    //------------------------------ SEND EMAIL ------------------------------
-    //------------------------------ SEND EMAIL ------------------------------
-    const emailNotificationBody = {
-      sender: {
-        email: 'info@byscript.io',
-        name: 'byScript.io',
-      },
-      subject: 'Trade Executed -byScript',
-      htmlContent: `<!DOCTYPE html>
+      //------------------------------ SEND EMAIL ------------------------------
+      //------------------------------ SEND EMAIL ------------------------------
+      //------------------------------ SEND EMAIL ------------------------------
+      //------------------------------ SEND EMAIL ------------------------------
+      //------------------------------ SEND EMAIL ------------------------------
+      //------------------------------ SEND EMAIL ------------------------------
+      const emailNotificationBody = {
+        sender: {
+          email: 'info@byscript.io',
+          name: 'byScript.io',
+        },
+        subject: 'Trade Executed -byScript',
+        htmlContent: `<!DOCTYPE html>
       <html><body><h1>My Trade executed on byscript</h1>
       <p>PAIR: ${body?.pair}</p>
       <br />
@@ -353,80 +398,34 @@ export async function POST(request) {
       <p>SIDE : ${body?.action ? 'SELL' : 'BUY'}</p>
       <br />
       </body></html>`,
-      messageVersions: result?.map((x) => {
-        return {
-          to: [
-            {
-              name: x?.value?.name || '',
-              email: x?.value?.email || '',
-            },
-          ],
-          htmlContent: tradeExecutedTemplate({
-            autotrader_name:
-              x?.autotrader_name ||
-              moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-                '-' +
-                x?.value?.createdAt?.seconds,
-            exchange_thumbnail: x?.value?.exchange_thumbnail || '',
-            trading_plan_id: body?.trading_plan_id,
-            signal_type: body?.action ? 'SELL' : 'BUY',
-            tradeAmount: x?.tradeAmount || '-',
-            price: body?.price || '',
-            pair: body?.pair || '',
-          }),
-          subject: 'Trade Executed - byScript',
-        };
-      }),
-    };
-    const resEmail = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'post',
-      body: JSON.stringify(emailNotificationBody),
-      headers: {
-        accept: 'application/json',
-        // eslint-disable-next-line no-undef
-        'api-key': process.env.BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-    });
-    const resultEmail = await resEmail.json();
-    console.log(JSON.stringify(resultEmail), 'resultEMAIL');
-
-    //------------------------------ SEND EMAIL END ------------------------------
-    //------------------------------ SEND EMAIL END ------------------------------
-    //------------------------------ SEND EMAIL END ------------------------------
-    //------------------------------ SEND EMAIL END ------------------------------
-    //------------------------------ SEND EMAIL END ------------------------------
-    //------------------------------ SEND EMAIL END ------------------------------
-    await Promise.all(result?.map(async(x) => {
-      const emailBody = {
-        sender: {
-          name: 'byScript.io',
-          email: 'info@byscript.io',
-        },
-        to: [
-          {
-            email: x?.value?.email || '',
-            name: x?.value?.email || '',
-          },
-        ],
-        subject:`Trade Executed ${body?.pair || ''} - byScript`,
-        htmlContent:tradeExecutedTemplate({
-          autotrader_name:
-            x?.autotrader_name ||
-            moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-              '-' +
-              x?.value?.createdAt?.seconds,
-          exchange_thumbnail: x?.value?.exchange_thumbnail || '',
-          trading_plan_id: body?.trading_plan_id,
-          signal_type: body?.action ? 'SELL' : 'BUY',
-          tradeAmount: x?.tradeAmount || '-',
-          price: body?.price || '',
-          pair: body?.pair || '',
+        messageVersions: result?.map((x) => {
+          return {
+            to: [
+              {
+                name: x?.value?.name || '',
+                email: x?.value?.email || '',
+              },
+            ],
+            htmlContent: tradeExecutedTemplate({
+              autotrader_name:
+                x?.autotrader_name ||
+                moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
+                  '-' +
+                  x?.value?.createdAt?.seconds,
+              exchange_thumbnail: x?.value?.exchange_thumbnail || '',
+              trading_plan_id: body?.trading_plan_id,
+              signal_type: body?.action ? 'SELL' : 'BUY',
+              tradeAmount: x?.tradeAmount || '-',
+              price: body?.price || '',
+              pair: body?.pair || '',
+            }),
+            subject: 'Trade Executed - byScript',
+          };
         }),
       };
-      await fetch('https://api.brevo.com/v3/smtp/email', {
+      const resEmail = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'post',
-        body: JSON.stringify(emailBody),
+        body: JSON.stringify(emailNotificationBody),
         headers: {
           accept: 'application/json',
           // eslint-disable-next-line no-undef
@@ -434,8 +433,56 @@ export async function POST(request) {
           'content-type': 'application/json',
         },
       });
-    }))
-  }
+      const resultEmail = await resEmail.json();
+      console.log(JSON.stringify(resultEmail), 'resultEMAIL');
+
+      //------------------------------ SEND EMAIL END ------------------------------
+      //------------------------------ SEND EMAIL END ------------------------------
+      //------------------------------ SEND EMAIL END ------------------------------
+      //------------------------------ SEND EMAIL END ------------------------------
+      //------------------------------ SEND EMAIL END ------------------------------
+      //------------------------------ SEND EMAIL END ------------------------------
+      await Promise.all(
+        result?.map(async (x) => {
+          const emailBody = {
+            sender: {
+              name: 'byScript.io',
+              email: 'info@byscript.io',
+            },
+            to: [
+              {
+                email: x?.value?.email || '',
+                name: x?.value?.email || '',
+              },
+            ],
+            subject: `Trade Executed ${body?.pair || ''} - byScript`,
+            htmlContent: tradeExecutedTemplate({
+              autotrader_name:
+                x?.autotrader_name ||
+                moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
+                  '-' +
+                  x?.value?.createdAt?.seconds,
+              exchange_thumbnail: x?.value?.exchange_thumbnail || '',
+              trading_plan_id: body?.trading_plan_id,
+              signal_type: body?.action ? 'SELL' : 'BUY',
+              tradeAmount: x?.tradeAmount || '-',
+              price: body?.price || '',
+              pair: body?.pair || '',
+            }),
+          };
+          await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'post',
+            body: JSON.stringify(emailBody),
+            headers: {
+              accept: 'application/json',
+              // eslint-disable-next-line no-undef
+              'api-key': process.env.BREVO_API_KEY,
+              'content-type': 'application/json',
+            },
+          });
+        })
+      );
+    }
 
     return new Response('ok', {
       status: 200,
