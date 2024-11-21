@@ -4,13 +4,13 @@ import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { authFirebase, db } from '../config/firebase';
 import { priceFormat } from '../utils/priceFormat';
 import ModalPurchasePlan from './ModalPurchasePlan';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 
 export function PricingComponent() {
   const [prices, setPrices] = useState([]);
   const [purchaseModal, setPurchaseModal] = useState(false);
   const [detail, setDetail] = useState(null);
-  const { router } = useRouter();
+  const router = useRouter()
   const getPricing = async () => {
     try {
       const arr = [];
@@ -39,7 +39,7 @@ export function PricingComponent() {
     if (authFirebase?.currentUser) {
       setPurchaseModal(true);
     } else {
-      router.push('/new');
+      router.push('/auth/login')
     }
   };
 

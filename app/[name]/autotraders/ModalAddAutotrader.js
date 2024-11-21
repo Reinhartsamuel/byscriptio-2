@@ -272,7 +272,6 @@ function TradingPlanSelectComponent({ data, setData }) {
   return (
     <div className='flex gap-2'>
       <div className='block'>
-        <p>Trading Plan:</p>
         <div className='grid grid-cols-2'>
           {tradingPlans.map((plan, i) => (
             <div
@@ -295,7 +294,7 @@ function TradingPlanSelectComponent({ data, setData }) {
         </div>
       </div>
       <div className='block'>
-        <p>Pair:</p>
+        <p>Pairs</p>
         <div className='flex flex-wrap max-w-xl gap-2'>
           {loading ? (
             <Spinner />
