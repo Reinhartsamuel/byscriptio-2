@@ -24,7 +24,7 @@ const tradingPlans = [
   // { name: 'TESTING2', id: 'TESTING2' },
 ];
 
-export default function ModalAddAutotrader({ addModal, setAddModal }) {
+export default function ModalAddAutotrader({ addModal, setAddModal, setShowPricing }) {
   const { exchanges_accounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
   const { user, customer, ipLocation, userPackage } = useUserStore();
@@ -42,8 +42,26 @@ export default function ModalAddAutotrader({ addModal, setAddModal }) {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
+    if (!userPackage && parseInt(data?.tradeAmount) > 100) {
+      Swal.fire({
+        title: "You have no paid subscription",
+        text: "Free tier only allows maximum $100 of trade amount. Do you want to proceed to payment?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Continue payment",
+        denyButtonText: `Cancel`
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          // Swal.fire("Saved!", "", "success");
+          setShowPricing(true);
+          setAddModal(false);
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
+    }
     try {
-      // if (!userPackage) throw new Error("You don't have an active package");
     setLoading(false);
     if (!data?.exchange_name || !data?.exchange_thumbnail)
       return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });
