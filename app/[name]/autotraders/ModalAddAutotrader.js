@@ -296,7 +296,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       </div>
       <div className='block'>
         <p>Pair:</p>
-        <div className='flex flex-wrap'>
+        <div className='flex flex-wrap max-w-xl gap-2'>
           {loading ? (
             <Spinner />
           ) : availPairs?.length > 0 ? (

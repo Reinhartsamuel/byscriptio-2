@@ -14,7 +14,7 @@ export async function GET(request) {
       );
     return Response.json({
       status: true,
-    //   s,
+      s,
       result,
     });
   } catch (error) {

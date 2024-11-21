@@ -75,8 +75,8 @@ export default function Navbar() {
         setMenuNavigation([
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
-          { name: 'Autotraders', href: `/${name}/autotraders` },
-          { name: 'Exchanges', href: `/${name}/exchanges` },
+          // { name: 'Autotraders', href: `/${name}/autotraders` },
+          // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
