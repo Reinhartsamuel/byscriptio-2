@@ -12,7 +12,7 @@ import { useUserStore } from '../store/userStore';
 import { authFirebase } from '../config/firebase';
 import { useAutotraderStore } from '../store/autotraderStore';
 
-const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
+const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user, customer, ipLocation } = useUserStore();
@@ -61,13 +61,14 @@ const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
         text: 'autotrader has been deleted.',
         icon: 'success',
         showConfirmButton: true,
-      }).then((
+      }).then(() =>
         // result
-      ) => {
-        // console.log(result, 'resultt');
-        getAutotraders(authFirebase.currentUser?.email);
-        setOpenModal(false);
-      });
+        {
+          // console.log(result, 'resultt');
+          getAutotraders(authFirebase.currentUser?.email);
+          setOpenModal(false);
+        }
+      );
     } catch (error) {
       return Swal.fire({
         icon: 'error',
@@ -92,12 +93,15 @@ const DeleteAutotraderComponent = ({ detail,setOpenModal }) => {
       // if yes, DO NOT DELETE!!
       if (detail.bot_id) {
         const findLastSignal = await getLatestSignal(detail.bot_id);
-        // console.log(findLastSignal[0], 'findLastSignal[0]');
+
         const lastAction =
+          findLastSignal?.length > 0 &&
           findLastSignal[0]?.response?.value?.action === 'close_at_market_price'
             ? 'SELL'
             : 'BUY';
-        if (lastAction !== 'SELL') {
+
+            
+        if (findLastSignal?.length > 0 && lastAction !== 'SELL') {
           throw new Error(
             `You have a ${lastAction} order on ${findLastSignal[0]?.response?.value?.pair}. Please close it first.`
           );

@@ -75,6 +75,7 @@ export default function Navbar() {
         setMenuNavigation([
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
+          { name: 'Documentation', href: `https://docs.byscript.com`, target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);
@@ -199,6 +200,7 @@ export default function Navbar() {
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'rounded-md px-3 py-2 text-sm font-medium'
                     )}
+                    target={item.target ?? ''}
                   >
                     {item.name}
                   </a>
