@@ -38,7 +38,7 @@ const AffiliateWithdrawalListComponent = async ({ customerId }) => {
   }
   return (
     <div className='mt-5 w-full bg-gray-50 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4'>
-      <p className='text-gray-600dark:text-gray-400 text-sm'>
+      <p className='text-gray-600 dark:text-gray-200 text-sm'>
         Withdrawal History
       </p>
       {/* <pre>{JSON.stringify(conditions, null, 2)}</pre>
@@ -125,7 +125,7 @@ const AffiliateWithdrawalListComponent = async ({ customerId }) => {
           </table>
         ) : (
           <div className='w-full h-full flex justify-center items-center'>
-            <p className='text-gray-400 dark:text-gray-200'>No data</p>
+            <p className='text-gray-600 dark:text-gray-400'>No data</p>
           </div>
         )}
       </div>

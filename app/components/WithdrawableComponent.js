@@ -45,7 +45,7 @@ const WithdrawableComponent = ({ customer }) => {
       </div>
       {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
       <div className='flex w-full justify-between'>
-        <h3 className='text-xl font-bold'>
+        <h3 className='text-gray-800 dark:text-white text-xl font-bold'>
           Rp {priceFormat(data?.withdrawable)}
         </h3>
         {data?.lastWithdrawal && (

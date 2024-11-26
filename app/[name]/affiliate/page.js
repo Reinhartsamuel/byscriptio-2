@@ -75,14 +75,15 @@ const page = async () => {
     authRequired: true,
   });
 
-  if (!customer) return <></>
+  if (!customer) return <></>;
 
   if (customer && !userPackage) {
     return <PricingComponent />;
   }
 
   return (
-    <div className='mt-10 mx-2 lg:mx-6'>
+    <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
+      <div className='fixed top-0 left-0 z-[-2] h-screen w-screen dark:bg-neutral-950  bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
       <h2 className='text-xl my-5 font-bold text-gray-800 dark:text-slate-200 font-bold'>
         Affiliate Program
       </h2>
@@ -92,17 +93,17 @@ const page = async () => {
           <p className='text-gray-800 dark:text-gray-400 font-light'>
             Total Referal
           </p>
-          <h3 className='text-xl font-bold'>{totalReferral || 0}</h3>
+          <h3 className='text-gray-800 dark:text-white text-xl font-bold'>{totalReferral || 0}</h3>
         </div>
         <div className='px-2 lg:px-5'>
           <p className='text-gray-800 dark:text-gray-400 font-light'>
             Active Referrals
           </p>
-          <h3 className='text-xl font-bold'>{activeReferrals}</h3>
+          <h3 className='text-gray-800 dark:text-white text-xl font-bold'>{activeReferrals}</h3>
         </div>
         <div className='px-2 lg:px-5'>
           <p className='text-gray-800 dark:text-gray-400 font-light'>Income</p>
-          <h3 className='text-xl font-bold'>
+          <h3 className='text-gray-800 dark:text-white text-xl font-bold'>
             Rp{' '}
             {priceFormat(
               childrenAffiliate
@@ -113,7 +114,7 @@ const page = async () => {
         </div>
       </div>
       <div className='mt-2 lg:mt-5 p-2 flex w-full grid grid-cols-1 lg:grid-cols-2 divide-x divide-gray-500 border border-[2px] border-gray-400 dark:border-gray-700'>
-      <div className='w-full p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
+        <div className='w-full p-4 shadow-md font-sans flex flex-col gap-4  cursor-pointer'>
           <p
             className='text-gray-700 dark:text-gray-200 text-sm'
             onClick={() => console.log(customer)}
