@@ -111,6 +111,8 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
             tradeAmount: data?.tradeAmount,
             trading_plan_pair: data?.trading_plan_pair,
             trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
+            name: authFirebase.currentUser?.displayName,
+            email: authFirebase.currentUser?.email,
           }),
           bcc: [
             { name: 'Reinhart', email: 'reinhartsams@gmail.com' },

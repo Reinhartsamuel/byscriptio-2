@@ -91,6 +91,14 @@ export default function autotraderRequestTemplate(props) {
         <br />
         <table>
           <tr>
+            <th>Name</th>
+            <th>${props?.name}</th>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <th>${props?.email}</th>
+          </tr>
+          <tr>
             <th>Requested at</th>
             <th>${props?.requestedAt}</th>
           </tr>
