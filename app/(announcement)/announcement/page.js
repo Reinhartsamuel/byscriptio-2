@@ -2,23 +2,23 @@ import moment from 'moment';
 import React from 'react';
 
 const page = async () => {
-  const res = await fetch(
-    `https://byscript.io/api/announcements?_=${new Date().getTime()}`,
-    {
-      method: 'GET',
-      cache: 'no-cache', // Disable caching
+  // const res = await fetch(
+  //   `https://byscript.io/api/announcements?_=${new Date().getTime()}`,
+  //   {
+  //     method: 'GET',
+  //     cache: 'no-cache', // Disable caching
 
-      headers: {
-        'Cache-Control': 'no-cache', // Disable caching
-        Pragma: 'no-cache', // For HTTP/1.0 compatibility
-        Expires: '0', // Proxies
-      },
-    }
-  );
-  const { data, error } = await res.json();
+  //     headers: {
+  //       'Cache-Control': 'no-cache', // Disable caching
+  //       Pragma: 'no-cache', // For HTTP/1.0 compatibility
+  //       Expires: '0', // Proxies
+  //     },
+  //   }
+  // );
+  // const { data, error } = await res.json();
   return (
     <>
-      <div className='w-full min-h-screen lg:px-20 lg:pt-10'>
+      {/* <div className='w-full min-h-screen lg:px-20 lg:pt-10'>
         <h1 className='text-2xl font-bold text-slate-100'>Announcements</h1>
         {error ? (
           <p>{error}</p>
@@ -44,7 +44,8 @@ const page = async () => {
             ))}
           </div>
         )}
-      </div>
+      </div> */}
+      <div>test</div>
     </>
   );
 };
