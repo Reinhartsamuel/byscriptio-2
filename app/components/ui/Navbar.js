@@ -75,7 +75,7 @@ export default function Navbar() {
         setMenuNavigation([
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
-          { name: 'Documentation', href: `https://docs.byscript.com`, target: '_blank' },
+          { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
           { name: 'Announcement', href:'/announcement', target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
