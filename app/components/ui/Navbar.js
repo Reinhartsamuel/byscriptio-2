@@ -22,7 +22,7 @@ import React from 'react';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Pricing', href: '/#pricing' },
-  // { name: "Events", href: "/event" },
+  { name: "Announcements", href: "/announcement" },
   // { name: 'Subscription', href: '/subscriptions' },
   // { name: 'Marketplace', href: '/marketplace' },
   // { name: 'Affiliate', href: '/affiliate' },
@@ -76,6 +76,7 @@ export default function Navbar() {
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
           { name: 'Documentation', href: `https://docs.byscript.com`, target: '_blank' },
+          { name: 'Announcement', href:'/announcement', target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);
