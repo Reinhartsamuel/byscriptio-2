@@ -134,8 +134,8 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
     // <div className='border-[0.1rem] border-red-500 dark:border-red-900 rounded-lg p-2 mt-5'>
     <div className='rounded-lg border-red-500 dark:border-red-900 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
       <div className='flex flex-col items-center'>
-        <p className='text-red-600 dark:text-red-700 text-center mx-auto cursor-pointer'>
-          danger!
+        <p className='text-red-600 font-bold dark:text-red-700 text-center mx-auto cursor-pointer'>
+          💀 Danger!
         </p>
         {showDelete ? (
           loading ? (
@@ -148,7 +148,7 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
               type='button'
               className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
             >
-              Delete autotrader
+              🗑️ Delete autotrader
             </button>
           )
         ) : (

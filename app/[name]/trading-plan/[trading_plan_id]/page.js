@@ -1,17 +1,24 @@
 'use client';
 import BackButton from '@/app/components/ui/BackButton';
 import { getCollectionFirebase } from '@/app/utils/firebaseApi';
-import Chart from 'chart.js/auto';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Papa from 'papaparse';
+import extractObjectArray from '@/app/utils/extractObjectArray';
+import EquityGrowthChart from './backtest/EquityGrowthChart';
+import Spinner from '@/app/components/ui/Spinner';
 
+//THIS IS BACKTEST PAGE
 const page = ({ params }) => {
   const searchParams = useSearchParams();
   const pair = searchParams.get('pair');
+  const [backtest, setBacktest] = useState([]);
+  const [tradesData, setTradesData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function fetchData() {
+    setLoading(true);
     try {
-      console.log('fetching::::', params?.trading_plan_id + '_' + pair);
       const res = await getCollectionFirebase('backtest', [
         {
           field: 'trading_plan_pair',
@@ -19,33 +26,38 @@ const page = ({ params }) => {
           value: params?.trading_plan_id + '_' + pair,
         },
       ]);
-      console.log(res, 'res');
+      setBacktest(res);
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false);
     }
   }
   useEffect(() => {
     fetchData();
-    const ctx = document.getElementById('myChart');
+  }, []);
 
-    const mixedChart = new Chart(ctx, {
-      data: {
-          datasets: [{
-              type: 'bar',
-              label: 'Bar Dataset',
-              data: [10, 20, 30, 40]
-          }, {
-              type: 'line',
-              label: 'Line Dataset',
-              data: [50, 50, 50, 50],
-          }],
-          labels: ['January', 'February', 'March', 'April']
-      },
-      // options: options
-  });
-  }, [params?.trading_plan_id, pair]);
+  useEffect(() => {
+    if (backtest?.length > 0) {
+      Papa.parse(backtest[0]?.url, {
+        download: true,
+        delimiter: ',',
+        complete: function (results) {
+          setTradesData(extractObjectArray(results.data));
+        },
+      });
+    }
+  }, [backtest]);
+
+  if (loading)
+    return (
+      <div className='w-full h-screen flex justify-center items-center'>
+        <Spinner />
+      </div>
+    );
+
   return (
-    <div>
+    <div className='w-full min-h-screen'>
       <div className='flex gap-2 '>
         <BackButton />
         <div className='block'>
@@ -53,8 +65,10 @@ const page = ({ params }) => {
           <p>Pair : {pair}</p>
         </div>
       </div>
-      <div className='w-full lg:w-1/2'>
-        <canvas id='myChart'></canvas>
+      <div className='w-full lg:w-3/4 mx-auto'>
+        {Array.isArray(tradesData) && tradesData?.length > 0 && (
+          <EquityGrowthChart tradesData={tradesData} />
+        )}
       </div>
     </div>
   );

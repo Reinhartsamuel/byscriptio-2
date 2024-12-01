@@ -18,6 +18,8 @@ import moment from 'moment';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import logo from '../../../public/logo_byScript_white_green.svg';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -77,7 +79,7 @@ export default function Navbar() {
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
           { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
-          { name: 'Announcement', href:'/announcement', target: '_blank' },
+          // { name: 'Announcement', href:'/announcement', target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);
@@ -183,9 +185,9 @@ export default function Navbar() {
           </div>
           <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
             <div className='flex flex-shrink-0 items-center'>
-              <img
+              <Image
                 alt='byScript'
-                src='https://i.ibb.co.com/RB9rQy3/Whats-App-Image-2024-05-19-at-16-02-06.jpg'
+                src={logo}
                 className='h-8 w-auto rounded-lg'
               />
             </div>

@@ -3,11 +3,12 @@ import Spinner from '@/app/components/ui/Spinner';
 import { handleLoginGoogle } from '@/app/services/login';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import LoginEmailComponent from './LoginEmailComponent';
 import { useUserStore } from '@/app/store/userStore';
 import { setCookie, getCookie } from 'cookies-next';
 import { updateDocumentFirebase } from '@/app/utils/firebaseApi';
 import { increment } from 'firebase/firestore';
+import Image from 'next/image';
+import logo from '../../../public/logo_byScript_white_green.svg';
 
 // import TurnstileWidget from '@/app/components/TurnstileWidget';
 
@@ -85,9 +86,9 @@ const page = () => {
       <div id='login-screen' className='flex h-screen w-full'>
         <div className='h-full hidden md:flex flex-col items-center justify-between py-10 w-[50%] bg-[#18181B] bg-slate-900'>
           <p></p>
-          <img
+          <Image
             alt='byScript'
-            src='https://i.ibb.co.com/RB9rQy3/Whats-App-Image-2024-05-19-at-16-02-06.jpg'
+            src={logo}
             className='h-20 w-auto rounded-lg'
           />
           <h3 className='text-gray-100' onClick={getCookies}>
@@ -103,7 +104,7 @@ const page = () => {
               Masuk ke byScript
             </h3>
             <p className='text-slate-600 font-extralight leading-5 text-center font-md'>
-              Jika kamu sudah memiliki langganan <i>trading plan</i>, harap
+              Jika kamu sudah memiliki subscription aktif, harap
               login dengan email yang sama
             </p>
             {/* <LoginEmailComponent loading={loading} /> */}
@@ -147,8 +148,7 @@ const page = () => {
             </button>
             <p className='text-slate-900 font-extralight  text-center text-sm'>
               Dengan sign in, kamu setuju dengan{' '}
-              <u className='cursor-pointer'>Kebijakan Privasi</u> dan{' '}
-              <u className='cursor-pointer'>Syarat dan Ketentuan</u> platform
+              <a href="https://byscript.io/termsConditions" target='_blank' rel='noopener noreferrer'><u className='cursor-pointer'>Syarat dan Ketentuan</u></a> platform
               byScript
             </p>
           </div>

@@ -336,7 +336,7 @@ function TradingPlanSelectComponent({ data, setData }) {
                   <PairImageComponent pair={pair?.pair} />
                 </div>
                 <p className='text-xs font-thin'>Trading plan: XMA</p>
-                <a href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}`} className='underline text-blue-600 dark:text-blue-400 text-xs'>See backtest</a>
+                <a href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`} className='underline text-blue-600 dark:text-blue-400 text-xs'>See backtest</a>
               </div>
             ))
           ) : (

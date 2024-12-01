@@ -113,7 +113,7 @@ export default function ModalDetailAutotrader({
               </div>
               <div className='mt-10 flex flex-col gap-2'>
                 <h1 className='text-2xl text-gray-700 dark:text-gray-200 font-bold'>Start / stop autotrader</h1>
-                <div className='flex gap-2 '>
+                <div className='flex gap-2 flex-col lg:flex-row'>
                   <button
                     onClick={() => handleStartStop('start')}
                     disabled={
