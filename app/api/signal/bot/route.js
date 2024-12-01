@@ -350,6 +350,7 @@ export async function POST(request) {
             requestBody: JSON.stringify(body),
             trading_plan_id: body?.trading_plan_id,
             pair: body?.pair || '',
+            price: body?.price || 0,
             timeframe: body?.timeframe || '',
             timestamp: body?.timestamp || '',
             createdAt: new Date(),
