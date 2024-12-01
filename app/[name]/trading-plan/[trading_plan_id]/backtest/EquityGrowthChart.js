@@ -180,7 +180,7 @@ const EquityGrowthChart = ({ tradesData }) => {
   return (
     <div>
       <canvas ref={chartRef} width='400' height='200'></canvas>
-      <pre>{JSON.stringify(equityGrowthPercentage)}</pre>
+      {/* <pre>{JSON.stringify(equityGrowthPercentage)}</pre> */}
       <div className='p-4 border-2 border-gray-600 dark:border-gray-500 grid grid-cols-2 lg:grid-cols-3'>
         <div className='flex flex-col gap-4 items-center'>
           <div>
