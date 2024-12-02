@@ -14,17 +14,24 @@ const EquityGrowthChart = ({ tradesData }) => {
     ? tradesData.filter((trade) => trade.Signal === 'Sell')
     : tradesData.filter((trade) => trade.Signal === 'Sell')?.reverse();
 
+    console.log(sortedTradesData)
   const [initialCapital, setInitialCapital] = useState(1000);
   const [cumulativeProfit, setCumulativeProfit] = useState(
-    sortedTradesData.map((trade) => parseFloat(trade['Cum. Profit USDT']))
+    sortedTradesData.map((trade) =>
+      parseFloat(trade['Cum. Profit USDT'] || trade['Cum. Profit USD'])
+    )
   );
+  console.log(cumulativeProfit,'cumulativeProfit');
   // STATES
   const [dateFilter, setDateFilter] = useState({
-    startDate: moment(sortedTradesData[0]?.['Date/Time'], 'YYYY-MM-DD HH:mm'),
+    startDate: moment(
+      sortedTradesData[0]?.['Date/Time'],
+      'YYYY-MM-DD HH:mm'
+    ).format('YYYY-MM-DD'),
     endDate: moment(
       sortedTradesData[sortedTradesData.length - 1]?.['Date/Time'],
       'YYYY-MM-DD HH:mm'
-    ),
+    ).format('YYYY-MM-DD'),
   });
   const [drawdownData, setDrawdownData] = useState(
     sortedTradesData.map((trade) => parseFloat(trade['Drawdown %']))
@@ -33,53 +40,28 @@ const EquityGrowthChart = ({ tradesData }) => {
   const [buyAndHoldEquity, setBuyAndHoldEquity] = useState(
     sortedTradesData.map(
       (trade) =>
-        parseFloat(trade['Price USDT'] / sortedTradesData[0]['Price USDT']) *
-        100
+        parseFloat(
+          (trade['Price USDT'] || trade['Price USD']) /
+            (sortedTradesData[0]['Price USDT'] ||
+              sortedTradesData[0]['Price USD'])
+        ) * 100
     )
   );
+
+  console.log(cumulativeProfit,'cumulativeProfit');
 
   // CONSTANTS
   const labels = sortedTradesData.map((trade) => trade['Date/Time']);
   const percentageInset = 100;
-  const equityGrowthPercentage = (Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0) ? cumulativeProfit.map(
-    (profit) => (profit / initialCapital) * 100 + percentageInset
-  ) :[];
+  const equityGrowthPercentage =
+    Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0
+      ? cumulativeProfit.map(
+          (profit) => (profit / initialCapital) * 100 + percentageInset
+        )
+      : [];
 
   // REF FOR CHART
   const chartRef = useRef(null);
-
-  const handleChange = (type, value) => {
-    if (type === 'initialCapital') {
-      setInitialCapital(value);
-    } else if (type === 'startDate') {
-      setDateFilter({ ...dateFilter, startDate: value });
-    } else if (type === 'endDate') {
-      setDateFilter({ ...dateFilter, endDate: value });
-    } else if (type === 'chartType') {
-      setDrawdownData(
-        sortedTradesData.map((trade) => parseFloat(trade['Drawdown USDT']))
-      );
-      if (value === 'amount') {
-        setBuyAndHoldEquity(
-          sortedTradesData.map(
-            (trade) =>
-              parseFloat(
-                trade['Price USDT'] / sortedTradesData[0]['Price USDT']
-              ) * 100
-          )
-        );
-      } else if (value === 'percentage') {
-        setBuyAndHoldEquity(
-          sortedTradesData.map(
-            (trade) =>
-              parseFloat(
-                trade['Price USDT'] / sortedTradesData[0]['Price USDT']
-              ) * 100
-          )
-        );
-      }
-    }
-  };
 
   useEffect(() => {
     setCumulativeProfit();
@@ -175,7 +157,7 @@ const EquityGrowthChart = ({ tradesData }) => {
     return () => {
       mixedChart.destroy();
     };
-  }, [tradesData]);
+  }, [tradesData, initialCapital, dateFilter.startDate,dateFilter.endDate, ]);
 
   return (
     <div>
@@ -208,7 +190,7 @@ const EquityGrowthChart = ({ tradesData }) => {
                 setDateFilter({
                   ...dateFilter,
                   startDate: moment(e.target.value, 'YYYY-MM-DD').format(
-                    'YYYY-MM-DD HH:mm'
+                    'YYYY-MM-DD'
                   ),
                 })
               }
@@ -235,15 +217,16 @@ const EquityGrowthChart = ({ tradesData }) => {
               id='date_to'
               className='w-[11rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder={dateFilter.endDate}
+              required
               onChange={(e) =>
                 setDateFilter({
                   ...dateFilter,
                   endDate: moment(e.target.value, 'YYYY-MM-DD').format(
-                    'YYYY-MM-DD HH:mm'
+                    'YYYY-MM-DD'
                   ),
                 })
               }
-              required
+              value={dateFilter.endDate}
             />
           </div>
         </div>

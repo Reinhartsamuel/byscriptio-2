@@ -35,8 +35,8 @@ export async function GET() {
     const arr = [];
 
     const snapshot = await adminDb
-      .collection('subscriptions')
-      .where('affiliatorCustomerId', '==', 'boMEZRhEzgDxLVtf9ZaG')
+      .collection('3commas_logs')
+      .where('webhookId', '==', '4AHhBoXpgqJrxilZO1Nf')
       .get();
 
     snapshot.forEach((doc) => {
@@ -49,7 +49,8 @@ export async function GET() {
     // console.log(arr, 'arr');
     return Response.json({
       status: 'okelah',
-      arr
+      arr,
+      // res,
     });
   } catch (error) {
     return Response.json({

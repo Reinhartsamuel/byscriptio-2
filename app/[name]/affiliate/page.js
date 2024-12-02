@@ -1,15 +1,24 @@
 'use client';
-import AffiliateeComponent from '@/app/components/AffiliateeComponent';
-import WithdrawableComponent from '@/app/components/WithdrawableComponent';
+const AffiliateWithdrawalListComponent = dynamic(() => import('@/app/components/AffiliateWithdrawalListComponent'), {
+  ssr: false,
+});
+const AffiliateeComponent = dynamic(() => import( '@/app/components/AffiliateeComponent'), {
+  ssr: false,
+});
+const WithdrawableComponent = dynamic(() => import('@/app/components/WithdrawableComponent'), {
+  ssr: false,
+});
+
+
 import { priceFormat } from '@/app/utils/priceFormat';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import React from 'react';
 import { useUserStore } from '@/app/store/userStore';
 import useFetchData from '@/app/hooks/QueryHook';
 import { FaRegCopy } from 'react-icons/fa6';
-import AffiliateWithdrawalListComponent from '@/app/components/AffiliateWithdrawalListComponent';
 import { PricingComponent } from '@/app/components/PricingComponent';
 import useCountDocuments from '@/app/hooks/CountHook';
+import dynamic from 'next/dynamic';
 // import { FaRegCopy } from 'react-icons/fa6';
 
 const page = async () => {

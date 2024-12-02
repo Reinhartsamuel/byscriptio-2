@@ -78,7 +78,11 @@ export default function Navbar() {
         setMenuNavigation([
           { name: 'Dashboard', href: `/${name}` },
           { name: 'Affiliate', href: `/${name}/affiliate` },
-          { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
+          {
+            name: 'Documentation',
+            href: `https://docs.byscript.io`,
+            target: '_blank',
+          },
           // { name: 'Announcement', href:'/announcement', target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
@@ -117,6 +121,10 @@ export default function Navbar() {
             1
           );
           console.log(findLastSubscription, 'findLastSubscription');
+          const activeSubscription = moment(new Date()).isBefore(
+            moment.unix(findLastSubscription[0]?.expiredAt?.seconds)
+          );
+          console.log(activeSubscription, 'activeSubscription');
           const customerFromDatabase = await getCollectionFirebase(
             'customers',
             [
@@ -153,7 +161,7 @@ export default function Navbar() {
               },
             ],
             { field: 'createdAt', direction: 'desc' },
-            1
+            20
           );
           if (findLastSubscription?.length > 0)
             setUserPackage(findLastSubscription[0]);
@@ -239,11 +247,14 @@ export default function Navbar() {
                         {user && (
                           <div className='flex flex-col items-center'>
                             <p className='text-gray-200'>{user?.displayName}</p>
-                            {userPackage && (
-                              <p className='text-gray-400 text-sm font-light'>
-                                {userPackage?.productName}
-                              </p>
-                            )}
+                            {userPackage &&
+                              moment(new Date()).isBefore(
+                                moment.unix(userPackage?.expiredAt?.seconds)
+                              ) && (
+                                <p className='text-gray-400 text-sm font-light'>
+                                  {userPackage?.productName}
+                                </p>
+                              )}
                           </div>
                         )}
                       </div>
@@ -277,22 +288,45 @@ export default function Navbar() {
                       </a>
                     </MenuItem> */}
                     <MenuItem cursor={'pointer'}>
-                      <a
-                        href=''
-                        className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600 cursor-pointer'
-                      >
-                        <div className='flex flex-col'>
-                          <p className='text-gray-400 text-sm font-light'>
-                            {userPackage?.productName}
-                          </p>
-                          <p className='text-xs text-gray-400'>
-                            Until{' '}
-                            {moment
-                              .unix(userPackage?.expiredAt?.seconds)
-                              .format('DD MMM YYYY')}
-                          </p>
-                        </div>
-                      </a>
+                      {moment(new Date()).isBefore(
+                        moment.unix(userPackage?.expiredAt?.seconds)
+                      ) ? (
+                        <a
+                          href=''
+                          className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600 cursor-pointer'
+                        >
+                          <div className='flex flex-col'>
+                            <p className='text-gray-400 text-sm font-light'>
+                              {userPackage?.productName}
+                            </p>
+                            <p className='text-xs text-gray-400'>
+                              Until{' '}
+                              {moment
+                                .unix(userPackage?.expiredAt?.seconds)
+                                .format('DD MMM YYYY')}
+                            </p>
+                          </div>
+                        </a>
+                      ) : (
+                        <a
+                          href={`${
+                            user?.displayName?.split(' ')?.join('-') ||
+                            user?.email
+                              ?.split('@')[0]
+                              ?.toLowerCase()
+                              ?.split(' ')
+                              ?.join('-')
+                          }/payment`}
+                          className='block px-4 py-2 text-sm text-gray-100 data-[focus]:bg-slate-600 cursor-pointer'
+                        >
+                          <div className='flex flex-col'>
+                            <p className='text-gray-400 text-sm font-light'>
+                              No active subscription
+                            </p>
+                            Go to payment
+                          </div>
+                        </a>
+                      )}
                     </MenuItem>
                     {menuNavigation.map((x, i) => (
                       <MenuItem key={i} cursor={'pointer'}>
