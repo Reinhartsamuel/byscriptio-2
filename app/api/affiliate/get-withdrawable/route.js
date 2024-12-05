@@ -1,5 +1,6 @@
 import { adminDb } from '@/lib/firebase-admin-config';
 import { AggregateField } from 'firebase-admin/firestore';
+import moment from 'moment';
 
 export async function GET(request) {
   try {
@@ -27,12 +28,14 @@ export async function GET(request) {
     let coll = adminDb
       .collection('subscriptions')
       .where('affiliatorCustomerId', '==', customerId)
-      .where('paymentStatus', '==', 'PAID');
+      .where('paymentStatus', '==', 'FINISHED')
+      .where('createdAt', '>=', moment.unix(listOfWithdrawals[0]?.createdAt._seconds).toDate());
 
     // Check if listOfWithdrawals is not empty
-    if (listOfWithdrawals?.length > 0) {
-      coll = coll.where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
-    }
+    // if (listOfWithdrawals?.length > 0) {
+    //   console.log('adding one more condition')
+    //   coll = coll.where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
+    // }
     const sumAggregateQuery = coll.aggregate({
       affiliateCommissionSum: AggregateField.sum('affiliateCommission'),
     });
@@ -48,7 +51,7 @@ export async function GET(request) {
         withdrawable: sumSnapshot.data().affiliateCommissionSum,
         customerId,
         lastWithdrawal: listOfWithdrawals[0],
-        xx: listOfWithdrawals,
+        listOfWithdrawals,
       },
     });
   } catch (error) {

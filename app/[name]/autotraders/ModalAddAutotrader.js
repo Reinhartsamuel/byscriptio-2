@@ -306,7 +306,7 @@ function TradingPlanSelectComponent({ data, setData }) {
                     handleSelectTP(e.target.checked, e.target.value)
                   }
                 />
-                <p className='text-lg font-bold'>{plan?.name}</p>
+                <p className='text-lg font-bold text-black dark:text-white'>{plan?.name}</p>
               </div>
               
             </div>
@@ -314,7 +314,7 @@ function TradingPlanSelectComponent({ data, setData }) {
         </div>
       </div>
       <div className='block'>
-        <p>Pairs</p>
+        <p className='text-black dark:text-white'>Pairs</p>
         <div className='flex flex-wrap max-w-xl gap-2'>
           {loading ? (
             <Spinner />
@@ -332,10 +332,10 @@ function TradingPlanSelectComponent({ data, setData }) {
                     }
                     value={JSON.stringify(pair)}
                   />
-                  <p className='text-lg font-bold'>{pair?.pair}</p>
+                  <p className='text-lg font-bold text-black dark:text-white'>{pair?.pair}</p>
                   <PairImageComponent pair={pair?.pair} />
                 </div>
-                <p className='text-xs font-thin'>Trading plan: XMA</p>
+                <p className='text-xs font-thin text-black dark:text-white'>Trading plan: {selectedTradingPlan?.id}</p>
                 <a href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`} className='underline text-blue-600 dark:text-blue-400 text-xs'>See backtest</a>
               </div>
             ))

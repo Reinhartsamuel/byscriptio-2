@@ -9,7 +9,7 @@ import { Swal } from 'sweetalert2/dist/sweetalert2';
 
 export default function ModalAddExchange({ openModal, setOpenModal }) {
   const { customer } = useUserStore();
-  const [loading, setLoading] =  useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function onCheck3CApi() {
     setLoading(true);
@@ -25,7 +25,7 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
         icon: 'error',
       });
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   }
   return (
@@ -35,14 +35,14 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
           <h3 className='text-2xl font-semibold text-gray-800 dark:text-white'>
             Connect Exchange
           </h3>
-          <p className='font-extralight text-sm text-gray-500 dark:text-gray:200'>
+          <p className='font-light text-sm text-gray-500 dark:text-gray-200'>
             You will be redirected to byScript exchange portal
           </p>
         </div>
       </div>
       {/* <!-- Modal body --> */}
       <div className='p-4 md:p-5 space-y-4 flex flex-col items-center'>
-        <p className='text-xl font-bold text-dark-dark:text-yellow-300'>
+        <p className='text-xl font-bold text-gray-800 dark:text-gray-200'>
           <span className='italic text-red-500 underline'>IMPORTANT! </span>{' '}
           Please make sure to copy this id and paste on &quot;Name&quot; input
           field, otherwise your exhcange will not be connected!!
@@ -58,40 +58,40 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
             <FaRegCopy color={'gray'} />
           </button>
         </div>
+        
+        <div className='flex gap-2'>
+          <button
+            data-modal-hide='default-modal'
+            type='button'
+            className={cn(
+              'text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'
+            )}
+            onClick={() =>
+              window.open(
+                'https://client.3commas.io/signup/byscript_exchange_connect-6c8cbefd',
+                '_blank'
+              )
+            }
+          >
+            Continue to Exchange Portal
+          </button>
+          <button
+            data-modal-hide='default-modal'
+            type='button'
+            className={cn(
+              'underline focus:ring-4 focus:outline-none font-medium rounded-lg text-lg font-light text-black dark:text-white px-5 py-2.5 text-center',
+              loading && 'cursor-not-allowed'
+            )}
+            onClick={onCheck3CApi}
+            disabled={loading}
+          >
+            {loading ? 'Loading' : 'I already connected my exchange'}
+          </button>
+        </div>
         <img
           src={'./paste-here.png'}
           className='sm:w-full lg:w-3/4 object-contain'
         />
-        <div className='flex gap-2'>
-            <button
-              data-modal-hide='default-modal'
-              type='button'
-              className={cn(
-                'text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800'
-              )}
-              onClick={() =>
-                window.open(
-                  'https://client.3commas.io/signup/byscript_exchange_connect-6c8cbefd',
-                  '_blank'
-                )
-              }
-            >
-              Continue to Exchange Portal
-            </button>
-            <button
-              data-modal-hide='default-modal'
-              type='button'
-              className={cn(
-                'underline focus:ring-4 focus:outline-none font-medium rounded-lg text-lg px-5 py-2.5 text-center',
-                loading && 'cursor-not-allowed'
-              )}
-              onClick={onCheck3CApi
-              }
-              disabled={loading}
-            >
-              {loading ? 'Loading' : 'I already connected my exchange'}
-            </button>
-        </div>
       </div>
     </Modal>
   );
