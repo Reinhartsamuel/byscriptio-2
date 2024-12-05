@@ -29,13 +29,12 @@ export async function GET(request) {
       .collection('subscriptions')
       .where('affiliatorCustomerId', '==', customerId)
       .where('paymentStatus', '==', 'FINISHED')
-      .where('createdAt', '>=', moment.unix(listOfWithdrawals[0]?.createdAt._seconds).toDate());
 
     // Check if listOfWithdrawals is not empty
-    // if (listOfWithdrawals?.length > 0) {
-    //   console.log('adding one more condition')
-    //   coll = coll.where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
-    // }
+    if (listOfWithdrawals?.length > 0) {
+      console.log('adding one more condition')
+      coll = coll.where('createdAt', '>=', listOfWithdrawals[0]?.createdAt);
+    }
     const sumAggregateQuery = coll.aggregate({
       affiliateCommissionSum: AggregateField.sum('affiliateCommission'),
     });
