@@ -12,6 +12,7 @@ import { uploadFileCompressed } from '../utils/imageUpload';
 import { authFirebase } from '../config/firebase';
 import { addDocumentFirebase } from '../utils/firebaseApi';
 import { priceFormat } from '../utils/priceFormat';
+import { copyTextToClipboard } from '../utils/copyTextToClipboard';
 
 const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   const { customer } = useUserStore();
@@ -21,24 +22,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
 
   const [data, setData] = useState({});
 
-  async function copyTextToClipboard(text) {
-    if (!navigator.clipboard) {
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(text);
-      Swal.fire({
-        icon: 'success',
-        title: 'Copied!',
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: error.message,
-      });
-    }
-  }
+
   const handleUpload = async (e) => {
     setUploading(true);
     // console.log(e.target.files[0], 'this is filesss');

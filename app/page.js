@@ -8,6 +8,7 @@ import { TestimonialsComponent } from './components/TestimonialsComponent';
 import Navbar from './components/ui/Navbar';
 import Footer from './components/Footer';
 import React from 'react';
+import { Compare } from './components/ui/Compare';
 
 export default function Home() {
   return (
@@ -147,9 +148,21 @@ export default function Home() {
         />
       </div>
 
-      <HeroHighlightComponent />
+      {/* <HeroHighlightComponent /> */}
+      <div className='w-full p-4 border rounded-3xl bg-gray-900'>
+        <Compare
+          firstImage='https://byscript-bucket.s3.ap-southeast-2.amazonaws.com/btc-before.webp'
+          secondImage='https://byscript-bucket.s3.ap-southeast-2.amazonaws.com/btc-after.webp'
+          firstImageClassName='object-cover object-left-top'
+          secondImageClassname='object-cover object-left-top'
+          // className='h-[250px] w-[200px] md:h-[500px] md:w-[500px]'
+          className='w-full h-screen'
+          slideMode='hover'
+        />
+       
+      </div>
 
-      <div className='w-full h-screen mt-20 inline-block items-center justify-center mx-auto bg-transparent'>
+      <div className='w-full h-screen mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
         <h1 className='text-3xl mt-10 font-bold text-center mx-auto md:text-5xl lg:text-7xl'>
           LIVE SIGNAL 📣📈📉
         </h1>

@@ -11,7 +11,6 @@ const WithdrawableComponent = dynamic(() => import('@/app/components/Withdrawabl
 
 
 import { priceFormat } from '@/app/utils/priceFormat';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
 import React from 'react';
 import { useUserStore } from '@/app/store/userStore';
 import useFetchData from '@/app/hooks/QueryHook';
@@ -19,29 +18,11 @@ import { FaRegCopy } from 'react-icons/fa6';
 import { PricingComponent } from '@/app/components/PricingComponent';
 import useCountDocuments from '@/app/hooks/CountHook';
 import dynamic from 'next/dynamic';
+import { copyTextToClipboard } from '@/app/utils/copyTextToClipboard';
 // import { FaRegCopy } from 'react-icons/fa6';
 
 const page = async () => {
   const { customer, userPackage } = useUserStore();
-
-  async function copyTextToClipboard(text) {
-    if (!navigator.clipboard) {
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(text);
-      Swal.fire({
-        icon: 'success',
-        title: 'Copied!',
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: error.message,
-      });
-    }
-  }
 
   const { data: childrenAffiliate, error } = useFetchData({
     type: 'getDocs',

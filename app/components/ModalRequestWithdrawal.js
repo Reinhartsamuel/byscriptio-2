@@ -27,8 +27,10 @@ export default function ModalRequestWithdrawal({
     setLoading(true);
     try {
         if (!customer?.id) throw new Error('no customer');
+        const customerWithoutId = JSON.parse(JSON.stringify(customer));
+        delete customerWithoutId.id;
         await addDocumentFirebase('affiliate_withdrawals', {
-            ...customer,
+            ...customerWithoutId,
             customerId : customer?.id,
             uid : customer?.uid,
             withdrawAmount : data?.withdrawable,

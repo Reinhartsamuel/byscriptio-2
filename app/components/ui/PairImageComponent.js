@@ -1,5 +1,5 @@
 import { coins } from '@/app/dummy';
-
+import React from 'react';
 const PairImageComponent = ({ pair = 'USDT_BTC', width = 10 }) => {
   const arr = pair.split('_');
   const coinA = arr[1];
