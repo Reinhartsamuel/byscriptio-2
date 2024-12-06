@@ -13,7 +13,7 @@ export async function GET(request) {
     const snapshot = await adminDb
       .collection('affiliate_withdrawals')
       .where('customerId', '==', customerId)
-    //   .where('paymentStatus', '==', 'PAID')
+      .where('paymentStatus', '==', 'FINISHED')
       .orderBy('createdAt', 'desc')
       .limit(1)
       .get();
@@ -28,7 +28,7 @@ export async function GET(request) {
     let coll = adminDb
       .collection('subscriptions')
       .where('affiliatorCustomerId', '==', customerId)
-      .where('paymentStatus', '==', 'FINISHED')
+      .where('paymentStatus', '==', 'PAID')
 
     // Check if listOfWithdrawals is not empty
     if (listOfWithdrawals?.length > 0) {

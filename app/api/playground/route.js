@@ -32,24 +32,12 @@ import { adminDb } from '@/lib/firebase-admin-config';
 
 export async function GET() {
   try {
-    const arr = [];
 
-    const snapshot = await adminDb
-      .collection('3commas_logs')
-      .where('webhookId', '==', '4AHhBoXpgqJrxilZO1Nf')
-      .get();
 
-    snapshot.forEach((doc) => {
-      arr.push({
-        id: doc.id,
-        ...doc.data(),
-      });
-    });
 
     // console.log(arr, 'arr');
     return Response.json({
       status: 'okelah',
-      arr,
       // res,
     });
   } catch (error) {
