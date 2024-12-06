@@ -27,10 +27,11 @@ export default function ModalRequestWithdrawal({
     setLoading(true);
     try {
         if (!customer?.id) throw new Error('no customer');
-        const customerWithoutId = JSON.parse(JSON.stringify(customer));
-        delete customerWithoutId.id;
+        const customerWithoutIdAndCreatedAt = JSON.parse(JSON.stringify(customer));
+        delete customerWithoutIdAndCreatedAt.id;
+        delete customerWithoutIdAndCreatedAt.createdAt;
         await addDocumentFirebase('affiliate_withdrawals', {
-            ...customerWithoutId,
+            ...customerWithoutIdAndCreatedAt,
             customerId : customer?.id,
             uid : customer?.uid,
             withdrawAmount : data?.withdrawable,
@@ -38,7 +39,8 @@ export default function ModalRequestWithdrawal({
             accountNumber,
             paymentStatus : 'REQUESTED',
             receipt:'',
-            accountName
+            accountName,
+            requestedAt : new Date()
         });
         Swal.fire('Success', 'Withdrawal request has been sent, please wait for fund to be transferred to your bank account.', 'success');
         setReqWithdrawModal(false);

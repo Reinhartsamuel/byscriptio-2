@@ -84,7 +84,7 @@ const SignalPreviewComponent = () => {
               <th scope='col' className='px-2 py-1'>
                 Trading Plan
               </th>
-              <th scope='col' className='px-2 py-1'>
+              <th scope='col' className='px-2 py-1 hidden md:table-cell'>
                 Price
               </th>
               <th scope='col' className='px-2 py-1'>
@@ -108,12 +108,13 @@ const SignalPreviewComponent = () => {
                   <div className='inline-block items-center justify-center gap-2'>
                     <PairImageComponent pair={x?.pair} width={8} />
                     <p>{x?.pair}</p>
+                    <p className='md:hidden'>${x?.price}</p>
                   </div>
                 </th>
                 <td className='px-6 py-4'>
                   {x?.trading_plan_id?.split('_')[0]}
                 </td>
-                <td className='px-6 py-4'>${x?.price}</td>
+                <td className='px-6 py-4 hidden md:table-cell'>${x?.price}</td>
                 <td className='px-6 py-4'>
                   {moment
                     .unix(x?.createdAt?.seconds)
