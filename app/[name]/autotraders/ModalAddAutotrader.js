@@ -40,6 +40,7 @@ export default function ModalAddAutotrader({
     email: authFirebase.currentUser?.email,
     tradeAmount: 0,
     exchange_name: '',
+    exchange_external_id: '',
     exchange_thumbnail: '',
     status: 'REQUESTED',
     trading_plan_pair: [],
@@ -105,7 +106,7 @@ export default function ModalAddAutotrader({
         trading_plan_pair: data.trading_plan_pair.filter(
           (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
         ),
-        exchange_external_id : data?.external_id
+        exchange_external_id: data?.external_id,
       };
       // return console.log(
       //   addDataToAutotraderCollection,
@@ -156,14 +157,14 @@ export default function ModalAddAutotrader({
       const resCreateBot = await createBot.json();
       console.log(resCreateBot, 'resCreateBot');
       if (resCreateBot.error) {
-        await deleteDocumentFirebase('dca_bots',id);
+        await deleteDocumentFirebase('dca_bots', id);
         return Swal.fire({ icon: 'error', text: 'Error creating bot' });
       } else if (resCreateBot.data) {
         await updateDocumentFirebase('dca_bots', id, {
-          bot_id : resCreateBot.data.id
-        })
+          bot_id: resCreateBot.data.id,
+        });
       }
-    
+
       getAutotraders(data?.email);
       // await fetch('/api/email', {
       //   method: 'POST',
@@ -234,7 +235,7 @@ export default function ModalAddAutotrader({
       status: 'REQUESTED',
       trading_plan_pair: [],
       autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
-    })
+    });
   }
 
   return (
@@ -266,27 +267,30 @@ export default function ModalAddAutotrader({
                       exchange_name: JSON.parse(e.target.value)?.exchange_name,
                       exchange_thumbnail: JSON.parse(e.target.value)
                         ?.exchange_thumbnail,
-                      external_id: JSON.parse(e.target.value)?.external_id,
+                      exchange_external_id: JSON.parse(e.target.value)?.external_id,
                     });
                   }}
-                  checked={data?.exchange_name === exchange?.exchange_name}
+                  checked={data?.exchange_external_id === exchange?.external_id}
                   id='default-radio-2'
                   type='radio'
                   value={JSON.stringify(exchange)}
                   name='default-radio'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 />
-                <div className="flex w-full justify-between">
-                <img
-                  className='w-[8rem] rounded-md object-contain p-2 bg-gray-500 dark:bg-transparent'
-                  src={
-                    exchange?.exchange_name === 'GATE'
-                      ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
-                      : exchange?.exchange_thumbnail
-                  }
-                  alt={exchange?.name || 'gate'}
-                />
-                  <p className='text-gray-600 dark:text-gray-200 text-sm'>{exchange?.external_name}</p>
+                <div className='flex w-full justify-between'>
+                  <div className='flex gap-2'>
+                    <img
+                      alt={exchange?.exchange_name}
+                      src={exchange.exchange_thumbnail}
+                      className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
+                    />
+                    <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                      {exchange?.type}
+                    </span>
+                  </div>
+                  <p className='text-gray-600 dark:text-gray-200 text-sm'>
+                    {exchange?.external_name}
+                  </p>
                 </div>
               </div>
             ))

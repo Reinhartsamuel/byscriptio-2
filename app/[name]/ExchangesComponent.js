@@ -45,8 +45,6 @@ const ExchangesComponent = () => {
     dependencies: [authFirebase.currentUser?.email],
   });
 
-
-
   if (!authFirebase.currentUser)
     return (
       <div className='w-full h-screen flex flex-col items-center justify-center'>
@@ -84,28 +82,35 @@ const ExchangesComponent = () => {
                 key={i}
                 className='flex flex-col justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[6rem]'
               >
-                <div className="flex w-full justify-between">
-                  <img
-                    alt={exchange?.exchange_name}
-                    src={exchange.exchange_thumbnail}
-                    className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
-                  />
-                  <p className='text-gray-600 dark:text-gray-200 text-sm'>{exchange?.external_name}</p>
+                <div className='flex w-full justify-between'>
+                  <div className='flex gap-2'>
+                    <img
+                      alt={exchange?.exchange_name}
+                      src={exchange.exchange_thumbnail}
+                      className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
+                    />
+                    <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                      {exchange?.type}
+                    </span>
+                  </div>
+                  <p className='text-gray-600 dark:text-gray-200 text-sm'>
+                    {exchange?.external_name}
+                  </p>
                 </div>
                 <div className='flex w-full justify-between'>
-                    <p className='text-green-600 dark:text-green-200 text-sm'>
-                      connected
-                    </p>
-                    <p className='text-gray-600 dark:text-gray-200 text-sm'>
-                      {moment
-                        .unix(
-                          exchange_accounts?.find(
-                            (x) => x?.exchange_name === exchange.exchange_name
-                          )?.createdAt?.seconds
-                        )
-                        .fromNow()}
-                    </p>
-                  </div>
+                  <p className='text-green-600 dark:text-green-200 text-sm'>
+                    connected
+                  </p>
+                  <p className='text-gray-600 dark:text-gray-200 text-sm'>
+                    {moment
+                      .unix(
+                        exchange_accounts?.find(
+                          (x) => x?.exchange_name === exchange.exchange_name
+                        )?.createdAt?.seconds
+                      )
+                      .fromNow()}
+                  </p>
+                </div>
                 {/* {exchange_accounts?.some(
                   (x) => x?.exchange_name === exchange.exchange_name
                 ) ? (
@@ -136,7 +141,6 @@ const ExchangesComponent = () => {
         </div>
         {error && <p>{error.message}</p>}
       </div>
-
     </>
   );
 };
