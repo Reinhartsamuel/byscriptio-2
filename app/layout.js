@@ -2,7 +2,7 @@ import './globals.css';
 import { Suspense } from 'react';
 import localfont from 'next/font/local';
 import Spinner from './components/ui/Spinner';
-import React from 'react'
+import React from 'react';
 
 const ecoCoding = localfont({
   src: [
@@ -21,7 +21,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
+    <html lang='en' className='dark'>
       <body className={ecoCoding.variable}>
         <Suspense
           fallback={

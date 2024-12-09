@@ -4,7 +4,7 @@
 // import { headers } from 'next/headers';
 // import { userAgent } from 'next/server';
 
-import { adminDb } from '@/lib/firebase-admin-config';
+// import { adminDb } from '@/lib/firebase-admin-config';
 
 // const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 // export async function GET (request) {

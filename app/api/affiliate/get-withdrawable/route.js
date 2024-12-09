@@ -1,6 +1,5 @@
 import { adminDb } from '@/lib/firebase-admin-config';
 import { AggregateField } from 'firebase-admin/firestore';
-import moment from 'moment';
 
 export async function GET(request) {
   try {

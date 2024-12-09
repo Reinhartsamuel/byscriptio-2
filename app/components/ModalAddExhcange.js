@@ -5,35 +5,24 @@ import { copyTextToClipboard } from '../utils/copyTextToClipboard';
 import Modal from './ui/Modal';
 import { FaRegCopy } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
-import { Swal } from 'sweetalert2/dist/sweetalert2';
+import { onCheck3CApi } from '../services/checkExchangesOn3Commas';
 
-export default function ModalAddExchange({ openModal, setOpenModal }) {
+export default function ModalAddExchange({
+  openModal,
+  setOpenModal,
+  exchangeName,
+  exchangeThumbnail,
+}) {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
+  const lowercaseExchangeName = exchangeName && exchangeName.toLowerCase();
 
-  async function onCheck3CApi() {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/3commas/accounts/user-connected-exchanges');
-      const { data, error } = await res.json();
-      if (error) throw new Error(error);
-      console.log(data, 'onCheck3CApi');
-    } catch (error) {
-      Swal.fire({
-        title: 'Something went wrong',
-        text: error.message,
-        icon: 'error',
-      });
-    } finally {
-      setLoading(false);
-    }
-  }
   return (
     <Modal open={openModal} onClose={() => setOpenModal(false)}>
       <div className='flex justify-between p-4 md:p-5 border-b rounded-t border-gray-600'>
         <div className='flex flex-col gap-2 w-full items-center'>
           <h3 className='text-2xl font-semibold text-gray-800 dark:text-white'>
-            Connect Exchange
+            Connect Exchange {exchangeName}
           </h3>
           <p className='font-light text-sm text-gray-500 dark:text-gray-200'>
             You will be redirected to byScript exchange portal
@@ -42,13 +31,24 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
       </div>
       {/* <!-- Modal body --> */}
       <div className='p-4 md:p-5 space-y-4 flex flex-col items-center'>
-        <p className='text-xl font-bold text-gray-800 dark:text-gray-200'>
-          <span className='italic text-red-500 underline'>IMPORTANT! </span>{' '}
-          Please make sure to copy this id and paste on &quot;Name&quot; input
-          field, otherwise your exhcange will not be connected!!
+        <p className='text-center text-md lg:text-xl font-bold text-gray-800 dark:text-gray-200'>
+          <span className='italic text-red-500 underline'>IMPORTANT! </span>
+          {'   '}Please make sure to copy this id and paste on &quot;Name&quot;
+          input field, otherwise your exhcange will not be connected!!
         </p>
+        <a
+          className='text-gray-800 dark:text-gray-200 underline text-sm font-light hover:text-blue-500'
+          href={`https://docs.byscript.io/exchange/${
+            lowercaseExchangeName === 'gate' ? 'gate.io' : lowercaseExchangeName
+          }`}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {' '}
+          How to connect my {exchangeName} exhcange?
+        </a>
         <div className='flex gap-2 items-center'>
-          <h3 className='text-3xl font-bold text-yellow-500 dark:text-yellow-300'>
+          <h3 className='text-xl font-bold text-yellow-500 dark:text-yellow-300'>
             {customer?.id}
           </h3>
           <button
@@ -58,8 +58,8 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
             <FaRegCopy color={'gray'} />
           </button>
         </div>
-        
-        <div className='flex gap-2'>
+
+        <div className='flex gap-2 flex-col lg:flex-row'>
           <button
             data-modal-hide='default-modal'
             type='button'
@@ -82,10 +82,17 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
               'underline focus:ring-4 focus:outline-none font-medium rounded-lg text-lg font-light text-black dark:text-white px-5 py-2.5 text-center',
               loading && 'cursor-not-allowed'
             )}
-            onClick={onCheck3CApi}
+            onClick={() =>
+              onCheck3CApi({
+                setLoading,
+                customer,
+                exchangeName,
+                exchangeThumbnail,
+              })
+            }
             disabled={loading}
           >
-            {loading ? 'Loading' : 'I already connected my exchange'}
+            {loading ? 'Loading...' : 'I already connected my exchange'}
           </button>
         </div>
         <img
@@ -99,4 +106,6 @@ export default function ModalAddExchange({ openModal, setOpenModal }) {
 ModalAddExchange.propTypes = {
   openModal: PropTypes.bool,
   setOpenModal: PropTypes.func,
+  exchangeName: PropTypes.string.isRequired,
+  exchangeThumbnail: PropTypes.string.isRequired,
 };

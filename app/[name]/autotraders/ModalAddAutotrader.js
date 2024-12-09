@@ -10,7 +10,9 @@ import { useAutotraderStore } from '@/app/store/autotraderStore';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import {
   addDocumentFirebase,
+  deleteDocumentFirebase,
   getCollectionFirebase,
+  updateDocumentFirebase,
 } from '@/app/utils/firebaseApi';
 import PairImageComponent from '@/app/components/ui/PairImageComponent';
 import moment from 'moment';
@@ -24,7 +26,11 @@ const tradingPlans = [
   // { name: 'TESTING2', id: 'TESTING2' },
 ];
 
-export default function ModalAddAutotrader({ addModal, setAddModal, setShowPricing }) {
+export default function ModalAddAutotrader({
+  addModal,
+  setAddModal,
+  setShowPricing,
+}) {
   const { exchanges_accounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
   const { user, customer, ipLocation, userPackage } = useUserStore();
@@ -44,12 +50,12 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
   const handleSubmit = async () => {
     if (!userPackage && parseInt(data?.tradeAmount) > 100) {
       Swal.fire({
-        title: "You have no paid subscription",
-        text: "Free tier only allows maximum $100 of trade amount. Do you want to proceed to payment?",
+        title: 'You have no paid subscription',
+        text: 'Free tier only allows maximum $100 of trade amount. Do you want to proceed to payment?',
         showDenyButton: true,
         showCancelButton: true,
-        confirmButtonText: "Continue payment",
-        denyButtonText: `Cancel`
+        confirmButtonText: 'Continue payment',
+        denyButtonText: `Cancel`,
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
@@ -57,79 +63,151 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
           setShowPricing(true);
           setAddModal(false);
         } else if (result.isDenied) {
-          Swal.fire("Changes are not saved", "", "info");
+          Swal.fire('Changes are not saved', '', 'info');
         }
       });
     }
     try {
-    setLoading(false);
-    if (!data?.exchange_name || !data?.exchange_thumbnail)
-      return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });
-    if (!data?.tradeAmount)
-      return Swal.fire({
-        icon: 'warning',
-        text: 'Please fill in trade amount!',
-      });
-    if (data?.trading_plan_pair?.length === 0)
-      return Swal.fire({
-        icon: 'warning',
-        text: 'Please select trading plan and asset pair!',
-      });
+      setLoading(false);
+      if (!data?.exchange_name || !data?.exchange_thumbnail)
+        return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });
+      if (!data?.tradeAmount)
+        return Swal.fire({
+          icon: 'warning',
+          text: 'Please fill in trade amount!',
+        });
+      if (data?.trading_plan_pair?.length === 0)
+        return Swal.fire({
+          icon: 'warning',
+          text: 'Please select trading plan and asset pair!',
+        });
 
-    const addDataToAutotraderCollection = {
-      ...data,
-      trading_plan_pair: data.trading_plan_pair.filter(
-        (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
-      ),
-    };
+      // Extracting the pairs and removing duplicates
+      const extractedPairs = Array.from(
+        new Set(
+          data.trading_plan_pair.map((pair) => {
+            const parts = pair.split('_');
+            return `${parts[1]}_${parts[2]}`;
+          })
+        )
+      );
 
-    // return console.log(addDataToAutotraderCollection,'addDataToAutotraderCollection')
+      // Converting the array to a comma-separated string
+      let resultString;
+      if (extractedPairs.length > 1) {
+        resultString = extractedPairs.join(', ');
+      } else {
+        resultString = extractedPairs[0] || ''; // Handle the case where the array is empty
+      }
+      const addDataToAutotraderCollection = {
+        ...data,
+        resultString,
+        trading_plan_pair: data.trading_plan_pair.filter(
+          (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
+        ),
+        exchange_external_id : data?.external_id
+      };
+      // return console.log(
+      //   addDataToAutotraderCollection,
+      //   'addDataToAutotraderCollection'
+      // );
+
       setLoading(true);
-      await addDocumentFirebase(
+      const id = await addDocumentFirebase(
         'dca_bots',
         addDataToAutotraderCollection,
         'byScript'
       );
-      getAutotraders(data?.email);
-      await fetch('/api/email', {
+
+      const createBot = await fetch('/api/3commas/bots/create-bot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: authFirebase.currentUser?.displayName,
-          email: authFirebase.currentUser?.email,
-          subject: `Request Add Autotrader`,
-          htmlContent: autotraderRequestTemplate({
-            requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
-            autotrader_name: data?.autotrader_name,
-            exchange_thumbnail:
-              data?.exchange_name === 'GATE'
-                ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
-                : data?.exchange_thumbnail,
-            exchange_name: data?.exchange_name,
-            tradeAmount: data?.tradeAmount,
-            trading_plan_pair: data?.trading_plan_pair,
-            trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
-            name: authFirebase.currentUser?.displayName,
-            email: authFirebase.currentUser?.email,
-          }),
-          bcc: [
-            { name: 'Reinhart', email: 'reinhartsams@gmail.com' },
-            { name: 'Edwin', email: 'edwinfardyanto@gmail.com' },
+          name: id,
+          account_id: data.external_id,
+          pairs: resultString,
+          base_order_volume: 100,
+          take_profit: 0,
+          martingale_volume_coefficient: 10,
+          martingale_step_coefficient: 10,
+          max_safety_orders: 0,
+          active_safety_orders_count: 0,
+          safety_order_step_percentage: 2,
+          take_profit_type: 'total',
+          strategy_list: [
+            {
+              strategy: 'tv_custom_signal',
+            },
           ],
+          close_strategy_list: [
+            {
+              strategy: 'tv_custom_signal',
+            },
+          ],
+          safety_order_volume: 10,
+          stop_loss_percentage: 99.9,
+          start_order_type: 'market',
+          reinvesting_percentage: 100,
+          risk_reduction_percentage: 100,
         }),
       });
+      const resCreateBot = await createBot.json();
+      console.log(resCreateBot, 'resCreateBot');
+      if (resCreateBot.error) {
+        await deleteDocumentFirebase('dca_bots',id);
+        return Swal.fire({ icon: 'error', text: 'Error creating bot' });
+      } else if (resCreateBot.data) {
+        await updateDocumentFirebase('dca_bots', id, {
+          bot_id : resCreateBot.data.id
+        })
+      }
+    
+      getAutotraders(data?.email);
+      // await fetch('/api/email', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     name: authFirebase.currentUser?.displayName,
+      //     email: authFirebase.currentUser?.email,
+      //     subject: `Request Add Autotrader`,
+      //     htmlContent: autotraderRequestTemplate({
+      //       requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+      //       autotrader_name: data?.autotrader_name,
+      //       exchange_thumbnail:
+      //         data?.exchange_name === 'GATE'
+      //           ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
+      //           : data?.exchange_thumbnail,
+      //       exchange_name: data?.exchange_name,
+      //       tradeAmount: data?.tradeAmount,
+      //       trading_plan_pair: data?.trading_plan_pair,
+      //       trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
+      //       name: authFirebase.currentUser?.displayName,
+      //       email: authFirebase.currentUser?.email,
+      //     }),
+      //     bcc: [
+      //       { name: 'Reinhart', email: 'reinhartsams@gmail.com' },
+      //       { name: 'Edwin', email: 'edwinfardyanto@gmail.com' },
+      //     ],
+      //   }),
+      // });
 
-      await addActivityLog({
-        customerId: customer?.id || null,
-        uid: user?.id || null,
-        ipLocation: ipLocation,
-        type: 'REQUEST AUTOTRADER',
-      });
+      // await addActivityLog({
+      //   customerId: customer?.id || null,
+      //   uid: user?.id || null,
+      //   ipLocation: ipLocation,
+      //   type: 'REQUEST AUTOTRADER',
+      // });
+      // Swal.fire({
+      //   icon: 'success',
+      //   text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',
+      // });
       Swal.fire({
         icon: 'success',
-        text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',
+        text: `Autotrader created with id ${id}. `,
       });
       setAddModal(false);
     } catch (error) {
@@ -144,9 +222,23 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
       });
     }
   };
+  function handleClose() {
+    setAddModal(false);
+    setData({
+      uid: authFirebase.currentUser?.uid,
+      name: authFirebase.currentUser?.displayName,
+      email: authFirebase.currentUser?.email,
+      tradeAmount: 0,
+      exchange_name: '',
+      exchange_thumbnail: '',
+      status: 'REQUESTED',
+      trading_plan_pair: [],
+      autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
+    })
+  }
 
   return (
-    <Modal open={addModal} onClose={() => setAddModal(false)}>
+    <Modal open={addModal} onClose={handleClose}>
       <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600'>
         <div className='flex flex-col gap-2'>
           <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
@@ -174,6 +266,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
                       exchange_name: JSON.parse(e.target.value)?.exchange_name,
                       exchange_thumbnail: JSON.parse(e.target.value)
                         ?.exchange_thumbnail,
+                      external_id: JSON.parse(e.target.value)?.external_id,
                     });
                   }}
                   checked={data?.exchange_name === exchange?.exchange_name}
@@ -183,6 +276,7 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
                   name='default-radio'
                   className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 />
+                <div className="flex w-full justify-between">
                 <img
                   className='w-[8rem] rounded-md object-contain p-2 bg-gray-500 dark:bg-transparent'
                   src={
@@ -192,6 +286,8 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
                   }
                   alt={exchange?.name || 'gate'}
                 />
+                  <p className='text-gray-600 dark:text-gray-200 text-sm'>{exchange?.external_name}</p>
+                </div>
               </div>
             ))
           ) : (
@@ -199,7 +295,10 @@ export default function ModalAddAutotrader({ addModal, setAddModal, setShowPrici
           )}
         </div>
         <div className='flex flex-col gap-1'>
-          <label htmlFor='first_name' className='text-gray-800 dark:text-gray-100 font-bold'>
+          <label
+            htmlFor='first_name'
+            className='text-gray-800 dark:text-gray-100 font-bold'
+          >
             Trade Amount
           </label>
           <div className='flex'>
@@ -290,7 +389,7 @@ function TradingPlanSelectComponent({ data, setData }) {
     };
   }, [selectedTradingPlan]);
   return (
-    <div className='flex gap-2'>
+    <div className='flex flex-col lg:flex-row gap-2'>
       <div className='block'>
         <div className='grid grid-cols-2'>
           {tradingPlans.map((plan, i) => (
@@ -306,9 +405,10 @@ function TradingPlanSelectComponent({ data, setData }) {
                     handleSelectTP(e.target.checked, e.target.value)
                   }
                 />
-                <p className='text-lg font-bold text-black dark:text-white'>{plan?.name}</p>
+                <p className='text-lg font-bold text-black dark:text-white'>
+                  {plan?.name}
+                </p>
               </div>
-              
             </div>
           ))}
         </div>
@@ -332,15 +432,26 @@ function TradingPlanSelectComponent({ data, setData }) {
                     }
                     value={JSON.stringify(pair)}
                   />
-                  <p className='text-lg font-bold text-black dark:text-white'>{pair?.pair}</p>
+                  <p className='text-lg font-bold text-black dark:text-white'>
+                    {pair?.pair}
+                  </p>
                   <PairImageComponent pair={pair?.pair} />
                 </div>
-                <p className='text-xs font-thin text-black dark:text-white'>Trading plan: {selectedTradingPlan?.id}</p>
-                <a href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`} className='underline text-blue-600 dark:text-blue-400 text-xs'>See backtest</a>
+                <p className='text-xs font-thin text-black dark:text-white'>
+                  Trading plan: {selectedTradingPlan?.id}
+                </p>
+                <a
+                  href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`}
+                  className='underline text-blue-600 dark:text-blue-400 text-xs'
+                >
+                  See backtest
+                </a>
               </div>
             ))
           ) : (
-            <p className='text-xs text-dark-800 dark:text-gray-200 italic'>No pair available</p>
+            <p className='text-xs text-dark-800 dark:text-gray-200 italic'>
+              No pair available
+            </p>
           )}
         </div>
         {errorMsg && <p className='text-red-500 text-sm italic'>{errorMsg}</p>}
@@ -348,8 +459,6 @@ function TradingPlanSelectComponent({ data, setData }) {
     </div>
   );
 }
-
-
 
 ModalAddAutotrader.propTypes = {
   addModal: PropTypes.bool,

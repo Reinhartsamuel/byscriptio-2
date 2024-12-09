@@ -1,5 +1,5 @@
 import StatisticsComponent from './components/StatisticsComponent';
-import { HeroHighlightComponent } from './components/HeroHighlightsComponent';
+// import { HeroHighlightComponent } from './components/HeroHighlightsComponent';
 import { ImageGallery } from './components/ImageGallery';
 import SignalPreviewComponent from './components/SignalPreviewComponent';
 import { StepsComponent } from './components/StepsComponent';
