@@ -9,10 +9,11 @@ const ExchangeComponent = ({ exchange }) => {
       const res = await fetch(
         `/api/3commas/accounts/load-balances?$accountId=${exchange?.external_id}`
       );
-      const { data } = await res.json();
-      console.log(data);
+      const { data, error } = await res.json();
+      console.log(data, 'data getBalance');
+      console.log(error, 'error getBalance');
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message, 'error getBalance catch');
     }
   }
   useEffect(() => {
