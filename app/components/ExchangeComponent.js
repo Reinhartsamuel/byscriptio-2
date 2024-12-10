@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
 const ExchangeComponent = ({ exchange }) => {
-  async function getBalance() {
-    try {
-      const res = await fetch(
-        `/api/3commas/accounts/load-balances?$accountId=${exchange?.external_id}`
-      );
-      const { data, error } = await res.json();
-      console.log(data, 'data getBalance');
-      console.log(error, 'error getBalance');
-    } catch (error) {
-      console.log(error.message, 'error getBalance catch');
-    }
-  }
-  useEffect(() => {
-    getBalance();
-  }, []);
+  // async function getBalance() {
+  //   try {
+  //     const res = await fetch(
+  //       `/api/3commas/accounts/load-balances?$accountId=${exchange?.external_id}`
+  //     );
+  //     const { data, error } = await res.json();
+  //     console.log(data, 'data getBalance');
+  //     console.log(error, 'error getBalance');
+  //   } catch (error) {
+  //     console.log(error.message, 'error getBalance catch');
+  //   }
+  // }
+  // useEffect(() => {
+  //   getBalance();
+  // }, []);
   return (
     <div className='flex flex-col justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[6rem]'>
       <div className='flex w-full justify-between'>
