@@ -20,6 +20,8 @@ export async function GET(request) {
         Signature: signature,
       },
     });
+    console.log(API_KEY,'API_KEY');
+    console.log(signature,'signature');
     // if (!response.ok) {
     //   throw new Error('Network response was not ok');
     // }
