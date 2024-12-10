@@ -120,96 +120,96 @@ export default function ModalAddAutotrader({
         'byScript'
       );
 
-      const createBot = await fetch('/api/3commas/bots/create-bot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: id,
-          account_id: data.exchange_external_id,
-          pairs: resultString,
-          base_order_volume: 100,
-          take_profit: 0,
-          martingale_volume_coefficient: 10,
-          martingale_step_coefficient: 10,
-          max_safety_orders: 0,
-          active_safety_orders_count: 0,
-          safety_order_step_percentage: 2,
-          take_profit_type: 'total',
-          strategy_list: [
-            {
-              strategy: 'tv_custom_signal',
-            },
-          ],
-          close_strategy_list: [
-            {
-              strategy: 'tv_custom_signal',
-            },
-          ],
-          safety_order_volume: 10,
-          stop_loss_percentage: 99.9,
-          start_order_type: 'market',
-          reinvesting_percentage: 100,
-          risk_reduction_percentage: 100,
-        }),
-      });
-      const resCreateBot = await createBot.json();
-      console.log(resCreateBot, 'resCreateBot');
-      if (resCreateBot.error) {
-        await deleteDocumentFirebase('dca_bots', id);
-        return Swal.fire({ icon: 'error', text: 'Error creating bot' });
-      } else if (resCreateBot.data) {
-        await updateDocumentFirebase('dca_bots', id, {
-          bot_id: resCreateBot.data.id,
-        });
-      }
-
-      getAutotraders(data?.email);
-      // await fetch('/api/email', {
+      // const createBot = await fetch('/api/3commas/bots/create-bot', {
       //   method: 'POST',
       //   headers: {
       //     'Content-Type': 'application/json',
       //   },
       //   body: JSON.stringify({
-      //     name: authFirebase.currentUser?.displayName,
-      //     email: authFirebase.currentUser?.email,
-      //     subject: `Request Add Autotrader`,
-      //     htmlContent: autotraderRequestTemplate({
-      //       requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
-      //       autotrader_name: data?.autotrader_name,
-      //       exchange_thumbnail:
-      //         data?.exchange_name === 'GATE'
-      //           ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
-      //           : data?.exchange_thumbnail,
-      //       exchange_name: data?.exchange_name,
-      //       tradeAmount: data?.tradeAmount,
-      //       trading_plan_pair: data?.trading_plan_pair,
-      //       trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
-      //       name: authFirebase.currentUser?.displayName,
-      //       email: authFirebase.currentUser?.email,
-      //     }),
-      //     bcc: [
-      //       { name: 'Reinhart', email: 'reinhartsams@gmail.com' },
-      //       { name: 'Edwin', email: 'edwinfardyanto@gmail.com' },
+      //     name: id,
+      //     account_id: data.exchange_external_id,
+      //     pairs: resultString,
+      //     base_order_volume: 100,
+      //     take_profit: 0,
+      //     martingale_volume_coefficient: 10,
+      //     martingale_step_coefficient: 10,
+      //     max_safety_orders: 0,
+      //     active_safety_orders_count: 0,
+      //     safety_order_step_percentage: 2,
+      //     take_profit_type: 'total',
+      //     strategy_list: [
+      //       {
+      //         strategy: 'tv_custom_signal',
+      //       },
       //     ],
+      //     close_strategy_list: [
+      //       {
+      //         strategy: 'tv_custom_signal',
+      //       },
+      //     ],
+      //     safety_order_volume: 10,
+      //     stop_loss_percentage: 99.9,
+      //     start_order_type: 'market',
+      //     reinvesting_percentage: 100,
+      //     risk_reduction_percentage: 100,
       //   }),
       // });
+      // const resCreateBot = await createBot.json();
+      // console.log(resCreateBot, 'resCreateBot');
+      // if (resCreateBot.error) {
+      //   await deleteDocumentFirebase('dca_bots', id);
+      //   return Swal.fire({ icon: 'error', text: 'Error creating bot' });
+      // } else if (resCreateBot.data) {
+      //   await updateDocumentFirebase('dca_bots', id, {
+      //     bot_id: resCreateBot.data.id,
+      //   });
+      // }
 
-      // await addActivityLog({
-      //   customerId: customer?.id || null,
-      //   uid: user?.id || null,
-      //   ipLocation: ipLocation,
-      //   type: 'REQUEST AUTOTRADER',
-      // });
-      // Swal.fire({
-      //   icon: 'success',
-      //   text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',
-      // });
+      getAutotraders(data?.email);
+      await fetch('/api/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: authFirebase.currentUser?.displayName,
+          email: authFirebase.currentUser?.email,
+          subject: `Request Add Autotrader`,
+          htmlContent: autotraderRequestTemplate({
+            requestedAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+            autotrader_name: data?.autotrader_name,
+            exchange_thumbnail:
+              data?.exchange_name === 'GATE'
+                ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
+                : data?.exchange_thumbnail,
+            exchange_name: data?.exchange_name,
+            tradeAmount: data?.tradeAmount,
+            trading_plan_pair: data?.trading_plan_pair,
+            trading_plan_id: extractUniqueStrategies(data?.trading_plan_pair),
+            name: authFirebase.currentUser?.displayName,
+            email: authFirebase.currentUser?.email,
+          }),
+          bcc: [
+            { name: 'Reinhart', email: 'reinhartsams@gmail.com' },
+            { name: 'Edwin', email: 'edwinfardyanto@gmail.com' },
+          ],
+        }),
+      });
+
+      await addActivityLog({
+        customerId: customer?.id || null,
+        uid: user?.id || null,
+        ipLocation: ipLocation,
+        type: 'REQUEST AUTOTRADER',
+      });
       Swal.fire({
         icon: 'success',
-        text: `Autotrader created with id ${id}. `,
+        text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',
       });
+      // Swal.fire({
+      //   icon: 'success',
+      //   text: `Autotrader created with id ${id}. `,
+      // });
       setAddModal(false);
     } catch (error) {
       Swal.fire({ icon: 'error', text: error.message });
