@@ -24,7 +24,12 @@ export async function GET(request) {
     //   throw new Error('Network response was not ok');
     // }
     const data = await response.json();
-    if (data.error) return new Response(JSON.stringify({ status: false, ...data }), { status: 400 });
+    if (data.error) {
+      console.log(data.error, 'error creating bot on server');
+      return new Response(JSON.stringify({ status: false, ...data }), {
+        status: 400,
+      });
+    }
     return Response.json({
       status: true,
       data,
