@@ -23,18 +23,15 @@ export async function GET(request) {
     // if (!response.ok) {
     //   throw new Error('Network response was not ok');
     // }
-    console.log(response);
     const data = await response.json();
     return Response.json({
       status: true,
       data,
     });
   } catch (error) {
-    return new Response(
-      JSON.stringify({ status: false, message: error.message }),
-      {
-        status: 500,
-      }
-    );
+    return Response.json({
+      status: false,
+      error: error.message,
+    });
   }
 }

@@ -106,7 +106,7 @@ export default function ModalAddAutotrader({
         trading_plan_pair: data.trading_plan_pair.filter(
           (fruit, index) => data.trading_plan_pair.indexOf(fruit) === index
         ),
-        exchange_external_id: data?.external_id,
+        exchange_external_id: data?.exchange_external_id || '',
       };
       // return console.log(
       //   addDataToAutotraderCollection,
@@ -127,7 +127,7 @@ export default function ModalAddAutotrader({
         },
         body: JSON.stringify({
           name: id,
-          account_id: data.external_id,
+          account_id: data.exchange_external_id,
           pairs: resultString,
           base_order_volume: 100,
           take_profit: 0,
@@ -267,7 +267,7 @@ export default function ModalAddAutotrader({
                       exchange_name: JSON.parse(e.target.value)?.exchange_name,
                       exchange_thumbnail: JSON.parse(e.target.value)
                         ?.exchange_thumbnail,
-                      exchange_external_id: JSON.parse(e.target.value)?.external_id,
+                      exchange_external_id: JSON.parse(e.target.value)?.external_id || '',
                     });
                   }}
                   checked={data?.exchange_external_id === exchange?.external_id}
@@ -287,6 +287,7 @@ export default function ModalAddAutotrader({
                     <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
                       {exchange?.type}
                     </span>
+                    <p className='text-gray-600 dark:text-gray-400 text-sm'>id: {exchange?.external_id}</p>
                   </div>
                   <p className='text-gray-600 dark:text-gray-200 text-sm'>
                     {exchange?.external_name}
