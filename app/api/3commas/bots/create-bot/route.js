@@ -16,6 +16,8 @@ export async function POST(request) {
     const signatureMessage =
       '/public/api/ver1/bots/create_bot' + JSON.stringify(body);
     const signature = generateSignature(API_SECRET, signatureMessage);
+    console.log(API_KEY,'API_KEY');
+    console.log(signature,'signature');
 
     const response = await fetch(url, {
       method: 'POST',
