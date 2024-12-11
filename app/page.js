@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <Navbar />
       {/* <div className="absolute top-0 z-[-20] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" /> */}
-      <div className=' w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20'>
+      <div className=' w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20 bg-black'>
         <div className='absolute  -z-10 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]' />
         <div className='w-full md:w-2/3 text-center items-center justify-center'>
           <h1 className='text-4xl font-bold text-white xl:text-8xl'>
@@ -162,11 +162,11 @@ export default function Home() {
        
       </div>
 
-      <div className='w-full h-screen mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
-        <h1 className='text-3xl mt-10 font-bold text-center mx-auto md:text-5xl lg:text-7xl'>
+      <div className='w-full min-h-screen pb-10 mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
+        <h1 className='text-3xl mt-10 font-bold text-center mx-auto md:text-5xl lg:text-7xl text-black dark:text-white'>
           LIVE SIGNAL 📣📈📉
         </h1>
-        <h3 className='text-center mx-auto'>
+        <h3 className='text-center mx-auto text-black dark:text-white'>
           Signal live dari trading plan byscript, otomatis dari algoritma yang
           kami kembangkan
         </h3>

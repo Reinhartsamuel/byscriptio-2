@@ -4,7 +4,7 @@ import logo from '../../public/logo_byScript_white_green.svg';
 
 const Footer = () => {
   return (
-    <footer className='p-4 sm:p-6 w-full mt-20'>
+    <footer className='p-4 sm:p-6 w-full mt-20 bg-black'>
       <div >
         <div className='md:flex md:justify-between'>
           <div className='mb-6 md:mb-0'>

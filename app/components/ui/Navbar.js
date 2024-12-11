@@ -71,9 +71,9 @@ export default function Navbar() {
         const name =
           user?.displayName?.split(' ')?.join('-') ||
           user?.email?.split('@')[0];
-        if (window?.location.origin + '/' === window?.location.href) {
-          router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
-        }
+        // if (window?.location.origin + '/' === window?.location.href) {
+        //   router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
+        // }
 
         setMenuNavigation([
           { name: 'Dashboard', href: `/${name}` },
@@ -194,11 +194,13 @@ export default function Navbar() {
           </div>
           <div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
             <div className='flex flex-shrink-0 items-center'>
-              <Image
-                alt='byScript'
-                src={logo}
-                className='h-8 w-auto rounded-lg'
-              />
+              <a href="/">
+                <Image
+                  alt='byScript'
+                  src={logo}
+                  className='h-8 w-auto rounded-lg'
+                />
+              </a>
             </div>
             <div className='hidden sm:ml-6 sm:block'>
               <div className='flex space-x-4'>
