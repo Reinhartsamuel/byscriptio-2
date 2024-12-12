@@ -9,6 +9,7 @@ const url = `https://api.3commas.io/public/api/ver1/bots/create_bot`;
 export async function POST(request) {
   try {
     const body = await request.json();
+    console.log('this is using RSA key');
 
     // const queryString = "/";
     const signatureMessage =
