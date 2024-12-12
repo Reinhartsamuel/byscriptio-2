@@ -42,7 +42,7 @@ export default function ModalAddAutotrader({
     exchange_name: '',
     exchange_external_id: '',
     exchange_thumbnail: '',
-    status: 'REQUESTED',
+    status: 'STOPPED',
     trading_plan_pair: [],
     autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
   });
@@ -232,7 +232,7 @@ export default function ModalAddAutotrader({
       tradeAmount: 0,
       exchange_name: '',
       exchange_thumbnail: '',
-      status: 'REQUESTED',
+      status: 'STOPPED',
       trading_plan_pair: [],
       autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
     });
