@@ -129,7 +129,7 @@ export default function ModalAddAutotrader({
           name: id,
           account_id: data.exchange_external_id,
           pairs: resultString,
-          base_order_volume: 100,
+          base_order_volume: parseFloat(data?.tradeAmount),
           take_profit: 0,
           martingale_volume_coefficient: 10,
           martingale_step_coefficient: 10,

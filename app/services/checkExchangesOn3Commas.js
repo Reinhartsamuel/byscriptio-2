@@ -34,7 +34,7 @@ export async function onCheck3CApi({
 }) {
   setLoading(true);
   try {
-    const res = await fetch('/api/3commas/accounts/user-connected-exchanges');
+    const res = await fetch('/api/3commas/accounts/user-connected-exchanges/rsa');
     const { data, error } = await res.json();
     if (error) throw new Error(error);
     console.log(
