@@ -68,7 +68,7 @@ export default function ModalAddExchange({
             )}
             onClick={() =>
               window.open(
-                'https://client.3commas.io/signup/byscript_exchange_connect-6c8cbefd',
+                'https://exchange.byscript.io',
                 '_blank'
               )
             }
