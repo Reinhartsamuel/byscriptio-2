@@ -465,45 +465,7 @@ function TradingPlanSelectComponent({ data, setData }) {
               No pair available
             </p>
           )}
-          {loading ? (
-            <Spinner />
-          ) : availPairs?.length > 0 ? (
-            availPairs?.map((pair, i) => (
-              <div
-                key={i}
-                className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'
-              >
-                <div className='flex gap-1 justify-between items-center w-full'>
-                  <div className='flex items-center'>
-                    <input
-                      type={'checkbox'}
-                      onChange={(e) =>
-                        handleSelectPair(e.target.checked, e.target.value)
-                      }
-                      value={JSON.stringify(pair)}
-                    />
-                    <p className='text-sm font-bold text-black dark:text-white'>
-                      {pair?.pair}
-                    </p>
-                  </div>
-                    <PairImageComponent pair={pair?.pair} showUsdt={false} />
-                </div>
-                <p className='text-xs font-thin text-black dark:text-white'>
-                  Trading plan: {selectedTradingPlan?.id}
-                </p>
-                <a
-                  href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`}
-                  className='underline text-blue-600 dark:text-blue-400 text-xs'
-                >
-                  See backtest
-                </a>
-              </div>
-            ))
-          ) : (
-            <p className='text-xs text-dark-800 dark:text-gray-200 italic'>
-              No pair available
-            </p>
-          )}
+       
         </div>
         {errorMsg && <p className='text-red-500 text-sm italic'>{errorMsg}</p>}
       </div>
