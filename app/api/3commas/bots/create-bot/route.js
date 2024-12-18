@@ -39,11 +39,16 @@ export async function POST(request) {
         status: 400,
       });
     }
+    console.log({
+      status: true,
+      data,
+    }, 'response')
     return Response.json({
       status: true,
       data,
     });
   } catch (error) {
+    console.log(error.message);
     return new Response(
       JSON.stringify({ status: false, message: error.message }),
       {

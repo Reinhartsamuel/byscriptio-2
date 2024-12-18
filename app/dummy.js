@@ -317,6 +317,12 @@ export const coins = [
     icon: 'https://s2.coinmarketcap.com/static/img/coins/128x128/1027.png',
   },
   {
+    symbol: 'XRP',
+    name: 'Ripple',
+    id: 123123123,
+    icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/52.png',
+  },
+  {
     symbol: 'USDT',
     name: 'Tether',
     id: 825,
@@ -15598,6 +15604,12 @@ export const coins = [
     symbol: 'TME',
     name: 'Timereum',
     id: 1892,
+    icon: 'https://s2.coinmarketcap.com/static/img/coins/128x128/1892.png',
+  },
+  {
+    symbol: 'SHIB',
+    name: 'Shiba Inu',
+    id: 1892222,
     icon: 'https://s2.coinmarketcap.com/static/img/coins/128x128/1892.png',
   },
 ];

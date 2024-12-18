@@ -3,26 +3,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import sortTradesData from '@/app/utils/sortTradesData';
 
 const EquityGrowthChart = ({ tradesData }) => {
-  // SORT TRADE DATA BY DATE
-  let sortedTradesData = moment(
-    moment(tradesData[0]?.['Date/Time'], 'YYYY-MM-DD HH:mm')
-  ).isBefore(
-    moment(tradesData[tradesData.length - 1]?.['Date/Time'], 'YYYY-MM-DD HH:mm')
-  )
-    ? tradesData.filter((trade) => trade.Signal === 'Sell')
-    : tradesData.filter((trade) => trade.Signal === 'Sell')?.reverse();
-
-    console.log(sortedTradesData)
-  const [initialCapital, setInitialCapital] = useState(1000);
-  const [cumulativeProfit, setCumulativeProfit] = useState(
-    sortedTradesData.map((trade) =>
-      parseFloat(trade['Cum. Profit USDT'] || trade['Cum. Profit USD'])
-    )
-  );
-  console.log(cumulativeProfit,'cumulativeProfit');
+  // REF FOR CHART
+  const chartRef = useRef(null);
+  
   // STATES
+  const [sortedTradesData, setSortedTradesData] = useState(sortTradesData(tradesData));
+  const [tradesDataWithCumulativeCalc, setTradesDataWithCumulativeCalc] = useState([]);
+  const [initialCapital, setInitialCapital] = useState(1000);
   const [dateFilter, setDateFilter] = useState({
     startDate: moment(
       sortedTradesData[0]?.['Date/Time'],
@@ -33,43 +23,51 @@ const EquityGrowthChart = ({ tradesData }) => {
       'YYYY-MM-DD HH:mm'
     ).format('YYYY-MM-DD'),
   });
-  const [drawdownData, setDrawdownData] = useState(
-    sortedTradesData.map((trade) => parseFloat(trade['Drawdown %']))
-  );
 
-  const [buyAndHoldEquity, setBuyAndHoldEquity] = useState(
-    sortedTradesData.map(
+
+
+  useEffect(() => {
+    () => {};
+  }, [dateFilter.startDate, dateFilter.endDate]);
+
+  useEffect(() => {
+    const ctx = chartRef.current.getContext('2d');
+
+    // CUMULATIVE PROFIT ===============================================================
+    // CUMULATIVE PROFIT ===============================================================
+    // CUMULATIVE PROFIT ===============================================================
+    const cumulativeProfit = sortedTradesData.map((trade) => parseFloat(trade['Cum. Profit USDT'] || trade['Cum. Profit USD']))
+    console.log(cumulativeProfit, 'cumulativeProfit');
+
+
+    // DRAWDOWN ========================================================================
+    // DRAWDOWN ========================================================================
+    // DRAWDOWN ========================================================================
+    const drawdownData = sortedTradesData.map((trade) => parseFloat(trade['Drawdown %']));
+
+    // BUY AND HOLD ====================================================================
+    // BUY AND HOLD ====================================================================
+    // BUY AND HOLD ====================================================================
+    const buyAndHoldEquity = sortedTradesData.map(
       (trade) =>
         parseFloat(
           (trade['Price USDT'] || trade['Price USD']) /
             (sortedTradesData[0]['Price USDT'] ||
               sortedTradesData[0]['Price USD'])
         ) * 100
-    )
-  );
+    );
+  
 
-  console.log(cumulativeProfit,'cumulativeProfit');
 
-  // CONSTANTS
-  const labels = sortedTradesData.map((trade) => trade['Date/Time']);
-  const percentageInset = 100;
-  const equityGrowthPercentage =
-    Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0
-      ? cumulativeProfit.map(
-          (profit) => (profit / initialCapital) * 100 + percentageInset
-        )
-      : [];
-
-  // REF FOR CHART
-  const chartRef = useRef(null);
-
-  useEffect(() => {
-    setCumulativeProfit();
-  }, [dateFilter.startDate, dateFilter.endDate]);
-
-  useEffect(() => {
-    const ctx = chartRef.current.getContext('2d');
-
+    // CONSTANTS
+    const labels = sortedTradesData.map((trade) => trade['Date/Time']);
+    const percentageInset = 100;
+    const equityGrowthPercentage =
+      Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0
+        ? cumulativeProfit.map(
+            (profit) => (profit / initialCapital) * 100 + percentageInset
+          )
+        : [];
     const mixedChart = new Chart(ctx, {
       type: 'bar', // Default type for the main dataset
       data: {
@@ -104,9 +102,21 @@ const EquityGrowthChart = ({ tradesData }) => {
         ],
       },
       options: {
+        legend: {
+          onHover: function (e) {
+            e.target.style.cursor = 'pointer';
+          },
+        },
+        hover: {
+          onHover: function (e) {
+            var point = this.getElementAtEvent(e);
+            if (point.length) e.target.style.cursor = 'pointer';
+            else e.target.style.cursor = 'default';
+          },
+        },
         elements: {
           point: {
-            radius: 2,
+            radius: 1,
           },
         },
         scales: {
@@ -157,7 +167,7 @@ const EquityGrowthChart = ({ tradesData }) => {
     return () => {
       mixedChart.destroy();
     };
-  }, [tradesData, initialCapital, dateFilter.startDate,dateFilter.endDate, ]);
+  }, [tradesData, initialCapital, dateFilter.startDate, dateFilter.endDate]);
 
   return (
     <div>

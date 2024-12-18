@@ -267,7 +267,8 @@ export default function ModalAddAutotrader({
                       exchange_name: JSON.parse(e.target.value)?.exchange_name,
                       exchange_thumbnail: JSON.parse(e.target.value)
                         ?.exchange_thumbnail,
-                      exchange_external_id: JSON.parse(e.target.value)?.external_id || '',
+                      exchange_external_id:
+                        JSON.parse(e.target.value)?.external_id || '',
                     });
                   }}
                   checked={data?.exchange_external_id === exchange?.external_id}
@@ -287,7 +288,9 @@ export default function ModalAddAutotrader({
                     <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
                       {exchange?.type}
                     </span>
-                    <p className='text-gray-600 dark:text-gray-400 text-sm'>id: {exchange?.external_id}</p>
+                    <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                      id: {exchange?.external_id}
+                    </p>
                   </div>
                   <p className='text-gray-600 dark:text-gray-200 text-sm'>
                     {exchange?.external_name}
@@ -420,7 +423,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       </div>
       <div className='block'>
         <p className='text-black dark:text-white'>Pairs</p>
-        <div className='flex flex-wrap max-w-xl gap-2'>
+        <div className='grid grid-cols-1 grid-rows-3 overflow-scroll lg:grid-cols-4 gap-2'>
           {loading ? (
             <Spinner />
           ) : availPairs?.length > 0 ? (
@@ -429,18 +432,61 @@ function TradingPlanSelectComponent({ data, setData }) {
                 key={i}
                 className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'
               >
-                <div className='flex gap-1 items-center'>
-                  <input
-                    type={'checkbox'}
-                    onChange={(e) =>
-                      handleSelectPair(e.target.checked, e.target.value)
-                    }
-                    value={JSON.stringify(pair)}
-                  />
-                  <p className='text-lg font-bold text-black dark:text-white'>
-                    {pair?.pair}
-                  </p>
-                  <PairImageComponent pair={pair?.pair} />
+                <div className='flex gap-1 justify-between items-center w-full'>
+                  <div className='flex items-center'>
+                    <input
+                      type={'checkbox'}
+                      onChange={(e) =>
+                        handleSelectPair(e.target.checked, e.target.value)
+                      }
+                      value={JSON.stringify(pair)}
+                    />
+                    <p className='text-sm font-bold text-black dark:text-white'>
+                      {pair?.pair}
+                    </p>
+                  </div>
+                    <PairImageComponent pair={pair?.pair} showUsdt={false} />
+                </div>
+                <p className='text-xs font-thin text-black dark:text-white'>
+                  Trading plan: {selectedTradingPlan?.id}
+                </p>
+                <a
+                  href={`${window.location.pathname}/trading-plan/${pair?.trading_plan_id}?pair=${pair?.pair}`}
+                  className='underline text-blue-600 dark:text-blue-400 text-xs'
+                  target={'_blank'}
+                  rel='noreferrer'
+                >
+                  See backtest
+                </a>
+              </div>
+            ))
+          ) : (
+            <p className='text-xs text-dark-800 dark:text-gray-200 italic'>
+              No pair available
+            </p>
+          )}
+          {loading ? (
+            <Spinner />
+          ) : availPairs?.length > 0 ? (
+            availPairs?.map((pair, i) => (
+              <div
+                key={i}
+                className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'
+              >
+                <div className='flex gap-1 justify-between items-center w-full'>
+                  <div className='flex items-center'>
+                    <input
+                      type={'checkbox'}
+                      onChange={(e) =>
+                        handleSelectPair(e.target.checked, e.target.value)
+                      }
+                      value={JSON.stringify(pair)}
+                    />
+                    <p className='text-sm font-bold text-black dark:text-white'>
+                      {pair?.pair}
+                    </p>
+                  </div>
+                    <PairImageComponent pair={pair?.pair} showUsdt={false} />
                 </div>
                 <p className='text-xs font-thin text-black dark:text-white'>
                   Trading plan: {selectedTradingPlan?.id}
