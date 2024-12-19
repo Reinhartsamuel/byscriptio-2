@@ -68,7 +68,7 @@ export default function ModalAddExchange({
             )}
             onClick={() =>
               window.open(
-                'https://exchange.byscript.io',
+                'https://exchange.byscript.io/signup/byscript_exchange_connect',
                 '_blank'
               )
             }

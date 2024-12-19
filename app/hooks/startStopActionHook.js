@@ -53,7 +53,12 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
           Swal.fire({
             icon: 'success',
             title: `${action} bot success`,
-          });
+            showConfirmButton: true,
+            confirmButtonText: 'Close',
+            
+          }).then(() => {
+            window.location.reload();
+          })
           setDetail({
             ...detail,
             status: action === 'start' ? 'ACTIVE' : 'STOPPED',
@@ -61,8 +66,8 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
         } else {
           Swal.fire({
             icon: 'warning',
-            title: 'update bot to 3commas seems failed',
-            text: `status code : ${res.status || 'unknown'}`,
+            title: 'Update bot failed',
+            text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
           });
         }
       } catch (error) {

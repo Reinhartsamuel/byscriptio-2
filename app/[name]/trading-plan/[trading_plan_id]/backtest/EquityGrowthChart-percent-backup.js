@@ -1,4 +1,4 @@
-// EquityGrowthChart.jsx
+// EquityGrowthChart2.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import PropTypes from 'prop-types';
@@ -6,58 +6,43 @@ import moment from 'moment';
 import sortTradesData from '@/app/utils/sortTradesData';
 import calculateTradesDataData from '@/app/utils/calcultateTradesData';
 
-function checkIfSortedByTradeNumber(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (Number(arr[i]['Trade #']) > Number(arr[i + 1]['Trade #'])) {
-      return [];
-    }
-  }
-  return arr;
-}
-
-const EquityGrowthChart = ({ tradesData }) => {
+const EquityGrowthChart2 = ({ tradesData }) => {
   // REF FOR CHART
   const chartRef = useRef(null);
 
   // SORT DATA
-  const sortedTradesData = sortTradesData(tradesData);
+  const sortedTradesData = sortTradesData(tradesData)
+
 
   // STATES
   const [initialCapital, setInitialCapital] = useState(1000);
   const [dateFilter, setDateFilter] = useState({
-    startDate: moment(
-      sortedTradesData[0]?.['Date/Time'],
-      'YYYY-MM-DD HH:mm'
-    ).format('YYYY-MM-DD HH:mm'),
-    endDate: moment(
-      sortedTradesData[sortedTradesData.length - 1]?.['Date/Time'],
-      'YYYY-MM-DD HH:mm'
-    ).format('YYYY-MM-DD HH:mm'),
+    startDate: moment(sortedTradesData[0]?.['Date/Time'], 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm'),
+    endDate: moment(sortedTradesData[sortedTradesData.length - 1]?.['Date/Time'],'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm'),
   });
   const [tradesDataWithCumulativeCalc, setTradesDataWithCumulativeCalc] =
-    useState(
-      calculateTradesDataData({
-        tradesData: sortedTradesData,
-        dateFilter,
-        initialCapital,
-      })
-    );
+    useState(calculateTradesDataData({
+      tradesData: sortedTradesData,
+      dateFilter,
+      initialCapital
+    }));
+
 
   function calculate() {
-    // console.log(dateFilter);
+    console.log(dateFilter);
     const calculatedData = calculateTradesDataData({
       tradesData: sortedTradesData,
       dateFilter,
-      initialCapital,
+      initialCapital
     });
-    setTradesDataWithCumulativeCalc(
-      calculatedData.sort((a, b) => a.timestamp - b.timestamp)
-    );
+    setTradesDataWithCumulativeCalc(calculatedData);
+    console.log(calculatedData, 'calculatedData');
   }
 
+
   useEffect(() => {
-    calculate();
-  }, []);
+
+  },[])
 
   useEffect(() => {
     const ctx = chartRef.current.getContext('2d');
@@ -66,29 +51,32 @@ const EquityGrowthChart = ({ tradesData }) => {
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
-    const cumulativeProfit = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map((trade) =>
-      parseFloat(trade.currentBalance)
+    const cumulativeProfit = tradesDataWithCumulativeCalc.map((trade) =>
+      parseFloat(trade['Cum. Profit USDT'] || trade['Cum. Profit USD'])
     );
-    console.log(cumulativeProfit, 'cumulativeProfit');
+    // console.log(cumulativeProfit, 'cumulativeProfit');
 
     // DRAWDOWN ========================================================================
     // DRAWDOWN ========================================================================
     // DRAWDOWN ========================================================================
-    const drawdownData = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map((trade) =>
+    const drawdownData = tradesDataWithCumulativeCalc.map((trade) =>
       parseFloat(trade['Drawdown %'])
     );
 
     // BUY AND HOLD ====================================================================
     // BUY AND HOLD ====================================================================
     // BUY AND HOLD ====================================================================
-    const buyAndHoldEquity = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map(
-      (trade) => trade.buyAndHoldProfit
+    const buyAndHoldEquity = tradesDataWithCumulativeCalc.map(
+      (trade) =>
+        parseFloat(
+          (trade['Price USDT'] || trade['Price USD']) /
+            (tradesDataWithCumulativeCalc[0]['Price USDT'] ||
+              tradesDataWithCumulativeCalc[0]['Price USD'])
+        ) * 100
     );
 
     // CONSTANTS
-    const labels = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map(
-      (trade) => moment(trade['Date/Time'], 'YYYY-MM-DD HH:mm').format('DD MMM YYYY')
-    );
+    const labels = tradesDataWithCumulativeCalc.map((trade) => trade['Date/Time']);
     const percentageInset = 100;
     const equityGrowthPercentage =
       Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0
@@ -102,22 +90,22 @@ const EquityGrowthChart = ({ tradesData }) => {
         labels: labels,
         datasets: [
           {
-            label: 'Equity Growth (USD)',
-            data: cumulativeProfit,
+            label: 'Equity Growth (%)',
+            data: equityGrowthPercentage,
             type: 'line', // Specify this dataset as a line chart
             borderColor: 'rgba(0, 169, 199, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderWidth: 2,
             fill: true,
           },
-          // {
-          //   label: 'Buy and Hold (%)',
-          //   data: buyAndHoldEquity,
-          //   type: 'line', // Specify this dataset as a bar chart
-          //   backgroundColor: 'rgba(240, 64, 24, 0.5)',
-          //   borderColor: 'rgba(240, 64, 24, 1)',
-          //   borderWidth: 1,
-          // },
+          {
+            label: 'Buy and Hold (%)',
+            data: buyAndHoldEquity,
+            type: 'line', // Specify this dataset as a bar chart
+            backgroundColor: 'rgba(240, 64, 24, 0.5)',
+            borderColor: 'rgba(240, 64, 24, 1)',
+            borderWidth: 1,
+          },
           {
             label: 'Drawdowns (%)',
             data: drawdownData,
@@ -195,59 +183,25 @@ const EquityGrowthChart = ({ tradesData }) => {
     return () => {
       mixedChart.destroy();
     };
-  }, [tradesData, tradesDataWithCumulativeCalc]);
+  }, [tradesData, initialCapital, dateFilter.startDate, dateFilter.endDate]);
 
   return (
     <div>
       <canvas ref={chartRef} width='400' height='200'></canvas>
       {/* <pre>{JSON.stringify(equityGrowthPercentage)}</pre> */}
-      <div className='border-2'>
-        <div className='grid grid-cols-2 lg:grid-cols-4'>
-          <div className='flex flex-col p-2 bg-[#5ce1e6] items-center justify-center'>
-            <p className='text-black text-sm'>PnL</p>
-            <p className='text-gray-800 text-xl font-bold '>
-              {(
-                (tradesDataWithCumulativeCalc[
-                  tradesDataWithCumulativeCalc.length - 1
-                ]?.currentBalance /
-                  tradesDataWithCumulativeCalc[0]?.currentBalance) *
-                100
-              )?.toFixed(2)}
-              %
-            </p>
-          </div>
-          <div className='flex flex-col p-2 bg-[#0097b2] items-center justify-center'>
-            <p className='text-black text-sm'>Win Rate</p>
-            <p className='text-gray-800 text-xl font-bold '>
-              {(
-                (tradesDataWithCumulativeCalc?.filter(
-                  (trade) => trade?.['Profit %'] > 0
-                ).length /
-                  tradesDataWithCumulativeCalc.length) *
-                100
-              )?.toFixed(2)}{' '}
-              %
-            </p>
-          </div>
-          <div className='flex flex-col p-2 bg-red-400 items-center justify-center'>
-            <p className='text-black text-sm'>Drawdown</p>
-            <p className='text-gray-800 text-xl font-bold '>
-              -{
-                tradesDataWithCumulativeCalc.sort(
-                  (a, b) => b['Drawdown %'] - a['Drawdown %']
-                )[0]?.['Drawdown %']
-              }
-              %
-            </p>
-          </div>
-          <div className='flex flex-col p-2 bg-[#cdedff] items-center justify-center'>
-            <p className='text-black text-sm'>Total Trades</p>
-            <p className='text-gray-800 text-xl font-bold '>
-              {tradesData?.length}
-            </p>
-          </div>
+      <div className='grid grid-cols-2 lg:grid-cols-3'>
+        <div className='flex flex-col p-2 bg-red-500 items-center justify-center'>
+          <p className='text-xl font-bold '>xx</p>
         </div>
-        <div className='flex gap-2 w-full justify-evenly pb-5 pt-5'>
+        <div className='flex flex-col p-2 bg-green-500 items-center justify-center'>
+          <p className='text-xl font-bold '>yy</p>
+        </div>
+        <div className='flex flex-col p-2 bg-orange-500 items-center justify-center'>
+          <p className='text-xl font-bold '>zz</p>
+        </div>
+      </div>
+      <div className='p-4 border-2 border-gray-600 dark:border-gray-500 grid grid-cols-2 lg:grid-cols-3'>
+        <div className='flex flex-col gap-4 items-center'>
           <div>
             <label
               htmlFor='date_from'
@@ -312,6 +266,8 @@ const EquityGrowthChart = ({ tradesData }) => {
               value={dateFilter.endDate}
             />
           </div>
+        </div>
+        <div className='flex flex-col gap-4 items-center'>
           <div>
             <label
               htmlFor='initial_capital'
@@ -355,19 +311,51 @@ const EquityGrowthChart = ({ tradesData }) => {
             />
           </div>
         </div>
-        <button
-          onClick={calculate}
-          className='w-full bg-[#e0d0ff] hover:bg-blue-300 text-black font-bold py-2 px-4'
-        >
-          Calculate
-        </button>
+        <div className='flex flex-col gap-4 items-center'>
+          <div>
+            <label
+              htmlFor='bnh_roi'
+              className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+            >
+              Buy and Hold ROI (USD)
+            </label>
+            <input
+              type='number'
+              id='bnh_roi'
+              className='w-[11rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              placeholder='John'
+              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor='autotrade_roi'
+              className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+            >
+              Autotrade ROI (USD)
+            </label>
+            <input
+              type='text'
+              id='autotrade_roi'
+              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              placeholder='John'
+              required
+            />
+          </div>
+        </div>
       </div>
+      <button
+        onClick={calculate}
+        className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+      >
+        Calculate
+      </button>
     </div>
   );
 };
 
-export default EquityGrowthChart;
+export default EquityGrowthChart2;
 
-EquityGrowthChart.propTypes = {
+EquityGrowthChart2.propTypes = {
   tradesData: PropTypes.array.isRequired,
 };

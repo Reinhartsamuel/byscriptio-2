@@ -9,7 +9,7 @@ import EquityGrowthChart from './backtest/EquityGrowthChart';
 import Spinner from '@/app/components/ui/Spinner';
 
 //THIS IS BACKTEST PAGE
-const page = ({ params }) => {
+const BacktestPage = ({ params }) => {
   const searchParams = useSearchParams();
   const pair = searchParams.get('pair');
   const [backtest, setBacktest] = useState([]);
@@ -43,7 +43,8 @@ const page = ({ params }) => {
         download: true,
         delimiter: ',',
         complete: function (results) {
-          setTradesData(extractObjectArray(results.data));
+          setTradesData(extractObjectArray(results.data).sort((a, b) => Number(a['Trade #']) -Number(b['Trade #'])));
+          // console.log(extractObjectArray(results.data).sort((a, b) => Number(a['Trade #']) -Number(b['Trade #'])), 'sourceeeee');
         },
       });
     }
@@ -74,4 +75,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default BacktestPage;

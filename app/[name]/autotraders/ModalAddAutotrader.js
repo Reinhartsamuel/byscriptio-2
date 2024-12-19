@@ -70,7 +70,7 @@ export default function ModalAddAutotrader({
     }
     try {
       setLoading(false);
-      if (!data?.exchange_name || !data?.exchange_thumbnail)
+      if (!data?.exchange_name && !data?.exchange_thumbnail)
         return Swal.fire({ icon: 'warning', text: 'Please select exchange!' });
       if (!data?.tradeAmount)
         return Swal.fire({
