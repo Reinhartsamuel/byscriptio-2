@@ -15610,7 +15610,7 @@ export const coins = [
     symbol: 'SHIB',
     name: 'Shiba Inu',
     id: 1892222,
-    icon: 'https://s2.coinmarketcap.com/static/img/coins/128x128/1892.png',
+    icon: 'https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=040',
   },
 ];
 

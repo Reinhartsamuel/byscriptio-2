@@ -101,7 +101,7 @@ const SignalPreviewComponent = () => {
                 className='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'
                 key={i}
               >
-                <th
+                <td
                   scope='row'
                   className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                 >
@@ -110,7 +110,7 @@ const SignalPreviewComponent = () => {
                     <p>{x?.pair}</p>
                     <p className='md:hidden'>${x?.price}</p>
                   </div>
-                </th>
+                </td>
                 <td className='px-6 py-4'>
                   {x?.trading_plan_id?.split('_')[0]}
                 </td>

@@ -6,21 +6,14 @@ import moment from 'moment';
 import sortTradesData from '@/app/utils/sortTradesData';
 import calculateTradesDataData from '@/app/utils/calcultateTradesData';
 
-function checkIfSortedByTradeNumber(arr) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    if (Number(arr[i]['Trade #']) > Number(arr[i + 1]['Trade #'])) {
-      return [];
-    }
-  }
-  return arr;
-}
 
-const EquityGrowthChart = ({ tradesData }) => {
+const EquityGrowthChart = ({ tradesData, headers }) => {
   // REF FOR CHART
   const chartRef = useRef(null);
 
   // SORT DATA
   const sortedTradesData = sortTradesData(tradesData);
+
 
   // STATES
   const [initialCapital, setInitialCapital] = useState(1000);
@@ -66,36 +59,25 @@ const EquityGrowthChart = ({ tradesData }) => {
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
-    const cumulativeProfit = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map((trade) =>
-      parseFloat(trade.currentBalance)
-    );
+    const cumulativeProfit = tradesDataWithCumulativeCalc
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .map((trade) => parseFloat(trade.currentBalance));
     console.log(cumulativeProfit, 'cumulativeProfit');
 
     // DRAWDOWN ========================================================================
     // DRAWDOWN ========================================================================
     // DRAWDOWN ========================================================================
-    const drawdownData = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map((trade) =>
-      parseFloat(trade['Drawdown %'])
-    );
-
-    // BUY AND HOLD ====================================================================
-    // BUY AND HOLD ====================================================================
-    // BUY AND HOLD ====================================================================
-    const buyAndHoldEquity = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map(
-      (trade) => trade.buyAndHoldProfit
-    );
+    const drawdownData = tradesDataWithCumulativeCalc
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .map((trade) => parseFloat(trade['Drawdown %']));
 
     // CONSTANTS
-    const labels = tradesDataWithCumulativeCalc.sort((a, b) => a.timestamp - b.timestamp).map(
-      (trade) => moment(trade['Date/Time'], 'YYYY-MM-DD HH:mm').format('DD MMM YYYY')
-    );
-    const percentageInset = 100;
-    const equityGrowthPercentage =
-      Array.isArray(cumulativeProfit) && cumulativeProfit?.length > 0
-        ? cumulativeProfit.map(
-            (profit) => (profit / initialCapital) * 100 + percentageInset
-          )
-        : [];
+    const labels = tradesDataWithCumulativeCalc
+      .sort((a, b) => a.timestamp - b.timestamp)
+      .map((trade) =>
+        moment(trade['Date/Time'], 'YYYY-MM-DD HH:mm').format('DD MMM YYYY')
+      );
+
     const mixedChart = new Chart(ctx, {
       type: 'bar', // Default type for the main dataset
       data: {
@@ -110,14 +92,6 @@ const EquityGrowthChart = ({ tradesData }) => {
             borderWidth: 2,
             fill: true,
           },
-          // {
-          //   label: 'Buy and Hold (%)',
-          //   data: buyAndHoldEquity,
-          //   type: 'line', // Specify this dataset as a bar chart
-          //   backgroundColor: 'rgba(240, 64, 24, 0.5)',
-          //   borderColor: 'rgba(240, 64, 24, 1)',
-          //   borderWidth: 1,
-          // },
           {
             label: 'Drawdowns (%)',
             data: drawdownData,
@@ -232,7 +206,8 @@ const EquityGrowthChart = ({ tradesData }) => {
           <div className='flex flex-col p-2 bg-red-400 items-center justify-center'>
             <p className='text-black text-sm'>Drawdown</p>
             <p className='text-gray-800 text-xl font-bold '>
-              -{
+              -
+              {
                 tradesDataWithCumulativeCalc.sort(
                   (a, b) => b['Drawdown %'] - a['Drawdown %']
                 )[0]?.['Drawdown %']
@@ -362,6 +337,45 @@ const EquityGrowthChart = ({ tradesData }) => {
           Calculate
         </button>
       </div>
+      <div className='overflow-x-auto overflow-y-auto mt-10'>
+      <table className='w-full xl:w-3/5 text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
+      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+            <tr>
+              {headers?.map((header, index) => (
+                <th key={index} scope='col' className='px-2 py-1'>
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className='bg-white divide-y divide-gray-200'>
+            {tradesData.reverse()?.map((row, rowIndex) => (
+              <tr key={rowIndex}  className='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
+                {headers?.map((column, colIndex) => (
+                  <td
+                    key={colIndex}
+                    className='px-6 py-2 whitespace-nowrap'
+                  >
+                    {row[column]}
+                  </td>
+                ))}
+                {/* <td   className='px-6 py-2 whitespace-nowrap'>{row['Trade #']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Signal']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Date/Time']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Price']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Contracts']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Profit USD']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Profit %']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Cum. Profit %']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Run-up USD']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Run-up %']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Drawdown USD']}</td>
+                <td   className='px-6 py-2 whitespace-nowrap'>{row['Drawdown %']}</td> */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
@@ -370,4 +384,5 @@ export default EquityGrowthChart;
 
 EquityGrowthChart.propTypes = {
   tradesData: PropTypes.array.isRequired,
+  headers: PropTypes.array.isRequired,
 };

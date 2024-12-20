@@ -7,6 +7,7 @@ import Papa from 'papaparse';
 import extractObjectArray from '@/app/utils/extractObjectArray';
 import EquityGrowthChart from './backtest/EquityGrowthChart';
 import Spinner from '@/app/components/ui/Spinner';
+import PropTypes from 'prop-types';
 
 //THIS IS BACKTEST PAGE
 const BacktestPage = ({ params }) => {
@@ -15,6 +16,7 @@ const BacktestPage = ({ params }) => {
   const [backtest, setBacktest] = useState([]);
   const [tradesData, setTradesData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [headers, setHeaders] = useState([]);
 
   async function fetchData() {
     setLoading(true);
@@ -43,7 +45,8 @@ const BacktestPage = ({ params }) => {
         download: true,
         delimiter: ',',
         complete: function (results) {
-          setTradesData(extractObjectArray(results.data).sort((a, b) => Number(a['Trade #']) -Number(b['Trade #'])));
+          setTradesData(extractObjectArray(results.data));
+          setHeaders(results.data[0]);
           // console.log(extractObjectArray(results.data).sort((a, b) => Number(a['Trade #']) -Number(b['Trade #'])), 'sourceeeee');
         },
       });
@@ -68,7 +71,7 @@ const BacktestPage = ({ params }) => {
       </div>
       <div className='w-full lg:w-3/4 mx-auto'>
         {Array.isArray(tradesData) && tradesData?.length > 0 && (
-          <EquityGrowthChart tradesData={tradesData} />
+          <EquityGrowthChart tradesData={tradesData} headers={headers} />
         )}
       </div>
     </div>
@@ -76,3 +79,8 @@ const BacktestPage = ({ params }) => {
 };
 
 export default BacktestPage;
+
+
+BacktestPage.propTypes = {
+  params: PropTypes.any
+}
