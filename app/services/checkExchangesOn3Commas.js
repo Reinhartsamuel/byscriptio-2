@@ -34,7 +34,40 @@ export async function onCheck3CApi({
 }) {
   setLoading(true);
   try {
-    const res = await fetch('/api/3commas/accounts/user-connected-exchanges/rsa');
+    await fetch('/api/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sender: {
+          email: 'info@byscript.io',
+          name: 'byScript',
+        },
+        to: [
+          {
+            name: 'Edwin Ardyanto',
+            email: 'edwinfardyanto@gmail.com',
+          },
+          {
+            name: 'Reinhart Samuel',
+            email: 'reinhartsams@gmail.com',
+          },
+        ],
+        subject: 'Info User Connect Exchange',
+        htmlContent: `<p>${
+          authFirebase?.currentUser?.displayName || customer?.name
+        } ${
+          authFirebase.currentUser?.email &&
+          `(${authFirebase.currentUser?.email})`
+        } ${
+          customer?.id && `(id: ${customer?.id})`
+        } tried to connect exchange ${exchangeName} on ${new Date().toDateString()}</p>`,
+      }),
+    });
+    const res = await fetch(
+      '/api/3commas/accounts/user-connected-exchanges/rsa'
+    );
     const { data, error } = await res.json();
     if (error) throw new Error(error);
     console.log(
@@ -76,7 +109,11 @@ export async function onCheck3CApi({
               type: getType(exchange.exchange_name),
             };
             console.log(addData, 'addData');
-            return await addDocumentFirebase('exchange_accounts', addData, 'byscript');
+            return await addDocumentFirebase(
+              'exchange_accounts',
+              addData,
+              'byscript'
+            );
           }
         })
       );

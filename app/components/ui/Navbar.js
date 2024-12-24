@@ -15,11 +15,12 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { onAuthStateChanged } from 'firebase/auth';
 import moment from 'moment';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import logo from '../../../public/logo_byScript_white_green.svg';
 import Image from 'next/image';
+import { setCookie, getCookie } from 'cookies-next';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -48,6 +49,9 @@ export default function Navbar() {
     setUserPackage: setUserPackageToStore,
     // userPackage: userPackageFromStore,
   } = useUserStore();
+
+  const searchParams = useSearchParams();
+  const affiliateid = searchParams.get('c'); // c represents customer id in database
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
@@ -63,6 +67,15 @@ export default function Navbar() {
       window?.alert(error.message);
     }
   };
+
+  async function saveCookies() {
+    if (!affiliateid) return;
+    setCookie('affiliateId', affiliateid);
+  }
+
+  useEffect(() => {
+    saveCookies();
+  }, []);
 
   useEffect(() => {
     onAuthStateChanged(authFirebase, (user) => {
