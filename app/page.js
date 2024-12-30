@@ -150,8 +150,8 @@ export default function Home() {
       {/* <HeroHighlightComponent /> */}
       <div className='w-full p-4 border rounded-3xl bg-gray-900'>
         <Compare
-          firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.webp?alt=media&token=599d2888-0608-43c7-878c-597f642bb1b6'
-          secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after-2.jpeg?alt=media&token=00c3f61d-000b-40df-802c-6df7413a254e'
+          firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.jpeg?alt=media&token=2a4fcc3f-f090-4d63-b8a1-4a40826d975d'
+          secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
           firstImageClassName='object-cover object-left-top'
           secondImageClassname='object-cover object-left-top'
           // className='h-[250px] w-[200px] md:h-[500px] md:w-[500px]'
@@ -167,6 +167,7 @@ export default function Home() {
         <h3 className='text-center mx-auto text-black dark:text-white'>
           Signal live dari trading plan byscript, otomatis dari algoritma yang
           kami kembangkan
+          Not only giving signals
         </h3>
         <SignalPreviewComponent />
       </div>
