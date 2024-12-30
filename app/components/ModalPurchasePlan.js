@@ -10,20 +10,26 @@ import { useUserStore } from '../store/userStore';
 import calculateCommission from '../utils/calculateCommission';
 import { uploadFileCompressed } from '../utils/imageUpload';
 import { authFirebase } from '../config/firebase';
-import { addDocumentFirebase } from '../utils/firebaseApi';
+import {
+  addDocumentFirebase,
+  getCollectionFirebase,
+} from '../utils/firebaseApi';
 import { priceFormat } from '../utils/priceFormat';
 import { copyTextToClipboard } from '../utils/copyTextToClipboard';
+import blu_logo from '../../public/blu_logo.jpg';
+import Image from 'next/image';
+import moment from 'moment';
 
 const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [checkReadTc, setCheckReadTc] = useState(false);
+  const [voucherCode, setVoucherCode] = useState('');
 
   const [data, setData] = useState({});
 
-
-  const handleUpload = async (e) => {
+  async function handleUpload(e) {
     setUploading(true);
     // console.log(e.target.files[0], 'this is filesss');
     try {
@@ -36,31 +42,82 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
     } finally {
       setUploading(false);
     }
-  };
+  }
 
   async function handleSubmit() {
     console.log(detail, 'detail');
     console.log(data, 'data');
     if (!checkReadTc)
       return Swal.fire('', 'Please check the Terms and Conditions', 'warning');
-    
+
     try {
       setLoading(true);
-      await addDocumentFirebase('subscriptions', {...data}, 'byscript');
+      await addDocumentFirebase('subscriptions', { ...data }, 'byscript');
       await fetch('/api/email/purchase/new', {
-        method : 'POST',
-        headers : {
-          'Content-Type' : 'application/json'
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        body : JSON.stringify(data)
-      })
-      Swal.fire('Your purchase is being processed. Please wait until we confirm your payment. For help please contact WA 0813 1338 3848 - Edwin');
+        body: JSON.stringify(data),
+      });
+      Swal.fire(
+        'Your purchase is being processed. Please wait until we confirm your payment. For help please contact WA 0813 1338 3848 - Edwin'
+      );
       setPurchaseModal(false);
     } catch (error) {
       console.error(error.message, 'errrorrr handleupload');
-      Swal.fire('',error.message , 'error');
+      Swal.fire('', error.message, 'error');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function redeemVoucher() {
+    try {
+      // find voucher code
+      const result = await getCollectionFirebase('vouchers', [
+        { field: 'voucherCode', operator: '==', value: voucherCode },
+      ]);
+
+      if (Array.isArray(result) && result?.length > 0) {
+        const voucherData = result[0];
+        //check if still active
+        if (voucherData?.expiredAt?.seconds < moment().unix()) {
+          return Swal.fire('', 'Voucher code has expired', 'warning');
+        } else {
+          //check if already redeemed
+          const resultSubscription = await getCollectionFirebase(
+            'subscriptions',
+            [{ field: 'voucherCode', operator: '==', value: voucherCode }]
+          );
+          if (resultSubscription?.length >= voucherData?.maxSlot) {
+            return Swal.fire('', 'Oops! The voucher\'s quota has been reached', 'warning');
+          } else if (!voucherData?.productIds?.includes(detail?.id)) {
+            return Swal.fire(
+              '',
+              'Oops! The voucher code is not valid for this product',
+              'warning'
+            );
+          } else {
+            Swal.fire(
+              'Voucher code redeemed successfully',
+              `You get Rp ${priceFormat(voucherData?.amount)} discount`,
+              'success'
+            );
+            setData({
+              ...data,
+              voucherCode,
+              price: detail?.price - parseInt(voucherData?.amount),
+              previousPrice: detail?.price,
+              discoutn : voucherData?.amount
+            });
+          }
+        }
+      } else {
+        return Swal.fire('', 'Voucher code not found', 'warning');
+      }
+    } catch (error) {
+      Swal.fire('', error.message, 'error');
     }
   }
 
@@ -115,13 +172,20 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
         </div>
       </div>
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
-      <div className='flex flex-col items-center gap-4 mt-5'>
+      <div className='flex flex-col items-center gap-4 mt-5 justify-center'>
         <div className='flex flex-col border-2 rounded-sm border-gray-500 p-4'>
           <h2 className='text-xl text-orange-400'>{detail?.name}</h2>
+          {data?.previousPrice && (
+            <h2 className='text-xl font-bold text-gray-50 line-through decoration-red-600'>
+              Rp {priceFormat(data?.previousPrice)}
+            </h2>
+          )}
           <div className='flex items-center'>
-            <h2 className='text-3xl font-bold text-gray-50'>Rp {priceFormat(detail?.price)}</h2>
+            <h2 className='text-3xl font-bold text-gray-50'>
+              Rp {priceFormat(data?.price)}
+            </h2>
             <button
-              onClick={() => copyTextToClipboard(detail?.price)}
+              onClick={() => copyTextToClipboard(data?.price)}
               className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
             >
               <FaRegCopy size={20} />
@@ -168,12 +232,33 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
           </div>
         </div>
       </div>
+      <label
+        htmlFor='input-group-1'
+        className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+      >
+        VOUCHER CODE
+      </label>
+      <div className='relative mb-6'>
+        <button
+          onClick={redeemVoucher}
+          className='absolute inset-y-0 end-0 flex items-center pe-3.5 bg-blue-500 hover:bg-blue-700 active:bg-blue-900 text-white font-bold py-2 px-4 rounded'
+        >
+          REDEEM
+        </button>
+        <input
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') redeemVoucher();
+          }}
+          onChange={(e) => setVoucherCode(e.target.value)}
+          type='text'
+          id='input-group-1'
+          className='bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+          placeholder='Input your voucher code'
+        />
+      </div>
 
       <div className='w-full p-4 flex flex-col items-center justify-center my-5'>
-        <img
-          src='https://scontent.fcgk3-2.fna.fbcdn.net/v/t39.30808-6/359784941_583814940593962_1863910751664855921_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH-EjxDm-e-eSzlUIShsU-VxMSLvjfuHF7ExIu-N-4cXqgkgYT-s3yNIgMoGxyrFznU7d3M88tBJymz-rsliTqU&_nc_ohc=UZ0oBvvyaMcQ7kNvgFs55HL&_nc_zt=23&_nc_ht=scontent.fcgk3-2.fna&_nc_gid=AreQzIbPVBDEEc3f-JaTez8&oh=00_AYD0fNEQMy7MQvuJ4-o2oJRv49eZ9ifyOFKvmRTi5W_l-w&oe=6730F92B'
-          className='w-20'
-        />
+        <Image alt='BLU by BCA DIGITAL' src={blu_logo} width={100} />
         <p className='font-bold text-gray-300 text-sm'>BLU by BCA DIGITAL</p>
         <div className='flex items-center'>
           <p className='font-bold text-2xl'>EDWIN FATHUDIN ARDYANTO</p>
