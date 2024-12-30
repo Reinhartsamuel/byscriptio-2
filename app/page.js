@@ -165,9 +165,7 @@ export default function Home() {
           LIVE SIGNAL 📣📈📉
         </h1>
         <h3 className='text-center mx-auto text-black dark:text-white'>
-          Signal live dari trading plan byscript, otomatis dari algoritma yang
-          kami kembangkan
-          Not only giving signals
+          Not only giving signals, but also fully automated trade in your exchanges
         </h3>
         <SignalPreviewComponent />
       </div>
