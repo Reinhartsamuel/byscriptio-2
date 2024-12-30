@@ -119,7 +119,34 @@ export default function ModalAddAutotrader({
         addDataToAutotraderCollection,
         'byScript'
       );
-
+      console.log({
+        name: id,
+        account_id: data.exchange_external_id,
+        pairs: resultString,
+        base_order_volume: parseFloat(data?.tradeAmount),
+        take_profit: 0,
+        martingale_volume_coefficient: 10,
+        martingale_step_coefficient: 10,
+        max_safety_orders: 0,
+        active_safety_orders_count: 0,
+        safety_order_step_percentage: 2,
+        take_profit_type: 'total',
+        strategy_list: [
+          {
+            strategy: 'tv_custom_signal',
+          },
+        ],
+        close_strategy_list: [
+          {
+            strategy: 'tv_custom_signal',
+          },
+        ],
+        safety_order_volume: 10,
+        stop_loss_percentage: 99.9,
+        start_order_type: 'market',
+        reinvesting_percentage: 100,
+        risk_reduction_percentage: 100,
+      }, 'body to create bot')
       const createBot = await fetch('/api/3commas/bots/create-bot', {
         method: 'POST',
         headers: {
@@ -134,6 +161,7 @@ export default function ModalAddAutotrader({
           martingale_volume_coefficient: 10,
           martingale_step_coefficient: 10,
           max_safety_orders: 0,
+          max_active_deals	: resultString?.length || 1,
           active_safety_orders_count: 0,
           safety_order_step_percentage: 2,
           take_profit_type: 'total',
@@ -157,9 +185,11 @@ export default function ModalAddAutotrader({
       const resCreateBot = await createBot.json();
       console.log(resCreateBot, 'resCreateBot');
       if (resCreateBot.error) {
+        console.log('deleting because of error');
         await deleteDocumentFirebase('dca_bots', id);
         return Swal.fire({ icon: 'error', text: 'Error creating bot' });
       } else if (resCreateBot.data) {
+        console.log('updating bot_id');
         await updateDocumentFirebase('dca_bots', id, {
           bot_id: resCreateBot.data.id,
         });

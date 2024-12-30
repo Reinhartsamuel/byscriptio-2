@@ -25,10 +25,9 @@ export default function Home() {
             </span>
           </h1>
           <h1 className='text-md align-left text-slate-200 mt-5'>
-            Platform{' '}
+            First{' '}
             <span className='italic text-slate-200'>Algorithmic Trading</span>{' '}
-            pertama di Indonesia, Bantu Kamu Traders Cuan Trading Otomatis Pake
-            Algoritma
+            Platform in Indonesia
           </h1>
           <div className='mt-10'>
             <a href='/new'>
@@ -151,15 +150,14 @@ export default function Home() {
       {/* <HeroHighlightComponent /> */}
       <div className='w-full p-4 border rounded-3xl bg-gray-900'>
         <Compare
-          firstImage='https://byscript-bucket.s3.ap-southeast-2.amazonaws.com/btc-before.webp'
-          secondImage='https://byscript-bucket.s3.ap-southeast-2.amazonaws.com/btc-after.webp'
+          firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.webp?alt=media&token=599d2888-0608-43c7-878c-597f642bb1b6'
+          secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after-2.jpeg?alt=media&token=00c3f61d-000b-40df-802c-6df7413a254e'
           firstImageClassName='object-cover object-left-top'
           secondImageClassname='object-cover object-left-top'
           // className='h-[250px] w-[200px] md:h-[500px] md:w-[500px]'
           className='w-full h-screen'
           slideMode='hover'
         />
-       
       </div>
 
       <div className='w-full min-h-screen pb-10 mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
