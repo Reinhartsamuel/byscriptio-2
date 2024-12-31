@@ -99,18 +99,23 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
               'warning'
             );
           } else {
-            Swal.fire(
-              'Voucher code redeemed successfully',
-              `You get Rp ${priceFormat(voucherData?.amount)} discount`,
-              'success'
-            );
+            
+
+            let discount =voucherData?.type === 'DISCOUNT' ?  voucherData?.amount : detail?.price * voucherData?.amount / 100;
+            let previousPrice = detail?.price;
+            let price = voucherData?.type === 'DISCOUNT' ? detail?.price - parseInt(voucherData?.amount) : detail?.price * ((100-voucherData?.amount)/100);
             setData({
               ...data,
               voucherCode,
-              price: detail?.price - parseInt(voucherData?.amount),
-              previousPrice: detail?.price,
-              discount : voucherData?.amount
+              price,
+              previousPrice,
+              discount 
             });
+            Swal.fire(
+              'Voucher code redeemed successfully',
+              `You get Rp ${discount} discount`,
+              'success'
+            );
           }
         }
       } else {
