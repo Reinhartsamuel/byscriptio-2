@@ -109,7 +109,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
               voucherCode,
               price: detail?.price - parseInt(voucherData?.amount),
               previousPrice: detail?.price,
-              discoutn : voucherData?.amount
+              discount : voucherData?.amount
             });
           }
         }
