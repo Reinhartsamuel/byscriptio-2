@@ -9,13 +9,17 @@ import Navbar from './components/ui/Navbar';
 import Footer from './components/Footer';
 import React from 'react';
 import { Compare } from './components/ui/Compare';
+import { EXCHANGE_LOGOS } from './dummy';
+import { GlowWrapper } from './components/ui/GlowWrapper';
+import VideoPlayer from './components/ui/VideoPlayer';
 
 export default function Home() {
+
   return (
     <>
       <Navbar />
       {/* <div className="absolute top-0 z-[-20] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" /> */}
-      <div className=' w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20 bg-black'>
+      <div className=' w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20'>
         <div className='absolute  -z-10 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]' />
         <div className='w-full md:w-2/3 text-center items-center justify-center'>
           <h1 className='text-4xl font-bold text-white xl:text-8xl'>
@@ -25,7 +29,7 @@ export default function Home() {
             </span>
           </h1>
           <h1 className='text-md align-left text-slate-200 mt-5'>
-            First{' '}
+            First Ever{' '}
             <span className='italic text-slate-200'>Algorithmic Trading</span>{' '}
             Platform in Indonesia
           </h1>
@@ -67,97 +71,46 @@ export default function Home() {
         <StatisticsComponent />
       </div>
       {/* EXCHANGES LOGO */}
-      <div className='w-full mx-auto flex flex-wrap justify-center items-center bg-slate-50 xl:px-20'>
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg'
-          }
-          alt={'gateio'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg'
-          }
-          alt={'binance'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg'
-          }
-          alt={'okx'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg'
-          }
-          alt={'bybit'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format'
-          }
-          alt={'bitget'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/b83d7a6a-46ae-4129-86a2-a25c008ec770_kraken_logo.svg'
-          }
-          alt={'kraken'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/c25996fe-36cd-46de-a500-525650431bad_kucoin_logo.svg'
-          }
-          alt={'htx'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/2b94565b-8045-4e46-bd67-382737c72f5c_bitstamp_logo.svg'
-          }
-          alt={'bitstamp'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/d6eee03c-fe78-4a1b-9ec3-7fc76ade66d1_gemini_logo.svg'
-          }
-          alt={'gemini'}
-        />
-        <img
-          className='w-[10rem] mt-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/386bba0c-1585-456f-ae68-350973d143ca_bitfinex_logo.svg'
-          }
-          alt={'bitfinex'}
-        />
-        <img
-          className='w-[10rem] mt-10 mb-10'
-          src={
-            'https://3commas.cdn.prismic.io/3commas/33f66756-3f61-480a-bdb9-c2e69182efc1_coinbase_logo.svg'
-          }
-          alt={'coinbase'}
-        />
+      <div className='w-full mx-auto bg-slate-50 xl:px-20 overflow-hidden'>
+        <div className='flex flex-nowrap justify-center items-center infinite-scroll py-5'>
+          {EXCHANGE_LOGOS.map((exchange, i) => (
+            <img
+              key={i}
+              className='w-[10rem]'
+              src={
+                exchange.src
+              }
+              alt={
+                exchange.alt}
+            />
+          ))}
+        </div>
+
       </div>
 
       {/* <HeroHighlightComponent /> */}
-      <div className='w-full p-4 border rounded-3xl bg-gray-900'>
-        <Compare
-          firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.jpeg?alt=media&token=2a4fcc3f-f090-4d63-b8a1-4a40826d975d'
-          secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
-          firstImageClassName='object-cover object-left-top'
-          secondImageClassname='object-cover object-left-top'
-          // className='h-[250px] w-[200px] md:h-[500px] md:w-[500px]'
-          className='w-full h-screen'
-          slideMode='hover'
-        />
+      <div className='w-full min-h-screen flex flex-col items-center justify-center relative'>
+        <h1 className='text-center text-3xl text-slate-100 mb-10'>"by<span className='font-ecoCoding'>Script</span> not only gives
+          <span className='text-orange-500 font-bold'> singals</span>, but also{' '}
+          <br />
+          <span className='text-blue-500 italic underline'>automated trading</span>,
+          <br />
+          <span className='text-lg'>while you sleep, drive, work, play with your child, anything."</span>
+        </h1>
+
+        <GlowWrapper glowColor="blue">
+          <div className='lg:w-[80vw]'>
+            <Compare
+              firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.jpeg?alt=media&token=2a4fcc3f-f090-4d63-b8a1-4a40826d975d'
+              secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
+              firstImageClassName='object-cover object-left-top'
+              secondImageClassname='object-cover object-left-top'
+              className='h-[250px] w-xl md:h-[500px] md:w-2xl'
+              slideMode='hover'
+            />
+          </div>
+        </GlowWrapper>
+
       </div>
 
       <div className='w-full min-h-screen pb-10 mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
@@ -170,13 +123,24 @@ export default function Home() {
         <SignalPreviewComponent />
       </div>
 
-      <div className='w-full my-1000 flex flex-col my-[20rem]'>
+      <div className='w-full min-h-screen relative flex flex-col items-center justify-center mx-auto'>
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" />
+        <h1 className='text-3xl font-bold text-center mx-auto md:text-5xl lg:text-7xl text-black dark:text-white'>
+          How this even works?
+        </h1>
+        <h3 className='text-center mx-auto text-black dark:text-white mb-10'>
+          How you can connect your exchanges, what are autotraders, and how trade is executed on byScript
+        </h3>
+        <VideoPlayer url={'https://www.youtube.com/watch?v=QABiomlggFk'}  />
+      </div>
+
+      {/* <div className='w-full my-1000 flex flex-col my-[20rem]'>
         <h1 className='text-2xl mt-10 font-bold text-center mx-auto md:text-6xl'>
           Cara mengaktifkan autotrade
         </h1>
         <StepsComponent />
-      </div>
-
+      </div> 
+      
       <div className='w-full mt-20 inline-block items-center justify-center'>
         <h1 className='text-2xl mt-10 font-bold text-center mx-auto md:text-6xl'>
           Gabung komunitas byScript
@@ -186,7 +150,7 @@ export default function Home() {
           <i>break-even point</i> (BEP) tinggal kamu
         </h3>
         <ImageGallery />
-      </div>
+      </div> */}
       <TestimonialsComponent />
 
       <div className='min-h-screen' id='pricing'>

@@ -15667,3 +15667,139 @@ export const exchanges = [
   {exchange_name : 'BITFINEX', exchange_thumbnail:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Bitfinex_logo.svg/1600px-Bitfinex_logo.svg.png?20181214105659'},
   {exchange_name : 'COINBASE', exchange_thumbnail: 'https://3commas.cdn.prismic.io/3commas/33f66756-3f61-480a-bdb9-c2e69182efc1_coinbase_logo.svg'},
 ];
+
+
+export const EXCHANGE_LOGOS = [
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
+    alt: 'gateio'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg',
+    alt: 'binance'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg',
+    alt: 'okx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg',
+    alt: 'bybit'
+  },
+  {
+    src: 'https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format',
+    alt: 'bitget'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/b83d7a6a-46ae-4129-86a2-a25c008ec770_kraken_logo.svg',
+    alt: 'kraken'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/c25996fe-36cd-46de-a500-525650431bad_kucoin_logo.svg',
+    alt: 'htx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/2b94565b-8045-4e46-bd67-382737c72f5c_bitstamp_logo.svg',
+    alt: 'bitstamp'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/d6eee03c-fe78-4a1b-9ec3-7fc76ade66d1_gemini_logo.svg',
+    alt: 'gemini'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/386bba0c-1585-456f-ae68-350973d143ca_bitfinex_logo.svg',
+    alt: 'bitfinex'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/33f66756-3f61-480a-bdb9-c2e69182efc1_coinbase_logo.svg',
+    alt: 'coinbase'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
+    alt: 'gateio'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg',
+    alt: 'binance'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg',
+    alt: 'okx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg',
+    alt: 'bybit'
+  },
+  {
+    src: 'https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format',
+    alt: 'bitget'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/b83d7a6a-46ae-4129-86a2-a25c008ec770_kraken_logo.svg',
+    alt: 'kraken'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/c25996fe-36cd-46de-a500-525650431bad_kucoin_logo.svg',
+    alt: 'htx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/2b94565b-8045-4e46-bd67-382737c72f5c_bitstamp_logo.svg',
+    alt: 'bitstamp'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/d6eee03c-fe78-4a1b-9ec3-7fc76ade66d1_gemini_logo.svg',
+    alt: 'gemini'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/386bba0c-1585-456f-ae68-350973d143ca_bitfinex_logo.svg',
+    alt: 'bitfinex'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/33f66756-3f61-480a-bdb9-c2e69182efc1_coinbase_logo.svg',
+    alt: 'coinbase'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
+    alt: 'gateio'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg',
+    alt: 'binance'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg',
+    alt: 'okx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg',
+    alt: 'bybit'
+  },
+  {
+    src: 'https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format',
+    alt: 'bitget'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/b83d7a6a-46ae-4129-86a2-a25c008ec770_kraken_logo.svg',
+    alt: 'kraken'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/c25996fe-36cd-46de-a500-525650431bad_kucoin_logo.svg',
+    alt: 'htx'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/2b94565b-8045-4e46-bd67-382737c72f5c_bitstamp_logo.svg',
+    alt: 'bitstamp'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/d6eee03c-fe78-4a1b-9ec3-7fc76ade66d1_gemini_logo.svg',
+    alt: 'gemini'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/386bba0c-1585-456f-ae68-350973d143ca_bitfinex_logo.svg',
+    alt: 'bitfinex'
+  },
+  {
+    src: 'https://3commas.cdn.prismic.io/3commas/33f66756-3f61-480a-bdb9-c2e69182efc1_coinbase_logo.svg',
+    alt: 'coinbase'
+  },
+];

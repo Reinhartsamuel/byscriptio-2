@@ -44,3 +44,13 @@ body {
     url("https://db.onlinewebfonts.com/t/fce1ae337c2b8b2bf2518b7d5127e030.svg#Eco Coding WGL4 W01 Regular")format("svg");
 }
 }
+
+.infinite-scroll {
+  animation : scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-100%);
+  }
+}
