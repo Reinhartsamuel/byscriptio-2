@@ -34,11 +34,11 @@ export default function Home() {
             Platform in Indonesia
           </h1>
           <div className='mt-10'>
-            <a href='/new'>
+            <a target='_blank' rel='noreferrer' href='https://docs.byscript.io/'>
               <button className='w-[90%] mx-auto relative inline-flex h-12 overflow-hidden rounded-lg p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50'>
                 <span className='absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]' />
                 <span className='inline-flex lg:text-xl h-full w-full cursor-pointer items-center justify-center rounded-lg bg-slate-950 px-3 text-sm font-medium text-white backdrop-blur-3xl'>
-                  Connect Exchange
+                  Docs
                 </span>
               </button>
             </a>
@@ -67,7 +67,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className='mt-40 md:hidden'>
+      <div className=' md:hidden'>
         <StatisticsComponent />
       </div>
       {/* EXCHANGES LOGO */}
@@ -105,13 +105,13 @@ export default function Home() {
               secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
               firstImageClassName='object-cover object-left-top'
               secondImageClassname='object-cover object-left-top'
-              className='h-[250px] w-xl md:h-[500px] md:w-2xl'
+              className='h-[500px] w-2xl md:h-[500px] md:w-2xl'
               slideMode='hover'
             />
           </div>
         </GlowWrapper>
-
       </div>
+
 
       <div className='w-full min-h-screen pb-10 mt-20 inline-block items-center justify-center mx-auto bg-white dark:bg-black'>
         <h1 className='text-3xl mt-10 font-bold text-center mx-auto md:text-5xl lg:text-7xl text-black dark:text-white'>
@@ -132,6 +132,18 @@ export default function Home() {
           How you can connect your exchanges, what are autotraders, and how trade is executed on byScript
         </h3>
         <VideoPlayer url={'https://www.youtube.com/watch?v=QABiomlggFk'}  />
+      </div>
+      <div className='w-full min-h-screen'>
+      <GlowWrapper glowColor="blue">
+            <Compare
+              firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.jpeg?alt=media&token=2a4fcc3f-f090-4d63-b8a1-4a40826d975d'
+              secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
+              firstImageClassName='object-cover object-left-top'
+              secondImageClassname='object-cover object-left-top'
+              className='h-[500px] w-2xl md:h-[500px] md:w-2xl'
+              slideMode='hover'
+            />
+        </GlowWrapper>
       </div>
 
       {/* <div className='w-full my-1000 flex flex-col my-[20rem]'>

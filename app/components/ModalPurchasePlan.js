@@ -85,6 +85,13 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
         if (voucherData?.expiredAt?.seconds < moment().unix()) {
           return Swal.fire('', 'Voucher code has expired', 'warning');
         } else {
+          // check if voucher is for only new customers
+          if (voucherData?.isForNewUser) {
+            // search for previous subscriptions
+            const searchPreviousSubscriptions = await getCollectionFirebase('subscriptions', [{field :'email', operator : '==', value : authFirebase.currentUser?.email}]);
+            if (searchPreviousSubscriptions?.length > 0) return Swal.fire('', 'Voucher is only for new users', 'warning');
+          }
+
           //check if already redeemed
           const resultSubscription = await getCollectionFirebase(
             'subscriptions',
