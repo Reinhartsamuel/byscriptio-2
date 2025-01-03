@@ -84,7 +84,9 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
         //check if still active
         if (voucherData?.expiredAt?.seconds < moment().unix()) {
           return Swal.fire('', 'Voucher code has expired', 'warning');
-        } else {
+        } else if (!voucherData?.active) {
+          return Swal.fire('', 'This voucher cannot be used', 'warning');
+        }else {
           // check if voucher is for only new customers
           if (voucherData?.isForNewUser) {
             // search for previous subscriptions
