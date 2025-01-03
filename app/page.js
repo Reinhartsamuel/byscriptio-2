@@ -133,19 +133,6 @@ export default function Home() {
         </h3>
         <VideoPlayer url={'https://www.youtube.com/watch?v=QABiomlggFk'}  />
       </div>
-      <div className='w-full min-h-screen'>
-      <GlowWrapper glowColor="blue">
-            <Compare
-              firstImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-before.jpeg?alt=media&token=2a4fcc3f-f090-4d63-b8a1-4a40826d975d'
-              secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
-              firstImageClassName='object-cover object-left-top'
-              secondImageClassname='object-cover object-left-top'
-              className='h-[500px] w-2xl md:h-[500px] md:w-2xl'
-              slideMode='hover'
-            />
-        </GlowWrapper>
-      </div>
-
       {/* <div className='w-full my-1000 flex flex-col my-[20rem]'>
         <h1 className='text-2xl mt-10 font-bold text-center mx-auto md:text-6xl'>
           Cara mengaktifkan autotrade
