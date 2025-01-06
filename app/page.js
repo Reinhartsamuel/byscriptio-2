@@ -12,6 +12,7 @@ import { Compare } from './components/ui/Compare';
 import { EXCHANGE_LOGOS } from './dummy';
 import { GlowWrapper } from './components/ui/GlowWrapper';
 import VideoPlayer from './components/ui/VideoPlayer';
+import SignInFrontButton from './components/SignInFrontButton';
 
 export default function Home() {
 
@@ -42,14 +43,7 @@ export default function Home() {
                 </span>
               </button>
             </a>
-            <a href='/auth/login'>
-              <button className='w-[90%] p-[3px] relative my-5'>
-                <div className='absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg' />
-                <div className='px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white bg-transparent active:bg-violet-700'>
-                  Sign In
-                </div>
-              </button>
-            </a>
+            <SignInFrontButton />
             <div className='hidden md:block'>
               <StatisticsComponent />
             </div>
@@ -124,14 +118,14 @@ export default function Home() {
       </div>
 
       <div className='w-full min-h-screen relative flex flex-col items-center justify-center mx-auto'>
-      <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" />
+        <div className="absolute top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" />
         <h1 className='text-3xl font-bold text-center mx-auto md:text-5xl lg:text-7xl text-black dark:text-white'>
           How this even works?
         </h1>
         <h3 className='text-center mx-auto text-black dark:text-white mb-10'>
           How you can connect your exchanges, what are autotraders, and how trade is executed on byScript
         </h3>
-        <VideoPlayer url={'https://www.youtube.com/watch?v=QABiomlggFk'}  />
+        <VideoPlayer url={'https://www.youtube.com/watch?v=QABiomlggFk'} />
       </div>
       {/* <div className='w-full my-1000 flex flex-col my-[20rem]'>
         <h1 className='text-2xl mt-10 font-bold text-center mx-auto md:text-6xl'>

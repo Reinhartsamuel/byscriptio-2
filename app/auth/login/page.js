@@ -92,7 +92,7 @@ const page = () => {
             className='h-20 w-auto rounded-lg'
           />
           <h3 className='text-gray-100' onClick={getCookies}>
-            Ubah Trading Manual Jadi Trading Otomatis 🚀 🚀
+            Change your trading to fully automated algorithmic trading 🚀 🚀
           </h3>
         </div>
         <div className='h-full w-full md:w-[50%] bg-white'>
@@ -101,11 +101,10 @@ const page = () => {
         lg:max-w-[60%] items-center justify-center mx-auto'
           >
             <h3 className='text-3xl text-slate-900 font-bold text-center'>
-              Masuk ke byScript
+              Login to byScript
             </h3>
             <p className='text-slate-600 font-extralight leading-5 text-center font-md'>
-              Jika kamu sudah memiliki subscription aktif, harap
-              login dengan email yang sama
+              If you already have active subscription, please login with the same email.
             </p>
             {/* <LoginEmailComponent loading={loading} /> */}
             <div className='relative my-4 flex w-full items-center text-xs uppercase text-slate-900'>
@@ -117,9 +116,8 @@ const page = () => {
             </div>
 
             <button
-              className={`w-full flex items-center justify-center gap-2 px-8 py-2 h-11 border-[1px] border-slate-300 bg-white text-slate-800 text-sm rounded-md font-semibold  hover:${
-                !loading && 'shadow-xl'
-              }`}
+              className={`w-full flex items-center justify-center gap-2 px-8 py-2 h-11 border-[1px] border-slate-300 bg-white text-slate-800 text-sm rounded-md font-semibold  hover:${!loading && 'shadow-xl'
+                }`}
               disabled={loading}
               cursor={loading ? 'not-allowed' : 'pointer'}
               onClick={() =>
@@ -146,10 +144,9 @@ const page = () => {
                 </>
               )}
             </button>
-            <p className='text-slate-900 font-extralight  text-center text-sm'>
-              Dengan sign in, kamu setuju dengan{' '}
-              <a href="https://byscript.io/termsConditions" target='_blank' rel='noopener noreferrer'><u className='cursor-pointer'>Syarat dan Ketentuan</u></a> platform
-              byScript
+            <p className='text-slate-900 font-light  text-center text-sm'>
+              By signing in, you agree to{' '}
+              byScript platform <a href="https://byscript.io/termsConditions" target='_blank' rel='noopener noreferrer'><u className='cursor-pointer'>Terms and Conditions</u></a>.
             </p>
           </div>
         </div>
