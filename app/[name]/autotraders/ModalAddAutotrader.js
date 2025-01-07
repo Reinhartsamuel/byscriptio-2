@@ -161,7 +161,7 @@ export default function ModalAddAutotrader({
           martingale_volume_coefficient: 10,
           martingale_step_coefficient: 10,
           max_safety_orders: 0,
-          max_active_deals	: resultString?.length || 1,
+          max_active_deals: resultString?.length || 1,
           active_safety_orders_count: 0,
           safety_order_step_percentage: 2,
           take_profit_type: 'total',
@@ -287,7 +287,7 @@ export default function ModalAddAutotrader({
         <div className='flex flex-col gap-1'>
           <p className='text-gray-800 dark:text-gray-100 font-bold'>Exchange</p>
           {Array.isArray(exchanges_accounts) &&
-          exchanges_accounts?.length > 0 ? (
+            exchanges_accounts?.length > 0 ? (
             exchanges_accounts?.map((exchange, i) => (
               <div className='flex gap-1 items-center mb-4' key={i}>
                 <input
@@ -320,6 +320,9 @@ export default function ModalAddAutotrader({
                     </span>
                     <p className='text-gray-600 dark:text-gray-400 text-sm'>
                       id: {exchange?.external_id}
+                    </p>
+                    <p className='text-gray-600 dark:text-gray-200 text-sm'>
+                      {moment.unix(exchange?.createdAt?.seconds).fromNow()}
                     </p>
                   </div>
                   <p className='text-gray-600 dark:text-gray-200 text-sm'>
@@ -429,6 +432,7 @@ function TradingPlanSelectComponent({ data, setData }) {
   return (
     <div className='flex flex-col lg:flex-row gap-2'>
       <div className='block'>
+        <p className='text-black dark:text-white'>Trading Plan:</p>
         <div className='grid grid-cols-2'>
           {tradingPlans.map((plan, i) => (
             <div
@@ -475,7 +479,7 @@ function TradingPlanSelectComponent({ data, setData }) {
                       {pair?.pair}
                     </p>
                   </div>
-                    <PairImageComponent pair={pair?.pair} showUsdt={false} />
+                  <PairImageComponent pair={pair?.pair} showUsdt={false} />
                 </div>
                 <p className='text-xs font-thin text-black dark:text-white'>
                   Trading plan: {selectedTradingPlan?.id}
@@ -495,7 +499,7 @@ function TradingPlanSelectComponent({ data, setData }) {
               No pair available
             </p>
           )}
-       
+
         </div>
         {errorMsg && <p className='text-red-500 text-sm italic'>{errorMsg}</p>}
       </div>

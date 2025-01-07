@@ -20,7 +20,7 @@ export default function Home() {
     <>
       <Navbar />
       {/* <div className="absolute top-0 z-[-20] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" /> */}
-      <div className=' w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20'>
+      <div className='h-screen w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20'>
         <div className='absolute  -z-10 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]' />
         <div className='w-full md:w-2/3 text-center items-center justify-center'>
           <h1 className='text-4xl font-bold text-white xl:text-8xl'>
@@ -83,13 +83,13 @@ export default function Home() {
       </div>
 
       {/* <HeroHighlightComponent /> */}
-      <div className='w-full min-h-screen flex flex-col items-center justify-center relative'>
-        <h1 className='text-center text-5xl font-bold text-slate-100 mb-10 mt-20'>"by<span className='font-ecoCoding'>Script</span> not only gives
+      <div className='w-full min-h-screen flex flex-col items-center justify-center relative '>
+        <h1 className='text-center text-5xl font-bold text-slate-100 mb-10 mt-20'>&ldquo;by<span className='font-ecoCoding'>Script</span> not only gives
           <span className='text-orange-500 font-bold'> signals</span>, but also{' '}
           <br />
           <span className='text-blue-300 italic underline'>automated trading</span>,
           <br />
-          <span className='text-lg'>while you sleep, drive, work, play with your child, anything."</span>
+          <span className='text-lg'>while you sleep, drive, work, play with your child, anything.&ldquo;</span>
         </h1>
 
         <GlowWrapper glowColor="blue">

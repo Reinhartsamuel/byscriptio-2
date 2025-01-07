@@ -22,16 +22,22 @@ const ExchangeComponent = ({ exchange }) => {
   return (
     <div className='flex flex-col justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[6rem]'>
       <div className='flex w-full justify-between'>
-        <div className='flex gap-2'>
-          <img
-            alt={exchange?.exchange_name}
-            src={exchange.exchange_thumbnail}
-            className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
-          />
-          <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-            {exchange?.type}
-          </span>
+        <div className='flex w-full justify-between'>
+          <div className='flex gap-2'>
+            <img
+              alt={exchange?.exchange_name}
+              src={exchange.exchange_thumbnail}
+              className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
+            />
+            <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+              {exchange?.type}
+            </span>
+          </div>
+          <p className='text-gray-600 dark:text-gray-400 text-sm justify-end'>
+            {exchange?.external_id}
+          </p>
         </div>
+
         <p className='text-gray-600 dark:text-gray-200 text-sm'>
           {exchange?.external_name}
         </p>
