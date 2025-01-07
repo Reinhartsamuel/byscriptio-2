@@ -218,7 +218,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
           <div className='flex flex-col p-2 bg-[#cdedff] items-center justify-center'>
             <p className='text-black text-sm'>Total Trades</p>
             <p className='text-gray-800 text-xl font-bold '>
-              {tradesData?.length}
+              {tradesDataWithCumulativeCalc?.length}
             </p>
           </div>
         </div>

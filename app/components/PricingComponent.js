@@ -26,7 +26,7 @@ export function PricingComponent() {
       querySnapshot.forEach((doc) => {
         arr.push({ id: doc.id, ...doc.data() });
       });
-      setPrices(arr);
+      setPrices(arr.filter((x) => x?.status === 'ACTIVE'));
       // console.log(arr, 'arr');
     } catch (error) {
       console.log(error.message);
