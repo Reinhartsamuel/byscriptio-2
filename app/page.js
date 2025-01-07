@@ -84,10 +84,10 @@ export default function Home() {
 
       {/* <HeroHighlightComponent /> */}
       <div className='w-full min-h-screen flex flex-col items-center justify-center relative'>
-        <h1 className='text-center text-3xl text-slate-100 mb-10'>"by<span className='font-ecoCoding'>Script</span> not only gives
+        <h1 className='text-center text-5xl font-bold text-slate-100 mb-10 mt-20'>"by<span className='font-ecoCoding'>Script</span> not only gives
           <span className='text-orange-500 font-bold'> singals</span>, but also{' '}
           <br />
-          <span className='text-blue-500 italic underline'>automated trading</span>,
+          <span className='text-blue-300 italic underline'>automated trading</span>,
           <br />
           <span className='text-lg'>while you sleep, drive, work, play with your child, anything."</span>
         </h1>
