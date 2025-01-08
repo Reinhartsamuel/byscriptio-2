@@ -4,6 +4,7 @@ import { FieldValue } from 'firebase-admin/firestore';
 import moment from 'moment';
 
 const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
+const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
 
 // THIS IS WHAT THE BODY LOOKS LIKE :
 // {
@@ -190,6 +191,18 @@ const threeCommasUrl = 'https://app.3commas.io/trade_signal/trading_view';
 export async function POST(request) {
   try {
     const body = await request.json();
+    try {
+      await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+        method: 'POST',
+        'Content-Type': 'application/json',
+        body: JSON.stringify({
+          "chat_id": "-1002265379113",
+          "text": JSON.stringify(body)
+        })
+      })
+    } catch (error) {
+      console.log(error.message + ' :::error sending to telegram')
+    }
     const addWebhookResult = await adminDb.collection('webhooks').add({
       ...body,
       type: 'autotrade',
@@ -211,8 +224,7 @@ export async function POST(request) {
     if (!doc.exists) {
       try {
         console.log(
-          `No such document! id ::: ${
-            body?.trading_plan_id || ''
+          `No such document! id ::: ${body?.trading_plan_id || ''
           }, timestamp : `,
           new Date().getTime(),
           'creating',
@@ -272,7 +284,7 @@ export async function POST(request) {
       autotraderLookups.push({ id: doc.id, ...doc.data() });
     });
 
-    
+
 
     // RETURN IF THERE'S TESTING FLAG
     // RETURN IF THERE'S TESTING FLAG
@@ -370,8 +382,8 @@ export async function POST(request) {
             autotrader_name:
               x?.autotrader_name ||
               moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-                '-' +
-                x?.value?.createdAt?.seconds,
+              '-' +
+              x?.value?.createdAt?.seconds,
           });
         })
       );
@@ -411,8 +423,8 @@ export async function POST(request) {
               autotrader_name:
                 x?.autotrader_name ||
                 moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-                  '-' +
-                  x?.value?.createdAt?.seconds,
+                '-' +
+                x?.value?.createdAt?.seconds,
               exchange_thumbnail: x?.value?.exchange_thumbnail || '',
               trading_plan_id: body?.trading_plan_id,
               signal_type: body?.action ? 'SELL' : 'BUY',
@@ -461,8 +473,8 @@ export async function POST(request) {
               autotrader_name:
                 x?.autotrader_name ||
                 moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-                  '-' +
-                  x?.value?.createdAt?.seconds,
+                '-' +
+                x?.value?.createdAt?.seconds,
               exchange_thumbnail: x?.value?.exchange_thumbnail || '',
               trading_plan_id: body?.trading_plan_id,
               signal_type: body?.action ? 'SELL' : 'BUY',

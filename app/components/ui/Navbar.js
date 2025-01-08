@@ -51,7 +51,7 @@ export default function Navbar() {
   } = useUserStore();
 
   const searchParams = useSearchParams();
-  const affiliateid = searchParams.get('c'); // c represents customer id in database
+  const affiliateId = searchParams.get('c'); // c represents customer id in database
   const handleLogout = async () => {
     try {
       await authFirebase.signOut();
@@ -69,8 +69,8 @@ export default function Navbar() {
   };
 
   async function saveCookies() {
-    if (!affiliateid) return;
-    setCookie('affiliateId', affiliateid);
+    if (!affiliateId) return;
+    setCookie('affiliateId', affiliateId);
   }
 
   useEffect(() => {

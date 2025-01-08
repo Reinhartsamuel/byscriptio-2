@@ -18,7 +18,7 @@ const page = () => {
   const { ipLocation, setIpLocation, setUser, setCustomer } = useUserStore();
   const searchParams = useSearchParams();
 
-  const affiliateid = searchParams.get('c'); // c represents customer id in database
+  const affiliateId = searchParams.get('c'); // c represents customer id in database
   async function getLocationIp() {
     try {
       const locationFetch = await fetch('http://ip-api.com/json');
@@ -38,8 +38,8 @@ const page = () => {
   }
 
   async function saveCookies() {
-    if (!affiliateid) return;
-    setCookie('affiliateId', affiliateid);
+    if (!affiliateId) return;
+    setCookie('affiliateId', affiliateId);
   }
 
   async function getCookies() {
@@ -50,7 +50,7 @@ const page = () => {
   async function incrementClicks() {
     try {
       console.count('updating clicks');
-      await updateDocumentFirebase('customers', affiliateid, {
+      await updateDocumentFirebase('customers', affiliateId, {
         affiliateClicks: increment(1),
       });
       // console.count('updating clicks x');
@@ -65,11 +65,11 @@ const page = () => {
   }, []);
 
   useEffect(() => {
-    if (affiliateid) {
-      incrementClicks(); // Call incrementClicks only if affiliateid is present
+    if (affiliateId) {
+      incrementClicks(); // Call incrementClicks only if affiliateId is present
     }
-    console.log(affiliateid)
-  }, [affiliateid]);
+    console.log(affiliateId)
+  }, [affiliateId]);
 
   return (
     <>
@@ -91,7 +91,7 @@ const page = () => {
             src={logo}
             className='h-20 w-auto rounded-lg'
           />
-          <h3 className='text-gray-100' onClick={getCookies}>
+          <h3 className='text-gray-100'>
             Change your trading to fully automated algorithmic trading 🚀 🚀
           </h3>
         </div>
