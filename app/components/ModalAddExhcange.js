@@ -1,11 +1,14 @@
 import { cn } from '@/lib/util';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useUserStore } from '../store/userStore';
 import { copyTextToClipboard } from '../utils/copyTextToClipboard';
 import Modal from './ui/Modal';
 import { FaRegCopy } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
 import { onCheck3CApi } from '../services/checkExchangesOn3Commas';
+import generateRandomString from '../utils/generateRandomString';
+import { setDocumentFirebase } from '../utils/firebaseApi';
+import { authFirebase } from '../config/firebase';
 
 export default function ModalAddExchange({
   openModal,
@@ -15,7 +18,49 @@ export default function ModalAddExchange({
 }) {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
+  const [openDialogue, setOpenDialogue] = useState(false);
+  const newlyCreatedId = useMemo(() => generateRandomString(), [openModal]);
   const lowercaseExchangeName = exchangeName && exchangeName.toLowerCase();
+
+
+
+  async function onConnectClick() {
+    try {
+      setLoading(true);
+      // console.log(newlyCreatedId, 'newlyCreatedId');
+      // setOpenDialogue(true)
+
+      await Promise.all([
+        await setDocumentFirebase('exchange_accounts', newlyCreatedId, {
+          uid: customer?.uid || authFirebase?.currentUser?.uid || null,
+          name: customer?.name || authFirebase.currentUser?.displayName || null,
+          email: customer?.email || authFirebase.currentUser?.email || null,
+          exchange_name: exchangeName,
+          exchange_thumbnail: exchangeThumbnail,
+          external_id: '',
+        }),
+        await fetch('/api/email', {
+          method :'POST',
+          headers : {
+            accept : 'application/json',
+            'Content-Type' : 'application/json'
+          },
+          body : JSON.stringify({
+            subject : `User request connect exchange : ${customer?.name || authFirebase.currentUser?.displayName || null}`,
+            htmlContent : `User request connect exchange : ${customer?.name || authFirebase.currentUser?.displayName || null}, email : ${customer?.email || authFirebase.currentUser?.email || null}, exhcange : ${exchangeName}, exhcnage id : ${newlyCreatedId}`,
+            to : [
+              {email : 'reinhartsams@gmail.com',name : 'reinhart'},
+              {email : 'edwinfardyanto@gmail.com',name : 'edwin'},
+            ]
+          })
+        }),
+      ])
+    } catch (error) {
+      console.log(error.message)
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Modal open={openModal} onClose={() => setOpenModal(false)}>
@@ -31,16 +76,20 @@ export default function ModalAddExchange({
       </div>
       {/* <!-- Modal body --> */}
       <div className='p-4 md:p-5 space-y-4 flex flex-col items-center'>
-        <p className='text-center text-md lg:text-xl font-bold text-gray-800 dark:text-gray-200'>
-          <span className='italic text-red-500 underline'>IMPORTANT! </span>
-          {'   '}Please make sure to copy this id and paste on &quot;Name&quot;
-          input field, otherwise your exhcange will not be connected!!
+        <p className='text-center text-xl lg:text-4xl font-bold text-gray-800 dark:text-gray-200'>
+          <span className='italic text-red-500 underline'>IMPORTANT! </span><br />
+          {'   '}Please follow below steps!
         </p>
+        <ul className='list-decimal text-white'>
+          <li>Please copy this unique id below:</li>
+          <li>Click &quot;Continue to exchange portal&quot;</li>
+          <li>On the &quot;Name&quot; input, please paste the below id</li>
+          <li>After connecting your exchange, please click <span className='text-green-400'>I already connected my exhcange</span> below.</li>
+        </ul>
         <a
-          className='text-gray-800 dark:text-gray-200 underline text-sm font-light hover:text-blue-500'
-          href={`https://docs.byscript.io/exchange/${
-            lowercaseExchangeName === 'gate' ? 'gate.io' : lowercaseExchangeName
-          }`}
+          className='text-gray-400 underline text-sm font-light hover:text-blue-500'
+          href={`https://docs.byscript.io/exchange/${lowercaseExchangeName === 'gate' ? 'gate.io' : lowercaseExchangeName
+            }`}
           target='_blank'
           rel='noopener noreferrer'
         >
@@ -48,12 +97,12 @@ export default function ModalAddExchange({
           How to connect my {exchangeName} exhcange?
         </a>
         <div className='flex gap-2 items-center'>
-          <h3 className='text-xl font-bold text-yellow-500 dark:text-yellow-300'>
-            {customer?.id}
+          <h3 className='text-2xl lg:text-5xl font-bold text-yellow-500 dark:text-yellow-300'>
+            {newlyCreatedId}
           </h3>
           <button
             onClick={() => copyTextToClipboard(customer?.id || '')}
-            className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
+            className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white border-[1px] border-gray-100 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 mb-2'
           >
             <FaRegCopy color={'gray'} />
           </button>
@@ -79,16 +128,18 @@ export default function ModalAddExchange({
             data-modal-hide='default-modal'
             type='button'
             className={cn(
-              'underline focus:ring-4 focus:outline-none font-medium rounded-lg text-lg font-light text-black dark:text-white px-5 py-2.5 text-center',
+              'focus:ring-4 focus:outline-none font-medium rounded-lg text-lg font-light text-black dark:text-white px-5 py-2.5 text-center',
               loading && 'cursor-not-allowed'
             )}
             onClick={() =>
-              onCheck3CApi({
-                setLoading,
-                customer,
-                exchangeName,
-                exchangeThumbnail,
-              })
+              // onCheck3CApi({
+              //   setLoading,
+              //   customer,
+              //   exchangeName,
+              //   exchangeThumbnail,
+              // })
+              // setOpenDialogue(true)
+              onConnectClick()
             }
             disabled={loading}
           >
@@ -100,6 +151,9 @@ export default function ModalAddExchange({
           className='sm:w-full lg:w-3/4 object-contain'
         />
       </div>
+      <Modal open={openDialogue} onClose={() => setOpenDialogue(false)}>
+        test
+      </Modal>
     </Modal>
   );
 }

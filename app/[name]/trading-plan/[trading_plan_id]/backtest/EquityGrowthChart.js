@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import sortTradesData from '@/app/utils/sortTradesData';
 import calculateTradesDataData from '@/app/utils/calcultateTradesData';
+import useBreakPointValue from '@/app/hooks/responsiveHook';
 
 
 const EquityGrowthChart = ({ tradesData, headers }) => {
+  const { isMobile, isTablet, isDesktop } = useBreakPointValue()
   // REF FOR CHART
   const chartRef = useRef(null);
 
@@ -62,7 +64,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
     const cumulativeProfit = tradesDataWithCumulativeCalc
       .sort((a, b) => a.timestamp - b.timestamp)
       .map((trade) => parseFloat(trade.currentBalance));
-    console.log(cumulativeProfit, 'cumulativeProfit');
+    // console.log(cumulativeProfit, 'cumulativeProfit');
 
     // DRAWDOWN ========================================================================
     // DRAWDOWN ========================================================================
@@ -128,6 +130,14 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               display: true,
               text: 'Equity Growth (%)',
             },
+            position: 'left', // Position the y-axis on the left
+            ticks: {
+              padding: -60, // Adjust padding to move ticks inside
+              callback: function(value) {
+                return value; // Customize tick labels if needed
+              },
+            },
+            
           },
           'drawdown-y': {
             // Secondary y-axis for drawdowns
@@ -142,6 +152,9 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               drawOnChartArea: true, // Do not draw grid lines for the secondary axis
             },
             reverse: true, // Reverse the drawdown-y-axis
+            ticks : {
+              padding : 10
+            }
           },
           x: {
             title: {
@@ -173,7 +186,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
 
   return (
     <div>
-      <canvas ref={chartRef} width='400' height='200'></canvas>
+      <canvas ref={chartRef}></canvas>
       {/* <pre>{JSON.stringify(equityGrowthPercentage)}</pre> */}
       <div className='border-2'>
         <div className='grid grid-cols-2 lg:grid-cols-4'>
@@ -222,7 +235,9 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
             </p>
           </div>
         </div>
-        <div className='flex gap-2 w-full justify-evenly pb-5 pt-5'>
+        {/* <div className='flex flex-col lg:flex-col mx-auto gap-2 w-full items-center justify-center 
+        justify-evenly pb-5 pt-5'> */}
+        <div className='grid grid-cols-2 lg:grid-cols-4 gap-2 p-2'>
           <div>
             <label
               htmlFor='date_from'
@@ -241,7 +256,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               ).format('YYYY-MM-DD')}
               type='date'
               id='date_from'
-              className='w-[11rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className='w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder={dateFilter.startDate}
               required
               onChange={(e) =>
@@ -273,7 +288,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               ).format('YYYY-MM-DD')}
               type='date'
               id='date_to'
-              className='w-[11rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className='w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder={dateFilter.endDate}
               required
               onChange={(e) =>
@@ -298,7 +313,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               onChange={(e) => setInitialCapital(parseFloat(e.target.value))}
               type='number'
               id='initial_capital'
-              className='w-[11rem] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className='w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder={initialCapital}
               value={initialCapital}
               required
@@ -338,8 +353,8 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
         </button>
       </div>
       <div className='overflow-x-auto overflow-y-auto mt-10'>
-      <table className='w-full xl:w-3/5 text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
-      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+        <table className='w-full xl:w-3/5 text-xs text-left text-gray-500 dark:text-gray-400 mx-auto'>
+          <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
               {headers?.map((header, index) => (
                 <th key={index} scope='col' className='px-2 py-1'>
@@ -350,7 +365,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
           </thead>
           <tbody className='bg-white divide-y divide-gray-200'>
             {tradesData.reverse()?.map((row, rowIndex) => (
-              <tr key={rowIndex}  className='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
+              <tr key={rowIndex} className='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
                 {headers?.map((column, colIndex) => (
                   <td
                     key={colIndex}

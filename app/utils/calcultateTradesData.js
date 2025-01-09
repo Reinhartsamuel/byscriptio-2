@@ -53,10 +53,6 @@ export default function calculateTradesDataData({
       timestamp: moment(currentTrade['Date/Time'], 'YYYY-MM-DD HH:mm').unix(),
     });
   }
-  console.log(
-    newArr.sort((a, b) => Number(a['Trade #']) - Number(b['Trade #'])),
-    'newArr'
-  );
   return newArr.sort((a, b) => {
     return Number(a.timestamp) - Number(b.timestamp);
   });
