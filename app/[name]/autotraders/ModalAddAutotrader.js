@@ -270,9 +270,9 @@ export default function ModalAddAutotrader({
 
   return (
     <Modal open={addModal} onClose={handleClose}>
-      <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600'>
+      <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600'>
         <div className='flex flex-col gap-2'>
-          <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+          <h3 className='text-xl font-semibold text-white'>
             Add New Autotrader
           </h3>
           <p className='font-light text-sm text-gray-800 dark:text-slate-400 whitespace-wrap'>
@@ -285,7 +285,7 @@ export default function ModalAddAutotrader({
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
         <div className='flex flex-col gap-1'>
-          <p className='text-gray-800 dark:text-gray-100 font-bold'>Exchange</p>
+          <p className='text-gray-100 font-bold'>Exchange</p>
           {Array.isArray(exchanges_accounts) &&
             exchanges_accounts?.length > 0 ? (
             exchanges_accounts?.map((exchange, i) => (

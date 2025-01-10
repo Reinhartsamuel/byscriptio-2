@@ -1,10 +1,24 @@
 import { authFirebase } from '../config/firebase';
-import { getCollectionFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
+import { useAutotraderStore } from '../store/autotraderStore';
+import { useUserStore } from '../store/userStore';
+import { getCollectionFirebase, getSingleDocumentFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function useStartStopAction({ setLoading, detail, setDetail }) {
+  const { userPackage } = useUserStore();
+  const { autotraders, getAutotraders } = useAutotraderStore();
     async function handleStartStop(action) {
-      // return console.log(detail, 'this is detail');
+      const productDataFromUserPackage = await getSingleDocumentFirebase('products', userPackage?.productId);
+      const activeAutotrader = autotraders?.filter((autotrader) => autotrader?.status === 'ACTIVE');
+      console.log(autotraders,'autotraders')
+      if (activeAutotrader?.length > productDataFromUserPackage?.autotraders) {
+        return Swal.fire({
+          icon : 'warning',
+          title: `Your account already activated ${productDataFromUserPackage?.autotraders} autotrader`,
+          text : `You only have maximum of ${productDataFromUserPackage?.autotraders} active autotrader, please contact our support team for further information`
+        })
+      }
+      // return console.log(productDataFromUserPackage, 'this is productDataFromUserPackage');
       // if (detail?.status === 'REQUESTED') return Swal.fire({
       //   icon : 'warning',
       //   title: 'Autotrader is on REQUESTED status',
@@ -70,6 +84,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
             text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
           });
         }
+        getAutotraders();
       } catch (error) {
         Swal.fire({
           icon: 'error',

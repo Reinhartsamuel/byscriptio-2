@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { addDocumentFirebase } from '../utils/firebaseApi';
 export default function useForceAction({ detail, setLoading, pair }) {
   const handleForce = async (action) => {
     console.log(pair);
@@ -41,6 +42,7 @@ export default function useForceAction({ detail, setLoading, pair }) {
       if (!res.status == 200 && !result.status == 200)
         throw new Error('action not successful!');
       // console.log(result, 'result');
+
       Swal.fire({
         title: 'Success',
         text: `${action} autotrader success`,

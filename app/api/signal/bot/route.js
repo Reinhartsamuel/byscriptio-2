@@ -384,6 +384,7 @@ export async function POST(request) {
               moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
               '-' +
               x?.value?.createdAt?.seconds,
+              action: body?.action ? 'SELL' : 'BUY',
           });
         })
       );

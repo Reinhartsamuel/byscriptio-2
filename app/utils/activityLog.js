@@ -14,6 +14,7 @@ export async function addActivityLog({
     const locationFetch = await fetch('http://ip-api.com/json');
     const locationResult = await locationFetch.json();
 
+    if (window.location.hostname === 'localhost') return;
     await addDocumentFirebase('activity_logs', {
       customerId,
       uid,

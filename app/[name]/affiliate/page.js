@@ -1,13 +1,17 @@
 'use client';
-const AffiliateWithdrawalListComponent = dynamic(() => import('@/app/components/AffiliateWithdrawalListComponent'), {
-  ssr: false,
-});
-const AffiliateeComponent = dynamic(() => import( '@/app/components/AffiliateeComponent'), {
-  ssr: false,
-});
-const WithdrawableComponent = dynamic(() => import('@/app/components/WithdrawableComponent'), {
-  ssr: false,
-});
+// const AffiliateWithdrawalListComponent = dynamic(() => import('@/app/components/AffiliateWithdrawalListComponent'), {
+//   ssr: false,
+// });
+// const AffiliateeComponent = dynamic(() => import( '@/app/components/AffiliateeComponent'), {
+//   ssr: false,
+// });
+// const WithdrawableComponent = dynamic(() => import('@/app/components/WithdrawableComponent'), {
+//   ssr: false,
+// });
+
+import AffiliateWithdrawalListComponent from '@/app/components/AffiliateWithdrawalListComponent';
+import AffiliateeComponent from '@/app/components/AffiliateeComponent';
+import WithdrawableComponent from '@/app/components/WithdrawableComponent';
 
 
 import { priceFormat } from '@/app/utils/priceFormat';
