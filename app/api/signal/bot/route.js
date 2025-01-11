@@ -192,7 +192,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     try {
-      await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+      const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
         method: 'POST',
         'Content-Type': 'application/json',
         body: JSON.stringify({
@@ -200,6 +200,8 @@ export async function POST(request) {
           "text": JSON.stringify(body)
         })
       })
+      const resTelegram = await res.json();
+      console.log(resTelegram, 'resTelegram')
     } catch (error) {
       console.log(error.message + ' :::error sending to telegram')
     }
