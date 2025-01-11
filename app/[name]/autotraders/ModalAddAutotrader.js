@@ -313,7 +313,7 @@ export default function ModalAddAutotrader({
                     <img
                       alt={exchange?.exchange_name}
                       src={exchange.exchange_thumbnail}
-                      className='w-[6rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-gray-200 '
+                      className='w-[6rem] object-contain bg-gray-400 rounded-md p-1 dark:p-0'
                     />
                     <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
                       {exchange?.type}

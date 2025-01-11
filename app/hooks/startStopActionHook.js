@@ -1,7 +1,6 @@
-import { authFirebase } from '../config/firebase';
 import { useAutotraderStore } from '../store/autotraderStore';
 import { useUserStore } from '../store/userStore';
-import { getCollectionFirebase, getSingleDocumentFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
+import { getSingleDocumentFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function useStartStopAction({ setLoading, detail, setDetail }) {
@@ -10,12 +9,22 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
     async function handleStartStop(action) {
       const productDataFromUserPackage = await getSingleDocumentFirebase('products', userPackage?.productId);
       const activeAutotrader = autotraders?.filter((autotrader) => autotrader?.status === 'ACTIVE');
-      console.log(autotraders,'autotraders')
-      if (activeAutotrader?.length > productDataFromUserPackage?.autotraders) {
+      // console.log(autotraders,'autotraders')
+      // console.log(productDataFromUserPackage,'productDataFromUserPackage')
+      // console.log(activeAutotrader,'activeAutotrader')
+
+
+
+
+
+      const limitReached = activeAutotrader?.length >= productDataFromUserPackage?.autotraders;
+      // console.log(limitReached,'limitReached')
+
+      if (limitReached) {
         return Swal.fire({
           icon : 'warning',
-          title: `Your account already activated ${productDataFromUserPackage?.autotraders} autotrader`,
-          text : `You only have maximum of ${productDataFromUserPackage?.autotraders} active autotrader, please contact our support team for further information`
+          title: `Your account already activated ${activeAutotrader?.length} autotrader(s)`,
+          text : `You only have maximum of ${productDataFromUserPackage?.autotraders} active autotrader(s), please contact our support team for further information`
         })
       }
       // return console.log(productDataFromUserPackage, 'this is productDataFromUserPackage');
@@ -25,23 +34,6 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
       // })
       setLoading(true);
       try {
-        // check if action === 'start', only 1 active autotrader is allowed
-        // check if action === 'start', only 1 active autotrader is allowed
-        // check if action === 'start', only 1 active autotrader is allowed
-        // check if action === 'start', only 1 active autotrader is allowed
-        if (action === 'start') {
-          const findActiveAutotrader =  await getCollectionFirebase('dca_bots', [{field : 'status', operator :'==', value : 'ACTIVE'}, {field : 'email', operator : '==', value : authFirebase.currentUser?.email}]);
-          console.log({findActiveAutotrader});
-          if (Array.isArray(findActiveAutotrader) && findActiveAutotrader?.length > 0) {
-            setLoading(false);
-            return Swal.fire({
-              icon : 'warning',
-              title: 'Your account already activated one autotrader',
-              text : 'You only have maximum of 1 (one) active autotrader, please contact our support team for further information'
-            })
-          }
-        }
-
         const body = {
           action,
           bot_id: detail.bot_id,
