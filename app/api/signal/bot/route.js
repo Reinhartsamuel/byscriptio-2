@@ -280,7 +280,6 @@ export async function POST(request) {
     }
     let autotraderLookups = [];
     snapshot.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
       autotraderLookups.push({ id: doc.id, ...doc.data() });
     });
 
