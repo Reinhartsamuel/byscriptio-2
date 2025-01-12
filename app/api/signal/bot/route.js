@@ -192,12 +192,13 @@ export async function POST(request) {
   try {
     const body = await request.json();
     try {
+      const messageTelegram = JSON.stringify(body)
       const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
         method: 'POST',
         'Content-Type': 'application/json',
         body: JSON.stringify({
           "chat_id": "-1002265379113",
-          "text": JSON.stringify(body)
+          "text": messageTelegram + '\n singnal from tradingview'
         })
       })
       const resTelegram = await res.json();
