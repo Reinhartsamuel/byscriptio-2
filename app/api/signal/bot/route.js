@@ -434,7 +434,7 @@ export async function POST(request) {
               price: body?.price || '',
               pair: body?.pair || '',
             }),
-            subject: 'Trade Executed - byScript',
+            subject: `Trade Executed ${body?.pair || ''} - byScript`,
           };
         }),
       };
@@ -457,46 +457,46 @@ export async function POST(request) {
       //------------------------------ SEND EMAIL END ------------------------------
       //------------------------------ SEND EMAIL END ------------------------------
       //------------------------------ SEND EMAIL END ------------------------------
-      await Promise.all(
-        result?.map(async (x) => {
-          const emailBody = {
-            sender: {
-              name: 'byScript.io',
-              email: 'info@byscript.io',
-            },
-            to: [
-              {
-                email: x?.value?.email || '',
-                name: x?.value?.email || '',
-              },
-            ],
-            subject: `Trade Executed ${body?.pair || ''} - byScript`,
-            htmlContent: tradeExecutedTemplate({
-              autotrader_name:
-                x?.autotrader_name ||
-                moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
-                '-' +
-                x?.value?.createdAt?.seconds,
-              exchange_thumbnail: x?.value?.exchange_thumbnail || '',
-              trading_plan_id: body?.trading_plan_id,
-              signal_type: body?.action ? 'SELL' : 'BUY',
-              tradeAmount: x?.tradeAmount || '-',
-              price: body?.price || '',
-              pair: body?.pair || '',
-            }),
-          };
-          await fetch('https://api.brevo.com/v3/smtp/email', {
-            method: 'post',
-            body: JSON.stringify(emailBody),
-            headers: {
-              accept: 'application/json',
-              // eslint-disable-next-line no-undef
-              'api-key': process.env.BREVO_API_KEY,
-              'content-type': 'application/json',
-            },
-          });
-        })
-      );
+      // await Promise.all(
+      //   result?.map(async (x) => {
+      //     const emailBody = {
+      //       sender: {
+      //         name: 'byScript.io',
+      //         email: 'info@byscript.io',
+      //       },
+      //       to: [
+      //         {
+      //           email: x?.value?.email || '',
+      //           name: x?.value?.email || '',
+      //         },
+      //       ],
+      //       subject: `Trade Executed ${body?.pair || ''} - byScript`,
+      //       htmlContent: tradeExecutedTemplate({
+      //         autotrader_name:
+      //           x?.autotrader_name ||
+      //           moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
+      //           '-' +
+      //           x?.value?.createdAt?.seconds,
+      //         exchange_thumbnail: x?.value?.exchange_thumbnail || '',
+      //         trading_plan_id: body?.trading_plan_id,
+      //         signal_type: body?.action ? 'SELL' : 'BUY',
+      //         tradeAmount: x?.tradeAmount || '-',
+      //         price: body?.price || '',
+      //         pair: body?.pair || '',
+      //       }),
+      //     };
+      //     await fetch('https://api.brevo.com/v3/smtp/email', {
+      //       method: 'post',
+      //       body: JSON.stringify(emailBody),
+      //       headers: {
+      //         accept: 'application/json',
+      //         // eslint-disable-next-line no-undef
+      //         'api-key': process.env.BREVO_API_KEY,
+      //         'content-type': 'application/json',
+      //       },
+      //     });
+      //   })
+      // );
     }
 
     return new Response('ok', {

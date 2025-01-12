@@ -20,7 +20,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
       const limitReached = activeAutotrader?.length >= productDataFromUserPackage?.autotraders;
       // console.log(limitReached,'limitReached')
 
-      if (limitReached) {
+      if (limitReached &&  action === 'start') {
         return Swal.fire({
           icon : 'warning',
           title: `Your account already activated ${activeAutotrader?.length} autotrader(s)`,
