@@ -1,4 +1,5 @@
 import tradeExecutedTemplate from '@/app/utils/emailHtmlTemplates/tradeExecutedTemplate';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import { adminDb } from '@/lib/firebase-admin-config';
 import { FieldValue } from 'firebase-admin/firestore';
 import moment from 'moment';
@@ -359,7 +360,23 @@ export async function POST(request) {
     if (Array.isArray(result) && result?.length > 0) {
       await Promise.allSettled(
         result?.map(async (x) => {
-          await adminDb.collection('3commas_logs').add({
+          let findPreviousBuy = null;
+
+          if (body.action) {
+            try {
+            const prevBuySignal = await getCollectionFirebase('3commas_logs',[
+              {field : 'bot_id', operator :'==', value : x?.value?.sendBodyTo3Commas?.bot_id?.toString() ||
+              x?.value?.bot_id?.toString() ||
+              ''},
+            {field : 'pair', operator :'==', value : body?.pair},
+            ], {field : 'createdAt', direction :'desc'}, 1);
+            if (prevBuySignal?.length > 0) findPreviousBuy = prevBuySignal[0];
+            } catch (error) {
+              console.log(error.message + '::: error findPreviousBuy')
+            }
+          }
+
+          const addDataTo3CommasLogs = {
             // from request body
             requestBody: JSON.stringify(body),
             trading_plan_id: body?.trading_plan_id,
@@ -387,7 +404,15 @@ export async function POST(request) {
               '-' +
               x?.value?.createdAt?.seconds,
               action: body?.action ? 'SELL' : 'BUY',
-          });
+          };
+
+          if (findPreviousBuy) {
+            addDataTo3CommasLogs.pnl = parseFloat(body?.price) - parseFloat(findPreviousBuy?.price) || 0;
+            addDataTo3CommasLogs.profit_percent = (100*(parseFloat(body?.price) - parseFloat(findPreviousBuy?.price))/ parseFloat(findPreviousBuy?.price)) || 0;
+            addDataTo3CommasLogs.previousBuyId = findPreviousBuy?.id || '';
+          }
+
+          await adminDb.collection('3commas_logs').add(addDataTo3CommasLogs);
         })
       );
 
