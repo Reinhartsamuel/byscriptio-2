@@ -5,7 +5,7 @@ const page = async ({ params }) => {
   const res = await fetch(
     `https://byscript.io/api/announcements/${
       params.id
-    }?_=${new Date().getTime()}`
+    }`
   );
   const { data, error } = await res.json();
   return (

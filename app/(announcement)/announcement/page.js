@@ -3,7 +3,7 @@ import React from 'react';
 
 const page = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/announcements?_=${new Date().getTime()}`,
+    `https://byscript.io/api/announcements?_=${new Date().getTime()}`,
     {
       method: 'GET',
       cache: 'no-cache', // Disable caching
@@ -20,11 +20,11 @@ const page = async () => {
     <>
       <div className='w-full min-h-screen lg:px-20 lg:pt-10'>
         <h1 className='text-2xl font-bold text-slate-100'>Announcements</h1>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
         {error ? (
           <p>{error.message}</p>
         ) : (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10'>
+          <div className=' grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-10'>
             {data?.map((x, i) => (
               <a
                 href={`announcement/${x?.id}?t=${x?.title}`}
