@@ -25,7 +25,7 @@ import { setCookie, getCookie } from 'cookies-next';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Pricing', href: '/#pricing' },
-  // { name: "Announcements", href: "/announcement" },
+  { name: "Announcements", href: "/announcement" },
   { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
   // { name: 'Subscription', href: '/subscriptions' },
   // { name: 'Marketplace', href: '/marketplace' },
@@ -97,7 +97,7 @@ export default function Navbar() {
             href: `https://docs.byscript.io`,
             target: '_blank',
           },
-          // { name: 'Announcement', href:'/announcement', target: '_blank' },
+          { name: 'Announcement', href:'/announcement', target: '_blank' },
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);

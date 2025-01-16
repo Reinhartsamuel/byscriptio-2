@@ -20,6 +20,8 @@ import autotraderRequestTemplate from '@/app/utils/emailHtmlTemplates/autotrader
 import { addActivityLog } from '@/app/utils/activityLog';
 import { useUserStore } from '@/app/store/userStore';
 import extractUniqueStrategies from '@/app/utils/extractUniqueStrategies';
+import Tooltip from '@/app/components/ui/Tooltip';
+import { FaRegCircleQuestion } from 'react-icons/fa6';
 
 const tradingPlans = [
   { name: 'XMA', id: 'XMA' },
@@ -277,8 +279,7 @@ export default function ModalAddAutotrader({
             Add New Autotrader
           </h3>
           <p className='font-light text-sm text-gray-800 dark:text-slate-400 whitespace-wrap'>
-            Silakan pilih exchange yang sudah tersambung. Jika belum ada, kamu
-            bisa menambahkan di menu Exchange
+            Select the exchange to be used for running the autotrader.
           </p>
         </div>
       </div>
@@ -336,13 +337,19 @@ export default function ModalAddAutotrader({
             <></>
           )}
         </div>
-        <div className='flex flex-col gap-1'>
-          <label
-            htmlFor='first_name'
-            className='text-gray-800 dark:text-gray-100 font-bold'
-          >
-            Trade Amount
-          </label>
+        <div className='flex flex-col'>
+          <div className='flex'>
+            <label
+              htmlFor='first_name'
+              className='text-gray-800 dark:text-gray-100 font-bold'
+            >
+              Trade Amount Per Pair
+            </label>
+            <Tooltip text={'If you want to select 10 pairs and use a total amount of $1000, set the Trade Amount to $100. This means $100 per pair, resulting in $100 x 10 pairs = $1000.'} className='mx-2'>
+              <FaRegCircleQuestion color={'white'} />
+            </Tooltip>
+          </div>
+          <p className='text-gray-400 text-sm'>This is the amount to be used for each trade on the selected trading pairs. <br />Example:<br />Trade Amount = $100 means that every trade on the selected pairs will use $100.           </p>
           <div className='flex'>
             <span className='inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600'>
               <p>USD</p>
