@@ -16,10 +16,10 @@ import {
 } from '@/app/utils/firebaseApi';
 import PairImageComponent from '@/app/components/ui/PairImageComponent';
 import moment from 'moment';
-import autotraderRequestTemplate from '@/app/utils/emailHtmlTemplates/autotraderRequestTemplate';
+// import autotraderRequestTemplate from '@/app/utils/emailHtmlTemplates/autotraderRequestTemplate';
 import { addActivityLog } from '@/app/utils/activityLog';
 import { useUserStore } from '@/app/store/userStore';
-import extractUniqueStrategies from '@/app/utils/extractUniqueStrategies';
+// import extractUniqueStrategies from '@/app/utils/extractUniqueStrategies';
 import Tooltip from '@/app/components/ui/Tooltip';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
 
@@ -286,47 +286,50 @@ export default function ModalAddAutotrader({
 
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
-        <div className='flex flex-col gap-1'>
+        <div className='flex flex-col gap-2'>
           <p className='text-gray-100 font-bold'>Exchange</p>
           {Array.isArray(exchanges_accounts) &&
             exchanges_accounts?.length > 0 ? (
             exchanges_accounts?.map((exchange, i) => (
-              <div className='flex gap-1 items-center mb-4' key={i}>
-                <input
-                  onChange={(e) => {
-                    setData({
-                      ...data,
-                      exchange_name: JSON.parse(e.target.value)?.exchange_name,
-                      exchange_thumbnail: JSON.parse(e.target.value)
-                        ?.exchange_thumbnail,
-                      exchange_external_id:
-                        JSON.parse(e.target.value)?.external_id || '',
-                    });
-                  }}
-                  checked={data?.exchange_external_id === exchange?.external_id}
-                  id='default-radio-2'
-                  type='radio'
-                  value={JSON.stringify(exchange)}
-                  name='default-radio'
-                  className='w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-                />
-                <div className='flex w-full justify-between'>
-                  <div className='flex gap-2'>
-                    <img
-                      alt={exchange?.exchange_name}
-                      src={exchange.exchange_thumbnail}
-                      className='w-[6rem] object-contain bg-gray-400 rounded-md p-1 dark:p-0'
-                    />
-                    <span className='bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
-                      {exchange?.type}
-                    </span>
-                    <p className='text-gray-600 dark:text-gray-400 text-sm'>
-                      id: {exchange?.external_id}
-                    </p>
-                    <p className='text-gray-600 dark:text-gray-200 text-sm'>
-                      {moment.unix(exchange?.createdAt?.seconds).fromNow()}
-                    </p>
-                  </div>
+              <div key={i} className='flex flex-col lg:flex-row gap-2 p-4 border-2 rounded-md border-gray-700'>
+                <div className='flex gap-2'>
+                  <input
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        exchange_name: JSON.parse(e.target.value)?.exchange_name,
+                        exchange_thumbnail: JSON.parse(e.target.value)
+                          ?.exchange_thumbnail,
+                        exchange_external_id:
+                          JSON.parse(e.target.value)?.external_id || '',
+                      });
+                    }}
+                    checked={data?.exchange_external_id === exchange?.external_id}
+                    id='default-radio-2'
+                    type='radio'
+                    value={JSON.stringify(exchange)}
+                    name='default-radio'
+                    className='w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                  />
+                  <img
+                    alt={exchange?.exchange_name}
+                    src={exchange.exchange_thumbnail}
+                    className='w-[6rem] object-contain bg-gray-400 rounded-md p-1 dark:p-0'
+                  />
+                  <span className='bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300'>
+                    {exchange?.type}
+                  </span>
+                </div>
+
+
+
+                <div className='flex gap-2'>
+                  <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                    id: {exchange?.external_id}
+                  </p>
+                  <p className='text-gray-600 dark:text-gray-200 text-sm'>
+                    {moment.unix(exchange?.createdAt?.seconds).fromNow()}
+                  </p>
                   <p className='text-gray-600 dark:text-gray-200 text-sm'>
                     {exchange?.external_name}
                   </p>
@@ -337,7 +340,7 @@ export default function ModalAddAutotrader({
             <></>
           )}
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col mt-20'>
           <div className='flex'>
             <label
               htmlFor='first_name'
@@ -376,7 +379,7 @@ export default function ModalAddAutotrader({
           )}
           disabled={loading}
         >
-          {loading ? <Spinner /> : <p>Request autotrader</p>}
+          {loading ? <Spinner /> : <p>Create autotrader</p>}
         </button>
       </div>
     </Modal>
@@ -438,10 +441,18 @@ function TradingPlanSelectComponent({ data, setData }) {
     };
   }, [selectedTradingPlan]);
   return (
-    <div className='flex flex-col lg:flex-row gap-2'>
+    <div className='flex flex-col lg:flex-row gap-20  mt-10'>
       <div className='block'>
-        <p className='text-black dark:text-white'>Trading Plan:</p>
-        <div className='grid grid-cols-2'>
+        <div className="flex gap-2">
+          <p className='text-white font-bold'>Trading Plan:</p>
+          <Tooltip text={'Each trading plan has a unique trading approach and delivers different results.'} className='mx-2'>
+            <FaRegCircleQuestion color={'white'} />
+          </Tooltip>
+        </div>
+        <p className='text-gray-300 text-xs'>Choosing a Trading Plan
+          Selecting a trading plan <br />means choosing the algorithmic strategy that <br /> will be used to execute trades.
+        </p>
+        <div className='grid grid-cols-2 2 mt-5'>
           {tradingPlans.map((plan, i) => (
             <div
               key={i}
@@ -464,8 +475,15 @@ function TradingPlanSelectComponent({ data, setData }) {
         </div>
       </div>
       <div className='block'>
-        <p className='text-black dark:text-white'>Pairs</p>
-        <div className='grid grid-cols-1 grid-rows-3 overflow-scroll lg:grid-cols-4 gap-2'>
+        <div className="flex gap-2">
+          <p className='text-white font-bold'>Pairs</p>
+          <Tooltip text={'You can check the backtest results for each pair by clicking the "Backtest" link below each pair.Select the pairs to trade.'}>
+            <FaRegCircleQuestion color={'white'} />
+          </Tooltip>
+        </div>
+        <p className='text-gray-300 text-xs'>Select the pairs to trade.
+        </p>
+        <div className='grid grid-cols-1 grid-rows-3 overflow-scroll lg:grid-cols-4 gap-2 mt-5'>
           {loading ? (
             <Spinner />
           ) : availPairs?.length > 0 ? (
@@ -520,6 +538,7 @@ ModalAddAutotrader.propTypes = {
   setAddModal: PropTypes.bool,
   loading: PropTypes.bool,
   setLoading: PropTypes.bool,
+  setShowPricing: PropTypes.bool,
 };
 
 TradingPlanSelectComponent.propTypes = {
