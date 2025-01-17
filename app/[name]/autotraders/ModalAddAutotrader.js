@@ -279,7 +279,7 @@ export default function ModalAddAutotrader({
             Add New Autotrader
           </h3>
           <p className='font-light text-sm text-gray-800 dark:text-slate-400 whitespace-wrap'>
-            Select the exchange to be used for running the autotrader.
+
           </p>
         </div>
       </div>
@@ -287,7 +287,12 @@ export default function ModalAddAutotrader({
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
         <div className='flex flex-col gap-2'>
-          <p className='text-gray-100 font-bold'>Exchange</p>
+          <div className='flex gap-2 items-center'>
+            <p className='text-gray-100 font-bold'>Exchange</p>
+            <Tooltip text={'Select the exchange to be used for running the autotrader.'} className='mx-1'>
+              <FaRegCircleQuestion color={'white'} />
+            </Tooltip>
+          </div>
           {Array.isArray(exchanges_accounts) &&
             exchanges_accounts?.length > 0 ? (
             exchanges_accounts?.map((exchange, i) => (
@@ -348,7 +353,7 @@ export default function ModalAddAutotrader({
             >
               Trade Amount Per Pair
             </label>
-            <Tooltip text={'If you want to select 10 pairs and use a total amount of $1000, set the Trade Amount to $100. This means $100 per pair, resulting in $100 x 10 pairs = $1000.'} className='mx-2'>
+            <Tooltip text={'If you want to select 10 pairs and use a total amount of $1000, set the Trade Amount to $100. This means $100 per pair, resulting in $100 x 10 pairs = $1000.'} className='mx-1'>
               <FaRegCircleQuestion color={'white'} />
             </Tooltip>
           </div>
@@ -445,7 +450,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       <div className='block'>
         <div className="flex gap-2">
           <p className='text-white font-bold'>Trading Plan:</p>
-          <Tooltip text={'Each trading plan has a unique trading approach and delivers different results.'} className='mx-2'>
+          <Tooltip text={'Each trading plan has a unique trading approach and delivers different results.'} className='mx-1'>
             <FaRegCircleQuestion color={'white'} />
           </Tooltip>
         </div>

@@ -8,7 +8,7 @@ const Tooltip = ({ children, text, className }) => {
             <div className="cursor-pointer">
                 {children}
             </div>
-            <div className="absolute bottom-full mb-2 w-[20rem] lg:w-[50rem] p-2 text-sm text-white bg-gray-600 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute bottom-full mb-2 min-w-[20rem]  p-2 text-sm text-white bg-gray-600 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 {text}
                 <div className="absolute left-1/2 transform -translate-x-1/2 bottom-[-5px] w-0 h-0 border-l-5 border-r-5 border-t-5 border-transparent border-b-gray-800"></div>
             </div>
