@@ -34,12 +34,12 @@ const ExchangeDrawer = ({ drawerOpen, toggleDrawer }) => {
             {exchanges.map((exchange, i) => (
               <div
                 key={i}
-                className='flex justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[4rem]'
+                className='flex justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[8rem]'
               >
                 <img
                   alt={exchange?.exchange_name}
                   src={exchange.exchange_thumbnail}
-                  className='w-[10rem] object-contain bg-gray-800 rounded-md p-1 dark:p-0 dark:bg-transparent dark:rounded-none'
+                  className='w-[6rem] object-contain bg-gray-700 rounded-md p-1 dark:p-0  dark:rounded-none'
                 />
                 <button
                   className='flex w-full justify-end text-sm underline text-gray-600 dark:text-gray-400'
