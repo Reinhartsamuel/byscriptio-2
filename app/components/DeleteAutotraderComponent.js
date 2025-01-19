@@ -83,29 +83,36 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
     try {
       // check if autotrader is on STOPPED state
       // if not, DO NOT DELETE!!
-      if (detail?.status !== 'STOPPED') {
-        throw new Error(
-          'Autotrader has to be on STOPPED state before deleting.'
-        );
-      }
+      if (detail?.status !== 'STOPPED') throw new Error(
+        'Autotrader has to be on STOPPED state before deleting.'
+      );
 
       // check if autotrader has any active orders
       // if yes, DO NOT DELETE!!
       if (detail.bot_id) {
         const findLastSignal = await getLatestSignal(detail.bot_id);
-
-        const lastAction =
-          findLastSignal?.length > 0 &&
-          findLastSignal[0]?.response?.value?.action === 'close_at_market_price'
-            ? 'SELL'
-            : 'BUY';
+      // THROW ERROR IF :
+      // 1. has active order 
+      // 2. last order's action is not close_at_market_price or type is neither force_exit nor force_entry
+        if (findLastSignal?.length > 0 ) {
+          if (
+            findLastSignal[0]?.response?.value?.action === 'close_at_market_price' &&
+            findLastSignal[0]?.type !== 'force_exit' &&
+            findLastSignal[0]?.type !== 'force_entry'
+          ) throw new Error('You have an active order. Please force exit before deleting autotrader.');
+        }
+        // const lastAction =
+        //   findLastSignal?.length > 0 &&
+        //   findLastSignal[0]?.response?.value?.action === 'close_at_market_price'
+        //     ? 'SELL'
+        //     : 'BUY';
 
             
-        if (findLastSignal?.length > 0 && lastAction !== 'SELL') {
-          throw new Error(
-            `You have a ${lastAction} order on ${findLastSignal[0]?.response?.value?.pair}. Please close it first.`
-          );
-        }
+        // if (findLastSignal?.length > 0 && lastAction !== 'SELL') {
+        //   throw new Error(
+        //     `You have a ${lastAction} order on ${findLastSignal[0]?.response?.value?.pair}. Please close it first.`
+        //   );
+        // }
       }
 
       // PROCEED with deletion

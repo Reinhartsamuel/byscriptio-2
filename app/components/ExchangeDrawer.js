@@ -34,7 +34,7 @@ const ExchangeDrawer = ({ drawerOpen, toggleDrawer }) => {
             {exchanges.map((exchange, i) => (
               <div
                 key={i}
-                className='flex justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[3rem]'
+                className='flex justify-between gap-2 max-w-sm p-4 border rounded-lg shadow border-gray-300 dark:bg-gray-900 dark:border-gray-700 max-h-[4rem]'
               >
                 <img
                   alt={exchange?.exchange_name}
