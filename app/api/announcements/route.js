@@ -16,7 +16,7 @@ export async function GET() {
         status: 'success',
         data: arr,
       }),
-      // { headers: { 'Cache-Control': 's-maxage=10, stale-while-revalidate=59' } } // Add this line
+      { headers: { 'Cache-Control': 's-maxage=10, stale-while-revalidate=59' } } // Add this line
     );
   } catch (error) {
     return new Response(
