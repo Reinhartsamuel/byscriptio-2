@@ -99,7 +99,8 @@ export default function Home() {
               secondImage='https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/chart-after.jpeg?alt=media&token=10872ef8-deba-4782-b885-0379e8323071'
               firstImageClassName='object-cover object-left-top'
               secondImageClassname='object-cover object-left-top'
-              className='h-[700px] w-2xl md:h-[650px] md:w-2xl'
+              className='h-[1000px] w-2xl md:h-[650px] md:w-2xl'
+              // className={`lg:h-${window.innerWidth * 0.8 * (9/16)}`}
               slideMode='hover'
             />
           </div>

@@ -118,7 +118,13 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
               voucherCode,
               price,
               previousPrice,
-              discount 
+              discount,
+              affiliateCommission: customer?.affiliatorCustomerId
+              ? calculateCommission(
+                  customer?.affiliateLevel,
+                  parseInt(price) || 0
+                ).amount
+              : 0,
             });
             Swal.fire(
               'Voucher code redeemed successfully',
