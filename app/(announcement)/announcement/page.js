@@ -6,7 +6,7 @@ const page = async () => {
     `https://byscript.io/api/announcements?_=${new Date().getTime()}`,
     {
       method: 'GET',
-      cache: 'no-cache', // Disable caching
+      // cache: 'no-cache', // Disable caching
       
       headers: {
         'Cache-Control': 'no-cache', // Disable caching
