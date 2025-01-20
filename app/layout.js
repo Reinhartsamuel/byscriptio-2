@@ -16,7 +16,7 @@ const ecoCoding = localfont({
 
 export const metadata = {
   title: 'byscript',
-  description: 'Algorighmic Trading Platform',
+  description: 'Discover byScript.io, the ultimate marketplace for algorithmic trading tools. Connect your exchange accounts, automate trades with advanced strategies, and explore customizable trading plans. Perfect for crypto enthusiasts and traders seeking reliable, profitable solutions. Start automating your trades today!',
 };
 
 export default function RootLayout({ children }) {
