@@ -8,13 +8,13 @@ export async function addActivityLog({
   userAgent = null
 }) {
   try {
+    if (window.location.hostname === 'localhost') return;
     const ipFetch = await fetch('https://api.ipify.org/?format=json');
     const { ip: ipResult } = await ipFetch.json();
 
     const locationFetch = await fetch('http://ip-api.com/json');
     const locationResult = await locationFetch.json();
 
-    if (window.location.hostname === 'localhost') return;
     await addDocumentFirebase('activity_logs', {
       customerId,
       uid,

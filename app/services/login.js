@@ -16,6 +16,9 @@ import Swal from 'sweetalert2';
 import checkExchangesAutotraders from './checkExchangesAutotraders';
 import { addActivityLog } from '../utils/activityLog';
 import { getCookie, hasCookie } from 'cookies-next';
+import postgresDb from '@/lib/db';
+import { users } from '../drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 const provider = new GoogleAuthProvider();
 
@@ -93,7 +96,6 @@ export const handleLoginGoogle = async ({
         });
         const result = await resAddAffiliateCustomer.json();
         customerId = result.customerId;
-        console.log(customerId, 'customerIdcustomerIdcustomerIdcustomerId');
       } else {
         customerId = await addDocumentFirebase('customers', newCustomerData);
       }
@@ -112,6 +114,29 @@ export const handleLoginGoogle = async ({
         numberOfLogin: increment(1),
         token,
       });
+    }
+
+    try {
+      const findUserPostgres = await postgresDb.select().from(users).where(eq(users.email, user.email));
+      if (findUserPostgres?.length  === 0) {
+        await postgresDb
+        .insert(users)
+        .values({
+          auth_uid:user.uid || '',
+          auth_provider:'google',
+          name:user.displayName,
+          email:user.email,
+          verified:false,
+          no_of_logins:user?.numberOfLogin || 0,
+          avatar:user?.photoURL || '',
+          background_photo:'',
+          bio:'',
+          external_customer_id :customerId,
+        })
+        .returning({ id: users.id })
+      }
+    } catch (error) {
+      console.log(error.message, 'error finding or inserting user to postgres');
     }
 
     // update log
