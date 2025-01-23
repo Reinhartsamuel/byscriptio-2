@@ -127,7 +127,7 @@ export const handleLoginGoogle = async ({
           },
           body: JSON.stringify({
             user,
-
+            customerId
           })
         })
       }

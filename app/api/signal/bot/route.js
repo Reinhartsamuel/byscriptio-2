@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import tradeExecutedTemplate from '@/app/utils/emailHtmlTemplates/tradeExecutedTemplate';
-import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import { adminDb } from '@/lib/firebase-admin-config';
 import { FieldValue } from 'firebase-admin/firestore';
 import moment from 'moment';
@@ -194,15 +194,15 @@ export async function POST(request) {
     const body = await request.json();
     try {
       const messageTelegram = JSON.stringify(body)
-      const res = await fetch (`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
-        method : 'POST', 
-        headers : {
-          'Accept' : 'application/json',
-          'Content-Type' : 'application/json'
+      const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body : JSON.stringify({
-          chat_id : "-1002265379113",
-          text : messageTelegram + '\n\n webhook from tradingview'
+        body: JSON.stringify({
+          chat_id: "-1002265379113",
+          text: messageTelegram + '\n\n webhook from tradingview'
         })
       })
       const resTelegram = await res.json();
@@ -367,13 +367,20 @@ export async function POST(request) {
 
           if (body.action) {
             try {
-            const prevBuySignal = await getCollectionFirebase('3commas_logs',[
-              {field : 'bot_id', operator :'==', value : x?.value?.sendBodyTo3Commas?.bot_id?.toString() ||
-              x?.value?.bot_id?.toString() ||
-              ''},
-            {field : 'pair', operator :'==', value : body?.pair},
-            ], {field : 'createdAt', direction :'desc'}, 1);
-            if (prevBuySignal?.length > 0) findPreviousBuy = prevBuySignal[0];
+              let arr = [];
+              const snapshot = await adminDb
+                .collection('3commas_logs')
+                .where('bot_id', '==', x?.value?.sendBodyTo3Commas?.bot_id?.toString() || x?.value?.bot_id?.toString() || '')
+                .where('pair', '==', body?.pair)
+                .orderBy('createdAt', 'desc')
+                .limit(1)
+                .get();
+
+              snapshot.forEach((doc) => {
+                arr.push({ ...doc.data(), id: doc.id });
+              })
+
+              if (arr?.length > 0) findPreviousBuy = arr[0];
             } catch (error) {
               console.log(error.message + '::: error findPreviousBuy')
             }
@@ -406,12 +413,12 @@ export async function POST(request) {
               moment.unix(x?.value?.createdAt?.seconds).format('YYYY-MM-DD') +
               '-' +
               x?.value?.createdAt?.seconds,
-              action: body?.action ? 'SELL' : 'BUY',
+            action: body?.action ? 'SELL' : 'BUY',
           };
 
           if (findPreviousBuy) {
             addDataTo3CommasLogs.pnl = parseFloat(body?.price) - parseFloat(findPreviousBuy?.price) || 0;
-            addDataTo3CommasLogs.profit_percent = (100*(parseFloat(body?.price) - parseFloat(findPreviousBuy?.price))/ parseFloat(findPreviousBuy?.price)) || 0;
+            addDataTo3CommasLogs.profit_percent = (100 * (parseFloat(body?.price) - parseFloat(findPreviousBuy?.price)) / parseFloat(findPreviousBuy?.price)) || 0;
             addDataTo3CommasLogs.previousBuyId = findPreviousBuy?.id || '';
           }
 
