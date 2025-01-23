@@ -15,7 +15,7 @@ const ecoCoding = localfont({
 });
 
 export const metadata = {
-  title: 'byscript',
+  title: 'byScript, first ever algorithmic trading platform in Indonesia',
   description: 'Discover byScript.io, the ultimate marketplace for algorithmic trading tools. Connect your exchange accounts, automate trades with advanced strategies, and explore customizable trading plans. Perfect for crypto enthusiasts and traders seeking reliable, profitable solutions. Start automating your trades today!',
 };
 

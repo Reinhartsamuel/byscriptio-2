@@ -8,7 +8,7 @@ export async function GET(request) {
     const s = searchParams.get('s');
 
     // Transform the search term into a valid tsquery string
-    const tsqueryString = s ? s.split(' ').join(' & ') : '';
+    const tsqueryString = s ? s?.split(' ')?.join(' & ') : '';
 
     const result = await postgresDb
       .select()

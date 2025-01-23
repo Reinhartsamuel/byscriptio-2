@@ -16,9 +16,6 @@ import Swal from 'sweetalert2';
 import checkExchangesAutotraders from './checkExchangesAutotraders';
 import { addActivityLog } from '../utils/activityLog';
 import { getCookie, hasCookie } from 'cookies-next';
-import postgresDb from '@/lib/db';
-import { users } from '../drizzle/schema';
-import { eq } from 'drizzle-orm';
 
 const provider = new GoogleAuthProvider();
 
@@ -29,7 +26,7 @@ export const handleLoginGoogle = async ({
   setUser,
   setCustomer,
 }) => {
-// return console.log(getCookie('affiliateId'), 'cookie anjing');
+  // return console.log(getCookie('affiliateId'), 'cookie anjing');
   setLoading(true);
   try {
     //GOOGLE LOGIN
@@ -61,7 +58,7 @@ export const handleLoginGoogle = async ({
         createdAt: new Date(),
         photoURL: user.photoURL,
         token,
-        affiliatorCustomerId : hasCookie('affiliateId') ? getCookie('affiliateId') : null,
+        affiliatorCustomerId: hasCookie('affiliateId') ? getCookie('affiliateId') : null,
       };
       await setDocumentFirebase('users', user.uid, newUserData);
       setUser(newUserData);
@@ -84,13 +81,13 @@ export const handleLoginGoogle = async ({
         isNewUser: true,
         photoURL: user.photoURL,
         token,
-        affiliatorCustomerId : hasCookie('affiliateId') ? getCookie('affiliateId') : null,
+        affiliatorCustomerId: hasCookie('affiliateId') ? getCookie('affiliateId') : null,
       };
 
       if (newCustomerData.affiliatorCustomerId) {
         const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
-          method : 'POST',
-          body : JSON.stringify({
+          method: 'POST',
+          body: JSON.stringify({
             ...newCustomerData
           })
         });
@@ -117,23 +114,22 @@ export const handleLoginGoogle = async ({
     }
 
     try {
-      const findUserPostgres = await postgresDb.select().from(users).where(eq(users.email, user.email));
-      if (findUserPostgres?.length  === 0) {
-        await postgresDb
-        .insert(users)
-        .values({
-          auth_uid:user.uid || '',
-          auth_provider:'google',
-          name:user.displayName,
-          email:user.email,
-          verified:false,
-          no_of_logins:user?.numberOfLogin || 0,
-          avatar:user?.photoURL || '',
-          background_photo:'',
-          bio:'',
-          external_customer_id :customerId,
+      const res = await fetch(`/api/drizzle/users/?email=${user.email}`, {
+        method: 'GET',
+      })
+      const { data: findUserPostgres } = await res.json();
+      if (findUserPostgres?.length === 0) {
+        await fetch('/api/drizzle/users/insert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+          },
+          body: JSON.stringify({
+            user,
+
+          })
         })
-        .returning({ id: users.id })
       }
     } catch (error) {
       console.log(error.message, 'error finding or inserting user to postgres');

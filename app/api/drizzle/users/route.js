@@ -1,43 +1,20 @@
 import { users } from '@/app/drizzle/schema';
 import postgresDb from '@/lib/db';
-import { adminDb } from '@/lib/firebase-admin-config';
 import { eq } from 'drizzle-orm';
 
-export async function GET() {
+export async function GET(request) {
   try {
-    let customersArr = [];
-    const snapshot = await adminDb.collection('customers').get();
-    snapshot.forEach((doc) => {
-      customersArr.push({ ...doc.data(), id: doc.id });
-    });
+    const searchParams = request.nextUrl.searchParams;
+    const email = searchParams.get('email')
+    const res = await postgresDb
+    .select()
+    .from(users)
+    .where(eq(users.email, email));
 
-    const resAddUserPostgres = await Promise.allSettled(
-      customersArr.map(async (customer) => {
-        return await postgresDb
-          .insert(users)
-          .values({
-            auth_uid:customer.uid || '',
-            auth_provider:'google',
-            name:customer.name,
-            email:customer.email,
-            verified:false,
-            no_of_logins:customer.numberOfLogin || 0,
-            avatar:customer?.photoURL || '',
-            background_photo:'',
-            bio:'',
-            external_customer_id :customer.id,
-          })
-      })
-    );
-
-    // const result = await postgresDb
-    //   .select()
-    //   .from(users)
-    //   .where(eq(users.email, 'edwinfardyanto@gmail.com'));
-
+    // const data = await res.json()
     return Response.json({
       status: true,
-      resAddUserPostgres,
+      data : res
       // result,
       // customersArr,
     });
