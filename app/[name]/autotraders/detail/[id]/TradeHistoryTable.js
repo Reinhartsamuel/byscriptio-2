@@ -22,7 +22,7 @@ const TradeHistoryTable = (props) => {
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    let unsubscribe = () => {};
+    let unsubscribe = () => { };
     if (authFirebase.currentUser?.email) {
       // console.count(authFirebase.currentUser?.email);
       setLoading(true);
@@ -92,6 +92,12 @@ const TradeHistoryTable = (props) => {
                   Autotrader
                 </th>
                 <th scope='col' className='px-2 py-1 text-xs'>
+                  PnL ($)
+                </th>
+                <th scope='col' className='px-2 py-1 text-xs'>
+                  PnL (%)
+                </th>
+                <th scope='col' className='px-2 py-1 text-xs'>
                   Exchange
                 </th>
                 {/* <th scope='col' className='px-2 py-1 text-xs'>
@@ -105,7 +111,7 @@ const TradeHistoryTable = (props) => {
                   if (x?.type === 'autotrade') {
                     return x?.requestBody &&
                       JSON.parse(x?.requestBody)?.action ===
-                        'close_at_market_price'
+                      'close_at_market_price'
                       ? 'SELL'
                       : 'BUY';
                   } else if (x?.type === 'force_entry') {
@@ -118,7 +124,7 @@ const TradeHistoryTable = (props) => {
                   if (x?.type === 'autotrade') {
                     return x?.requestBody &&
                       JSON.parse(x?.requestBody)?.action ===
-                        'close_at_market_price'
+                      'close_at_market_price'
                       ? 'text-red-600'
                       : 'text-green-600';
                   } else if (x?.type === 'force_entry') {
@@ -166,6 +172,26 @@ const TradeHistoryTable = (props) => {
                       </div>
                     </td>
                     <td>{x?.autotrader_name}</td>
+                    <td>
+                      <p
+                        className={`
+                      text-center mx-auto font-bold 
+                      text-${x?.pnl < 0 ? 'red' : x?.pnl < 0 ? 'green' : 'gray'}-600`
+                        }
+                      >
+                        {x?.pnl ? x?.pnl?.toFixed(2) : '-'}
+                      </p>
+                    </td>
+                    <td>
+                      <p
+                        className={`
+                      text-center mx-auto font-bold 
+                      text-${x?.profit_percent < 0 ? 'red' : x?.profit_percent < 0 ? 'green' : 'gray'}-600`
+                        }
+                      >
+                        {x?.profit_percent ? x?.profit_percent?.toFixed(2) + '%' : '-'}
+                      </p>
+                    </td>
                     <td>
                       {' '}
                       <img
