@@ -193,7 +193,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     try {
-      const messageTelegram = JSON.stringify(body)
+      const messageTelegram = `pair: ${body?.pair} \n price: ${body?.price} \n timeframe: ${body?.timeframe} \n timestamp: ${body?.timestamp} \n action: ${body?.action === 'close_at_market_price' ? 'SELL' : 'BUY'} \n trading_plan_id: ${body?.trading_plan_id}`
       const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
         method: 'POST',
         headers: {
@@ -202,7 +202,7 @@ export async function POST(request) {
         },
         body: JSON.stringify({
           chat_id: "-1002265379113",
-          text: messageTelegram + '\n\n webhook from tradingview'
+          text: messageTelegram
         })
       })
       const resTelegram = await res.json();
