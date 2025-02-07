@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // app/api/accounts/route.js
 
 import generateSignatureRsa from '@/app/utils/generateSignatureRsa';
@@ -9,17 +10,23 @@ const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY;
 
 
 
-const url = `https://api.3commas.io/public/api/ver1/accounts`;
-
 export async function GET() {
+  const unix = new Date().getTime();
+  console.log("unix =>", unix);
+  // const url = `https://api.3commas.io/public/api/ver1/accounts?time=${unix}`;
+
   try {
-    const signatureMessage = '/public/api/ver1/accounts';
+    const baseUrl = 'https://api.3commas.io';
+    const queryParams = `/public/api/ver1/accounts?time=${unix}`
+    const signatureMessage = queryParams;
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
 
-    const response = await fetch(url, {
+
+    const response = await fetch(baseUrl + queryParams, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
         APIKEY: API_KEY,
         Signature: signature,
       }
@@ -38,7 +45,8 @@ export async function GET() {
     return new Response(JSON.stringify({
       status: true,
       data,
-      arr
+      arr,
+      length: data?.length
     }), {
       status: 200,
       headers: {

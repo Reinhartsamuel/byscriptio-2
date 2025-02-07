@@ -1,29 +1,30 @@
-import { exchanges } from '../dummy';
 import {
-  addDocumentFirebase,
   getCollectionFirebase,
+  setDocumentFirebase,
 } from '../utils/firebaseApi';
 import { authFirebase } from '../config/firebase';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import exchangeConnectTemplate from '../utils/emailHtmlTemplates/exchangeConnectTemplate';
+import moment from 'moment';
 
 function getType(exchange_type) {
-  const lowercase = exchange_type.toLowerCase();
-  if (lowercase.includes('spot')) return 'SPOT';
-  if (lowercase.includes('futures')) return 'FUTURES';
-  if (lowercase.includes('margin')) return 'MARGIN';
+  const type = exchange_type.toLowerCase();
+  if (type.includes('spot')) return 'SPOT';
+  if (type.includes('futures')) return 'FUTURES';
+  if (type.includes('margin')) return 'MARGIN';
 }
 function getName(exchange_type) {
-  const lowercase = exchange_type.toLowerCase();
-  if (lowercase.includes('binance')) return 'BINANCE';
-  if (lowercase.includes('bybit')) return 'BYBIT';
-  if (lowercase.includes('okx')) return 'OKX';
-  if (lowercase.includes('kraken')) return 'KRAKEN';
-  if (lowercase.includes('coinex')) return 'COINEX';
-  if (lowercase.includes('gate')) return 'GATE';
-  if (lowercase.includes('kucoin')) return 'KUCOIN';
-  if (lowercase.includes('bitget')) return 'BITGET';
-  if (lowercase.includes('gemini')) return 'GEMINI';
-  if (lowercase.includes('bitfinex')) return 'BITFINEX';
+  const type = exchange_type.toLowerCase();
+  if (type.includes('binance')) return 'BINANCE';
+  if (type.includes('bybit')) return 'BYBIT';
+  if (type.includes('okx')) return 'OKX';
+  if (type.includes('kraken')) return 'KRAKEN';
+  if (type.includes('coinex')) return 'COINEX';
+  if (type.includes('gate')) return 'GATE';
+  if (type.includes('kucoin')) return 'KUCOIN';
+  if (type.includes('bitget')) return 'BITGET';
+  if (type.includes('gemini')) return 'GEMINI';
+  if (type.includes('bitfinex')) return 'BITFINEX';
 }
 
 export async function onCheck3CApi({
@@ -31,93 +32,118 @@ export async function onCheck3CApi({
   customer,
   exchangeThumbnail,
   exchangeName,
+  newlyCreatedId
 }) {
   setLoading(true);
   try {
-    await fetch('/api/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sender: {
-          email: 'info@byscript.io',
-          name: 'byScript',
-        },
-        to: [
-          {
-            name: 'Edwin Ardyanto',
-            email: 'edwinfardyanto@gmail.com',
-          },
-          {
-            name: 'Reinhart Samuel',
-            email: 'reinhartsams@gmail.com',
-          },
-        ],
-        subject: 'Info User Connect Exchange',
-        htmlContent: `<p>${
-          authFirebase?.currentUser?.displayName || customer?.name
-        } ${
-          authFirebase.currentUser?.email &&
-          `(${authFirebase.currentUser?.email})`
-        } ${
-          customer?.id && `(id: ${customer?.id})`
-        } tried to connect exchange ${exchangeName} on ${new Date().toDateString()}</p>`,
-      }),
-    });
     const res = await fetch(
-      '/api/3commas/accounts/user-connected-exchanges/rsa'
+      '/api/3commas/accounts/user-connected-exchanges/rsa',
+      { cache: 'no-store' }
     );
     const { data, error } = await res.json();
+
     if (error) throw new Error(error);
-    console.log(
-      data.map((x) => ({
-        name: x.name,
-        id: x.id,
-        type: getType(x.exchange_name),
-        exchange_name: getName(x.exchange_name),
-        exchange_thumbnail: exchanges.find(
-          (y) => y.exchange_name === getName(x.exchange_name)
-        ).exchange_thumbnail,
-      })),
-      'onCheck3CApi'
-    );
-    const myExchange = data?.filter((x) => x.name === customer?.id);
+
+    const myExchange = data?.filter((x) => x.name === newlyCreatedId);
     console.log({ myExchange });
     if (myExchange?.length > 0) {
-      const ids = await Promise.all(
-        myExchange.map(async (exchange) => {
-          const find = await getCollectionFirebase('exchange_accounts', [
-            {
-              field: 'external_id',
-              operator: '==',
-              value: exchange.id,
-            },
-          ]);
-          console.log(find, 'find');
-          if (find.length > 0) {
-            return 'found';
-          } else {
-            const addData = {
-              customerId: customer.id,
-              external_id: exchange.id,
-              uid: authFirebase.currentUser?.uid,
-              email: authFirebase.currentUser?.email || customer?.email,
-              name: authFirebase?.currentUser?.displayName || customer?.name,
-              exchange_name: exchangeName,
-              exchange_thumbnail: exchangeThumbnail,
-              type: getType(exchange.exchange_name),
-            };
-            console.log(addData, 'addData');
-            return await addDocumentFirebase(
-              'exchange_accounts',
-              addData,
-              'byscript'
-            );
-          }
-        })
+      const exchangeData = myExchange[0];
+
+      const find = await getCollectionFirebase('exchange_accounts', [
+        {
+          field: 'external_id',
+          operator: '==',
+          value: exchangeData.id,
+        },
+      ]);
+
+      if (find?.length > 0) {
+        throw new Error('Already connected');
+      }
+      const addData = {
+        customerId: customer.id,
+        external_id: exchangeData.id,
+        uid: authFirebase.currentUser?.uid,
+        email: authFirebase.currentUser?.email || customer?.email,
+        name: authFirebase?.currentUser?.displayName || customer?.name,
+        exchange_name: getName(exchangeData.exchange_name),
+        exchange_thumbnail: exchangeThumbnail,
+        type: getType(exchangeData.exchange_name),
+      };
+
+      await setDocumentFirebase(
+        'exchange_accounts',
+        newlyCreatedId,
+        addData,
       );
-      if (ids.length > 0) window.location.reload();
+      await Promise.allSettled([
+        await fetch('/api/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sender: {
+              email: 'info@byscript.io',
+              name: 'byScript',
+            },
+            to: [
+              {
+                name: 'Edwin Ardyanto',
+                email: 'edwinfardyanto@gmail.com',
+              },
+              {
+                name: 'Reinhart Samuel',
+                email: 'reinhartsams@gmail.com',
+              },
+            ],
+            subject: 'Info User Connect Exchange',
+            htmlContent: `<p>${authFirebase?.currentUser?.displayName || customer?.name
+              } ${authFirebase.currentUser?.email &&
+              `(${authFirebase.currentUser?.email})`
+              } ${customer?.id && `(id: ${customer?.id})`
+              } tried to connect exchange ${exchangeName} on ${new Date().toDateString()}</p>
+              <p>Account Id : ${exchangeData.id}</p> 
+              <p>Exhcange name : ${exchangeData.name}</p> 
+              <p>Type : ${getType(exchangeData.exchange_name)}</p> 
+              <p>Balance : USD ${exchangeData?.primary_display_currency_amount?.amount}</p> 
+              `,
+          }),
+        }),
+        await fetch('/api/email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sender: {
+              email: 'info@byscript.io',
+              name: 'byScript',
+            },
+            to: [
+              {
+                name: customer.name,
+                email: customer.email
+              }
+            ],
+            subject: `${getName(exchangeData.exchange_name)} Exchange Connected to byScript`,
+            htmlContent: exchangeConnectTemplate({
+              connectedAt: moment().format('dddd, DD MMM YYYY HH:mm'),
+              exchange_thumbnail: exchangeThumbnail,
+              balance: exchangeData?.primary_display_currency_amount?.amount
+            })
+          })
+        })
+      ])
+      Swal.fire({
+        title: "Exchange connected",
+        showDenyButton: false,
+        showCancelButton: false,
+        confirmButtonText: "Close",
+      }).then(() => {
+        /* Read more about isConfirmed, isDenied below */
+        window.location.reload()
+      })
     } else {
       console.log('not found');
       Swal.fire({

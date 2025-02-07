@@ -8,6 +8,7 @@ export async function copyTextToClipboard(text) {
     Swal.fire({
       icon: 'success',
       title: 'Copied!',
+      text: `Copied to clipboard: ${text}`,
     });
   } catch (error) {
     Swal.fire({

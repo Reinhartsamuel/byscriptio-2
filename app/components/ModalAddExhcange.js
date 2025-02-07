@@ -7,8 +7,6 @@ import { FaRegCopy } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
 import { onCheck3CApi } from '../services/checkExchangesOn3Commas';
 import generateRandomString from '../utils/generateRandomString';
-import { setDocumentFirebase } from '../utils/firebaseApi';
-import { authFirebase } from '../config/firebase';
 
 export default function ModalAddExchange({
   openModal,
@@ -21,46 +19,6 @@ export default function ModalAddExchange({
   const [openDialogue, setOpenDialogue] = useState(false);
   const newlyCreatedId = useMemo(() => generateRandomString(), [openModal]);
   const lowercaseExchangeName = exchangeName && exchangeName.toLowerCase();
-
-
-
-  async function onConnectClick() {
-    try {
-      setLoading(true);
-      // console.log(newlyCreatedId, 'newlyCreatedId');
-      // setOpenDialogue(true)
-
-      await Promise.all([
-        await setDocumentFirebase('exchange_accounts', newlyCreatedId, {
-          uid: customer?.uid || authFirebase?.currentUser?.uid || null,
-          name: customer?.name || authFirebase.currentUser?.displayName || null,
-          email: customer?.email || authFirebase.currentUser?.email || null,
-          exchange_name: exchangeName,
-          exchange_thumbnail: exchangeThumbnail,
-          external_id: '',
-        }),
-        await fetch('/api/email', {
-          method :'POST',
-          headers : {
-            accept : 'application/json',
-            'Content-Type' : 'application/json'
-          },
-          body : JSON.stringify({
-            subject : `User request connect exchange : ${customer?.name || authFirebase.currentUser?.displayName || null}`,
-            htmlContent : `User request connect exchange : ${customer?.name || authFirebase.currentUser?.displayName || null}, email : ${customer?.email || authFirebase.currentUser?.email || null}, exhcange : ${exchangeName}, exhcnage id : ${newlyCreatedId}`,
-            to : [
-              {email : 'reinhartsams@gmail.com',name : 'reinhart'},
-              {email : 'edwinfardyanto@gmail.com',name : 'edwin'},
-            ]
-          })
-        }),
-      ])
-    } catch (error) {
-      console.log(error.message)
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <Modal open={openModal} onClose={() => setOpenModal(false)}>
@@ -80,7 +38,7 @@ export default function ModalAddExchange({
           <span className='italic text-red-500 underline'>IMPORTANT! </span><br />
           {'   '}Please follow below steps!
         </p>
-        <ul className='list-decimal text-white'>
+        <ul className='list-decimal text-white items-center flex flex-col'>
           <li>Please copy this unique id below:</li>
           <li>Click &quot;Continue to exchange portal&quot;</li>
           <li>On the &quot;Name&quot; input, please paste the below id</li>
@@ -101,7 +59,7 @@ export default function ModalAddExchange({
             {newlyCreatedId}
           </h3>
           <button
-            onClick={() => copyTextToClipboard(customer?.id || '')}
+            onClick={() => copyTextToClipboard(newlyCreatedId)}
             className='ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 text-white border-[1px] border-gray-100 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-lg px-5 py-2.5 me-2 mb-2'
           >
             <FaRegCopy color={'gray'} />
@@ -132,14 +90,13 @@ export default function ModalAddExchange({
               loading && 'cursor-not-allowed'
             )}
             onClick={() =>
-              // onCheck3CApi({
-              //   setLoading,
-              //   customer,
-              //   exchangeName,
-              //   exchangeThumbnail,
-              // })
-              // setOpenDialogue(true)
-              onConnectClick()
+              onCheck3CApi({
+                setLoading,
+                customer,
+                exchangeName,
+                exchangeThumbnail,
+                newlyCreatedId
+              })
             }
             disabled={loading}
           >

@@ -15655,7 +15655,7 @@ export const dummyActiveTradingPlan = [
 
 export const exchanges = [
   { exchange_name: 'GATE', exchange_thumbnail: 'https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png' },
-  { exchange_name: 'BINANCE', exchange_thumbnail: 'https://download.logo.wine/logo/Binance/Binance-Logo.wine.png' },
+  { exchange_name: 'BINANCE', exchange_thumbnail: 'https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d' },
   { exchange_name: 'OKX', exchange_thumbnail: 'https://www.coinroutes.com/static/8efb3275f19122028391461734d9122d/7efda/okx.webp' },
   { exchange_name: 'BYBIT', exchange_thumbnail: 'https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95' },
   { exchange_name: 'BITGET', exchange_thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Logo_Biget.svg/1200px-Logo_Biget.svg.png' },

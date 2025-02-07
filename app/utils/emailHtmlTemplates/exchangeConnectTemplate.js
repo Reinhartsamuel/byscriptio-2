@@ -96,6 +96,12 @@ export default function exchangeConnectTemplate(props) {
               <img alt='exchange' src=${props?.exchange_thumbnail} style='width:5rem;object-fit:contain;' />
             </td>
           </tr>
+          <tr>
+            <td>Balance</td>
+            <td>
+             USD ${props?.balance}
+            </td>
+          </tr>
         </table>
         <div style="width:100%; display:flex; justify-content:center; align-items:center;">
           <br />
