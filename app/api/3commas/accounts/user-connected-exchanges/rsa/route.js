@@ -42,6 +42,14 @@ export async function GET() {
       id: x.id,
     })) : null;
 
+
+
+    const headers = new Headers({
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+    });
+
     return new Response(JSON.stringify({
       status: true,
       data,
@@ -49,9 +57,7 @@ export async function GET() {
       length: data?.length
     }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
   } catch (error) {
     return new Response(
