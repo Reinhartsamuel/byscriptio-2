@@ -37,9 +37,14 @@ export async function onCheck3CApi({
   setLoading(true);
   try {
     const res = await fetch(
-      `/api/3commas/accounts/user-connected-exchanges/rsa?time=${new Date().getTime()}`,
-      { cache: 'no-store' }
-    );
+      `/api/3commas/accounts/user-connected-exchanges/rsa?time=${new Date().getTime()}`, {
+      method: 'GET',
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    });
     const { data, error } = await res.json();
 
     if (error) throw new Error(error);
@@ -48,7 +53,7 @@ export async function onCheck3CApi({
     const myExchange = data?.filter((x) => x.name === newlyCreatedId);
     console.log({ myExchange });
 
-    
+
     if (myExchange?.length > 0) {
       const exchangeData = myExchange[0];
 
