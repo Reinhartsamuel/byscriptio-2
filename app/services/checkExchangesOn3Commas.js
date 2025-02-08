@@ -43,7 +43,8 @@ export async function onCheck3CApi({
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0',
-      }
+      },
+      cache : 'no-store'
     });
     const { data, error } = await res.json();
 
