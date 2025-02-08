@@ -36,9 +36,13 @@ export async function onCheck3CApi({
 }) {
   setLoading(true);
   try {
+  const { signal } = new AbortController()
+
     const res = await fetch(
       `/api/3commas/accounts/user-connected-exchanges/rsa?time=${new Date().getTime()}`, {
       method: 'GET',
+      next: { revalidate: 0 },
+      signal,
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
         'Pragma': 'no-cache',

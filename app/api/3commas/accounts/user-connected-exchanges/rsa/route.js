@@ -14,6 +14,7 @@ export async function GET() {
   const unix = new Date().getTime();
   console.log("unix =>", unix);
   // const url = `https://api.3commas.io/public/api/ver1/accounts?time=${unix}`;
+  const { signal } = new AbortController()
 
   try {
     const baseUrl = 'https://api.3commas.io';
@@ -24,12 +25,15 @@ export async function GET() {
 
     const response = await fetch(baseUrl + queryParams, {
       method: 'GET',
+      signal,
+      next: { revalidate: 0 },
       headers: {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache',
         APIKEY: API_KEY,
         Signature: signature,
-      }
+      },
+      cache : 'no-store'
     });
 
     if (!response.ok) {
@@ -41,8 +45,6 @@ export async function GET() {
       name: x.name,
       id: x.id,
     })) : null;
-
-
 
     const headers = new Headers({
       'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
