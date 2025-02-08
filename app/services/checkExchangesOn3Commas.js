@@ -37,15 +37,18 @@ export async function onCheck3CApi({
   setLoading(true);
   try {
     const res = await fetch(
-      '/api/3commas/accounts/user-connected-exchanges/rsa',
+      `/api/3commas/accounts/user-connected-exchanges/rsa?time=${new Date().getTime()}`,
       { cache: 'no-store' }
     );
     const { data, error } = await res.json();
 
     if (error) throw new Error(error);
 
+    console.log(`checking accounts with name ${newlyCreatedId}`);
     const myExchange = data?.filter((x) => x.name === newlyCreatedId);
     console.log({ myExchange });
+
+    
     if (myExchange?.length > 0) {
       const exchangeData = myExchange[0];
 
@@ -148,7 +151,7 @@ export async function onCheck3CApi({
       console.log('not found');
       Swal.fire({
         title: 'Not Found',
-        text: `Please make sure you already copied the above id (${customer?.id}) to exchange portal!`,
+        text: `Please make sure you already copied the above id (${newlyCreatedId}) to exchange portal!`,
         icon: 'error',
       });
     }
