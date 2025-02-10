@@ -8,17 +8,27 @@ import generateSignatureRsa from '@/app/utils/generateSignatureRsa';
 const API_KEY = process.env.THREE_COMMAS_API_KEY_BOT_CREATION;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY;
 
+export const maxDuration = 25; // This function can run for a maximum of 25 seconds
 
 
-export async function GET() {
-  const unix = new Date().getTime();
-  console.log("unix =>", unix);
-  // const url = `https://api.3commas.io/public/api/ver1/accounts?time=${unix}`;
-  const { signal } = new AbortController()
-
+export async function GET(request) {
   try {
+    const { signal } = new AbortController()
+    const unix = new Date().getTime();
+
+    const searchParams = request?.nextUrl?.searchParams;
+    const per_page = searchParams?.get('per_page');
+    const page = searchParams?.get('page');
     const baseUrl = 'https://api.3commas.io';
-    const queryParams = `/public/api/ver1/accounts?time=${unix}`
+    let queryParams = `/public/api/ver1/accounts?time=${unix}`
+
+
+    if (per_page && page) {
+      queryParams += `&per_page=${per_page}&page=${page}`
+    }
+
+
+
     const signatureMessage = queryParams;
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
 
@@ -33,7 +43,7 @@ export async function GET() {
         APIKEY: API_KEY,
         Signature: signature,
       },
-      cache : 'no-store'
+      cache: 'no-store'
     });
 
     if (!response.ok) {

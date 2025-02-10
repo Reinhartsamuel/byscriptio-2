@@ -36,7 +36,7 @@ export async function onCheck3CApi({
 }) {
   setLoading(true);
   try {
-  const { signal } = new AbortController()
+    const { signal } = new AbortController()
 
     const res = await fetch(
       `/api/3commas/accounts/user-connected-exchanges/rsa?time=${new Date().getTime()}`, {
@@ -48,16 +48,13 @@ export async function onCheck3CApi({
         'Pragma': 'no-cache',
         'Expires': '0',
       },
-      cache : 'no-store'
+      cache: 'no-store'
     });
     const { data, error } = await res.json();
 
     if (error) throw new Error(error);
-
-    console.log(`checking accounts with name ${newlyCreatedId}`);
     const myExchange = data?.filter((x) => x.name === newlyCreatedId);
     console.log({ myExchange });
-
 
     if (myExchange?.length > 0) {
       const exchangeData = myExchange[0];
