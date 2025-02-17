@@ -5,12 +5,23 @@ export async function POST (request) {
         const body = await request.json();
         const { data } = body;
         console.log(data, 'this is dataaa')
-        const result = await Promise.allSettled(
-            data?.map(async (x) => {
-                await adminDb.collection('data_feed').add({
-                    ...x,
-                })
-        }))
+        let result = [];
+        if (Array.isArray(data)) {
+            result = await Promise.allSettled(
+                data?.map(async (x) => {
+                    await adminDb.collection('data_feed').add({
+                        ...x,
+                    })
+            }))
+        } else {
+            result = await Promise.allSettled(
+                body?.map(async (x) => {
+                    await adminDb.collection('data_feed').add({
+                        ...x,
+                    })
+            }))
+        }
+
         return Response.json({
             status : true,
             message : 'success',
