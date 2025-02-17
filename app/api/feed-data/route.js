@@ -4,7 +4,7 @@ export async function POST (request) {
     try {
         const body = await request.json();
         const { data } = body;
-
+        console.log(data, 'this is dataaa')
         const result = await Promise.allSettled(
             data?.map(async (x) => {
                 await adminDb.collection('data_feed').add({
