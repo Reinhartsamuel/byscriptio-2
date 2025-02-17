@@ -1,8 +1,10 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 
+export const maxDuration = 25;
 export async function POST (request) {
     try {
         const body = await request.json();
+        console.log(body, 'this is body')
         const { data } = body;
         console.log(data, 'this is dataaa')
         let result = [];
