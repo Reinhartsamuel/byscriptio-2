@@ -214,7 +214,6 @@ export async function POST(request) {
 
     // saving image to firestore
     try {
-      const body = await request.json();
       const ticker = body?.pair?.split('_')[1];
       // find in dummy data
       const foundInDummy = coins.filter((x) => x?.symbol === ticker);
@@ -229,7 +228,6 @@ export async function POST(request) {
           }
         });
         const fetchListResult = await fetchList.json();
-        console.log(fetchListResult, 'fetchListResult')
 
         const obj = fetchListResult?.find((coin) => coin.symbol === ticker.toLowerCase());
         const id = obj.id;
@@ -261,7 +259,6 @@ export async function POST(request) {
     } catch (error) {
       console.log(error.message, 'error saving crypto logos to firestore')
     }
-    
     const addWebhookResult = await adminDb.collection('webhooks').add({
       ...body,
       type: 'autotrade',
