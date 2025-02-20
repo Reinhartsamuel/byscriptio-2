@@ -1,6 +1,40 @@
+'use client'
 import { coins } from '@/app/dummy';
+import { getSingleDocumentFirebase } from '@/app/utils/firebaseApi';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+const CoinImageComponent = ({ coin, position, width, showUsdt, inset }) => {
+  const [src, setSrc] = useState(null);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const iconFromDummy = coins.find((x) => x?.symbol === coin)?.icon;
+      if (iconFromDummy) {
+        setSrc(iconFromDummy);
+      } else {
+        const getImageFromFirestore = await getSingleDocumentFirebase('logos', coin);
+        setSrc(getImageFromFirestore.image);
+      }
+    };
+
+    fetchImage();
+  }, [coin]);
+
+  if (!src) return null;
+
+  return (
+    <img
+      className={position === 'left' ? 
+        `w-${width} h-${width} z-13 rounded-full` : 
+        `w-${width} h-${width} rounded-full ${showUsdt && `ml-[${inset}]`}`
+      }
+      src={src}
+      alt={coin}
+    />
+  );
+};
+
 const PairImageComponent = ({
   pair = 'USDT_BTC',
   width = 10,
@@ -10,30 +44,16 @@ const PairImageComponent = ({
   const coinA = arr[1];
   const coinB = arr[0];
   const inset = parseInt(width) < 10 ? '-1rem' : '-0.5rem';
+
   return (
     <div className='flex justify-center'>
-        <img
-          // className={`w-10 h-10 z-13 rounded-full`}
-          className={`w-${width} h-${width} z-13 rounded-full`}
-          src={getImage(coinA)}
-          alt={coinA}
-        />
+      <CoinImageComponent coin={coinA} position={'left'} width={width} showUsdt={showUsdt} inset={inset} />
       {showUsdt && (
-      <img
-        // className={`w-10 h-10 rounded-full ml-[-0.8rem]`}
-        className={`w-${width} h-${width} rounded-full ${showUsdt && `ml-[${inset}]`}`}
-        src={getImage(coinB)}
-        alt={coinB}
-      />
-    )}
-
+        <CoinImageComponent coin={coinB} position={'right'} width={width} showUsdt={showUsdt} inset={inset} />
+      )}
     </div>
   );
 };
-
-function getImage(id) {
-  return coins.find((x) => x?.symbol === id)?.icon;
-}
 
 PairImageComponent.propTypes = {
   pair: PropTypes.string,

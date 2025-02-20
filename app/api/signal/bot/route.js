@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import { coins } from '@/app/dummy';
 import tradeExecutedTemplate from '@/app/utils/emailHtmlTemplates/tradeExecutedTemplate';
 import { adminDb } from '@/lib/firebase-admin-config';
 import { FieldValue } from 'firebase-admin/firestore';
@@ -210,6 +211,57 @@ export async function POST(request) {
     } catch (error) {
       console.log(error.message + ' :::error sending to telegram')
     }
+
+    // saving image to firestore
+    try {
+      const body = await request.json();
+      const ticker = body?.pair?.split('_')[1];
+      // find in dummy data
+      const foundInDummy = coins.filter((x) => x?.symbol === ticker);
+      if (
+        Array.isArray(foundInDummy) && foundInDummy?.length === 0
+      ) {
+        //get logo from coingecko
+        const fetchList = await fetch('https://api.coingecko.com/api/v3/coins/list', {
+          headers: {
+            accept: 'application/json',
+            'x-cg-api-key': process.env.COINGECKO_API_KEY
+          }
+        });
+        const fetchListResult = await fetchList.json();
+        console.log(fetchListResult, 'fetchListResult')
+
+        const obj = fetchListResult?.find((coin) => coin.symbol === ticker.toLowerCase());
+        const id = obj.id;
+        const fetchCoin = await fetch(`https://api.coingecko.com/api/v3/coins/${id}`, {
+          headers: {
+            accept: 'application/json',
+            'x-cg-api-key': process.env.COINGECKO_API_KEY
+          }
+        });
+        const result = await fetchCoin.json();
+
+        //save to firestore
+        await adminDb
+          .collection('logos')
+          .doc(ticker)
+          .set({
+            image: result?.image?.small
+          })
+
+        console.log({
+          message: `coingecko get image : ${result?.image?.small}`,
+          image: result?.image?.small
+        })
+      } else {
+        console.log({
+          message: `crypto logo already exist in dummy, ticker : ${ticker}`,
+        })
+      }
+    } catch (error) {
+      console.log(error.message, 'error saving crypto logos to firestore')
+    }
+    
     const addWebhookResult = await adminDb.collection('webhooks').add({
       ...body,
       type: 'autotrade',
