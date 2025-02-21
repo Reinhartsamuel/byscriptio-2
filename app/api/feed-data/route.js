@@ -1,7 +1,7 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 
 export const maxDuration = 25;
-export async function POST (request) {
+export async function POST(request) {
     try {
         const body = await request.json();
         console.log(body, 'this is body')
@@ -13,23 +13,25 @@ export async function POST (request) {
                 data?.map(async (x) => {
                     await adminDb.collection('data_feed').add({
                         ...x,
+                        createdAt: new Date()
                     })
-            }))
+                }))
         } else {
             result = await Promise.allSettled(
                 body?.map(async (x) => {
                     await adminDb.collection('data_feed').add({
                         ...x,
+                        createdAt: new Date()
                     })
-            }))
+                }))
         }
 
         return Response.json({
-            status : true,
-            message : 'success',
-            result : result.map((x) => x.status === 'fulfilled' ? x.value : x.reason),
+            status: true,
+            message: 'success',
+            result: result.map((x) => x.status === 'fulfilled' ? x.value : x.reason),
         });
     } catch (error) {
-        return Response.json({ status : false, message : error.message});
+        return Response.json({ status: false, message: error.message });
     }
 }
