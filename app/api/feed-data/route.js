@@ -13,6 +13,7 @@ function convertTicker(ticker) {
 export async function POST(request) {
     try {
         const body = await request.json();
+        console.log('body:::',body)
         const mergedArray = [];
 
         const pairNamesArray = Object.keys(body);
@@ -26,7 +27,7 @@ export async function POST(request) {
             })
         });
         const result = await Promise.allSettled(
-            body?.map(async (y) => {
+            mergedArray?.map(async (y) => {
                 return await adminDb.collection('data_feed').add({
                     ...y,
                     createdAt: new Date()
