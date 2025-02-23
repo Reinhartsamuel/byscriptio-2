@@ -1,4 +1,4 @@
-import { adminDb } from "@/lib/firebase-admin-config";
+import { admin, adminDb } from "@/lib/firebase-admin-config";
 
 export const maxDuration = 25;
 
@@ -10,10 +10,21 @@ function convertTicker(ticker) {
     }
     return ticker; // Return original ticker if it doesn't end with USDT
 }
+
+function convertToFirestoreTimestamp(datetimeStr) {
+    // Convert the string into a JavaScript Date object (handles timezones correctly)
+    if (!datetimeStr) {
+        return admin.firestore.Timestamp.now();
+    }
+    const dateObj = new Date(datetimeStr);
+
+    // Convert to Firestore Timestamp
+    return admin.firestore.Timestamp.fromDate(dateObj);
+}
 export async function POST(request) {
     try {
         const body = await request.json();
-        console.log('body:::',body)
+        console.log('body:::', body)
         const mergedArray = [];
 
         const pairNamesArray = Object.keys(body);
@@ -23,6 +34,7 @@ export async function POST(request) {
                 mergedArray.push({
                     ...x,
                     pair: convertTicker(pairName),
+                    time: convertToFirestoreTimestamp(x?.Datetime)
                 })
             })
         });
