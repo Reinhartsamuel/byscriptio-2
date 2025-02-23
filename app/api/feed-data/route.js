@@ -45,6 +45,7 @@ export async function POST(request) {
                     createdAt: new Date()
                 })
             }))
+        console.log('mergedArray?.length:::', mergedArray?.length);
         console.log('mergedArray:::', mergedArray);
 
         return Response.json({
