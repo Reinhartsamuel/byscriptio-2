@@ -1,37 +1,46 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 
 export const maxDuration = 25;
+
+function convertTicker(ticker) {
+    const base = "USDT";
+    if (ticker.endsWith(base)) {
+        const coin = ticker?.slice(0, -base.length);
+        return `${base}_${coin}`;
+    }
+    return ticker; // Return original ticker if it doesn't end with USDT
+}
 export async function POST(request) {
     try {
         const body = await request.json();
-        console.log(body, 'this is body')
-        const { data } = body;
-        console.log(data, 'this is dataaa')
-        let result = [];
-        if (Array.isArray(data)) {
-            result = await Promise.allSettled(
-                data?.map(async (x) => {
-                    await adminDb.collection('data_feed').add({
-                        ...x,
-                        createdAt: new Date()
-                    })
-                }))
-        } else {
-            result = await Promise.allSettled(
-                body?.map(async (x) => {
-                    await adminDb.collection('data_feed').add({
-                        ...x,
-                        createdAt: new Date()
-                    })
-                }))
-        }
+        const mergedArray = [];
+
+        const pairNamesArray = Object.keys(body);
+        // console.log(pairNamesArray, 'pairNamesArray')
+        pairNamesArray.forEach((pairName) => {
+            body[pairName].forEach((x) => {
+                mergedArray.push({
+                    ...x,
+                    pair: convertTicker(pairName),
+                })
+            })
+        });
+        const result = await Promise.allSettled(
+            body?.map(async (y) => {
+                return await adminDb.collection('data_feed').add({
+                    ...y,
+                    createdAt: new Date()
+                })
+            }))
+        console.log('mergedArray:::', mergedArray);
 
         return Response.json({
             status: true,
-            message: 'success',
-            result: result.map((x) => x.status === 'fulfilled' ? x.value : x.reason),
-        });
+            mergedArray,
+            result
+        })
     } catch (error) {
+        console.log(`Returning with error : ${error.message}, statusCode : ${error?.status}`)
         return Response.json({ status: false, message: error.message });
     }
 }
