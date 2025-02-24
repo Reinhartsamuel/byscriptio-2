@@ -176,7 +176,7 @@ const TradeHistoryTable = (props) => {
                       <p
                         className={`
                       text-center mx-auto font-bold 
-                      text-${x?.pnl < 0 ? 'red' : x?.pnl < 0 ? 'green' : 'gray'}-600`
+                      text-${x?.pnl < 0 ? 'red' : x?.pnl > 0 ? 'green' : 'gray'}-600`
                         }
                       >
                         {x?.pnl ? x?.pnl?.toFixed(2) : '-'}
@@ -186,7 +186,7 @@ const TradeHistoryTable = (props) => {
                       <p
                         className={`
                       text-center mx-auto font-bold 
-                      text-${x?.profit_percent < 0 ? 'red' : x?.profit_percent < 0 ? 'green' : 'gray'}-600`
+                      text-${x?.profit_percent < 0 ? 'red' : x?.profit_percent > 0 ? 'green' : 'gray'}-600`
                         }
                       >
                         {x?.profit_percent ? x?.profit_percent?.toFixed(2) + '%' : '-'}

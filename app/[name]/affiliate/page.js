@@ -78,7 +78,7 @@ const page = async () => {
   return (
     <div className='w-screen min-h-screen flex flex-col mx-auto px-1 lg:px-6 '>
       <div className='fixed top-0 left-0 z-[-2] h-screen w-screen dark:bg-neutral-950  bg-[radial-gradient(ellipse_80%_80%_at_50%_-5%,rgba(120,119,198,0.4),rgba(255,255,255,0))]' />
-      <h2 className='text-xl my-5 font-bold text-gray-800 dark:text-slate-200 font-bold'>
+      <h2 className='text-xl my-5 font-bold text-gray-800 dark:text-gray-100 font-bold'>
         Affiliate Program
       </h2>
       {error && <p className='text-red-500'>{error.message}</p>}
