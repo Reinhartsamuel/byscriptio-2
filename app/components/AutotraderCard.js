@@ -5,10 +5,45 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { RiRobot2Fill } from 'react-icons/ri';
 import PairImageComponent from './ui/PairImageComponent';
-import { getCollectionFirebase } from '@/app/utils/firebaseApi';
+import { countDocumentsFirebase, getCollectionFirebase } from '@/app/utils/firebaseApi';
+
+
+async function getActiveTrades(botData) {
+    const resultPromise = await Promise.allSettled(
+        botData.trading_plan_pair?.map(async (pair) => {
+            console.log(pair.split('_')[1], " pair.split('_')[1]")
+            // search for history of trades in 3commas_logs 
+            return await countDocumentsFirebase('3commas_logs', [
+                {
+                    field: 'bot_id',
+                    operator: '==',
+                    value: String(botData.bot_id)
+                },
+                {
+                    field: 'pair',
+                    operator: '==',
+                    value: pair.split('_')[1] + '_' + pair.split('_')[2]
+                },
+            ])
+        })
+    )
+    console.log(resultPromise, 'resultPromise')
+    // console.log(botData.trading_plan_pair.length,'botData.trading_plan_pair.length')
+    return {
+        pairLength: botData.trading_plan_pair.length,
+        hasHistoryTrades: resultPromise.filter((x) => x.value > 0).length,
+        waitingForBuyTrades: resultPromise.filter((x) => x.value === 0).length
+    }
+}
+
 
 const AutotraderCard = ({ data, handleDetail }) => {
     const [hasActiveTrades, setHasActiveTrades] = useState(false);
+    const [activeTrades, setActiveTrades] = useState({
+        pairLength: 0,
+        hasHistoryTrades: 0,
+        waitingForBuyTrades: 0
+    });
 
     useEffect(() => {
         const checkActiveTrades = async () => {
@@ -25,6 +60,10 @@ const AutotraderCard = ({ data, handleDetail }) => {
                 } catch (error) {
                     console.error('Error checking active trades:', error);
                 }
+
+                const checkActiveTrades = await getActiveTrades(data);
+                console.log(checkActiveTrades, 'checkActiveTrades')
+                setActiveTrades(checkActiveTrades);
             }
         };
 
@@ -33,7 +72,7 @@ const AutotraderCard = ({ data, handleDetail }) => {
 
     return (
         <div
-            className='w-full rounded-lg bg-gray-200 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-4 ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 cursor-pointer'
+            className='w-full rounded-lg bg-gray-200 dark:bg-gray-800 p-4 shadow-md font-sans flex flex-col gap-1 ease-out duration-100 hover:scale-105 hover:shadow-lg active:scale-95 cursor-pointer'
             onClick={() => handleDetail(data)}
         >
             <div className='flex w-full justify-between'>
@@ -98,16 +137,23 @@ const AutotraderCard = ({ data, handleDetail }) => {
                     </p>
                 )}
             </div>
-            {data?.status === 'ACTIVE' && !hasActiveTrades && (
-                <p className='text-orange-300 font-thin text-sm italic text-center'>
-                    Waiting for BUY signal
-                </p>
-            )}
-             {data?.status === 'STOPPED' && (
-                <p className='text-orange-300 font-thin text-sm italic text-center'>
-                   Autotrader is stopped, click here and &apos;Start Autotrader&apos;
-                </p>
-            )}
+            <div className='mt-0'>
+                {data?.status === 'ACTIVE' && !hasActiveTrades && (
+                    <div className='flex gap-1 items-center'>
+                        <p className='text-orange-300 font-thin text-sm italic text-center'>
+                            Waiting for BUY signal
+                        </p>
+                        <p className='text-green-600 text-center'>{activeTrades.hasHistoryTrades}/{activeTrades.pairLength}</p>
+                    </div>
+                )}
+                {data?.status === 'STOPPED' && (
+                    <p className='text-orange-300 font-thin text-sm italic text-center'>
+                        Autotrader is stopped, click here and &apos;Start Autotrader&apos;
+                    </p>
+                )}
+            </div>
+
+
         </div>
     )
 }

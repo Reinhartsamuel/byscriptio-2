@@ -94,7 +94,7 @@ const BacktestPage = ({ params }) => {
           },
         });
       } else {
-        console.error('Unsupported file format:', fileExtension);
+        alert('Unsupported file format: ' + fileExtension);
       }
     }
   }, [backtest]);
