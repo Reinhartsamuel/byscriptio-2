@@ -8,6 +8,7 @@ import extractObjectArray from '@/app/utils/extractObjectArray';
 import EquityGrowthChart from './backtest/EquityGrowthChart';
 import Spinner from '@/app/components/ui/Spinner';
 import PropTypes from 'prop-types';
+import * as XLSX from 'xlsx';
 
 //THIS IS BACKTEST PAGE
 const BacktestPage = ({ params }) => {
@@ -35,21 +36,66 @@ const BacktestPage = ({ params }) => {
       setLoading(false);
     }
   }
+
+  const processExcelFile = async (url) => {
+    try {
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      
+      // Parse Excel data
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      const sheetsData = {};
+
+      // Iterate through all sheets
+      workbook.SheetNames.forEach((sheetName) => {
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+          raw: false,
+          cellDates: true
+        });
+        sheetsData[sheetName] = jsonData;
+      });
+
+      // Assuming 'List of trades' is the sheet name containing the trades data
+      setTradesData(extractObjectArray(sheetsData['List of trades']));
+      setHeaders(sheetsData['List of trades'][0]);
+    } catch (error) {
+      console.error('Error processing Excel file:', error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (backtest?.length > 0) {
-      Papa.parse(backtest[0]?.url, {
-        download: true,
-        delimiter: ',',
-        complete: function (results) {
-          setTradesData(extractObjectArray(results.data));
-          setHeaders(results.data[0]);
-          // console.log(extractObjectArray(results.data).sort((a, b) => Number(a['Trade #']) -Number(b['Trade #'])), 'sourceeeee');
-        },
-      });
+    if (backtest?.length > 0 && backtest[0]?.url) {
+      const fileUrl = backtest[0].url;
+      
+      // Extract extension using regex, matching the last .ext before any query params
+      const extensionMatch = fileUrl.match(/\.([^./?#]+)(?:[?#]|$)/i);
+      const fileExtension = extensionMatch ? extensionMatch[1].toLowerCase() : '';
+
+      if (!fileExtension) {
+        console.error('No file extension found in URL:', fileUrl);
+        return;
+      }
+
+      if (['xls', 'xlsx'].includes(fileExtension)) {
+        processExcelFile(fileUrl);
+      } else if (fileExtension === 'csv') {
+        Papa.parse(fileUrl, {
+          download: true,
+          delimiter: ',',
+          complete: function (results) {
+            setTradesData(extractObjectArray(results.data));
+            setHeaders(results.data[0]);
+          },
+        });
+      } else {
+        console.error('Unsupported file format:', fileExtension);
+      }
     }
   }, [backtest]);
 
@@ -62,24 +108,25 @@ const BacktestPage = ({ params }) => {
 
   return (
     <div className='w-full min-h-screen'>
-      <div className='flex gap-2 '>
+      <div className='flex gap-2 mx-4 lg:mx-20'>
         <BackButton />
         <div className='block'>
-          <p>Trading plan id : {params.trading_plan_id}</p>
-          <p>Pair : {pair}</p>
+          <p className='text-2xl font-bold text-white'>Trading plan id : {params.trading_plan_id}</p>
+          <p className='text-md text-gray-200'>Pair : {pair}</p>
         </div>
       </div>
-      <div className='w-full lg:w-3/4 mx-auto'>
-        {Array.isArray(tradesData) && tradesData?.length > 0 && (
-          <EquityGrowthChart tradesData={tradesData} headers={headers} />
-        )}
+       <div className='w-full flex justify-center items-center'>
+         <div className='w-full lg:w-3/4 mx-auto'>
+          {Array.isArray(tradesData) && tradesData?.length > 0 && (
+            <EquityGrowthChart tradesData={tradesData} headers={headers} />
+          )} 
+         </div>
+       </div>
       </div>
-    </div>
   );
 };
 
 export default BacktestPage;
-
 
 BacktestPage.propTypes = {
   params: PropTypes.any

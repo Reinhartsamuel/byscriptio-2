@@ -189,6 +189,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
   const handleDetail = (data) => {
     setDetailModal(true);
     setDetail(data);
+    console.log(data);
   };
 
   const handleAddAutotrader = () => {

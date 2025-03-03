@@ -9,7 +9,7 @@ import useBreakPointValue from '@/app/hooks/responsiveHook';
 
 
 const EquityGrowthChart = ({ tradesData, headers }) => {
-  const { isMobile, isTablet, isDesktop } = useBreakPointValue()
+  const { isMobile } = useBreakPointValue()
   // REF FOR CHART
   const chartRef = useRef(null);
 
@@ -125,43 +125,51 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
         },
         scales: {
           y: {
+            display: !isMobile,
             beginAtZero: false,
             title: {
-              display: true,
+              display: !isMobile,
               text: 'Equity Growth (%)',
             },
             position: 'left', // Position the y-axis on the left
             ticks: {
+              display: !isMobile,
               padding: -60, // Adjust padding to move ticks inside
-              callback: function(value) {
+              callback: function (value) {
                 return value; // Customize tick labels if needed
               },
             },
-            
+
           },
           'drawdown-y': {
             // Secondary y-axis for drawdowns
+            display: !isMobile,
             type: 'linear',
             position: 'right',
             beginAtZero: false,
             title: {
-              display: true,
+              display: !isMobile,
               text: 'Drawdowns (%)',
             },
             grid: {
               drawOnChartArea: true, // Do not draw grid lines for the secondary axis
             },
             reverse: true, // Reverse the drawdown-y-axis
-            ticks : {
-              padding : 10
+            ticks: {
+              display: !isMobile,
+              padding: 10
             }
           },
           x: {
+            display: !isMobile,
             title: {
-              display: true,
+              display: !isMobile,
               text: 'Date',
             },
             reverse: false, // Reverse the x-axis
+            ticks: {
+              display: !isMobile
+            }
           },
         },
         responsive: true,
@@ -182,13 +190,19 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
     return () => {
       mixedChart.destroy();
     };
-  }, [tradesData, tradesDataWithCumulativeCalc]);
+  }, [tradesData, tradesDataWithCumulativeCalc, isMobile]);
 
   return (
-    <div>
+    <div className='mt-5'>
       <canvas ref={chartRef}></canvas>
+      {
+        isMobile &&
+        <p className='mx-1 text-sm text-gray-400 italic font-light'>
+          *Please use personal computer to better view the chart
+        </p>
+      }
       {/* <pre>{JSON.stringify(equityGrowthPercentage)}</pre> */}
-      <div className='border-2'>
+      <div className='border-2 mt-10'>
         <div className='grid grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col p-2 bg-[#5ce1e6] items-center justify-center'>
             <p className='text-black text-sm'>PnL</p>

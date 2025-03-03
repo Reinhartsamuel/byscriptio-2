@@ -21,7 +21,7 @@ export default function useForceAction({ detail, setLoading, pair }) {
     try {
       const sendBodyTo3Commas = {
         message_type: 'bot',
-        bot_id: detail?.bot_id,
+        bot_id: detail?.bot_id.toString(),
         email_token: '52c6860e-5814-47ed-a5ae-663d78446439',
         delay_seconds: 0,
         pair: pair,

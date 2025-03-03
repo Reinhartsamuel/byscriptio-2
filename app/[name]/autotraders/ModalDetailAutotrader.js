@@ -59,7 +59,7 @@ export default function ModalDetailAutotrader({
                       .format('HH:mm DD MMMM YYYY')}
                   </p>
                 </div>
-                <div className='flex w-full justify-between min-h-10 items-end'>
+                {/* <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
                     Last updated
                   </p>
@@ -68,9 +68,10 @@ export default function ModalDetailAutotrader({
                       .unix(detail?.lastUpdated?.seconds)
                       .format('HH:mm DD MMMM YYYY')}
                   </p>
-                </div>
+                </div> */}
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Exchange</p>
+                  <div className='flex'>
                   <img
                     alt={'exchange'}
                     src={
@@ -80,6 +81,11 @@ export default function ModalDetailAutotrader({
                     }
                     className='w-[5rem] object-contain'
                   />
+                  {detail?.exchange_external_id && 
+                    <p className='ml-1 text-gray-400 dark:text-gray-100 font-light text-sm'>({detail?.exchange_external_id})</p>
+                  }
+                  </div>
+                
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
@@ -177,7 +183,7 @@ export default function ModalDetailAutotrader({
             {
               field: 'bot_id',
               operator: '==',
-              value: detail?.bot_id || null,
+              value: String(detail?.bot_id) || null,
             },
           ]}
         />

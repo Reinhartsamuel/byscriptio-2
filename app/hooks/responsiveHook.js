@@ -1,5 +1,5 @@
 'use client'
-import { useMediaQuery } from 'react-responsive';
+import { useEffect, useState } from 'react';
 
 const breakpoints = {
   mobile: '(max-width: 767px)',
@@ -8,11 +8,32 @@ const breakpoints = {
 };
 
 const useBreakPointValue = () => {
-  const isMobile = useMediaQuery({ query: breakpoints.mobile });
-  const isTablet = useMediaQuery({ query: breakpoints.tablet });
-  const isDesktop = useMediaQuery({ query: breakpoints.desktop });
+  const [breakpoint, setBreakpoint] = useState({
+    isMobile: false,
+    isTablet: false,
+    isDesktop: false
+  });
 
-  return { isMobile, isTablet, isDesktop };
+  useEffect(() => {
+    const updateBreakpoint = () => {
+      setBreakpoint({
+        isMobile: window.matchMedia(breakpoints.mobile).matches,
+        isTablet: window.matchMedia(breakpoints.tablet).matches,
+        isDesktop: window.matchMedia(breakpoints.desktop).matches
+      });
+    };
+
+    // Initial check
+    updateBreakpoint();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', updateBreakpoint);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', updateBreakpoint);
+  }, []);
+
+  return breakpoint;
 };
 
 export default useBreakPointValue;

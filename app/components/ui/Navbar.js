@@ -104,6 +104,12 @@ export default function Navbar() {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         // ...
+        addActivityLog({
+          customerId: customer?.id || null,
+          uid: authFirebase.currentUser?.uid || user?.id || null,
+          ipLocation: ipLocation,
+          type: 'ONLINE',
+        });
       } else {
         setUser(null);
         router.push('/');

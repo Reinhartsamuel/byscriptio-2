@@ -22,6 +22,7 @@ import { useUserStore } from '@/app/store/userStore';
 // import extractUniqueStrategies from '@/app/utils/extractUniqueStrategies';
 import Tooltip from '@/app/components/ui/Tooltip';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
+import handleError3Commas from '@/app/utils/handleError3Commas';
 
 const tradingPlans = [
   { name: 'XMA', id: 'XMA' },
@@ -190,7 +191,8 @@ export default function ModalAddAutotrader({
       if (resCreateBot.error) {
         console.log('deleting because of error');
         await deleteDocumentFirebase('dca_bots', id);
-        return Swal.fire({ icon: 'error', text: 'Error creating bot' });
+        // return Swal.fire({ icon: 'error', title: 'Error creating bot' });
+        return handleError3Commas(resCreateBot);
       } else if (resCreateBot.data) {
         console.log('updating bot_id');
         await updateDocumentFirebase('dca_bots', id, {

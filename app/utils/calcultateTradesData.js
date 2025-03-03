@@ -27,7 +27,7 @@ export default function calculateTradesDataData({
     // ALGOTRADE ROI CALCULATION=======================================================================
     // ALGOTRADE ROI CALCULATION=======================================================================
     // ALGOTRADE ROI CALCULATION=======================================================================
-    const profitDecimal = currentTrade['Profit %'] / 100;
+    const profitDecimal = parseFloat(currentTrade['Profit %']) / 100;
     const previousBalance = copyArr[i - 1]?.currentBalance || initialCapital;
     const balanceAfter = previousBalance * (1 + profitDecimal);
 

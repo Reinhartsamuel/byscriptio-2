@@ -7,7 +7,7 @@ const BackButton = () => {
     const router = useRouter();
   return (
     <button onClick={() => router.back()}>
-        <FaArrowLeftLong />
+        <FaArrowLeftLong color='lightgray' />
     </button>
   )
 }
