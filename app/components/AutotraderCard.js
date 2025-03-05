@@ -142,7 +142,7 @@ const AutotraderCard = ({ data, handleDetail }) => {
                     <div className='flex gap-1 items-center'>
                         <p className='text-orange-300 font-thin text-sm italic text-center'>
                             Waiting for BUY signal
-                        </p>
+                        </p> 
                         <p className='text-green-600 text-center'>{activeTrades.hasHistoryTrades}/{activeTrades.pairLength}</p>
                     </div>
                 )}
