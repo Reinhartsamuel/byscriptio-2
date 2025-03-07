@@ -35,7 +35,7 @@ const validateBody = (body) => {
 export async function POST(request) {
     try {
         const body = await request.json();
-        console.log('body', body);
+        // console.log('body', body);
         // Validate request body
         const validationErrors = validateBody(body);
         if (validationErrors.length > 0) {
