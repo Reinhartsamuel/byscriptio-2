@@ -93,7 +93,7 @@ export async function POST(request) {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
-        console.log('Smart trade executed successfully, response:', data);
+        console.log('Smart trade executed successfully, response:', data); 
         return new Response(JSON.stringify({
             status: 'success',
             data
