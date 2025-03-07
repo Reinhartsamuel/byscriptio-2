@@ -82,7 +82,7 @@ export async function POST(request) {
             }
         });
         const data = await response2.json();
-        console.log(response2, 'response2');
+        // console.log(response2, 'response2');
         if (!response2.ok) {
             return new Response(JSON.stringify({
                 status: 'error',
