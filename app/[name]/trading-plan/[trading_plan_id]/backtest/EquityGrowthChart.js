@@ -6,6 +6,7 @@ import moment from 'moment';
 import sortTradesData from '@/app/utils/sortTradesData';
 import calculateTradesDataData from '@/app/utils/calcultateTradesData';
 import useBreakPointValue from '@/app/hooks/responsiveHook';
+import { cn } from '@/lib/util';
 
 
 const EquityGrowthChart = ({ tradesData, headers }) => {
@@ -61,6 +62,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
+    console.log(tradesDataWithCumulativeCalc, 'tradesDataWithCumulativeCalc');
     const cumulativeProfit = tradesDataWithCumulativeCalc
       .sort((a, b) => a.timestamp - b.timestamp)
       .map((trade) => parseFloat(trade.currentBalance));
@@ -222,7 +224,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
             <p className='text-gray-800 text-xl font-bold '>
               {(
                 (tradesDataWithCumulativeCalc?.filter(
-                  (trade) => trade?.['Profit %'] > 0
+                  (trade) => parseFloat(trade?.['Profit %']) > 0
                 ).length /
                   tradesDataWithCumulativeCalc.length) *
                 100
@@ -236,10 +238,9 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
               -
               {
                 tradesDataWithCumulativeCalc.sort(
-                  (a, b) => b['Drawdown %'] - a['Drawdown %']
+                  (a, b) => parseFloat(b['Drawdown %']) - parseFloat(a['Drawdown %'])
                 )[0]?.['Drawdown %']
               }
-              %
             </p>
           </div>
           <div className='flex flex-col p-2 bg-[#cdedff] items-center justify-center'>
@@ -380,26 +381,29 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
           <tbody className='bg-white divide-y divide-gray-200'>
             {tradesData.reverse()?.map((row, rowIndex) => (
               <tr key={rowIndex} className='odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700'>
-                {headers?.map((column, colIndex) => (
-                  <td
-                    key={colIndex}
-                    className='px-6 py-2 whitespace-nowrap'
-                  >
-                    {row[column]}
-                  </td>
-                ))}
-                {/* <td   className='px-6 py-2 whitespace-nowrap'>{row['Trade #']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Signal']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Date/Time']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Price']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Contracts']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Profit USD']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Profit %']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Cum. Profit %']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Run-up USD']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Run-up %']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Drawdown USD']}</td>
-                <td   className='px-6 py-2 whitespace-nowrap'>{row['Drawdown %']}</td> */}
+                {headers?.map((column, colIndex) => {
+                  // Parse value to check if it's positive/negative
+                  const value = parseFloat(row[column]);
+                  const isProfit = headers[colIndex].toLowerCase().includes('profit');
+                  const isDrawdown = headers[colIndex].toLowerCase().includes('drawdown');
+                  
+                  let textColorClass = 'text-gray-500'; // Default color
+                  
+                  if (isProfit) {
+                    textColorClass = !isNaN(value) && value > 0 ? 'text-green-500' : 'text-red-500';
+                  } else if (isDrawdown) {
+                    textColorClass = !isNaN(value) && value < 0 ? 'text-red-500' : 'text-gray-500';
+                  }
+                  
+                  return (
+                    <td
+                      key={colIndex}
+                      className={cn(textColorClass, 'px-6 py-2 whitespace-nowrap')}
+                    >
+                      {row[column]}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
