@@ -86,7 +86,7 @@ export default function ModalAddExchange({
             data-modal-hide='default-modal'
             type='button'
             className={cn(
-              'focus:ring-4 focus:outline-none font-medium rounded-lg text-lg font-light text-black dark:text-white px-5 py-2.5 text-center',
+             'text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800',
               loading && 'cursor-not-allowed'
             )}
             onClick={() =>
@@ -108,9 +108,9 @@ export default function ModalAddExchange({
           className='sm:w-full lg:w-3/4 object-contain'
         />
       </div>
-      <Modal open={openDialogue} onClose={() => setOpenDialogue(false)}>
+      {/* <Modal open={openDialogue} onClose={() => setOpenDialogue(false)}>
         test
-      </Modal>
+      </Modal> */}
     </Modal>
   );
 }

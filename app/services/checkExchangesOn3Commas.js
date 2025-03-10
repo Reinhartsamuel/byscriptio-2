@@ -57,94 +57,97 @@ export async function onCheck3CApi({
     console.log({ myExchange });
 
     if (myExchange?.length > 0) {
-      const exchangeData = myExchange[0];
+      // const exchangeData = myExchange[0];
 
-      const find = await getCollectionFirebase('exchange_accounts', [
-        {
-          field: 'external_id',
-          operator: '==',
-          value: exchangeData.id,
-        },
-      ]);
-
-      if (find?.length > 0) {
-        throw new Error('Already connected');
-      }
-      const addData = {
-        customerId: customer.id,
-        external_id: exchangeData.id,
-        uid: authFirebase.currentUser?.uid,
-        email: authFirebase.currentUser?.email || customer?.email,
-        name: authFirebase?.currentUser?.displayName || customer?.name,
-        exchange_name: getName(exchangeData.exchange_name),
-        exchange_thumbnail: exchangeThumbnail,
-        type: getType(exchangeData.exchange_name),
-      };
-
-      await setDocumentFirebase(
-        'exchange_accounts',
-        newlyCreatedId,
-        addData,
-      );
-      await Promise.allSettled([
-        await fetch('/api/email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+      await Promise.allSettled(myExchange.map(async (exchangeData) => {
+        const find = await getCollectionFirebase('exchange_accounts', [
+          {
+            field: 'external_id',
+            operator: '==',
+            value: exchangeData.id,
           },
-          body: JSON.stringify({
-            sender: {
-              email: 'info@byscript.io',
-              name: 'byScript',
+        ]);
+
+        if (find?.length > 0) {
+          return 'Already connected';
+        }
+        const addData = {
+          customerId: customer.id,
+          external_id: exchangeData.id,
+          uid: authFirebase.currentUser?.uid,
+          email: authFirebase.currentUser?.email || customer?.email,
+          name: authFirebase?.currentUser?.displayName || customer?.name,
+          exchange_name: getName(exchangeData.exchange_name),
+          exchange_thumbnail: exchangeThumbnail,
+          type: getType(exchangeData.exchange_name),
+        };
+
+        await setDocumentFirebase(
+          'exchange_accounts',
+          newlyCreatedId + "-"+getType(exchangeData.exchange_name),
+          addData,
+        );
+        await Promise.allSettled([
+          await fetch('/api/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-            to: [
-              {
-                name: 'Edwin Ardyanto',
-                email: 'edwinfardyanto@gmail.com',
+            body: JSON.stringify({
+              sender: {
+                email: 'info@byscript.io',
+                name: 'byScript',
               },
-              {
-                name: 'Reinhart Samuel',
-                email: 'reinhartsams@gmail.com',
-              },
-            ],
-            subject: 'Info User Connect Exchange',
-            htmlContent: `<p>${authFirebase?.currentUser?.displayName || customer?.name
-              } ${authFirebase.currentUser?.email &&
-              `(${authFirebase.currentUser?.email})`
-              } ${customer?.id && `(id: ${customer?.id})`
-              } tried to connect exchange ${exchangeName} on ${new Date().toDateString()}</p>
-              <p>Account Id : ${exchangeData.id}</p> 
-              <p>Exhcange name : ${exchangeData.name}</p> 
-              <p>Type : ${getType(exchangeData.exchange_name)}</p> 
-              <p>Balance : USD ${exchangeData?.primary_display_currency_amount?.amount}</p> 
-              `,
+              to: [
+                {
+                  name: 'Edwin Ardyanto',
+                  email: 'edwinfardyanto@gmail.com',
+                },
+                {
+                  name: 'Reinhart Samuel',
+                  email: 'reinhartsams@gmail.com',
+                },
+              ],
+              subject: 'Info User Connect Exchange',
+              htmlContent: `<p>${authFirebase?.currentUser?.displayName || customer?.name
+                } ${authFirebase.currentUser?.email &&
+                `(${authFirebase.currentUser?.email})`
+                } ${customer?.id && `(id: ${customer?.id})`
+                } tried to connect exchange ${exchangeName} on ${new Date().toDateString()}</p>
+                <p>Account Id : ${exchangeData.id}</p> 
+                <p>Exhcange name : ${exchangeData.name}</p> 
+                <p>Type : ${getType(exchangeData.exchange_name)}</p> 
+                <p>Balance : USD ${exchangeData?.primary_display_currency_amount?.amount}</p> 
+                `,
+            }),
           }),
-        }),
-        await fetch('/api/email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            sender: {
-              email: 'info@byscript.io',
-              name: 'byScript',
+          await fetch('/api/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
             },
-            to: [
-              {
-                name: customer.name,
-                email: customer.email
-              }
-            ],
-            subject: `${getName(exchangeData.exchange_name)} Exchange Connected to byScript`,
-            htmlContent: exchangeConnectTemplate({
-              connectedAt: moment().format('dddd, DD MMM YYYY HH:mm'),
-              exchange_thumbnail: exchangeThumbnail,
-              balance: exchangeData?.primary_display_currency_amount?.amount
+            body: JSON.stringify({
+              sender: {
+                email: 'info@byscript.io',
+                name: 'byScript',
+              },
+              to: [
+                {
+                  name: customer.name,
+                  email: customer.email
+                }
+              ],
+              subject: `${getName(exchangeData.exchange_name)} Exchange Connected to byScript`,
+              htmlContent: exchangeConnectTemplate({
+                connectedAt: moment().format('dddd, DD MMM YYYY HH:mm'),
+                exchange_thumbnail: exchangeThumbnail,
+                balance: exchangeData?.primary_display_currency_amount?.amount
+              })
             })
           })
-        })
-      ])
+        ])
+      }))
+
       Swal.fire({
         title: "Exchange connected",
         showDenyButton: false,
