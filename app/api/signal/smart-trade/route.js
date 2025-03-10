@@ -105,6 +105,7 @@ export async function POST(request) {
                     value: "1"
                 }
             }
+            console.log(`bodySend for exchange ${bot.exchange_external_id} on pair ${pair}`, bodySend);
             return bodySend;
             const queryParams = `/public/api/v2/smart_trades`;
             const finalUrl = baseUrl + queryParams;
@@ -136,7 +137,6 @@ export async function POST(request) {
         return new Response(JSON.stringify({
             status: 'success',
             response,
-            kuda
         }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }

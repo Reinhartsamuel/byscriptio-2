@@ -16,7 +16,7 @@ export default function ModalAddExchange({
 }) {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
-  const [openDialogue, setOpenDialogue] = useState(false);
+  // const [openDialogue, setOpenDialogue] = useState(false);
   const newlyCreatedId = useMemo(() => generateRandomString(), [openModal]);
   const lowercaseExchangeName = exchangeName && exchangeName.toLowerCase();
 
