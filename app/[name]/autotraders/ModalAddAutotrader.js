@@ -24,10 +24,10 @@ import Tooltip from '@/app/components/ui/Tooltip';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
 import handleError3Commas from '@/app/utils/handleError3Commas';
 
-const tradingPlans = [
-  { name: 'XMA', id: 'XMA' },
-  // { name: 'TESTING2', id: 'TESTING2' },
-];
+// const tradingPlans = [
+//   { name: 'XMA', id: 'XMA' },
+//   // { name: 'TESTING2', id: 'TESTING2' },
+// ];
 
 export default function ModalAddAutotrader({
   addModal,
@@ -273,6 +273,7 @@ export default function ModalAddAutotrader({
     });
   }
 
+
   return (
     <Modal open={addModal} onClose={handleClose}>
       <div className='flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-600'>
@@ -402,6 +403,7 @@ function TradingPlanSelectComponent({ data, setData }) {
   const handleSelectTP = (checked, value) => {
     setSelectedTradingPlan(checked ? JSON.parse(value) : null);
   };
+  const [tradingPlans, setTradingPlans] = useState([]);
 
   const handleSelectPair = (checked, value) => {
     if (checked) {
@@ -447,6 +449,22 @@ function TradingPlanSelectComponent({ data, setData }) {
       setErrorMsg('');
     };
   }, [selectedTradingPlan]);
+
+
+  useEffect(() => {
+    async function getTradingPlans() {
+      const tp = await getCollectionFirebase('trading_plans',[
+        {
+          field : 'status',
+          operator : '==',
+          value : 'ACTIVE'
+        }
+      ])
+      setTradingPlans(tp);
+      console.log(tp, 'tp');
+    }
+    getTradingPlans();
+  }, []);
   return (
     <div className='flex flex-col lg:flex-row gap-20  mt-10'>
       <div className='block'>

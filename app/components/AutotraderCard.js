@@ -11,7 +11,7 @@ import { countDocumentsFirebase, getCollectionFirebase } from '@/app/utils/fireb
 async function getActiveTrades(botData) {
     const resultPromise = await Promise.allSettled(
         botData.trading_plan_pair?.map(async (pair) => {
-            console.log(pair.split('_')[1], " pair.split('_')[1]")
+            // console.log(pair.split('_')[1], " pair.split('_')[1]")
             // search for history of trades in 3commas_logs 
             return await countDocumentsFirebase('3commas_logs', [
                 {
@@ -27,7 +27,7 @@ async function getActiveTrades(botData) {
             ])
         })
     )
-    console.log(resultPromise, 'resultPromise')
+    // console.log(resultPromise, 'resultPromise')
     // console.log(botData.trading_plan_pair.length,'botData.trading_plan_pair.length')
     return {
         pairLength: botData.trading_plan_pair.length,
@@ -62,7 +62,7 @@ const AutotraderCard = ({ data, handleDetail }) => {
                 }
 
                 const checkActiveTrades = await getActiveTrades(data);
-                console.log(checkActiveTrades, 'checkActiveTrades')
+                // console.log(checkActiveTrades, 'checkActiveTrades')
                 setActiveTrades(checkActiveTrades);
             }
         };
