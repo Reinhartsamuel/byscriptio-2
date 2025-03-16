@@ -53,9 +53,13 @@ const AutotraderCard = ({ data, handleDetail }) => {
                         {
                             field: 'bot_id',
                             operator: '==',
-                            value: data.bot_id
+                            value: String(data.bot_id)
                         }
-                    ]);
+                    ],
+                    {field : 'createdAt', direction : 'desc'},
+                    1
+                );
+                // console.log(trades, 'checktrades')
                     setHasActiveTrades(trades.length > 0);
                 } catch (error) {
                     console.error('Error checking active trades:', error);

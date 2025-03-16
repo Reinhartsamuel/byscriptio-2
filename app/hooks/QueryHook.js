@@ -108,7 +108,7 @@ const useFetchData = ({
       try {
         const res = await getCollectionFirebase(
           collectionName,
-          [],
+          conditions,
           { field: 'createdAt', direction: 'desc' },
           5,
           lastVisible.createdAt

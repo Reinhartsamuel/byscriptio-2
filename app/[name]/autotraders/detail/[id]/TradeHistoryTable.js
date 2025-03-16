@@ -1,62 +1,31 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import moment from 'moment';
-import {
-  collection,
-  query,
-  onSnapshot,
-  orderBy,
-  limit,
-  where,
-} from 'firebase/firestore';
-import { authFirebase, db } from '@/app/config/firebase';
+
 import Spinner from '@/app/components/ui/Spinner';
 import PairImageComponent from '@/app/components/ui/PairImageComponent';
 import PropTypes from 'prop-types';
+import useFetchData from '@/app/hooks/QueryHook';
+import useCountDocuments from '@/app/hooks/CountHook';
 
 const TradeHistoryTable = (props) => {
   const { collectionName = '3commas_logs', conditions = [] } = props;
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => {
-    let unsubscribe = () => { };
-    if (authFirebase.currentUser?.email) {
-      // console.count(authFirebase.currentUser?.email);
-      setLoading(true);
-      let q = query(
-        collection(db, collectionName),
-        orderBy('createdAt', 'desc'),
-        limit(10)
-      );
-      conditions.forEach((cond) => {
-        q = query(q, where(cond.field, cond.operator, cond.value));
-      });
-
-      unsubscribe = onSnapshot(
-        q,
-        (querySnapshot) => {
-          const array = [];
-          querySnapshot.forEach((doc) => {
-            array.push({ id: doc?.id, ...doc?.data() });
-          });
-          setData(array);
-          setLoading(false);
-        },
-        (error) => {
-          console.log(error, ' errrrrr');
-          setErrorMsg(error.message);
-          setLoading(false);
-        }
-      );
-
-      setLoading(false);
-    }
-
-    return () => unsubscribe();
-  }, [conditions]);
+  const { data, loadMore, loading, error } = useFetchData({
+    collectionName,
+    conditions,
+    authRequired: true,
+    dependencies: [conditions],
+    type: 'getDocs',
+    limitQuery: 10,
+  })
+  const { count } = useCountDocuments({
+    collectionName,
+    conditions,
+    authRequired: true,
+    dependencies: [conditions]
+  })
 
   if (loading)
     return (
@@ -64,7 +33,7 @@ const TradeHistoryTable = (props) => {
         <Spinner />
       </div>
     );
-  if (errorMsg) return <p>Error! ::: {errorMsg}</p>;
+  if (error) return <p>Error! ::: {error.message}</p>;
 
   return (
     <>
@@ -90,6 +59,9 @@ const TradeHistoryTable = (props) => {
                 </th>
                 <th scope='col' className='px-2 py-1 text-xs'>
                   Autotrader
+                </th>
+                <th scope='col' className='px-2 py-1 text-xs'>
+                  Bot Id
                 </th>
                 <th scope='col' className='px-2 py-1 text-xs'>
                   PnL ($)
@@ -172,6 +144,7 @@ const TradeHistoryTable = (props) => {
                       </div>
                     </td>
                     <td>{x?.autotrader_name}</td>
+                    <td>{x?.bot_id}</td>
                     <td>
                       <p
                         className={`
@@ -212,6 +185,19 @@ const TradeHistoryTable = (props) => {
               })}
             </tbody>
           </table>
+          <div className='flex w-full justify-center mt-5 items-center gap-4'>
+            <p className='text-xs dark:text-gray-100 font-light'>
+              Total: {count}
+            </p>
+            {count !== data.length &&
+              <button
+                onClick={loadMore}
+                className='text-xs bg-gray-600 px-2 py-1 rounded-md text-white'
+              >
+                Load More
+              </button>
+            }
+          </div>
         </div>
       </div>
     </>

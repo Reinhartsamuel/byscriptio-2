@@ -18,7 +18,7 @@ const CombinedTradeHistoryComponent = () => {
     dependencies: [authFirebase.currentUser?.email],
   });
   return (
-    <div className='mx-2 lg:mx-6 mt-10 overflow-x-auto sm:rounded-lg'>
+    <div className='mx-2 lg:mx-6 mt-10 overflow-x-auto sm:rounded-lg trades-history'>
       <div className='flex items-center gap-4'>
         <h2 className='text-xl text-bold text-gray-800 dark:text-slate-200 font-bold'>
           Trade History

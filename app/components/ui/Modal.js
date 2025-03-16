@@ -2,6 +2,18 @@ import { IoMdClose } from 'react-icons/io';
 import PropTypes from 'prop-types';
 import React from 'react';
 export default function Modal({ open, onClose, children, size = '2xl' }) {
+  // add key listener when user clicks escape button, close the mdoal
+  React.useEffect(() => {
+    const handleKeydown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeydown);
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  }, [onClose]);
   return (
     // backdrop
     <div

@@ -16,6 +16,7 @@
     "@aws-sdk/s3-request-presigner": "^3.606.0",
     "@headlessui/react": "^2.1.2",
     "@heroicons/react": "^2.1.5",
+    "@reactour/tour": "^3.7.0",
     "@sweetalert2/theme-dark": "^5.0.18",
     "@sweetalert2/themes": "^5.0.18",
     "@tabler/icons-react": "^3.10.0",
