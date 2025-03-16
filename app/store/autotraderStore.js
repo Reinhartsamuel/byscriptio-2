@@ -11,7 +11,7 @@ export const useAutotraderStore = create((set) => ({
       'dca_bots',
       [{ field: 'email', operator: '==', value: email }],
       { field: 'createdAt', direction: 'desc' },
-      5
+      50
     );
     // console.log(data, 'fetch autotraders from store');
     return set(() => ({

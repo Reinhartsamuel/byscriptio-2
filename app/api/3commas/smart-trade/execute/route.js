@@ -2,7 +2,7 @@
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
 
 
-const API_KEY = process.env.THREE_COMMAS_API_KEY_SMART_TRADE;
+const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const baseUrl = 'https://api.3commas.io';
 
@@ -35,7 +35,7 @@ const validateBody = (body) => {
 export async function POST(request) {
     try {
         const body = await request.json();
-        // console.log('body', body);
+        console.log('body', body);
         // Validate request body
         const validationErrors = validateBody(body);
         if (validationErrors.length > 0) {
@@ -53,7 +53,7 @@ export async function POST(request) {
         const bodySend = {
             account_id: accountId,
             pair,
-            instant: "true",
+            instant: false,
             position: {
                 type,
                 units: {
@@ -63,10 +63,21 @@ export async function POST(request) {
             },
             leverage: {
                 enabled: true,
-                type: "custom",
+                type: "isolated",
                 value: "1"
-            }
+            },
+            take_profit: {
+                enabled: false,
+                // type: "market",
+                // value: "1"
+            },
+            stop_loss: {
+                enabled: false,
+                // type: "market",
+                // value: "1"
+            },
         }
+        console.log(bodySend, 'bodySend');
         const queryParams = `/public/api/v2/smart_trades`;
         const finalUrl = baseUrl + queryParams;
         const signatureMessage = queryParams + JSON.stringify(bodySend);
@@ -93,7 +104,7 @@ export async function POST(request) {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
-        console.log('Smart trade executed successfully, response:', data); 
+        // console.log('Smart trade executed successfully, response:', data); 
         return new Response(JSON.stringify({
             status: 'success',
             data

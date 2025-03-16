@@ -30,7 +30,7 @@ const ExchangesComponent = () => {
         value: authFirebase.currentUser?.email,
       },
     ],
-    limitQuery: 5,
+    limitQuery: 50,
     dependencies: [authFirebase.currentUser?.email],
   });
 

@@ -53,7 +53,7 @@ const AutotraderCard = ({ data, handleDetail }) => {
                         {
                             field: 'bot_id',
                             operator: '==',
-                            value: String(data.bot_id)
+                            value: data.bot_id
                         }
                     ]);
                     setHasActiveTrades(trades.length > 0);

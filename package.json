@@ -23,6 +23,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.7.1",
     "3commas-api-node": "^1.2.0",
+    "3commas-typescript": "^1.3.6",
     "axios": "^1.7.3",
     "browser-image-compression": "^2.0.2",
     "chart.js": "^4.4.6",

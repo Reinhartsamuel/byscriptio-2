@@ -2,170 +2,19 @@
 'use client';
 import React, { useState } from 'react';
 import { authFirebase } from '../config/firebase';
-import moment from 'moment';
-import { useParams } from 'next/navigation';
 import Spinner from '../components/ui/Spinner';
-import { cn } from '@/lib/util';
-import { RiRobot2Fill } from 'react-icons/ri';
-import PairImageComponent from '../components/ui/PairImageComponent';
 import ModalDetailAutotrader from './autotraders/ModalDetailAutotrader';
 import ModalAddAutotrader from './autotraders/ModalAddAutotrader';
 import { useAutotraderStore } from '../store/autotraderStore';
 import useCountDocuments from '../hooks/CountHook';
-import { useUserStore } from '../store/userStore';
 import PropTypes from 'prop-types';
 import AutotraderCard from '../components/AutotraderCard';
 
-// const yaitulah = [
-//   {
-//     id: 'bUxMrYL8hbnVXldEc8tx',
-//     createdBy: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     bot_id: '15455557',
-//     uid: 'RomXA3UVAbMZB55BLWzE42Dh3kz2',
-//     lastUpdatedBy: {
-//       email: 'edwinfardyanto@gmail.com',
-//       uid: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     },
-//     autotrader_name: '84_045_REIBKS_12/08/24 $335',
-//     tradeAmount: 335,
-//     createdAt: {
-//       seconds: 1726112639,
-//       nanoseconds: 244000000,
-//     },
-//     exchange_name: 'GATE',
-//     name: 'Reinhart Samuel',
-//     exchange_thumbnail:
-//       'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
-//     email: 'reinhartsams@gmail.com',
-//     trading_plan_pair: ['XMA_USDT_ETH'],
-//     companyId: 'byscript',
-//     status: 'ACTIVE',
-//     lastUpdated: {
-//       seconds: 1726194874,
-//       nanoseconds: 540000000,
-//     },
-//   },
-//   {
-//     id: 'bUxMrYL8hbnVXldEc8tx',
-//     createdBy: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     bot_id: '15455557',
-//     uid: 'RomXA3UVAbMZB55BLWzE42Dh3kz2',
-//     lastUpdatedBy: {
-//       email: 'edwinfardyanto@gmail.com',
-//       uid: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     },
-//     autotrader_name: '84_045_REIBKS_12/08/24 $335',
-//     tradeAmount: 335,
-//     createdAt: {
-//       seconds: 1726112639,
-//       nanoseconds: 244000000,
-//     },
-//     exchange_name: 'GATE',
-//     name: 'Reinhart Samuel',
-//     exchange_thumbnail:
-//       'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
-//     email: 'reinhartsams@gmail.com',
-//     trading_plan_pair: ['XMA_USDT_ETH'],
-//     companyId: 'byscript',
-//     status: 'ACTIVE',
-//     lastUpdated: {
-//       seconds: 1726194874,
-//       nanoseconds: 540000000,
-//     },
-//   },
-//   {
-//     id: 'bUxMrYL8hbnVXldEc8tx',
-//     createdBy: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     bot_id: '15455557',
-//     uid: 'RomXA3UVAbMZB55BLWzE42Dh3kz2',
-//     lastUpdatedBy: {
-//       email: 'edwinfardyanto@gmail.com',
-//       uid: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     },
-//     autotrader_name: '84_045_REIBKS_12/08/24 $335',
-//     tradeAmount: 335,
-//     createdAt: {
-//       seconds: 1726112639,
-//       nanoseconds: 244000000,
-//     },
-//     exchange_name: 'GATE',
-//     name: 'Reinhart Samuel',
-//     exchange_thumbnail:
-//       'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
-//     email: 'reinhartsams@gmail.com',
-//     trading_plan_pair: ['XMA_USDT_ETH'],
-//     companyId: 'byscript',
-//     status: 'ACTIVE',
-//     lastUpdated: {
-//       seconds: 1726194874,
-//       nanoseconds: 540000000,
-//     },
-//   },
-//   {
-//     id: 'bUxMrYL8hbnVXldEc8tx',
-//     createdBy: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     bot_id: '15455557',
-//     uid: 'RomXA3UVAbMZB55BLWzE42Dh3kz2',
-//     lastUpdatedBy: {
-//       email: 'edwinfardyanto@gmail.com',
-//       uid: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     },
-//     autotrader_name: '84_045_REIBKS_12/08/24 $335',
-//     tradeAmount: 335,
-//     createdAt: {
-//       seconds: 1726112639,
-//       nanoseconds: 244000000,
-//     },
-//     exchange_name: 'GATE',
-//     name: 'Reinhart Samuel',
-//     exchange_thumbnail:
-//       'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
-//     email: 'reinhartsams@gmail.com',
-//     trading_plan_pair: ['XMA_USDT_ETH'],
-//     companyId: 'byscript',
-//     status: 'ACTIVE',
-//     lastUpdated: {
-//       seconds: 1726194874,
-//       nanoseconds: 540000000,
-//     },
-//   },
-//   {
-//     id: 'bUxMrYL8hbnVXldEc8tx',
-//     createdBy: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     bot_id: '15455557',
-//     uid: 'RomXA3UVAbMZB55BLWzE42Dh3kz2',
-//     lastUpdatedBy: {
-//       email: 'edwinfardyanto@gmail.com',
-//       uid: 'CADyUn6k7qMkhn89ftO4Gr4zGpw2',
-//     },
-//     autotrader_name: '84_045_REIBKS_12/08/24 $335',
-//     tradeAmount: 335,
-//     createdAt: {
-//       seconds: 1726112639,
-//       nanoseconds: 244000000,
-//     },
-//     exchange_name: 'GATE',
-//     name: 'Reinhart Samuel',
-//     exchange_thumbnail:
-//       'https://3commas.cdn.prismic.io/3commas/9f0f9956-95a9-4b6c-9ed9-4be570d96e52_gateio_logo.svg',
-//     email: 'reinhartsams@gmail.com',
-//     trading_plan_pair: ['XMA_USDT_ETH'],
-//     companyId: 'byscript',
-//     status: 'ACTIVE',
-//     lastUpdated: {
-//       seconds: 1726194874,
-//       nanoseconds: 540000000,
-//     },
-//   },
-// ];
-
 const AutotraderBotComponent = ({ setShowPricing }) => {
-  const params = useParams();
   const [addModal, setAddModal] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [detail, setDetail] = useState({});
   const { autotraders: data } = useAutotraderStore();
-  const { userPackage } = useUserStore();
 
   const { count: counttt } = useCountDocuments({
     collectionName: 'dca_bots',
@@ -230,11 +79,6 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
             {data?.map((x, i) => (
               <AutotraderCard key={i} data={x} handleDetail={handleDetail} />
             ))}
-            {/* {data?.length !== counttt && (
-              <div className='w-full h-full grid place-items-center'>
-                <button>lihat semua</button>
-              </div>
-            )} */}
           </div>
         </>
       )}

@@ -30,7 +30,7 @@ export async function POST(request) {
       await adminDb.collection('3commas_logs').add({
         createdAt : new Date(),
         type : body?.action ? 'force_exit':'force_entry',
-        bot_id : body?.bot_id || '',
+        bot_id : String(body?.bot_id) || '',
         requestBody : JSON.stringify(body),
         pair : body?.pair,
         timestamp:moment().unix()*1000,

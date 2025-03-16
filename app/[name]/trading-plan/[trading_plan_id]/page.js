@@ -9,6 +9,7 @@ import EquityGrowthChart from './backtest/EquityGrowthChart';
 import Spinner from '@/app/components/ui/Spinner';
 import PropTypes from 'prop-types';
 import * as XLSX from 'xlsx';
+import moment from 'moment';
 
 //THIS IS BACKTEST PAGE
 const BacktestPage = ({ params }) => {
@@ -41,7 +42,7 @@ const BacktestPage = ({ params }) => {
     try {
       const response = await fetch(url);
       const arrayBuffer = await response.arrayBuffer();
-      
+
       // Parse Excel data
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
       const sheetsData = {};
@@ -72,7 +73,7 @@ const BacktestPage = ({ params }) => {
   useEffect(() => {
     if (backtest?.length > 0 && backtest[0]?.url) {
       const fileUrl = backtest[0].url;
-      
+
       // Extract extension using regex, matching the last .ext before any query params
       const extensionMatch = fileUrl.match(/\.([^./?#]+)(?:[?#]|$)/i);
       const fileExtension = extensionMatch ? extensionMatch[1].toLowerCase() : '';
@@ -109,20 +110,25 @@ const BacktestPage = ({ params }) => {
   return (
     <div className='w-full min-h-screen'>
       <div className='flex gap-2 mx-4 lg:mx-20'>
-        <BackButton />
+        {/* <BackButton /> */}
         <div className='block'>
           <p className='text-2xl font-bold text-white'>Trading plan id : {params.trading_plan_id}</p>
-          <p className='text-md text-gray-200'>Pair : {pair}</p>
+          <p className='text-md text-gray-100 font-bold underline'>{pair}</p>
+          {backtest[0]?.createdAt &&
+            <p className='text-md text-gray-100'>
+              Last Updated: {moment.unix(backtest[0]?.createdAt.seconds).fromNow()}
+            </p>
+          }
         </div>
       </div>
-       <div className='w-full flex justify-center items-center'>
-         <div className='w-full lg:w-3/4 mx-auto'>
+      <div className='w-full flex justify-center items-center'>
+        <div className='w-full lg:w-3/4 mx-auto'>
           {Array.isArray(tradesData) && tradesData?.length > 0 && (
             <EquityGrowthChart tradesData={tradesData} headers={headers} />
-          )} 
-         </div>
-       </div>
+          )}
+        </div>
       </div>
+    </div>
   );
 };
 
