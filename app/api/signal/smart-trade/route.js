@@ -37,7 +37,7 @@ export async function POST(request) {
         // })
 
         const resultPromise = await Promise.allSettled(autotraders.map(async (autotrader) => {
-            console.log(autotrader, 'autotrader anjing')
+            console.log(autotrader, 'autotrader kuda')
             const bodySend = {
                 account_id: autotrader.exchange_external_id,
                 pair: body.pair,
@@ -66,12 +66,13 @@ export async function POST(request) {
             let arr = [];
             try {
                 const latestTradeHistory = await adminDb
-                .collection('3commas_logs')
-                .where('autotrader_id', '==', autotrader.id)
-                // .where('pair', '==', body.pair)
-                .orderBy('createdAt', 'desc')
-                .limit(1)
-                .get();
+                    .collection('3commas_logs')
+                    .where('autotrader_id', '==', autotrader.id)
+                    .where('pair', '==', body.pair)
+                    .where('trading_plan_id', '==', body.trading_plan_id)
+                    .orderBy('createdAt', 'desc')
+                    .limit(1)
+                    .get();
                 latestTradeHistory.forEach((doc) => {
                     arr.push({ ...doc.data(), id: doc.id });
                 })
@@ -79,13 +80,13 @@ export async function POST(request) {
             } catch (error) {
                 console.log(error.message, 'error');
             }
-           
+
             // 3. if the latest trade history is not closed, close first
             // by close_at_market_price function
             if (
-                arr.length > 0 && 
-                arr[0].status.type 
-                 !== 'panic_sell_pending') {
+                arr.length > 0 &&
+                arr[0].status.type
+                !== 'panic_sell_pending') {
                 // close at market price function here
                 console.log(`trying to close trade ${arr[0].smart_trade_id}`)
                 const queryParamsCloseMarket = `/public/api/v2/smart_trades/${arr[0].smart_trade_id}/close_by_market`;
@@ -104,25 +105,35 @@ export async function POST(request) {
                 const responseCloseMarket = await response2.json();
                 console.log(responseCloseMarket, 'responseCloseMarket');
                 // result of close_at_market_price function, update to 3commas_logs
+
+                if (responseCloseMarket.error || responseCloseMarket.error_description) {
+                    console.log('Failed to close trade', responseCloseMarket);
+                    return;
+                }
                 await adminDb
-                .collection('3commas_logs')
-                .add({
-                    name : autotrader?.name  || '',
-                    email : autotrader?.email || '',
-                    uid : autotrader.uid || '',
-                    smart_trade_id : responseCloseMarket?.id || '',
-                    autotrader_id : autotrader.id || '',
-                    createdAt: new Date(),
-                    ...responseCloseMarket
-                })
+                    .collection('3commas_logs')
+                    .add({
+                        name: autotrader?.name || '',
+                        email: autotrader?.email || '',
+                        uid: autotrader.uid || '',
+                        smart_trade_id: String(responseCloseMarket?.id) || '',
+                        autotrader_id: autotrader.id || '',
+                        createdAt: new Date(),
+                        type: 'autotrade',
+                        trading_plan_id: body.trading_plan_id,
+                        action: `CLOSE_${body.type === 'sell' ? 'SELL' : 'BUY'}`,
+                        pair: body.pair,
+                        ...responseCloseMarket
+                    })
             }
 
             // 4. execute smart trade
+            console.log(`Executing smart trade for ${autotrader.id}`)
             const queryParams = `/public/api/v2/smart_trades`;
             const finalUrl = baseUrl + queryParams;
             const signatureMessage = queryParams + JSON.stringify(bodySend);
             const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-    
+
             const response2 = await fetch(finalUrl, {
                 method: 'POST',
                 body: JSON.stringify(bodySend),
@@ -135,18 +146,30 @@ export async function POST(request) {
             const responseExecute = await response2.json();
             console.log(responseExecute, 'responseExecute');
             // result of execute smart trade, update to 3commas_logs
+            // if error, return error and console log
+            if (responseExecute.error || responseExecute.error_description) {
+                console.log('Failed to execute smart trade', responseExecute);
+                return responseExecute.error;
+            }
+            delete responseExecute.pair;
             await adminDb
-            .collection('3commas_logs')
-            .add({
-                name : autotrader?.name  || '',
-                email : autotrader?.email || '',
-                uid : autotrader.uid || '',
-                smart_trade_id : responseExecute.id,
-                autotrader_id : autotrader.id || '',
-                createdAt: new Date(),
-
-                ...responseExecute
-            })
+                .collection('3commas_logs')
+                .add({
+                    name: autotrader?.name || '',
+                    email: autotrader?.email || '',
+                    uid: autotrader.uid || '',
+                    trading_plan_id: body.trading_plan_id,
+                    autotrader_id: autotrader.id || '',
+                    createdAt: new Date(),
+                    action: body.type === 'sell' ? 'SELL' : 'BUY',
+                    type: 'autotrade',
+                    smart_trade_id: String(responseExecute.id),
+                    exchange_external_id: String(autotrader.exchange_external_id) || '',
+                    exchange_thumbnail: autotrader.exchange_thumbnail || '',
+                    exchange_name: autotrader.exchange_name || '',
+                    pair: body.pair,
+                    ...responseExecute
+                })
             return {
                 ...autotrader,
                 // latestTradeHistory,
@@ -157,8 +180,8 @@ export async function POST(request) {
             status: true,
             message: 'Signal received',
             body,
-            result : resultPromise,
-            
+            result: resultPromise.map((x) => x.value),
+
         })
     } catch (error) {
         return new Response(JSON.stringify({

@@ -10,7 +10,7 @@ const baseUrl = 'https://api.3commas.io';
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { tradeId, smartTradeId,id } = body;
+        const { id } = body;
         const queryParams = `/public/api/v2/smart_trades/${id}/close_by_market`;
         // const queryParams = `/public/api/v2/smart_trades/${id}/close_by_market`;
         const finalUrl = baseUrl + queryParams;
