@@ -552,7 +552,7 @@ export async function POST(request) {
             to: [
               {
                 email: x?.value?.email || '',
-                name: x?.value?.email || '',
+                name: x?.value?.name || '',
               },
             ],
             subject: `Trade Executed ${body?.pair || ''} - byScript`,

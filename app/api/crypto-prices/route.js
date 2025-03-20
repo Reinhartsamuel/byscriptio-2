@@ -2,6 +2,7 @@
 import { admin, adminDb } from "@/lib/firebase-admin-config";
 import { headers } from "next/headers";
 
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 export async function GET(request) {
     try {
         const headersList = headers();

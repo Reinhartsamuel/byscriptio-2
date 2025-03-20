@@ -50,6 +50,7 @@ export default function ModalAddAutotrader({
     autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
   });
   const [loading, setLoading] = useState(false);
+  const [tradingType, setTradingType] = useState('SPOT');
 
   const handleSubmit = async () => {
     if (!userPackage && parseInt(data?.tradeAmount) > 100) {
@@ -289,6 +290,23 @@ export default function ModalAddAutotrader({
 
       {/* <pre>{JSON.stringify(detail, null, 2)}</pre> */}
       <div className='flex flex-col gap-2 my-10'>
+        <div className='flex flex-col gap-2 mb-10'>
+          <div className='flex gap-2 items-center'>
+            <p className='text-gray-100 font-bold'>Trades : {tradingType}</p>
+            <Tooltip text={'Select the exchange to be used for running the autotrader.'} className='mx-1'>
+              <FaRegCircleQuestion color={'white'} />
+            </Tooltip>
+          </div>
+          <div className="flex items-center">
+            <input id="default-radio-1" type="radio" value="SPOT" name="trading-type" checked={tradingType === 'SPOT'} onChange={() => setTradingType('SPOT')} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">One Way (SPOT)</label>
+          </div>
+          <div className="flex items-center">
+            <input id="default-radio-2" type="radio" value="FUTURES" name="trading-type" checked={tradingType === 'FUTURES'} onChange={() => setTradingType('FUTURES')} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+            <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Two Ways (FUTURES)</label>
+          </div>
+
+        </div>
         <div className='flex flex-col gap-2'>
           <div className='flex gap-2 items-center'>
             <p className='text-gray-100 font-bold'>Exchange</p>
@@ -298,7 +316,7 @@ export default function ModalAddAutotrader({
           </div>
           {Array.isArray(exchanges_accounts) &&
             exchanges_accounts?.length > 0 ? (
-            exchanges_accounts?.map((exchange, i) => (
+            exchanges_accounts?.filter((x) => x.type === tradingType)?.map((exchange, i) => (
               <div key={i} className='flex flex-col lg:flex-row gap-2 p-4 border-2 rounded-md border-gray-700'>
                 <div className='flex gap-2'>
                   <input
@@ -453,11 +471,11 @@ function TradingPlanSelectComponent({ data, setData }) {
 
   useEffect(() => {
     async function getTradingPlans() {
-      const tp = await getCollectionFirebase('trading_plans',[
+      const tp = await getCollectionFirebase('trading_plans', [
         {
-          field : 'status',
-          operator : '==',
-          value : 'ACTIVE'
+          field: 'status',
+          operator: '==',
+          value: 'ACTIVE'
         }
       ])
       setTradingPlans(tp);
