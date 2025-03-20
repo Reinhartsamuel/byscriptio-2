@@ -7,6 +7,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
   const { userPackage } = useUserStore();
   const { autotraders, getAutotraders } = useAutotraderStore();
   async function handleStartStop(action) {
+    // return console.log('detail', detail)
     try {
       const productDataFromUserPackage = await getSingleDocumentFirebase('products', userPackage?.productId);
       const activeAutotrader = autotraders?.filter((autotrader) => autotrader?.status === 'ACTIVE');
@@ -34,48 +35,63 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
       //   title: 'Autotrader is on REQUESTED status',
       // })
       setLoading(true);
-      const body = {
-        action,
-        bot_id: detail.bot_id,
-      };
-      const result = await fetch('/api/3commas/bot-activation', {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const res = await result.json();
-      if (result.status === 200 || res.status === 'success') {
-        // console.log('id bot:::::::', detail?.id);
+      if (detail?.smart_trade === true) {
         await updateDocumentFirebase('dca_bots', detail?.id, {
-          status:
-            action === 'start'
-              ? 'ACTIVE'
-              : action === 'stop'
-                ? 'STOPPED'
-                : 'invalid status',
-        });
+          status: 'ACTIVE'
+        })
         Swal.fire({
           icon: 'success',
           title: `${action} bot success`,
           showConfirmButton: true,
           confirmButtonText: 'Close',
-
         }).then(() => {
           window.location.reload();
         })
-        setDetail({
-          ...detail,
-          status: action === 'start' ? 'ACTIVE' : 'STOPPED',
-        });
       } else {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Update bot failed',
-          text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
+        const body = {
+          action,
+          bot_id: detail.bot_id,
+        };
+        const result = await fetch('/api/3commas/bot-activation', {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
+        const res = await result.json();
+        if (result.status === 200 || res.status === 'success') {
+          // console.log('id bot:::::::', detail?.id);
+          await updateDocumentFirebase('dca_bots', detail?.id, {
+            status:
+              action === 'start'
+                ? 'ACTIVE'
+                : action === 'stop'
+                  ? 'STOPPED'
+                  : 'invalid status',
+          });
+          Swal.fire({
+            icon: 'success',
+            title: `${action} bot success`,
+            showConfirmButton: true,
+            confirmButtonText: 'Close',
+
+          }).then(() => {
+            window.location.reload();
+          })
+          setDetail({
+            ...detail,
+            status: action === 'start' ? 'ACTIVE' : 'STOPPED',
+          });
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Update bot failed',
+            text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
+          });
+        }
       }
+
       getAutotraders();
     } catch (error) {
       Swal.fire({

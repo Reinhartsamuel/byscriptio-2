@@ -18,6 +18,10 @@ const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
 const baseUrl = 'https://api.3commas.io';
 
+
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds 
+
+
 export async function POST(request) {
     try {
         const body = await request.json();
@@ -285,26 +289,41 @@ export async function POST(request) {
                     console.log('Failed to close trade', responseCloseMarket);
                     throw new Error('Failed to close trade');
                 }
+
+                // this is for adding 3commas_logs
+                const sendDataTo3CommasLogs = {
+                    name: autotrader?.name || '',
+                    email: autotrader?.email || '',
+                    uid: autotrader.uid || '',
+                    exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                    exchange_name: autotrader?.exchange_name || '',
+                    smart_trade_id: String(responseCloseMarket?.id) || '',
+                    autotrader_id: autotrader.id || '',
+                    createdAt: new Date(),
+                    type: 'autotrade',
+                    trading_plan_id: body.trading_plan_id,
+                    action: `CLOSE_${body.type === 'sell' ? 'SELL' : 'BUY'}`,
+                    pair: body.pair,
+                    previousBuyId: arr[0]?.id || '',
+                    webhookId: addWebhookResult?.id || '',
+                    ...responseCloseMarket
+                }
+                const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
+                if (!isNaN(updateTradeAmount)) {
+                    bodySend.position.units.value = String(updateTradeAmount);
+                    sendDataTo3CommasLogs.updatedBalance = updateTradeAmount;
+                    const updateAutotrader = await adminDb
+                        .collection('dca_bots')
+                        .doc(autotrader.id)
+                        .update({
+                            tradeAmount: updateTradeAmount
+                        })
+                        console.log(updateAutotrader, 'updateAutotrader');
+                }
                 delete responseCloseMarket.pair;
                 await adminDb
                     .collection('3commas_logs')
-                    .add({
-                        name: autotrader?.name || '',
-                        email: autotrader?.email || '',
-                        uid: autotrader.uid || '',
-                        exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-                        exchange_name: autotrader?.exchange_name || '',
-                        smart_trade_id: String(responseCloseMarket?.id) || '',
-                        autotrader_id: autotrader.id || '',
-                        createdAt: new Date(),
-                        type: 'autotrade',
-                        trading_plan_id: body.trading_plan_id,
-                        action: `CLOSE_${body.type === 'sell' ? 'SELL' : 'BUY'}`,
-                        pair: body.pair,
-                        previousBuyId: arr[0]?.id || '',
-                        webhookId: addWebhookResult?.id || '',
-                        ...responseCloseMarket
-                    })
+                    .add(sendDataTo3CommasLogs)
             }
 
             // 4. execute smart trade
@@ -329,7 +348,11 @@ export async function POST(request) {
             // if error, return error and console log
             if (responseExecute.error || responseExecute.error_description) {
                 console.log('Failed to execute smart trade', responseExecute);
-                return responseExecute.error;
+                return {
+                    status: false,
+                    error: responseExecute.error + ', ' + responseExecute.error_description,
+                    error_attributes: responseExecute.error_attributes
+                }
             }
             delete responseExecute.pair;
             const res = await adminDb

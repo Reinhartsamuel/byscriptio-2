@@ -50,7 +50,7 @@ export default function ModalAddAutotrader({
     autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
   });
   const [loading, setLoading] = useState(false);
-  const [tradingType, setTradingType] = useState('SPOT');
+  const [marketType, setMarketType] = useState('SPOT');
 
   const handleSubmit = async () => {
     if (!userPackage && parseInt(data?.tradeAmount) > 100) {
@@ -123,81 +123,89 @@ export default function ModalAddAutotrader({
         addDataToAutotraderCollection,
         'byScript'
       );
-      console.log({
-        name: id,
-        account_id: data.exchange_external_id,
-        pairs: resultString,
-        base_order_volume: parseFloat(data?.tradeAmount),
-        take_profit: 0,
-        martingale_volume_coefficient: 10,
-        martingale_step_coefficient: 10,
-        max_safety_orders: 0,
-        max_active_deals: extractedPairs.length,
-        active_safety_orders_count: 0,
-        safety_order_step_percentage: 2,
-        take_profit_type: 'total',
-        strategy_list: [
-          {
-            strategy: 'tv_custom_signal',
+      // console.log({
+      //   name: id,
+      //   account_id: data.exchange_external_id,
+      //   pairs: resultString,
+      //   base_order_volume: parseFloat(data?.tradeAmount),
+      //   take_profit: 0,
+      //   martingale_volume_coefficient: 10,
+      //   martingale_step_coefficient: 10,
+      //   max_safety_orders: 0,
+      //   max_active_deals: extractedPairs.length,
+      //   active_safety_orders_count: 0,
+      //   safety_order_step_percentage: 2,
+      //   take_profit_type: 'total',
+      //   strategy_list: [
+      //     {
+      //       strategy: 'tv_custom_signal',
+      //     },
+      //   ],
+      //   close_strategy_list: [
+      //     {
+      //       strategy: 'tv_custom_signal',
+      //     },
+      //   ],
+      //   safety_order_volume: 10,
+      //   stop_loss_percentage: 99.9,
+      //   start_order_type: 'market',
+      //   reinvesting_percentage: 100,
+      //   risk_reduction_percentage: 100,
+      // }, 'body to create bot')
+
+      if (marketType === 'SPOT') {
+        const createBot = await fetch('/api/3commas/bots/create-bot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        ],
-        close_strategy_list: [
-          {
-            strategy: 'tv_custom_signal',
-          },
-        ],
-        safety_order_volume: 10,
-        stop_loss_percentage: 99.9,
-        start_order_type: 'market',
-        reinvesting_percentage: 100,
-        risk_reduction_percentage: 100,
-      }, 'body to create bot')
-      const createBot = await fetch('/api/3commas/bots/create-bot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: id,
-          account_id: data.exchange_external_id,
-          pairs: resultString,
-          base_order_volume: parseFloat(data?.tradeAmount),
-          take_profit: 0,
-          martingale_volume_coefficient: 10,
-          martingale_step_coefficient: 10,
-          max_safety_orders: 0,
-          max_active_deals: extractedPairs.length,
-          active_safety_orders_count: 0,
-          safety_order_step_percentage: 2,
-          take_profit_type: 'total',
-          strategy_list: [
-            {
-              strategy: 'tv_custom_signal',
-            },
-          ],
-          close_strategy_list: [
-            {
-              strategy: 'tv_custom_signal',
-            },
-          ],
-          safety_order_volume: 10,
-          stop_loss_percentage: 99.9,
-          start_order_type: 'market',
-          reinvesting_percentage: 100,
-          risk_reduction_percentage: 100,
-        }),
-      });
-      const resCreateBot = await createBot.json();
-      console.log(resCreateBot, 'resCreateBot');
-      if (resCreateBot.error) {
-        console.log('deleting because of error');
-        await deleteDocumentFirebase('dca_bots', id);
-        // return Swal.fire({ icon: 'error', title: 'Error creating bot' });
-        return handleError3Commas(resCreateBot);
-      } else if (resCreateBot.data) {
-        console.log('updating bot_id');
+          body: JSON.stringify({
+            name: id,
+            account_id: data.exchange_external_id,
+            pairs: resultString,
+            base_order_volume: parseFloat(data?.tradeAmount),
+            take_profit: 0,
+            martingale_volume_coefficient: 10,
+            martingale_step_coefficient: 10,
+            max_safety_orders: 0,
+            max_active_deals: extractedPairs.length,
+            active_safety_orders_count: 0,
+            safety_order_step_percentage: 2,
+            take_profit_type: 'total',
+            strategy_list: [
+              {
+                strategy: 'tv_custom_signal',
+              },
+            ],
+            close_strategy_list: [
+              {
+                strategy: 'tv_custom_signal',
+              },
+            ],
+            safety_order_volume: 10,
+            stop_loss_percentage: 99.9,
+            start_order_type: 'market',
+            reinvesting_percentage: 100,
+            risk_reduction_percentage: 100,
+          }),
+        });
+        const resCreateBot = await createBot.json();
+        console.log(resCreateBot, 'resCreateBot');
+        if (resCreateBot.error) {
+          console.log('deleting because of error');
+          await deleteDocumentFirebase('dca_bots', id);
+          // return Swal.fire({ icon: 'error', title: 'Error creating bot' });
+          return handleError3Commas(resCreateBot);
+        } else if (resCreateBot.data) {
+          console.log('updating bot_id');
+          await updateDocumentFirebase('dca_bots', id, {
+            bot_id: resCreateBot.data.id,
+          });
+        }
+
+      } else if (marketType === 'FUTURES') {
         await updateDocumentFirebase('dca_bots', id, {
-          bot_id: resCreateBot.data.id,
+          smart_trade: true,
         });
       }
 
@@ -238,10 +246,6 @@ export default function ModalAddAutotrader({
         ipLocation: ipLocation,
         type: 'CREATE AUTOTRADER',
       });
-      // Swal.fire({
-      //   icon: 'success',
-      //   text: 'Autotrader requested. We will inform you when autotrader is ACTIVE',
-      // });
       Swal.fire({
         icon: 'success',
         text: `Autotrader created with id ${id}. `,
@@ -292,18 +296,18 @@ export default function ModalAddAutotrader({
       <div className='flex flex-col gap-2 my-10'>
         <div className='flex flex-col gap-2 mb-10'>
           <div className='flex gap-2 items-center'>
-            <p className='text-gray-100 font-bold'>Trades : {tradingType}</p>
+            <p className='text-gray-100 font-bold'>Market Type : {marketType}</p>
             <Tooltip text={'Select the exchange to be used for running the autotrader.'} className='mx-1'>
               <FaRegCircleQuestion color={'white'} />
             </Tooltip>
           </div>
           <div className="flex items-center">
-            <input id="default-radio-1" type="radio" value="SPOT" name="trading-type" checked={tradingType === 'SPOT'} onChange={() => setTradingType('SPOT')} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">One Way (SPOT)</label>
+            <input id="default-radio-1" type="radio" value="SPOT" name="trading-type" checked={marketType === 'SPOT'} onChange={() => setMarketType('SPOT')} className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 large-radio" />
+            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">One Direction (SPOT)</label>
           </div>
           <div className="flex items-center">
-            <input id="default-radio-2" type="radio" value="FUTURES" name="trading-type" checked={tradingType === 'FUTURES'} onChange={() => setTradingType('FUTURES')} className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-            <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Two Ways (FUTURES)</label>
+            <input id="default-radio-2" type="radio" value="FUTURES" name="trading-type" checked={marketType === 'FUTURES'} onChange={() => setMarketType('FUTURES')} className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 large-radio" />
+            <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Two Directions (FUTURES)</label>
           </div>
 
         </div>
@@ -316,7 +320,7 @@ export default function ModalAddAutotrader({
           </div>
           {Array.isArray(exchanges_accounts) &&
             exchanges_accounts?.length > 0 ? (
-            exchanges_accounts?.filter((x) => x.type === tradingType)?.map((exchange, i) => (
+            exchanges_accounts?.filter((x) => x.type === marketType)?.map((exchange, i) => (
               <div key={i} className='flex flex-col lg:flex-row gap-2 p-4 border-2 rounded-md border-gray-700'>
                 <div className='flex gap-2'>
                   <input
@@ -335,7 +339,7 @@ export default function ModalAddAutotrader({
                     type='radio'
                     value={JSON.stringify(exchange)}
                     name='default-radio'
-                    className='w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                    className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 large-radio"
                   />
                   <img
                     alt={exchange?.exchange_name}
@@ -501,13 +505,14 @@ function TradingPlanSelectComponent({ data, setData }) {
               key={i}
               className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700 max-h-[5rem]'
             >
-              <div className='flex gap-1'>
+              <div className='flex gap-2'>
                 <input
                   value={JSON.stringify(plan)}
                   type={'checkbox'}
                   onClick={(e) =>
                     handleSelectTP(e.target.checked, e.target.value)
                   }
+                  className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 large-checkbox"
                 />
                 <p className='text-lg font-bold text-black dark:text-white'>
                   {plan?.name}
@@ -536,13 +541,14 @@ function TradingPlanSelectComponent({ data, setData }) {
                 className='flex flex-col justify-between gap-2 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-900 dark:border-gray-700'
               >
                 <div className='flex gap-1 justify-between items-center w-full'>
-                  <div className='flex items-center'>
+                  <div className='flex items-center gap-2'>
                     <input
                       type={'checkbox'}
                       onChange={(e) =>
                         handleSelectPair(e.target.checked, e.target.value)
                       }
                       value={JSON.stringify(pair)}
+                      className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 large-checkbox"
                     />
                     <p className='text-sm font-bold text-black dark:text-white'>
                       {pair?.pair}
