@@ -14,15 +14,15 @@ export async function GET(request) {
         const Authorization = headersList.get('Authorization');
         console.log('Authorization', Authorization)
         
-        if (Authorization !== process.env.BREVO_API_KEY) {
-            return new Response(JSON.stringify({
-                status: 'error',
-                message: 'Not Authorized, check your authorization header',
-                statusCode: 401
-            }), {
-                status: 401
-            });
-        }
+        // if (Authorization !== process.env.BREVO_API_KEY) {
+        //     return new Response(JSON.stringify({
+        //         status: 'error',
+        //         message: 'Not Authorized, check your authorization header',
+        //         statusCode: 401
+        //     }), {
+        //         status: 401
+        //     });
+        // }
 
         if ((dateFrom && !dateTo) || (!dateFrom && dateTo)) {
             return new Response(JSON.stringify({
