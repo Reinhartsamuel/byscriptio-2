@@ -12,6 +12,7 @@ export async function GET(request) {
         const dateTo = searchParams.get('dateTo');
         const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit'), 10) : 10; // Default limit is 10
         const Authorization = headersList.get('Authorization');
+        console.log('Authorization', Authorization)
         
         if (Authorization !== process.env.BREVO_API_KEY) {
             return new Response(JSON.stringify({
