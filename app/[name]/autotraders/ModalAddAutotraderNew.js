@@ -419,7 +419,7 @@ export default function ModalAddAutotraderNew({
           </p>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {tradingPlans
-              ?.filter(plan => plan.market_type?.toLowerCase() === marketType)
+              ?.filter(plan => plan.marketType?.toLowerCase() === marketType)
               ?.map((plan) => (
               <label
                 key={plan.id}
