@@ -11,6 +11,7 @@ import {
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { authFirebase, db } from '../config/firebase';
 import { getCollectionFirebase } from '../utils/firebaseApi';
+import moment from 'moment';
 
 const useFetchData = ({
   type = 'getDocs',
@@ -104,18 +105,34 @@ const useFetchData = ({
   }, [...dependencies]);
 
   const loadMore = async () => {
-    if (hasMore) {
+    if (hasMore && lastVisible) {
       try {
+        // Create a timestamp for comparison
+        const timestamp = lastVisible.createdAt;
+        
+        // Add a condition to get documents with timestamps less than the last visible
+        const paginationCondition = {
+          field: 'createdAt',
+          operator: '<',
+          value: timestamp
+        };
+        
         const res = await getCollectionFirebase(
           collectionName,
-          conditions,
+          [...conditions, paginationCondition],
           { field: 'createdAt', direction: 'desc' },
-          5,
-          lastVisible.createdAt
+          limitQuery
         );
-        const newData = [...data, ...res];
-        setData(newData);
-        setLastVisible(newData[newData.length - 1]);
+
+        console.log(`Last document timestamp: ${moment.unix(lastVisible?.createdAt?.seconds).format('HH:mm DD MMMM YYYY')}`);
+        
+        if (res.length > 0) {
+          setData([...data, ...res]);
+          setLastVisible(res[res.length - 1]);
+          setHasMore(res.length === limitQuery);
+        } else {
+          setHasMore(false);
+        }
       } catch (error) {
         Swal.fire({
           title: 'error',

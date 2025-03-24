@@ -193,6 +193,18 @@ const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
 export async function POST(request) {
   try {
     const body = await request.json();
+    if (body?.marketType === 'futures') {
+      // Fire and forget - explicitly show we don't need to wait
+      Promise.resolve().then(() => {
+        fetch('/api/signal/smart-trade', {
+          method: 'POST',
+          body: JSON.stringify(body),
+        }).catch((err) => {
+          console.error('Failed to forward signal to smart-trade:', err);
+          // Don't throw - we want to continue with the main flow even if this fails
+        });
+      });
+    }
     try {
       const messageTelegram = `pair: ${body?.pair} \n price: ${body?.price} \n timeframe: ${body?.time_frame} \n timestamp: ${body?.timestamp} \n date: ${moment.unix(body?.timestamp).format('DD-MM-YYYY HH:mm')} \n action: ${body?.action === 'close_at_market_price' ? 'SELL' : 'BUY'} \n trading_plan_id: ${body?.trading_plan_id}`
       const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {

@@ -27,7 +27,7 @@ export async function POST(request) {
         const body = await request.json();
         try {
             const messageTelegram = `pair: ${body?.pair} SMART TRADE SIGNAL \n price: ${body?.price} \n timeframe: ${body?.time_frame} \n timestamp: ${body?.timestamp} \n date: ${moment.unix(body?.timestamp).format('DD-MM-YYYY HH:mm')} \n action: ${body?.type?.toUpperCase()} \n trading_plan_id: ${body?.trading_plan_id}`
-            const res = await fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
+            fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -38,7 +38,7 @@ export async function POST(request) {
                     text: messageTelegram
                 })
             })
-            const resTelegram = await res.json();
+            // const resTelegram = await res.json();
             // console.log(resTelegram, 'resTelegram')
         } catch (error) {
             console.log(error.message + ' :::error sending to telegram')
@@ -118,12 +118,14 @@ export async function POST(request) {
                 //     'creating',
                 //     tp_unique_id
                 // );
-                await adminDb.collection('trading_plan_pair').doc(tp_unique_id).set({
+                adminDb.collection('trading_plan_pair').doc(tp_unique_id).set({
                     bots_id: [],
                     createdAt: new Date(),
                     lastUpdated: new Date(),
                     pair: body?.pair,
                     trading_plan_id: body.trading_plan_id,
+                }).catch(error => {
+                    console.error('Error creating trading plan pair:', error);
                 });
                 const tradingPlanDoc = await adminDb
                     .collection('trading_plan')
@@ -134,7 +136,7 @@ export async function POST(request) {
                     // console.log(
                     //     `trading plan not found, creating ID : ${body.trading_plan_id}`
                     // );
-                    await adminDb
+                    adminDb
                         .collection('trading_plans')
                         .doc(body.trading_plan_id)
                         .set({
@@ -142,7 +144,9 @@ export async function POST(request) {
                             name: body?.trading_plan_id || '',
                             childrenPairs: FieldValue.arrayUnion(body?.pair),
                             createdAt: new Date(),
-                        });
+                        }).catch((error) => {
+                            console.error('Error creating trading plan:', error);
+                        })
                 }
 
                 return new Response('no bots!', {
@@ -290,6 +294,7 @@ export async function POST(request) {
                     throw new Error('Failed to close trade');
                 }
 
+                delete responseCloseMarket.id;
                 // this is for adding 3commas_logs
                 const sendDataTo3CommasLogs = {
                     name: autotrader?.name || '',
@@ -318,7 +323,7 @@ export async function POST(request) {
                         .update({
                             tradeAmount: updateTradeAmount
                         })
-                        console.log(updateAutotrader, 'updateAutotrader');
+                    console.log(updateAutotrader, 'updateAutotrader');
                 }
                 delete responseCloseMarket.pair;
                 await adminDb
@@ -354,6 +359,7 @@ export async function POST(request) {
                     error_attributes: responseExecute.error_attributes
                 }
             }
+            delete responseExecute.id;
             delete responseExecute.pair;
             const res = await adminDb
                 .collection('3commas_logs')
@@ -373,16 +379,16 @@ export async function POST(request) {
                     pair: body.pair,
                     ...responseExecute
                 })
-                
-               
-                const returnValue = {
-                    ...autotrader,
-                    // latestTradeHistory,
-                    responseExecute,
-                    responseCloseMarket,
-                }
-                console.log(returnValue, 'returnValue')
-                console.log(`Adding document with id kontol ${res.id}`)
+
+
+            const returnValue = {
+                ...autotrader,
+                // latestTradeHistory,
+                responseExecute,
+                responseCloseMarket,
+            }
+            console.log(returnValue, 'returnValue')
+            console.log(`Adding document with id kontol ${res.id}`)
             return returnValue;
         }));
 
@@ -393,72 +399,72 @@ export async function POST(request) {
                 //send email
                 const emailBody = {
                     sender: {
-                      name: 'byScript.io',
-                      email: 'info@byscript.io',
+                        name: 'byScript.io',
+                        email: 'info@byscript.io',
                     },
                     to: [
-                      {
-                        email: result?.email || '',
-                        name: result?.name || '',
-                      },
+                        {
+                            email: result?.email || '',
+                            name: result?.name || '',
+                        },
                     ],
                     subject: `Trade Executed ${body?.pair || ''} - byScript`,
                     htmlContent: tradeExecutedTemplate({
-                     autotrader_name: result.id,
-                      exchange_thumbnail: result?.exchange_thumbnail || '',
-                      trading_plan_id: body?.trading_plan_id,
-                      signal_type: body?.type === 'sell' ? 'CLOSE_SELL' : 'CLOSE_BUY',
-                      tradeAmount: result?.tradeAmount || '-',
-                      price: body?.price || '',
-                      pair: body?.pair || '',
+                        autotrader_name: result.id,
+                        exchange_thumbnail: result?.exchange_thumbnail || '',
+                        trading_plan_id: body?.trading_plan_id,
+                        signal_type: body?.type === 'sell' ? 'CLOSE_SELL' : 'CLOSE_BUY',
+                        tradeAmount: result?.tradeAmount || '-',
+                        price: body?.price || '',
+                        pair: body?.pair || '',
                     }),
-                  };
-                  await fetch('https://api.brevo.com/v3/smtp/email', {
+                };
+                fetch('https://api.brevo.com/v3/smtp/email', {
                     method: 'post',
                     body: JSON.stringify(emailBody),
                     headers: {
-                      accept: 'application/json',
-                      // eslint-disable-next-line no-undef
-                      'api-key': process.env.BREVO_API_KEY,
-                      'content-type': 'application/json',
+                        accept: 'application/json',
+                        // eslint-disable-next-line no-undef
+                        'api-key': process.env.BREVO_API_KEY,
+                        'content-type': 'application/json',
                     },
-                  });
+                });
             }
 
             if (result?.responseExecute?.status.type === 'created') {
                 //send email
                 const emailBody = {
                     sender: {
-                      name: 'byScript.io',
-                      email: 'info@byscript.io',
+                        name: 'byScript.io',
+                        email: 'info@byscript.io',
                     },
                     to: [
-                      {
-                        email: result?.email || '',
-                        name: result?.name || '',
-                      },
+                        {
+                            email: result?.email || '',
+                            name: result?.name || '',
+                        },
                     ],
                     subject: `Trade Executed ${body?.pair || ''} - byScript`,
                     htmlContent: tradeExecutedTemplate({
-                     autotrader_name: result.id,
-                      exchange_thumbnail: result?.exchange_thumbnail || '',
-                      trading_plan_id: body?.trading_plan_id,
-                      signal_type: body?.type  === 'sell' ? 'SELL' : 'BUY',
-                      tradeAmount: result?.tradeAmount || '-',
-                      price: body?.price || '',
-                      pair: body?.pair || '',
+                        autotrader_name: result.id,
+                        exchange_thumbnail: result?.exchange_thumbnail || '',
+                        trading_plan_id: body?.trading_plan_id,
+                        signal_type: body?.type === 'sell' ? 'SELL' : 'BUY',
+                        tradeAmount: result?.tradeAmount || '-',
+                        price: body?.price || '',
+                        pair: body?.pair || '',
                     }),
-                  };
-                  await fetch('https://api.brevo.com/v3/smtp/email', {
+                };
+                fetch('https://api.brevo.com/v3/smtp/email', {
                     method: 'post',
                     body: JSON.stringify(emailBody),
                     headers: {
-                      accept: 'application/json',
-                      // eslint-disable-next-line no-undef
-                      'api-key': process.env.BREVO_API_KEY,
-                      'content-type': 'application/json',
+                        accept: 'application/json',
+                        // eslint-disable-next-line no-undef
+                        'api-key': process.env.BREVO_API_KEY,
+                        'content-type': 'application/json',
                     },
-                  });
+                });
             }
         }))
 

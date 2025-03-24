@@ -9,6 +9,7 @@ import { useAutotraderStore } from '../store/autotraderStore';
 import useCountDocuments from '../hooks/CountHook';
 import PropTypes from 'prop-types';
 import AutotraderCard from '../components/AutotraderCard';
+import ModalAddAutotraderNew from './autotraders/ModalAddAutotraderNew';
 
 const AutotraderBotComponent = ({ setShowPricing }) => {
   const [addModal, setAddModal] = useState(false);
@@ -82,7 +83,8 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
           </div>
         </>
       )}
-      <ModalAddAutotrader addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} />
+      {/* <ModalAddAutotrader addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} /> */}
+      <ModalAddAutotraderNew addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} />
       <ModalDetailAutotrader
         openModal={detailModal}
         setOpenModal={setDetailModal}

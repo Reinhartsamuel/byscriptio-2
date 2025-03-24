@@ -95,7 +95,7 @@ export const getCollectionFirebase = async (
 
     if (startAfterData) {
       // console.log(startAfterData)
-      // collectionRef = query(collectionRef, startAfter(startAfterData));
+      collectionRef = query(collectionRef, startAfter(startAfterData));
     }
 
     const querySnapshot = await getDocs(collectionRef);
