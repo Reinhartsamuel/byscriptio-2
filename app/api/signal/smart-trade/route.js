@@ -13,6 +13,7 @@ import moment from "moment";
 //     timeframe : '4h',
 //     timestamp: 1700000000
 // };
+
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
@@ -476,6 +477,7 @@ export async function POST(request) {
 
         })
     } catch (error) {
+        console.log(error.message, 'error smart trade')
         return new Response(JSON.stringify({
             status: false,
             message: error.message,
