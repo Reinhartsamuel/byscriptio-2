@@ -149,7 +149,7 @@ export async function POST(request) {
                             console.error('Error creating trading plan:', error);
                         })
                 }
-
+                console.log('no bots!', new Date().getTime())
                 return new Response('no bots!', {
                     status: 400,
                 });

@@ -111,9 +111,17 @@ export default function ModalAddAutotraderNew({
   };
 
   const updatePairConfig = (index, field, value) => {
-    const newConfigs = [...selectedPairConfigs];
-    newConfigs[index] = { ...newConfigs[index], [field]: value };
-    setSelectedPairConfigs(newConfigs);
+    try {
+      setSelectedPairConfigs(prevConfigs => {
+        const newConfigs = [...prevConfigs];
+        newConfigs[index] = { ...newConfigs[index], [field]: value };
+        console.log(newConfigs, 'newConfigs');
+        return newConfigs;
+      });
+    } catch (error) {
+      console.error('Error updating pair config:', error);
+    }
+
   };
 
   const resetState = () => {
@@ -220,62 +228,11 @@ export default function ModalAddAutotraderNew({
         };
         console.log(autotraderData, 'autotraderData');
 
-        const id = await addDocumentFirebase(
+        await addDocumentFirebase(
           'dca_bots',
           autotraderData,
           'byScript'
         );
-
-        if (marketType === 'spot') {
-          const createBot = await fetch('/api/3commas/bots/create-bot', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name: id,
-              account_id: selectedExchange.external_id,
-              pairs: config.pair.pair,
-              base_order_volume: parseFloat(config.tradeAmount),
-              take_profit: 0,
-              martingale_volume_coefficient: 10,
-              martingale_step_coefficient: 10,
-              max_safety_orders: 0,
-              max_active_deals: 1,
-              active_safety_orders_count: 0,
-              safety_order_step_percentage: 2,
-              take_profit_type: 'total',
-              strategy_list: [{ strategy: 'tv_custom_signal' }],
-              close_strategy_list: [{ strategy: 'tv_custom_signal' }],
-              safety_order_volume: 10,
-              stop_loss_percentage: 99.9,
-              start_order_type: 'market',
-              reinvesting_percentage: 100,
-              risk_reduction_percentage: 100,
-            }),
-          });
-
-          const resCreateBot = await createBot.json();
-
-          if (resCreateBot.error) {
-            await deleteDocumentFirebase('dca_bots', id);
-            return handleError3Commas(resCreateBot);
-          }
-
-          await updateDocumentFirebase('dca_bots', id, {
-            bot_id: resCreateBot.data.id,
-          });
-
-          await addActivityLog({
-            uid: authFirebase.currentUser?.uid,
-            email: authFirebase.currentUser?.email,
-            activity: 'Created new autotrader',
-            metadata: {
-              autotrader_id: id,
-              bot_id: resCreateBot.data.id,
-            },
-          });
-        }
       }
 
       await getAutotraders(authFirebase.currentUser?.email);
@@ -480,7 +437,7 @@ export default function ModalAddAutotraderNew({
                   key={index}
                   className="relative rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                 >
-                  {selectedPairConfigs.length > 1 && (
+                  {/* {selectedPairConfigs.length > 1 && (
                     <button
                       onClick={() => removePairConfig(index)}
                       className="absolute right-2 top-2 rounded-full bg-red-100 p-1 text-red-600 hover:bg-red-200"
@@ -489,7 +446,7 @@ export default function ModalAddAutotraderNew({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
-                  )}
+                  )} */}
 
                   <div className="flex gap-4">
                     <div className="flex-1">
