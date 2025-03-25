@@ -437,7 +437,7 @@ export default function ModalAddAutotraderNew({
                   key={index}
                   className="relative rounded-lg border border-gray-200 p-4 dark:border-gray-700"
                 >
-                  {/* {selectedPairConfigs.length > 1 && (
+                  {selectedPairConfigs.length > 1 && (
                     <button
                       onClick={() => removePairConfig(index)}
                       className="absolute right-2 top-2 rounded-full bg-red-100 p-1 text-red-600 hover:bg-red-200"
@@ -446,7 +446,7 @@ export default function ModalAddAutotraderNew({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
-                  )} */}
+                  )}
 
                   <div className="flex gap-4">
                     <div className="flex-1">
