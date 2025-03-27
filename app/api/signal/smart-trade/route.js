@@ -94,6 +94,7 @@ export async function POST(request) {
         }
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
+            action : body?.type === 'sell' ? 'SELL' : 'BUY',
             type: 'autotrade',
             createdAt: new Date(),
             flag: body?.flag || '',
