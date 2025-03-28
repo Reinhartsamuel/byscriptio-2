@@ -225,6 +225,7 @@ export default function ModalAddAutotraderNew({
           autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
           marketType,
           resultString: config.pair.pair,
+          smart_trade:true
         };
         console.log(autotraderData, 'autotraderData');
 
