@@ -313,6 +313,7 @@ export async function POST(request) {
                     pair: body.pair,
                     previousBuyId: arr[0]?.id || '',
                     webhookId: addWebhookResult?.id || '',
+                    smart_trade:true,
                     ...responseCloseMarket
                 }
                 const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
@@ -379,6 +380,7 @@ export async function POST(request) {
                     exchange_thumbnail: autotrader.exchange_thumbnail || '',
                     exchange_name: autotrader.exchange_name || '',
                     pair: body.pair,
+                    smart_trade: true,
                     ...responseExecute
                 })
 
