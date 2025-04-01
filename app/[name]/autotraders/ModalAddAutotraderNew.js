@@ -111,17 +111,10 @@ export default function ModalAddAutotraderNew({
   };
 
   const updatePairConfig = (index, field, value) => {
-    try {
-      setSelectedPairConfigs(prevConfigs => {
-        const newConfigs = [...prevConfigs];
-        newConfigs[index] = { ...newConfigs[index], [field]: value };
-        console.log(newConfigs, 'newConfigs');
-        return newConfigs;
-      });
-    } catch (error) {
-      console.error('Error updating pair config:', error);
-    }
-
+    const newConfigs = [...selectedPairConfigs];
+    const newObj = { ...newConfigs[index], [field]: value };
+    newConfigs.splice(index, 1, newObj);
+    setSelectedPairConfigs(newConfigs);
   };
 
   const resetState = () => {
@@ -451,7 +444,7 @@ export default function ModalAddAutotraderNew({
 
                   <div className="flex gap-4">
                     <div className="flex-1">
-                      <label className="mb-2 block text-sm font-medium text-gray-900">
+                      <label className="mb-2 block text-sm font-medium text-gray-200">
                         Select Pair {index + 1}
                       </label>
                       <Listbox value={config.pair} onChange={(pair) => updatePairConfig(index, 'pair', pair)}>
@@ -518,7 +511,7 @@ export default function ModalAddAutotraderNew({
 
                     <div className="flex-1">
                       <div className="flex items-center space-x-2">
-                        <label className="mb-2 block text-sm font-medium text-gray-900">
+                        <label className="mb-2 block text-sm font-medium text-gray-200">
                           Trade Amount
                         </label>
                         <Tooltip text="Enter the trade amount for this pair.">
