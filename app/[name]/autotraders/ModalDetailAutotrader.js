@@ -35,6 +35,23 @@ export default function ModalDetailAutotrader({
             <div className='rounded-lg dark:bg-gray-800 p-4 shadow-md mx-2 font-sans flex flex-col gap-1'>
               <div className='flex flex-col gap-2 divide-y divide-slate-200 dark:divide-slate-700'>
                 <div className='flex w-full justify-between min-h-10 items-end'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>ID</p>
+                  <p
+                    className={cn(
+                      'font-light text-sm text-gray-300',
+
+                    )}
+                  >
+                    {detail?.id}
+                  </p>
+                </div>
+                <div className='flex w-full justify-between min-h-10 items-end'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Trading Plan</p>
+                  <p className='font-bold text-sm text-gray-300'>
+                    {detail?.trading_plan_pair?.[0]?.split('_')[0]}
+                  </p>
+                </div>
+                <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Status</p>
                   <p
                     className={cn(
@@ -42,10 +59,10 @@ export default function ModalDetailAutotrader({
                       detail?.status === 'ACTIVE'
                         ? 'text-green-500'
                         : detail?.status === 'STOPPED'
-                        ? 'text-red-500'
-                        : detail?.status === 'REQUESTED'
-                        ? 'text-orange-500'
-                        : 'text-red-100'
+                          ? 'text-red-500'
+                          : detail?.status === 'REQUESTED'
+                            ? 'text-orange-500'
+                            : 'text-red-100'
                     )}
                   >
                     {detail?.status || '-'}
@@ -72,20 +89,20 @@ export default function ModalDetailAutotrader({
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Exchange</p>
                   <div className='flex'>
-                  <img
-                    alt={'exchange'}
-                    src={
-                      detail?.exchange_name === 'GATE'
-                        ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
-                        : detail?.exchange_thumbnail
+                    <img
+                      alt={'exchange'}
+                      src={
+                        detail?.exchange_name === 'GATE'
+                          ? 'https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75'
+                          : detail?.exchange_thumbnail
+                      }
+                      className='w-[5rem] object-contain'
+                    />
+                    {detail?.exchange_external_id &&
+                      <p className='ml-1 text-gray-400 dark:text-gray-100 font-light text-sm'>({detail?.exchange_external_id})</p>
                     }
-                    className='w-[5rem] object-contain'
-                  />
-                  {detail?.exchange_external_id && 
-                    <p className='ml-1 text-gray-400 dark:text-gray-100 font-light text-sm'>({detail?.exchange_external_id})</p>
-                  }
                   </div>
-                
+
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
@@ -124,7 +141,7 @@ export default function ModalDetailAutotrader({
                     onClick={() => handleStartStop('start')}
                     disabled={
                       detail?.status === 'ACTIVE' ||
-                      detail?.status === 'REQUESTED'
+                        detail?.status === 'REQUESTED'
                         ? true
                         : loading
                     }
@@ -132,7 +149,7 @@ export default function ModalDetailAutotrader({
                       'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white ',
                       (
                         detail?.status === 'ACTIVE' ||
-                        detail?.status === 'REQUESTED'
+                          detail?.status === 'REQUESTED'
                           ? true
                           : loading
                       )

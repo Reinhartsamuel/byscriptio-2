@@ -266,7 +266,7 @@ export async function POST(request) {
                 })
                 // console.log(arr, 'arr');
             } catch (error) {
-                console.log(error.message, 'error');
+                console.log(error.message, 'error finding latest trade history on 3commas_logs where same trading_plan_id and pair');
             }
 
             // 3. if the latest trade history is not closed, close first
@@ -291,7 +291,7 @@ export async function POST(request) {
                     }
                 });
                 responseCloseMarket = await response2.json();
-                // console.log(responseCloseMarket, 'responseCloseMarket')
+                console.log(responseCloseMarket, 'responseCloseMarket')
                 if (responseCloseMarket.error || responseCloseMarket.error_description) {
                     console.log('Failed to close trade', responseCloseMarket);
                     throw new Error('Failed to close trade');

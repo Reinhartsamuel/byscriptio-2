@@ -97,7 +97,7 @@ const AutotraderCard = ({ data, handleDetail }) => {
             <div className='w-full flex justify-between items-center rounded-xl bg-slate-100 dark:bg-slate-600 p-2 '>
                 <div className='flex gap-1 items-center'>
                     <RiRobot2Fill size={20} color='dark:white red' />
-                    <p className='text-gray-900 dark:text-slate-200 text-[1rem]'>
+                    <p className='text-slate-200 text-[1rem]'>
                         Status :{' '}
                         <span
                             className={cn(
@@ -115,7 +115,10 @@ const AutotraderCard = ({ data, handleDetail }) => {
                         </span>
                     </p>
                 </div>
-                <p>{data?.trading_plan_pair?.length || 0} pairs</p>
+                <div className='flex gap-1'>
+                    <p className='text-slate-200 text-[1rem]'>{data?.trading_plan_pair?.length || 0} pairs</p>
+                    <p className='text-slate-200'>{data?.trading_plan_pair?.[0].split('_')[0]}</p>
+                </div>
             </div>
             <div className='flex w-full justify-between'>
                 <img
