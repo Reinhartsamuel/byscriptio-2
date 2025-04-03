@@ -22,10 +22,37 @@ export async function POST(request) {
       autotraders.push({ ...doc.data(), id: doc.id });
     })
 
+
+    const autotrader = autotraders[0];
+    const bodySend = {
+      account_id: autotrader.exchange_external_id,
+      pair: body.pair,
+      instant: false,
+      position: {
+          type: body.type,
+          units: {
+              value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price))
+          },
+          order_type: "market"
+      },
+      leverage: {
+          enabled: true,
+          type: "isolated",
+          value: "1"
+      },
+      take_profit: {
+          enabled: false,
+      },
+      stop_loss: {
+          enabled: false,
+      },
+  }
+
     return Response.json({
       status: 'okelah',
       autotraders,
-      length: autotraders.length
+      length: autotraders.length,
+      bodySend
     });
   } catch (error) {
     return Response.json({
