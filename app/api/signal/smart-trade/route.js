@@ -233,7 +233,7 @@ export async function POST(request) {
                 position: {
                     type: body.type,
                     units: {
-                        value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price))
+                        value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price)) // amount in token, not in usd, so (amountUsd/price)
                     },
                     order_type: "market"
                 },
