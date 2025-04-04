@@ -122,13 +122,15 @@ const SignalPreviewComponent = () => {
                 </td>
                 <td className='px-6 py-4'>
                   <p
-                    className={`text-center text-xl font-bold ${
-                      x?.action === 'close_at_market_price'
-                        ? 'text-red-600'
-                        : 'text-green-600'
-                    }`}
+                    className={`text-center text-xl font-bold ${x?.action === 'close_at_market_price' ? 'text-red-600' :
+                          x?.action === 'BUY' ? 'text-green-600' :
+                          x?.action === 'SELL' ? 'text-red-600' :
+                          'text-green-600'}`}
                   >
-                    {x?.action === 'close_at_market_price' ? 'SELL' : 'BUY'}
+                     {x?.action === 'close_at_market_price' ? 'sell' :
+                          x?.action === 'BUY' ? 'BUY' :
+                          x?.action === 'SELL' ? 'SELL' :
+                          'BUY'}
                   </p>
                 </td>
               </tr>
