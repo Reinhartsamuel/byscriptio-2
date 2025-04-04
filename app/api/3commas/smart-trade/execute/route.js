@@ -57,7 +57,7 @@ export async function POST(request) {
             position: {
                 type,
                 units: {
-                    value
+                    value // value is the amount of token, so (amonuntUsd/price)
                 },
                 order_type: "market"
             },

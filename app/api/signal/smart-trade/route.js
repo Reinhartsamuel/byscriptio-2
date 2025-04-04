@@ -296,7 +296,7 @@ export async function POST(request) {
                     console.log('Failed to close trade', responseCloseMarket);
                     throw new Error('Failed to close trade');
                 }
-
+                const smart_trade_id = String(responseCloseMarket.id || '');
                 delete responseCloseMarket.id;
                 // this is for adding 3commas_logs
                 const sendDataTo3CommasLogs = {
@@ -305,7 +305,7 @@ export async function POST(request) {
                     uid: autotrader.uid || '',
                     exchange_thumbnail: autotrader?.exchange_thumbnail || '',
                     exchange_name: autotrader?.exchange_name || '',
-                    smart_trade_id: String(responseCloseMarket?.id) || '',
+                    smart_trade_id,
                     autotrader_id: autotrader.id || '',
                     createdAt: new Date(),
                     type: 'autotrade',
@@ -364,6 +364,7 @@ export async function POST(request) {
                     error_attributes: responseExecute.error_attributes
                 }
             }
+            const smart_trade_id = String(responseExecute.id || '');
             delete responseExecute.id;
             delete responseExecute.pair;
             const res = await adminDb
@@ -377,7 +378,7 @@ export async function POST(request) {
                     createdAt: new Date(),
                     action: body.type === 'sell' ? 'SELL' : 'BUY',
                     type: 'autotrade',
-                    smart_trade_id: String(responseExecute.id),
+                    smart_trade_id,
                     exchange_external_id: String(autotrader.exchange_external_id) || '',
                     exchange_thumbnail: autotrader.exchange_thumbnail || '',
                     exchange_name: autotrader.exchange_name || '',
