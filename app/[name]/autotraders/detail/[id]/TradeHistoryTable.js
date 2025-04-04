@@ -85,7 +85,8 @@ const TradeHistoryTable = (props) => {
                       JSON.parse(x?.requestBody)?.action ===
                       'close_at_market_price'
                       ? 'SELL'
-                      : 'BUY';
+                      : x?.action === 'SELL' ? 'SELL' :
+                      x?.action === 'BUY' ? 'BUY' : 'BUY';
                   } else if (x?.type === 'force_entry') {
                     return 'FORCE BUY';
                   } else if (x?.type === 'force_exit') {
@@ -95,10 +96,11 @@ const TradeHistoryTable = (props) => {
                 const actionColor = () => {
                   if (x?.type === 'autotrade') {
                     return x?.requestBody &&
-                      JSON.parse(x?.requestBody)?.action ===
-                      'close_at_market_price'
-                      ? 'text-red-600'
-                      : 'text-green-600';
+                    JSON.parse(x?.requestBody)?.action ===
+                    'close_at_market_price'
+                    ? 'text-red-600'
+                    : x?.action === 'SELL' ? 'text-red-600' :
+                    x?.action === 'BUY' ? 'text-green-600' : 'text-green-600';
                   } else if (x?.type === 'force_entry') {
                     return 'text-green-600';
                   } else if (x?.type === 'force_exit') {
@@ -131,7 +133,9 @@ const TradeHistoryTable = (props) => {
                     </td>
                     <td className='px-2 py-1 text-xs'>
                       $
-                      {x?.requestBody ? JSON.parse(x?.requestBody)?.price : '-'}
+                      {x?.requestBody ? JSON.parse(x?.requestBody)?.price : 
+                      x?.position?.price?.value || '-'
+                      }
                     </td>
                     <td className='px-2 py-1 text-xs whitespace-nowrap'>
                       <div className=' flex flex-col justify-center'>
@@ -143,8 +147,8 @@ const TradeHistoryTable = (props) => {
                         <p>{moment.unix(x?.createdAt?.seconds).fromNow()}</p>
                       </div>
                     </td>
-                    <td>{x?.autotrader_name}</td>
-                    <td>{x?.bot_id}</td>
+                    <td>{x?.autotrader_name || x?.autotrader_id}</td>
+                    <td>{x?.bot_id || '-'}</td>
                     <td>
                       <p
                         className={`
@@ -152,7 +156,10 @@ const TradeHistoryTable = (props) => {
                       text-${x?.pnl < 0 ? 'red' : x?.pnl > 0 ? 'green' : 'gray'}-600`
                         }
                       >
-                        {x?.pnl ? x?.pnl?.toFixed(2) : '-'}
+                        {x?.pnl ? x?.pnl?.toFixed(2) : 
+                        x?.profit ? x?.profit?.percent : '-'
+                        
+                        }
                       </p>
                     </td>
                     <td>
@@ -162,7 +169,8 @@ const TradeHistoryTable = (props) => {
                       text-${x?.profit_percent < 0 ? 'red' : x?.profit_percent > 0 ? 'green' : 'gray'}-600`
                         }
                       >
-                        {x?.profit_percent ? x?.profit_percent?.toFixed(2) + '%' : '-'}
+                        {x?.profit_percent ? x?.profit_percent?.toFixed(2) + '%' : 
+                         x?.profit ? x?.profit?.percent+ '%' : '-'}
                       </p>
                     </td>
                     <td>
