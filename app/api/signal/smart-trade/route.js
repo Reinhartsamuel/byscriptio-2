@@ -382,7 +382,8 @@ export async function POST(request) {
                     exchange_name: autotrader.exchange_name || '',
                     pair: body.pair,
                     smart_trade: true,
-                    ...responseExecute
+                    ...responseExecute,
+                    webhookId: addWebhookResult?.id || '',
                 })
 
 
