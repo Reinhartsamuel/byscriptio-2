@@ -20,13 +20,14 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import logo from '../../../public/logo_byScript_white_green.svg';
 import Image from 'next/image';
-import { setCookie, getCookie } from 'cookies-next';
+import { setCookie } from 'cookies-next';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Pricing', href: '/#pricing' },
   { name: "Announcements", href: "/announcement" },
   { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
+  { name: 'Strategy Backtest', href: '/backtest'},
   // { name: 'Subscription', href: '/subscriptions' },
   // { name: 'Marketplace', href: '/marketplace' },
   // { name: 'Affiliate', href: '/affiliate' },
@@ -98,6 +99,7 @@ export default function Navbar() {
             target: '_blank',
           },
           { name: 'Announcement', href:'/announcement', target: '_blank' },
+          { name: 'Strategy Backtest', href:'/backtest'},
           // { name: 'Autotraders', href: `/${name}/autotraders` },
           // { name: 'Exchanges', href: `/${name}/exchanges` },
         ]);

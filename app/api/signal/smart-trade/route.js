@@ -42,7 +42,7 @@ export async function POST(request) {
             // const resTelegram = await res.json();
             // console.log(resTelegram, 'resTelegram')
         } catch (error) {
-            console.log(error.message + ' :::error sending to telegram')
+            console.log(error.message + ' :::error sending to telegram' + JSON.stringify(body))
         }
 
         // saving image to firestore
@@ -90,12 +90,12 @@ export async function POST(request) {
                 // })
             }
         } catch (error) {
-            console.log(error.message, 'error saving crypto logos to firestore')
+            console.log(error.message, 'error saving crypto logos to firestore', JSON.stringify(body))
         }
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action : body?.type === 'sell' ? 'SELL' : 'BUY',
-            smart_trade:true,
+            action: body?.type === 'sell' ? 'SELL' : 'BUY',
+            smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
             flag: body?.flag || '',
@@ -128,7 +128,7 @@ export async function POST(request) {
                     pair: body?.pair,
                     trading_plan_id: body.trading_plan_id,
                 }).catch(error => {
-                    console.error('Error creating trading plan pair:', error);
+                    console.error('Error creating trading plan pair:', error, JSON.stringify(body));
                 });
                 const tradingPlanDoc = await adminDb
                     .collection('trading_plan')
@@ -173,10 +173,11 @@ export async function POST(request) {
             .get();
 
         if (querySnapshot.empty) {
-            // console.log(
-            //     `no bots found lookup under ${tp_unique_id} timestamp : `,
-            //     new Date().getTime()
-            // );
+            console.log(
+                `no bots found lookup under ${tp_unique_id} timestamp : `,
+                new Date().getTime(),
+                JSON.stringify(body)
+            );
             return Response.json({ status: false, message: 'No bots foundd' });
         }
         querySnapshot.forEach((doc) => {
@@ -202,7 +203,8 @@ export async function POST(request) {
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
-        if (body?.flag === 'testing')
+        if (body?.flag === 'testing') {
+            console.log(`returning because of testinggg, ${JSON.stringify(body)}`)
             return new Response(
                 JSON.stringify({
                     status: true,
@@ -211,6 +213,7 @@ export async function POST(request) {
                     status: 200,
                 }
             );
+        }
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
@@ -266,7 +269,7 @@ export async function POST(request) {
                 })
                 // console.log(arr, 'arr');
             } catch (error) {
-                console.log(error.message, 'error finding latest trade history on 3commas_logs where same trading_plan_id and pair');
+                console.log(error.message, 'error finding latest trade history on 3commas_logs where same trading_plan_id and pair', JSON.stringify(body));
             }
 
             // 3. if the latest trade history is not closed, close first
@@ -293,7 +296,7 @@ export async function POST(request) {
                 responseCloseMarket = await response2.json();
                 console.log(responseCloseMarket, 'responseCloseMarket')
                 if (responseCloseMarket.error || responseCloseMarket.error_description) {
-                    console.log('Failed to close trade', responseCloseMarket);
+                    console.log('Failed to close trade', responseCloseMarket, JSON.stringify(body));
                     throw new Error('Failed to close trade');
                 }
                 const smart_trade_id = String(responseCloseMarket.id || '');
@@ -314,8 +317,8 @@ export async function POST(request) {
                     pair: body.pair,
                     previousBuyId: arr[0]?.id || '',
                     webhookId: addWebhookResult?.id || '',
-                    smart_trade:true,
-                    requestBody : bodySend,
+                    smart_trade: true,
+                    requestBody: bodySend,
                     ...responseCloseMarket
                 }
                 const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
@@ -328,7 +331,7 @@ export async function POST(request) {
                         .update({
                             tradeAmount: updateTradeAmount
                         })
-                    console.log(updateAutotrader, 'updateAutotrader');
+                    console.log(updateAutotrader, 'updateAutotrader', JSON.stringify(body));
                 }
                 delete responseCloseMarket.pair;
                 await adminDb
@@ -353,7 +356,7 @@ export async function POST(request) {
                 }
             });
             const responseExecute = await response2.json();
-            console.log(responseExecute, 'responseExecute');
+            console.log(responseExecute, 'responseExecute', JSON.stringify(body));
             // result of execute smart trade, update to 3commas_logs
             // if error, return error and console log
             if (responseExecute.error || responseExecute.error_description) {
@@ -385,7 +388,7 @@ export async function POST(request) {
                     pair: body.pair,
                     smart_trade: true,
                     ...responseExecute,
-                    requestId : bodySend,
+                    requestId: bodySend,
                     webhookId: addWebhookResult?.id || '',
                 })
 
@@ -396,8 +399,8 @@ export async function POST(request) {
                 responseExecute,
                 responseCloseMarket,
             }
-            console.log(returnValue, 'returnValue')
-            console.log(`Adding document with id kontol ${res.id}`)
+            console.log(returnValue, 'returnValue', JSON.stringify(body))
+            console.log(`Adding document with id kontol ${res.id} ${JSON.stringify(body)}`)
             return returnValue;
         }));
 
@@ -477,6 +480,15 @@ export async function POST(request) {
             }
         }))
 
+        console.log(`returning successfully : {JSON.stringify(resultPromise)}: ${JSON.stringify(resultPromise)}`)
+        console.log(`returning successfully : {JSON.stringify({
+            status : true, message : 'signal received', result : resultPromise.map((x) => x?.value)})}: 
+            ${JSON.stringify({
+            status: true,
+            message: 'signal received',
+            result: resultPromise.map((x) => x?.value)
+        }
+        )}`)
         return Response.json({
             status: true,
             message: 'Signal received',
@@ -485,7 +497,8 @@ export async function POST(request) {
 
         })
     } catch (error) {
-        console.log(error.message, 'error smart trade')
+        let body = await request.json();
+        console.log(error.message, 'error smart trade', JSON.stringify(body))
         return new Response(JSON.stringify({
             status: false,
             message: error.message,
