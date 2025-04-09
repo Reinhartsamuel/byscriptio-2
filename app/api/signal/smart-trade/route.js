@@ -1,5 +1,5 @@
 import { coins } from "@/app/dummy";
-import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
+// import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
 import { adminDb } from "@/lib/firebase-admin-config";
 import { FieldValue } from "firebase-admin/firestore";
@@ -16,6 +16,8 @@ import moment from "moment";
 
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
+const MAX_EXECUTION_RETRIES = 3;
+
 const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
 const baseUrl = 'https://api.3commas.io';
 
@@ -72,18 +74,13 @@ export async function POST(request) {
                 });
                 const result = await fetchCoin.json();
 
-                //save to firestore
-                await adminDb
+                //save to firestore without waiting
+                adminDb
                     .collection('logos')
                     .doc(ticker)
                     .set({
                         image: result?.image?.small
                     })
-
-                // console.log({
-                //     message: `coingecko get image : ${result?.image?.small}`,
-                //     image: result?.image?.small
-                // })
             } else {
                 // console.log({
                 //     message: `crypto logo already exist in dummy, ticker : ${ticker}`,
@@ -101,7 +98,6 @@ export async function POST(request) {
             flag: body?.flag || '',
             // result: result.map((x) => x?.status),
         });
-
 
         // trading_plan_id is constructed of trading plan name and pair
         const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;
@@ -160,38 +156,6 @@ export async function POST(request) {
             }
         }
 
-        // ----------------------------------------------------------------------------
-        // ----------------------------------------------------------------------------
-        // ----------------------------------------------------------------------------
-        // 1. find active autotraders
-        let autotraders = [];
-        const querySnapshot = await adminDb
-            .collection('dca_bots')
-            .where('trading_plan_pair', 'array-contains', body.trading_plan_id + '_' + body.pair)
-            .where('status', '==', 'ACTIVE')
-            .where('smart_trade', '==', true)
-            .get();
-
-        if (querySnapshot.empty) {
-            console.log(
-                `no bots found lookup under ${tp_unique_id} timestamp : `,
-                new Date().getTime(),
-                JSON.stringify(body)
-            );
-            return Response.json({ status: false, message: 'No bots foundd' });
-        }
-        querySnapshot.forEach((doc) => {
-            autotraders.push({ ...doc.data(), id: doc.id });
-        })
-
-        // console.log(autotraders, 'autotraders');
-        // return Response.json({
-        //     status: true,
-        //     message: 'Signal received',
-        //     autotraders,
-        //     body
-        // })
-
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
@@ -226,9 +190,40 @@ export async function POST(request) {
         // RETURN IF THERE'S TESTING FLAG
         // RETURN IF THERE'S TESTING FLAG
 
+        // ----------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------
+        // 1. find active autotraders
+        let autotraders = [];
+        const querySnapshot = await adminDb
+            .collection('dca_bots')
+            .where('trading_plan_pair', 'array-contains', body.trading_plan_id + '_' + body.pair)
+            .where('status', '==', 'ACTIVE')
+            .where('smart_trade', '==', true)
+            .get();
+
+        if (querySnapshot.empty) {
+            console.log(
+                `no bots found lookup under ${tp_unique_id} timestamp : `,
+                new Date().getTime(),
+                JSON.stringify(body)
+            );
+            return Response.json({ status: false, message: 'No bots foundd' });
+        }
+        querySnapshot.forEach((doc) => {
+            autotraders.push({ ...doc.data(), id: doc.id });
+        })
+
+        // console.log(autotraders, 'autotraders');
+        // return Response.json({
+        //     status: true,
+        //     message: 'Signal received',
+        //     autotraders,
+        //     body
+        // })
+
         const resultPromise = await Promise.allSettled(autotraders.map(async (autotrader) => {
             // console.log(autotrader, 'autotrader kuda')
-            let responseCloseMarket = null;
             const bodySend = {
                 account_id: autotrader.exchange_external_id,
                 pair: body.pair,
@@ -254,143 +249,23 @@ export async function POST(request) {
             }
 
             // 2. find latest trade history on 3commas_logs where same trading_plan_id and pair
-            let arr = [];
-            try {
-                const latestTradeHistory = await adminDb
-                    .collection('3commas_logs')
-                    .where('autotrader_id', '==', autotrader.id)
-                    .where('pair', '==', body.pair)
-                    .where('trading_plan_id', '==', body.trading_plan_id)
-                    .orderBy('createdAt', 'desc')
-                    .limit(1)
-                    .get();
-                latestTradeHistory.forEach((doc) => {
-                    arr.push({ ...doc.data(), id: doc.id });
-                })
-                // console.log(arr, 'arr');
-            } catch (error) {
-                console.log(error.message, 'error finding latest trade history on 3commas_logs where same trading_plan_id and pair', JSON.stringify(body));
-            }
-
-            // 3. if the latest trade history is not closed, close first
-            // by close_at_market_price function
-            if (
-                arr.length > 0 &&
-                arr[0].status.type
-                !== 'panic_sell_pending') {
-                // close at market price function here
-                // console.log(`trying to close trade ${arr[0].smart_trade_id}`)
-                const queryParamsCloseMarket = `/public/api/v2/smart_trades/${arr[0].smart_trade_id}/close_by_market`;
-                const finalUrlCloseMarket = baseUrl + queryParamsCloseMarket;
-                const signatureMessage = queryParamsCloseMarket;
-                const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-                const response2 = await fetch(finalUrlCloseMarket, {
-                    method: 'POST',
-                    // body: JSON.stringify({}),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        APIKEY: API_KEY,
-                        Signature: signature,
-                    }
-                });
-                responseCloseMarket = await response2.json();
-                console.log(responseCloseMarket, 'responseCloseMarket')
-                if (responseCloseMarket.error || responseCloseMarket.error_description) {
-                    console.log('Failed to close trade', responseCloseMarket, JSON.stringify(body));
-                    throw new Error('Failed to close trade');
-                }
-                const smart_trade_id = String(responseCloseMarket.id || '');
-                delete responseCloseMarket.id;
-                // this is for adding 3commas_logs
-                const sendDataTo3CommasLogs = {
-                    name: autotrader?.name || '',
-                    email: autotrader?.email || '',
-                    uid: autotrader.uid || '',
-                    exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-                    exchange_name: autotrader?.exchange_name || '',
-                    smart_trade_id,
-                    autotrader_id: autotrader.id || '',
-                    createdAt: new Date(),
-                    type: 'autotrade',
-                    trading_plan_id: body.trading_plan_id,
-                    action: `CLOSE_${body.type === 'sell' ? 'SELL' : 'BUY'}`,
-                    pair: body.pair,
-                    previousBuyId: arr[0]?.id || '',
-                    webhookId: addWebhookResult?.id || '',
-                    smart_trade: true,
-                    requestBody: bodySend,
-                    ...responseCloseMarket
-                }
-                const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
-                if (!isNaN(updateTradeAmount)) {
-                    bodySend.position.units.value = String(updateTradeAmount);
-                    sendDataTo3CommasLogs.updatedBalance = updateTradeAmount;
-                    const updateAutotrader = await adminDb
-                        .collection('dca_bots')
-                        .doc(autotrader.id)
-                        .update({
-                            tradeAmount: updateTradeAmount
-                        })
-                    console.log(updateAutotrader, 'updateAutotrader', JSON.stringify(body));
-                }
-                delete responseCloseMarket.pair;
-                await adminDb
-                    .collection('3commas_logs')
-                    .add(sendDataTo3CommasLogs)
-            }
+            const responseCloseMarket = await closePreviousTrade({
+                body,
+                bodySend,
+                autotrader,
+                webhookId: addWebhookResult.id,
+            });
 
             // 4. execute smart trade
             // console.log(`Executing smart trade for ${autotrader.id}`)
-            const queryParams = `/public/api/v2/smart_trades`;
-            const finalUrl = baseUrl + queryParams;
-            const signatureMessage = queryParams + JSON.stringify(bodySend);
-            const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-
-            const response2 = await fetch(finalUrl, {
-                method: 'POST',
-                body: JSON.stringify(bodySend),
-                headers: {
-                    'Content-Type': 'application/json',
-                    APIKEY: API_KEY,
-                    Signature: signature,
-                }
-            });
-            const responseExecute = await response2.json();
-            console.log(responseExecute, 'responseExecute', JSON.stringify(body));
-            // result of execute smart trade, update to 3commas_logs
-            // if error, return error and console log
-            if (responseExecute.error || responseExecute.error_description) {
-                console.log('Failed to execute smart trade', responseExecute);
-                return {
-                    status: false,
-                    error: responseExecute.error + ', ' + responseExecute.error_description,
-                    error_attributes: responseExecute.error_attributes
-                }
-            }
-            const smart_trade_id = String(responseExecute.id || '');
-            delete responseExecute.id;
-            delete responseExecute.pair;
-            const res = await adminDb
-                .collection('3commas_logs')
-                .add({
-                    name: autotrader?.name || '',
-                    email: autotrader?.email || '',
-                    uid: autotrader.uid || '',
-                    trading_plan_id: body.trading_plan_id,
-                    autotrader_id: autotrader.id || '',
-                    createdAt: new Date(),
-                    action: body.type === 'sell' ? 'SELL' : 'BUY',
-                    type: 'autotrade',
-                    smart_trade_id,
-                    exchange_external_id: String(autotrader.exchange_external_id) || '',
-                    exchange_thumbnail: autotrader.exchange_thumbnail || '',
-                    exchange_name: autotrader.exchange_name || '',
-                    pair: body.pair,
-                    smart_trade: true,
-                    ...responseExecute,
-                    requestId: bodySend,
-                    webhookId: addWebhookResult?.id || '',
-                })
+            const responseExecute = await executeNewTrade({
+                bodySend,
+                body,
+                nonce: 1,
+                updateTradeAmount: responseCloseMarket?.updateTradeAmount,
+                autotrader,
+                webhookId: addWebhookResult.id,
+            })
 
 
             const returnValue = {
@@ -400,87 +275,85 @@ export async function POST(request) {
                 responseCloseMarket,
             }
             console.log(returnValue, 'returnValue', JSON.stringify(body))
-            console.log(`Adding document with id kontol ${res.id} ${JSON.stringify(body)}`)
             return returnValue;
         }));
 
-        //------------------------------ SEND EMAIL ------------------------------  
-        //------------------------------ SEND EMAIL ------------------------------
-        await Promise.allSettled(resultPromise.map((x) => x?.value).map(async (result) => {
-            if (result?.responseCloseMarket?.status.type === 'panic_sell_pending') {
-                //send email
-                const emailBody = {
-                    sender: {
-                        name: 'byScript.io',
-                        email: 'info@byscript.io',
-                    },
-                    to: [
-                        {
-                            email: result?.email || '',
-                            name: result?.name || '',
-                        },
-                    ],
-                    subject: `Trade Executed ${body?.pair || ''} - byScript`,
-                    htmlContent: tradeExecutedTemplate({
-                        autotrader_name: result.id,
-                        exchange_thumbnail: result?.exchange_thumbnail || '',
-                        trading_plan_id: body?.trading_plan_id,
-                        signal_type: body?.type === 'sell' ? 'CLOSE_SELL' : 'CLOSE_BUY',
-                        tradeAmount: result?.tradeAmount || '-',
-                        price: body?.price || '',
-                        pair: body?.pair || '',
-                    }),
-                };
-                fetch('https://api.brevo.com/v3/smtp/email', {
-                    method: 'post',
-                    body: JSON.stringify(emailBody),
-                    headers: {
-                        accept: 'application/json',
-                        // eslint-disable-next-line no-undef
-                        'api-key': process.env.BREVO_API_KEY,
-                        'content-type': 'application/json',
-                    },
-                });
-            }
+        // //------------------------------ SEND EMAIL ------------------------------  
+        // //------------------------------ SEND EMAIL ------------------------------
+        // resultPromise.map((x) => x?.value).map(async (result) => {
+        //     if (result?.responseCloseMarket?.status.type === 'panic_sell_pending') {
+        //         //send email
+        //         const emailBody = {
+        //             sender: {
+        //                 name: 'byScript.io',
+        //                 email: 'info@byscript.io',
+        //             },
+        //             to: [
+        //                 {
+        //                     email: result?.email || '',
+        //                     name: result?.name || '',
+        //                 },
+        //             ],
+        //             subject: `Trade Executed ${body?.pair || ''} - byScript`,
+        //             htmlContent: tradeExecutedTemplate({
+        //                 autotrader_name: result.id,
+        //                 exchange_thumbnail: result?.exchange_thumbnail || '',
+        //                 trading_plan_id: body?.trading_plan_id,
+        //                 signal_type: body?.type === 'sell' ? 'CLOSE_SELL' : 'CLOSE_BUY',
+        //                 tradeAmount: result?.tradeAmount || '-',
+        //                 price: body?.price || '',
+        //                 pair: body?.pair || '',
+        //             }),
+        //         };
+        //         fetch('https://api.brevo.com/v3/smtp/email', {
+        //             method: 'post',
+        //             body: JSON.stringify(emailBody),
+        //             headers: {
+        //                 accept: 'application/json',
+        //                 // eslint-disable-next-line no-undef
+        //                 'api-key': process.env.BREVO_API_KEY,
+        //                 'content-type': 'application/json',
+        //             },
+        //         });
+        //     }
 
-            if (result?.responseExecute?.status.type === 'created') {
-                //send email
-                const emailBody = {
-                    sender: {
-                        name: 'byScript.io',
-                        email: 'info@byscript.io',
-                    },
-                    to: [
-                        {
-                            email: result?.email || '',
-                            name: result?.name || '',
-                        },
-                    ],
-                    subject: `Trade Executed ${body?.pair || ''} - byScript`,
-                    htmlContent: tradeExecutedTemplate({
-                        autotrader_name: result.id,
-                        exchange_thumbnail: result?.exchange_thumbnail || '',
-                        trading_plan_id: body?.trading_plan_id,
-                        signal_type: body?.type === 'sell' ? 'SELL' : 'BUY',
-                        tradeAmount: result?.tradeAmount || '-',
-                        price: body?.price || '',
-                        pair: body?.pair || '',
-                    }),
-                };
-                fetch('https://api.brevo.com/v3/smtp/email', {
-                    method: 'post',
-                    body: JSON.stringify(emailBody),
-                    headers: {
-                        accept: 'application/json',
-                        // eslint-disable-next-line no-undef
-                        'api-key': process.env.BREVO_API_KEY,
-                        'content-type': 'application/json',
-                    },
-                });
-            }
-        }))
+        //     if (result?.responseExecute?.status.type === 'created') {
+        //         //send email
+        //         const emailBody = {
+        //             sender: {
+        //                 name: 'byScript.io',
+        //                 email: 'info@byscript.io',
+        //             },
+        //             to: [
+        //                 {
+        //                     email: result?.email || '',
+        //                     name: result?.name || '',
+        //                 },
+        //             ],
+        //             subject: `Trade Executed ${body?.pair || ''} - byScript`,
+        //             htmlContent: tradeExecutedTemplate({
+        //                 autotrader_name: result.id,
+        //                 exchange_thumbnail: result?.exchange_thumbnail || '',
+        //                 trading_plan_id: body?.trading_plan_id,
+        //                 signal_type: body?.type === 'sell' ? 'SELL' : 'BUY',
+        //                 tradeAmount: result?.tradeAmount || '-',
+        //                 price: body?.price || '',
+        //                 pair: body?.pair || '',
+        //             }),
+        //         };
+        //         fetch('https://api.brevo.com/v3/smtp/email', {
+        //             method: 'post',
+        //             body: JSON.stringify(emailBody),
+        //             headers: {
+        //                 accept: 'application/json',
+        //                 // eslint-disable-next-line no-undef
+        //                 'api-key': process.env.BREVO_API_KEY,
+        //                 'content-type': 'application/json',
+        //             },
+        //         });
+        //     }
+        // })
 
-        console.log(`returning successfully : {JSON.stringify(resultPromise)}: ${JSON.stringify(resultPromise)}`)
         console.log(`returning successfully : {JSON.stringify({
             status : true, message : 'signal received', result : resultPromise.map((x) => x?.value)})}: 
             ${JSON.stringify({
@@ -497,7 +370,7 @@ export async function POST(request) {
 
         })
     } catch (error) {
-        let body = await request.json();
+        const body = await request.json();
         console.log(error.message, 'error smart trade', JSON.stringify(body))
         return new Response(JSON.stringify({
             status: false,
@@ -507,6 +380,225 @@ export async function POST(request) {
             status: 500
         })
     }
+}
+
+async function getStmartTradeStatus(id) {
+    const totalParams = `/public/api/v2/smart_trades/${id}`;
+    const finalUrl = baseUrl + totalParams;
+    const signatureMessage = totalParams;
+    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+    const response = await fetch(finalUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            APIKEY: API_KEY,
+            Signature: signature,
+        }
+    });
+    const data = await response.json();
+    return {
+        status: data.status,
+        id
+    }
+}
+
+
+async function closePreviousTrade({
+    body,
+    bodySend,
+    autotrader,
+    webhookId
+}) {
+    let arr = [];
+    try {
+        const latestTradeHistory = await adminDb
+            .collection('3commas_logs')
+            .where('autotrader_id', '==', autotrader.id)
+            .where('pair', '==', body.pair)
+            .where('trading_plan_id', '==', body.trading_plan_id)
+            .orderBy('createdAt', 'desc')
+            .limit(1)
+            .get();
+        latestTradeHistory.forEach((doc) => {
+            arr.push({ ...doc.data(), id: doc.id });
+        })
+        //instead of fetching the firestore database, fetch from local file in this same directory, from "data"
+        // arr = mockDatabase.filter((item) => {
+        //     return item.pair === body.pair &&
+        //         item.trading_plan_id === body.trading_plan_id;
+        // }).sort((a, b) => {
+        //     return new Date(parseInt(b.createdAt)) - new Date(parseInt(a.createdAt));
+        // });
+    } catch (error) {
+        console.log(error.message, 'error finding latest trade history on 3commas_logs where same trading_plan_id and pair', JSON.stringify(body));
+        return null;
+    }
+
+    // 3. if the latest trade history is not closed, close first
+    // by close_at_market_price function
+    if (
+        arr.length > 0 &&
+        arr[0].status.type
+        !== 'panic_sell_pending' && arr[0].status.type !== 'panic_sold') {
+        // check status of the latest trade history
+        const { status } = await getStmartTradeStatus(arr[0].smart_trade_id);
+        console.log(status, arr[0].smart_trade_id, 'this is status weve longing for');
+        if (status?.type !== 'panic_sold') {
+
+            console.log(`found ${arr[0].smart_trade_id} trade, trying to close first`);
+            console.log(`trying to close trade ${arr[0].smart_trade_id}`)
+            // close at market price function here
+            // console.log(`trying to close trade ${arr[0].smart_trade_id}`)
+            const queryParamsCloseMarket = `/public/api/v2/smart_trades/${arr[0].smart_trade_id}/close_by_market`;
+            console.log(`queryParamsCloseMarket: ${queryParamsCloseMarket}`)
+            const finalUrlCloseMarket = baseUrl + queryParamsCloseMarket;
+            const signatureMessage = queryParamsCloseMarket;
+            const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+            const response2 = await fetch(finalUrlCloseMarket, {
+                method: 'POST',
+                // body: JSON.stringify({}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    APIKEY: API_KEY,
+                    Signature: signature,
+                }
+            });
+            const responseCloseMarket = await response2.json();
+            if (responseCloseMarket.error || responseCloseMarket.error_description) {
+                console.log('Failed to close trade', responseCloseMarket, JSON.stringify(body));
+                throw new Error('Failed to close trade');
+            }
+            const smart_trade_id = String(responseCloseMarket.id || '');
+            delete responseCloseMarket.id;
+            // this is for adding 3commas_logs
+            const sendDataTo3CommasLogs = {
+                ...responseCloseMarket,
+                name: autotrader?.name || '',
+                email: autotrader?.email || '',
+                uid: autotrader?.uid || '',
+                smart_trade_id,
+                autotrader_id: autotrader.id,
+                createdAt: new Date(),
+                exchange_external_id: autotrader?.exchange_external_id || '',
+                exchange_name: autotrader?.exchange_name || '',
+                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                type: 'autotrade',
+                trading_plan_id: body.trading_plan_id,
+                action: `CLOSE_${arr[0].action}`,
+                pair: body.pair,
+                previousBuyId: arr[0]?.id || '',
+                smart_trade: true,
+                requestBody: JSON.stringify(bodySend),
+                webhookId
+            }
+            const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
+            console.log(updateTradeAmount, 'updateTradeAmount')
+            if (!isNaN(updateTradeAmount)) {
+                bodySend.position.units.value = String(updateTradeAmount);
+                sendDataTo3CommasLogs.updatedBalance = updateTradeAmount;
+
+                // update tradeAmount without waiting
+                adminDb
+                    .collection('dca_bots')
+                    .doc(autotrader.id)
+                    .update({
+                        tradeAmount: updateTradeAmount
+                    }).catch((error) => {
+                        console.log(error.message, `error updating autotrader tradeAmount for smart_trade_id ${smart_trade_id}`, JSON.stringify(body));
+                    });
+            }
+            delete responseCloseMarket.pair;
+            adminDb.collection('3commas_logs').add(sendDataTo3CommasLogs);
+
+            return { ...responseCloseMarket, smart_trade_id, updateTradeAmount: !isNaN(updateTradeAmount) ? updateTradeAmount : null };
+        }
+        // create a timeout for 10 seconds and add console.log to indicate it's waiting
+        // console.log('waiting for 10 seconds')
+        // await new Promise(resolve => setTimeout(resolve, 5000));
+    } else {
+        console.log('latest trade for this is not found', arr, JSON.stringify(body));
+        return null;
+    }
+}
+
+
+async function executeNewTrade({
+    bodySend,
+    body,
+    nonce,
+    updateTradeAmount,
+    autotrader,
+    webhookId,
+}) {
+    const queryParams = `/public/api/v2/smart_trades`;
+    const finalUrl = baseUrl + queryParams;
+    const signatureMessage = queryParams + JSON.stringify(bodySend);
+    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+    console.log(`executinggggggggg ${JSON.stringify(bodySend)}`)
+    const updatedBodySend = {
+        ...bodySend,
+        position: {
+            ...bodySend.position,
+            units: {
+                value: updateTradeAmount ? String(updateTradeAmount) : bodySend.position.units.value // check if the previous trade updates the tradeAmount, otherwise use the original tradeAmount
+            }
+        }
+    }
+    const response2 = await fetch(finalUrl, {
+        method: 'POST',
+        body: JSON.stringify(updatedBodySend),
+        headers: {
+            'Content-Type': 'application/json',
+            APIKEY: API_KEY,
+            Signature: signature,
+        }
+    });
+    const responseExecute = await response2.json();
+    // result of execute smart trade, update to 3commas_logs
+    // if error, return error and console log
+    if (responseExecute.error || responseExecute.error_description) {
+        console.log('Failed to execute smart trade', responseExecute);
+        if (nonce <= MAX_EXECUTION_RETRIES) {
+            console.log('retrying execute smart trade', nonce);
+            return await executeNewTrade({
+                bodySend,
+                body,
+                nonce: nonce + 1,
+                updateTradeAmount,
+                webhookId
+            }); // retry MAX_EXECUTION_RETRIES times
+        }
+        return {
+            error: responseExecute.error + ', ' + responseExecute.error_description,
+            error_attributes: responseExecute.error_attributes
+        }
+    }
+    const smart_trade_id = String(responseExecute.id || '');
+    delete responseExecute.id;
+    delete responseExecute.pair;
+
+    // save to 3commas_logs without waiting for it to finish
+    adminDb
+        .collection('3commas_logs')
+        .add({
+            ...responseExecute,
+            name: autotrader?.name || '',
+            email: autotrader?.email || '',
+            uid: autotrader?.uid || '',
+            exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+            exchange_name: autotrader?.exchange_name || '',
+            exchange_external_id: autotrader?.exchange_external_id || '',
+            smart_trade_id,
+            autotrader_id: autotrader.id,
+            createdAt: new Date(),
+            trading_plan_id: body.trading_plan_id,
+            action: body.type === 'sell' ? 'SELL' : 'BUY',
+            type: 'autotrade',
+            pair: body.pair,
+            smart_trade: true,
+            requestId: bodySend,
+        })
+    return { ...responseExecute, smart_trade_id };
 }
 
 
