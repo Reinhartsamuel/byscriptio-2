@@ -5,39 +5,43 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 export default function useStartStopAction({ setLoading, detail, setDetail }) {
   const { userPackage } = useUserStore();
-  const { autotraders, getAutotraders } = useAutotraderStore();
+  const {
+    autotraders,
+    //  getAutotraders 
+  } = useAutotraderStore();
 
   async function handleStartStop(action) {
+    setLoading(true);
     try {
-      if (action ==='stop') {
+      if (action === 'stop') {
         // detail.status has to be 'ACTIVE'
-        if (detail?.status !=='ACTIVE') {
+        if (detail?.status !== 'ACTIVE') {
           return Swal.fire({
             icon: 'warning',
             title: `Bot is not active`,
             text: `Bot status is ${detail?.status}`,
           })
-        } 
+        }
 
         // check latest 3commas_logs
         const latestLogs = await getCollectionFirebase(
           '3commas_logs',
-          [{field : 'autotrader_id', operator: '==', value: detail?.id}],
-          {field : 'createdAt', direction : 'desc'},
+          [{ field: 'autotrader_id', operator: '==', value: detail?.id }],
+          { field: 'createdAt', direction: 'desc' },
           1
         );
         // console.log('latestLogs:::::::', latestLogs);
         if (latestLogs.length > 0) {
           // check the smart trade entity
           const res = await fetch(`/api/signal/smart-trade/get?id=${latestLogs[0]?.smart_trade_id}`);
-          const {data, error} = await res.json();
+          const { data, error } = await res.json();
           // console.log('resData:::::::', data);
           if (error) {
             // console.log('error:::::::', error);
             throw new Error(error);
           }
 
-          if (String(data?.status?.type)?.toLower !=='finished') {
+          if (String(data?.status?.type)?.toLower !== 'finished') {
             // smart trade has to be panic_sold
             const res2 = await fetch(`/api/3commas/smart-trade/execute/close-at-market-price-test`, {
               method: 'POST',
@@ -48,9 +52,12 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
                 'Content-Type': 'application/json',
               },
             });
-            // const result2 = 
-            await res2.json();
+            // const result2 =
+              await res2.json();
             // console.log('result2:::::::', result2);
+            // if (result2?.status?.type !== '') {
+            //   //
+            // }
             // perform close at market price
 
           }
@@ -61,22 +68,22 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
           })
 
           Swal.fire({
-            icon:'success',
+            icon: 'success',
             title: `${action} bot success`,
             showConfirmButton: true,
             confirmButtonText: 'Close',
           }).then(() => {
-            window.location.reload();
-            getAutotraders();
+            // window.location.reload();
+            // getAutotraders();
           })
-        } 
-          setDetail({
-            ...detail,
-            status: action === 'STOPPED',
-          });
-      } else if (action ==='start') {
+        }
+        setDetail({
+          ...detail,
+          status: 'STOPPED',
+        });
+      } else if (action === 'start') {
         // detail.status must not be 'ACTIVE'
-        if (detail?.status==='ACTIVE') {
+        if (detail?.status === 'ACTIVE') {
           return Swal.fire({
             icon: 'warning',
             title: `Bot is already active`,
@@ -88,7 +95,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
 
         // get active autotraders
         const activeAutotrader = autotraders?.filter((autotrader) => autotrader?.status === 'ACTIVE');
-  
+
         // determine if limit reached
         const limitReached = activeAutotrader?.length >= productDataFromUserPackage?.autotraders;
         if (limitReached) {
@@ -103,7 +110,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
         })
         setDetail({
           ...detail,
-          status: action === 'ACTIVE',
+          status: 'ACTIVE',
         });
         Swal.fire({
           icon: 'success',
@@ -111,7 +118,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
           showConfirmButton: true,
           confirmButtonText: 'Close',
         }).then(() => {
-          window.location.reload();
+          // window.location.reload();
         })
         return setLoading(false);
       } else {
@@ -129,55 +136,55 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
 
 
 
-    //   setLoading(true);
-    //   if (detail?.smart_trade === true) {
- 
-    //   } else {
-    //     const body = {
-    //       action,
-    //       bot_id: detail.bot_id,
-    //     };
-    //     const result = await fetch('/api/3commas/bot-activation', {
-    //       method: 'POST',
-    //       body: JSON.stringify(body),
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
-    //     const res = await result.json();
-    //     if (result.status === 200 || res.status === 'success') {
-    //       // console.log('id bot:::::::', detail?.id);
-    //       await updateDocumentFirebase('dca_bots', detail?.id, {
-    //         status:
-    //           action === 'start'
-    //             ? 'ACTIVE'
-    //             : action === 'stop'
-    //               ? 'STOPPED'
-    //               : 'invalid status',
-    //       });
-    //       Swal.fire({
-    //         icon: 'success',
-    //         title: `${action} bot success`,
-    //         showConfirmButton: true,
-    //         confirmButtonText: 'Close',
+      //   setLoading(true);
+      //   if (detail?.smart_trade === true) {
 
-    //       }).then(() => {
-    //         window.location.reload();
-    //       })
-    //       setDetail({
-    //         ...detail,
-    //         status: action === 'start' ? 'ACTIVE' : 'STOPPED',
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Update bot failed',
-    //         text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
-    //       });
-    //     }
-    //   }
+      //   } else {
+      //     const body = {
+      //       action,
+      //       bot_id: detail.bot_id,
+      //     };
+      //     const result = await fetch('/api/3commas/bot-activation', {
+      //       method: 'POST',
+      //       body: JSON.stringify(body),
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     });
+      //     const res = await result.json();
+      //     if (result.status === 200 || res.status === 'success') {
+      //       // console.log('id bot:::::::', detail?.id);
+      //       await updateDocumentFirebase('dca_bots', detail?.id, {
+      //         status:
+      //           action === 'start'
+      //             ? 'ACTIVE'
+      //             : action === 'stop'
+      //               ? 'STOPPED'
+      //               : 'invalid status',
+      //       });
+      //       Swal.fire({
+      //         icon: 'success',
+      //         title: `${action} bot success`,
+      //         showConfirmButton: true,
+      //         confirmButtonText: 'Close',
 
-    //   getAutotraders();
+      //       }).then(() => {
+      //         window.location.reload();
+      //       })
+      //       setDetail({
+      //         ...detail,
+      //         status: action === 'start' ? 'ACTIVE' : 'STOPPED',
+      //       });
+      //     } else {
+      //       Swal.fire({
+      //         icon: 'warning',
+      //         title: 'Update bot failed',
+      //         text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
+      //       });
+      //     }
+      //   }
+
+      // getAutotraders();
     } catch (error) {
       Swal.fire({
         icon: 'error',
