@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 
 import Spinner from '@/app/components/ui/Spinner';
@@ -27,6 +27,18 @@ const TradeHistoryTable = (props) => {
     dependencies: [conditions]
   })
 
+  useEffect(() => {
+    async function getDetails () {
+      const promises = data?.length > 0 &&
+      data.map(async (trade) => {
+        const res = await fetch(`/api/signal/smart-trade/get?id=${trade.smart_trade_id}`)
+        return await res.json()
+      })
+      const results = await Promise.all(promises);
+      console.log(results,'results from getDetails to 3commas API')
+    };
+    getDetails();
+  },[data.length])
   if (loading)
     return (
       <div className='w-full flex justify-center items-center'>
@@ -60,9 +72,9 @@ const TradeHistoryTable = (props) => {
                 <th scope='col' className='px-2 py-1 text-xs'>
                   Autotrader
                 </th>
-                <th scope='col' className='px-2 py-1 text-xs'>
+                {/* <th scope='col' className='px-2 py-1 text-xs'>
                   Bot Id
-                </th>
+                </th> */}
                 <th scope='col' className='px-2 py-1 text-xs'>
                   PnL ($)
                 </th>
@@ -148,7 +160,6 @@ const TradeHistoryTable = (props) => {
                       </div>
                     </td>
                     <td>{x?.autotrader_name || x?.autotrader_id}</td>
-                    <td>{x?.bot_id || '-'}</td>
                     <td>
                       <p
                         className={`

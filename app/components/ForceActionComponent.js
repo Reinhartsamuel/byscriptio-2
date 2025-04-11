@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useForceAction from '../hooks/forceActionHook';
 import Spinner from './ui/Spinner';
 import { IoEnter, IoExit } from 'react-icons/io5';
 import { cn } from '@/lib/util';
 import PropTypes from 'prop-types'; // ES6
+import { IoMdCloseCircleOutline } from 'react-icons/io';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { getCollectionFirebase } from '../utils/firebaseApi';
 
 export default function ForceActionComponent({ detail }) {
   const [loading, setLoading] = useState(false);
@@ -14,9 +17,47 @@ export default function ForceActionComponent({ detail }) {
     pair: selectedPair,
   });
 
-  useEffect(() => {
-    setSelectedPair('');
-  }, []);
+  async function closeAtMarketPrice() {
+    try {
+      setLoading(true);
+      const findLatestTrade = await getCollectionFirebase(
+        '3commas_logs',
+        [
+          { field: 'autotrader_id', operator: '==', value: detail.id }
+        ],
+        { field: 'createdAt', direction: 'desc' },
+        1
+      );
+
+      const res = await fetch(`/api/signal/smart-trade/get?id=${findLatestTrade[0].smart_trade_id}`);
+      const { data: latestTradeDetail, error } = await res.json();
+      if (error) {
+        console.log(error, 'error finding latestTradeDetiail')
+      }
+      console.log(latestTradeDetail, 'latestTradeDetail');
+      if (latestTradeDetail?.status?.type === 'waiting_targets') {
+        // close trade here
+        const close = await fetch('/api/3commas/smart-trade/execute/close-at-market-price-test',{
+          method : 'POST',
+          body : JSON.stringify({
+            id : latestTradeDetail.id
+          })
+        });
+        const resultClose = await close.json();
+        console.log(resultClose);
+      } else {
+        Swal.fire({
+          title: 'Cannot close trade',
+          text: `Trade ${latestTradeDetail.id} is of status ${latestTradeDetail?.status?.type}`,
+          icon: 'error',
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className='rounded-lg dark:bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
@@ -52,6 +93,21 @@ export default function ForceActionComponent({ detail }) {
 
       <div className='flex flex-row gap-2 justify-between'>
         <button
+          onClick={closeAtMarketPrice}
+          className={cn(
+            'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200 cursor-pointer bg-gray-600 hover:bg-gray-700 active:bg-gray-500'
+          )}
+        >
+          {loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <IoMdCloseCircleOutline />
+              <p className='whitespace-nowrap'>Close at market price</p>
+            </>
+          )}
+        </button>
+        <button
           onClick={() => handleForce('entry')}
           disabled={detail?.status !== 'ACTIVE'}
           className={cn(
@@ -66,7 +122,7 @@ export default function ForceActionComponent({ detail }) {
           ) : (
             <>
               <IoEnter />
-              <p className='whitespace-nowrap'>Force Entry</p>
+              <p className='whitespace-nowrap'>Force Buy</p>
             </>
           )}
         </button>
@@ -85,7 +141,7 @@ export default function ForceActionComponent({ detail }) {
           ) : (
             <>
               <IoExit />
-              <p className='whitespace-nowrap'>Force Exit</p>
+              <p className='whitespace-nowrap'>Force Sell</p>
             </>
           )}
         </button>

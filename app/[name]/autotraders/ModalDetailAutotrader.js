@@ -198,9 +198,9 @@ export default function ModalDetailAutotrader({
         <TradeHistoryTable
           conditions={[
             {
-              field: 'bot_id',
+              field: 'autotrader_id',
               operator: '==',
-              value: String(detail?.bot_id) || null,
+              value: String(detail.id) || null,
             },
           ]}
         />
