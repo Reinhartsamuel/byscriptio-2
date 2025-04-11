@@ -8,8 +8,29 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
   const { userPackage } = useUserStore();
   const {
     autotraders,
-     getAutotraders 
+    getAutotraders
   } = useAutotraderStore();
+
+  async function updateStatus(action) {
+    // update dca_bots
+    await updateDocumentFirebase('dca_bots', detail?.id, {
+      status: action === 'start' ? 'ACTIVE' : 'STOPPED'
+    })
+    setDetail({
+      ...detail,
+      status:action === 'start' ? 'ACTIVE' : 'STOPPED'
+    });
+
+    Swal.fire({
+      icon: 'success',
+      title: `${action} bot success`,
+      showConfirmButton: true,
+      confirmButtonText: 'Close',
+    }).then(() => {
+      // window.location.reload();
+      getAutotraders(authFirebase.currentUser?.email);
+    })
+  }
 
   async function handleStartStop(action) {
     setLoading(true);
@@ -54,7 +75,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
               },
             });
             // const result2 =
-              await res2.json();
+            await res2.json();
             // console.log('result2:::::::', result2);
             // if (result2?.status?.type !== '') {
             //   //
@@ -62,26 +83,10 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
             // perform close at market price
 
           }
-
-          // update dca_bots
-          await updateDocumentFirebase('dca_bots', detail?.id, {
-            status: 'STOPPED'
-          })
-
-          Swal.fire({
-            icon: 'success',
-            title: `${action} bot success`,
-            showConfirmButton: true,
-            confirmButtonText: 'Close',
-          }).then(() => {
-            // window.location.reload();
-            getAutotraders(authFirebase.currentUser?.email);
-          })
+          await updateStatus(action);
+        } else {
+          await updateStatus(action);
         }
-        setDetail({
-          ...detail,
-          status: 'STOPPED',
-        });
       } else if (action === 'start') {
         // detail.status must not be 'ACTIVE'
         if (detail?.status === 'ACTIVE') {
@@ -109,20 +114,8 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
         await updateDocumentFirebase('dca_bots', detail?.id, {
           status: 'ACTIVE'
         })
-        setDetail({
-          ...detail,
-          status: 'ACTIVE',
-        });
-        Swal.fire({
-          icon: 'success',
-          title: `${action} bot success`,
-          showConfirmButton: true,
-          confirmButtonText: 'Close',
-        }).then(() => {
-          // window.location.reload();
-          getAutotraders(authFirebase.currentUser?.email);
-        })
-        return setLoading(false);
+        await updateStatus(action);
+        return;
       } else {
         return Swal.fire({
           icon: 'warning',
@@ -130,63 +123,6 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
           text: `Action must be start or stop`,
         })
       }
-
-
-
-
-
-
-
-
-      //   setLoading(true);
-      //   if (detail?.smart_trade === true) {
-
-      //   } else {
-      //     const body = {
-      //       action,
-      //       bot_id: detail.bot_id,
-      //     };
-      //     const result = await fetch('/api/3commas/bot-activation', {
-      //       method: 'POST',
-      //       body: JSON.stringify(body),
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //       },
-      //     });
-      //     const res = await result.json();
-      //     if (result.status === 200 || res.status === 'success') {
-      //       // console.log('id bot:::::::', detail?.id);
-      //       await updateDocumentFirebase('dca_bots', detail?.id, {
-      //         status:
-      //           action === 'start'
-      //             ? 'ACTIVE'
-      //             : action === 'stop'
-      //               ? 'STOPPED'
-      //               : 'invalid status',
-      //       });
-      //       Swal.fire({
-      //         icon: 'success',
-      //         title: `${action} bot success`,
-      //         showConfirmButton: true,
-      //         confirmButtonText: 'Close',
-
-      //       }).then(() => {
-      //         window.location.reload();
-      //       })
-      //       setDetail({
-      //         ...detail,
-      //         status: action === 'start' ? 'ACTIVE' : 'STOPPED',
-      //       });
-      //     } else {
-      //       Swal.fire({
-      //         icon: 'warning',
-      //         title: 'Update bot failed',
-      //         text: `status code : ${res.status || 'unknown'}. ${res?.error || res?.data?.error}`,
-      //       });
-      //     }
-      //   }
-
-      // getAutotraders(user.email);
     } catch (error) {
       Swal.fire({
         icon: 'error',

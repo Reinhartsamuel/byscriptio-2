@@ -27,7 +27,7 @@ export const useExchangeStore = create((set) => ({
     const map2 = new Map(filteredDetailsFrom3commas.map(item => [item.id, item]));
     const merged = data.map(item => {
       const match = map2.get(item.external_id);
-      return match ? { ...item, ...match } : item;
+      return match ? { ...match, ...item,  } : item;
     });
 
     set({exchanges_accounts : merged})
