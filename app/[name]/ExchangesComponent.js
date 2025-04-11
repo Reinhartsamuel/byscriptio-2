@@ -22,8 +22,7 @@ const ExchangesComponent = () => {
   const [initialLoad, setInitialLoad] = useState(true);
 
   const {
-    data: exchange_accounts,
-    // loading,
+
     error,
   } = useFetchData({
     collectionName: 'exchange_accounts',
@@ -58,7 +57,6 @@ const ExchangesComponent = () => {
     );
 
     useEffect(() => {
-      console.log(`count: ${count}`)
       if (initialLoad) {
         setInitialLoad(false);
         return;
@@ -88,7 +86,7 @@ const ExchangesComponent = () => {
         <p className='text-[0.75rem] font-light text-slate-800 dark:text-slate-200 mb-4'>
           {count || 0} connected exchange accounts
         </p>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+        <div className='grid grid-cols-1 gap-2'>
           {exhcnagesFromStore.map(
             (
               exchange,

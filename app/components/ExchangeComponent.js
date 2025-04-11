@@ -63,7 +63,10 @@ const ExchangeComponent = ({ exchange }) => {
   }, [])
   return (
     <>
-      <div onClick={() => setShowModal(true)} className='flex flex-col justify-between gap-2 cursor-pointer max-w-sm p-4 border rounded-lg shadow bg-gray-900 border-gray-700 max-h-[6rem] hover:scale-105 transition ease-in-out 1s active:scale-95'>
+      <div onClick={() => {
+        setShowModal(true)
+        console.log(exchange, 'exchange')
+      }} className='flex flex-col justify-between gap-2 cursor-pointer w-full p-4 border rounded-lg shadow bg-gray-900 border-gray-700 max-h-[6rem] hover:scale-105 transition ease-in-out 1s active:scale-95'>
         <div className='flex w-full justify-between'>
           <div className='flex w-full justify-between'>
             <div className='flex gap-2'>
@@ -77,7 +80,7 @@ const ExchangeComponent = ({ exchange }) => {
               </span>
             </div>
             <p className='text-gray-600 dark:text-gray-400 text-sm justify-end'>
-              {exchange?.external_id}
+              {exchange?.id}
             </p>
           </div>
 
@@ -86,10 +89,14 @@ const ExchangeComponent = ({ exchange }) => {
           </p>
         </div>
         <div className='flex w-full justify-between'>
-          <p className={cn('text-sm', exchange?.status === 'REQUESTED' ? 'text-orange-500' : 'text-green-200')}>{exchange?.status === 'REQUESTED' ? 'Requested' : 'connected'}</p>
-          <p className='text-gray-200 text-sm'>
-            {moment.unix(exchange?.createdAt?.seconds).fromNow()}
+          <p className={cn('text-xs', exchange?.status === 'REQUESTED' ? 'text-orange-500' : 'text-green-200')}>{exchange?.status === 'REQUESTED' ? 'Requested' : 'connected'}{'  '}
+
+
+            <span className='text-gray-200 text-xs'>{moment.unix(exchange?.createdAt?.seconds).fromNow()}</span>
           </p>
+         {exchange?.usd_amount &&  <p className='text-gray-200 text-sm'>
+            USD {parseInt(exchange?.usd_amount)?.toFixed(2)}
+          </p>}
         </div>
         {/* {exchange_accounts?.some(
       (x) => x?.exchange_name === exchange.exchange_name

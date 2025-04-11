@@ -35,7 +35,7 @@ const TradeHistoryTable = (props) => {
         return await res.json()
       })
       const results = await Promise.all(promises);
-      console.log(results,'results from getDetails to 3commas API')
+      // console.log(results,'results from getDetails to 3commas API')
     };
     if (data?.length > 0) getDetails();
   },[data.length])

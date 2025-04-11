@@ -51,7 +51,7 @@ export async function POST(request) {
     }
     return new Response(JSON.stringify({
         status: true,
-        data : data.filter(x => x.pair ==='USDT_ADAUSDT')
+        data : data
     }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
