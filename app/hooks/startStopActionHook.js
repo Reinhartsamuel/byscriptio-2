@@ -1,3 +1,4 @@
+import { authFirebase } from '../config/firebase';
 import { useAutotraderStore } from '../store/autotraderStore';
 import { useUserStore } from '../store/userStore';
 import { getCollectionFirebase, getSingleDocumentFirebase, updateDocumentFirebase } from '../utils/firebaseApi';
@@ -7,7 +8,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
   const { userPackage } = useUserStore();
   const {
     autotraders,
-    //  getAutotraders 
+     getAutotraders 
   } = useAutotraderStore();
 
   async function handleStartStop(action) {
@@ -74,7 +75,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
             confirmButtonText: 'Close',
           }).then(() => {
             // window.location.reload();
-            // getAutotraders();
+            getAutotraders(authFirebase.currentUser?.email);
           })
         }
         setDetail({
@@ -119,6 +120,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
           confirmButtonText: 'Close',
         }).then(() => {
           // window.location.reload();
+          getAutotraders(authFirebase.currentUser?.email);
         })
         return setLoading(false);
       } else {
@@ -184,7 +186,7 @@ export default function useStartStopAction({ setLoading, detail, setDetail }) {
       //     }
       //   }
 
-      // getAutotraders();
+      // getAutotraders(user.email);
     } catch (error) {
       Swal.fire({
         icon: 'error',

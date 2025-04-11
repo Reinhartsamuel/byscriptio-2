@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useForceAction from '../hooks/forceActionHook';
+// import useForceAction from '../hooks/forceActionHook';
 import Spinner from './ui/Spinner';
 import { IoEnter, IoExit } from 'react-icons/io5';
 import { cn } from '@/lib/util';
@@ -11,11 +11,11 @@ import { getCollectionFirebase } from '../utils/firebaseApi';
 export default function ForceActionComponent({ detail }) {
   const [loading, setLoading] = useState(false);
   const [selectedPair, setSelectedPair] = useState('');
-  const { handleForce } = useForceAction({
-    detail,
-    setLoading,
-    pair: selectedPair,
-  });
+  // const { handleForce } = useForceAction({
+  //   detail,
+  //   setLoading,
+  //   pair: selectedPair,
+  // });
 
   async function closeAtMarketPrice() {
     try {
@@ -35,12 +35,13 @@ export default function ForceActionComponent({ detail }) {
         console.log(error, 'error finding latestTradeDetiail')
       }
       console.log(latestTradeDetail, 'latestTradeDetail');
-      if (latestTradeDetail?.status?.type === 'waiting_targets') {
+      if (error) throw new Error(error)
+      if (latestTradeDetail?.status?.type === 'waiting_targets' && latestTradeDetail?.id) {
         // close trade here
         const close = await fetch('/api/3commas/smart-trade/execute/close-at-market-price-test',{
           method : 'POST',
           body : JSON.stringify({
-            id : latestTradeDetail.id
+            id : latestTradeDetail?.id
           })
         });
         const resultClose = await close.json();
@@ -48,14 +49,36 @@ export default function ForceActionComponent({ detail }) {
       } else {
         Swal.fire({
           title: 'Cannot close trade',
-          text: `Trade ${latestTradeDetail.id} is of status ${latestTradeDetail?.status?.type}`,
-          icon: 'error',
+          text: `There is no trade to close`,
+          icon: 'warning',
         })
       }
     } catch (error) {
       console.log(error)
+      Swal.fire({
+        title: 'Cannot close trade',
+        text: error.message,
+        icon: 'error',
+      })
     } finally {
       setLoading(false);
+    }
+  }
+
+
+  async function forceEntry (type) {
+    try {
+      console.log(type, 'type');
+      Swal.fire({
+        icon : 'info',
+        title : 'Coming soon'
+      })
+    } catch (error) {
+      Swal.fire({
+        title: `Error force ${type}`,
+        text: error.message,
+        icon: 'error',
+      })
     }
   }
 
@@ -108,7 +131,7 @@ export default function ForceActionComponent({ detail }) {
           )}
         </button>
         <button
-          onClick={() => handleForce('entry')}
+          onClick={() => forceEntry('buy')}
           disabled={detail?.status !== 'ACTIVE'}
           className={cn(
             'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200',
@@ -127,7 +150,7 @@ export default function ForceActionComponent({ detail }) {
           )}
         </button>
         <button
-          onClick={() => handleForce('exit')}
+          onClick={() => forceEntry('sell')}
           disabled={detail?.status !== 'ACTIVE'}
           className={cn(
             'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200',
