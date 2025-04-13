@@ -5,74 +5,33 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import { RiRobot2Fill } from 'react-icons/ri';
 import PairImageComponent from './ui/PairImageComponent';
-import { countDocumentsFirebase, getCollectionFirebase } from '@/app/utils/firebaseApi';
-
-
-async function getActiveTrades(botData) {
-    const resultPromise = await Promise.allSettled(
-        botData.trading_plan_pair?.map(async (pair) => {
-            // console.log(pair.split('_')[1], " pair.split('_')[1]")
-            // search for history of trades in 3commas_logs 
-            return await countDocumentsFirebase('3commas_logs', [
-                {
-                    field: 'bot_id',
-                    operator: '==',
-                    value: String(botData.bot_id)
-                },
-                {
-                    field: 'pair',
-                    operator: '==',
-                    value: pair.split('_')[1] + '_' + pair.split('_')[2]
-                },
-            ])
-        })
-    )
-    // console.log(resultPromise, 'resultPromise')
-    // console.log(botData.trading_plan_pair.length,'botData.trading_plan_pair.length')
-    return {
-        pairLength: botData.trading_plan_pair.length,
-        hasHistoryTrades: resultPromise.filter((x) => x.value > 0).length,
-        waitingForBuyTrades: resultPromise.filter((x) => x.value === 0).length
-    }
-}
-
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 
 const AutotraderCard = ({ data, handleDetail }) => {
     const [hasActiveTrades, setHasActiveTrades] = useState(false);
-    const [activeTrades, setActiveTrades] = useState({
-        pairLength: 0,
-        hasHistoryTrades: 0,
-        waitingForBuyTrades: 0
-    });
-
     useEffect(() => {
         const checkActiveTrades = async () => {
-            if (data?.status === 'ACTIVE' && data?.bot_id) {
+            if (data?.status === 'ACTIVE') {
                 try {
                     const trades = await getCollectionFirebase('3commas_logs', [
                         {
-                            field: 'bot_id',
+                            field: 'autotrader_id',
                             operator: '==',
-                            value: String(data.bot_id)
+                            value: data.id
                         }
                     ],
-                    {field : 'createdAt', direction : 'desc'},
-                    1
-                );
-                // console.log(trades, 'checktrades')
+                        { field: 'createdAt', direction: 'desc' },
+                        1
+                    );
+                    // console.log(trades, 'checktrades')
                     setHasActiveTrades(trades.length > 0);
                 } catch (error) {
                     console.error('Error checking active trades:', error);
                 }
-
-                const checkActiveTrades = await getActiveTrades(data);
-                // console.log(checkActiveTrades, 'checkActiveTrades')
-                setActiveTrades(checkActiveTrades);
             }
         };
-
         checkActiveTrades();
-    }, [data?.bot_id, data?.status]);
+    }, [data?.status]);
 
     return (
         <div
@@ -146,12 +105,9 @@ const AutotraderCard = ({ data, handleDetail }) => {
             </div>
             <div className='mt-0'>
                 {data?.status === 'ACTIVE' && !hasActiveTrades && (
-                    <div className='flex gap-1 items-center'>
-                        <p className='text-orange-300 font-thin text-sm italic text-center'>
-                            Waiting for BUY signal
-                        </p> 
-                        <p className='text-green-600 text-center'>{activeTrades.hasHistoryTrades}/{activeTrades.pairLength}</p>
-                    </div>
+                    <p className='text-orange-300 font-thin text-sm italic text-center'>
+                        Waiting for BUY signal
+                    </p>
                 )}
                 {data?.status === 'STOPPED' && (
                     <p className='text-orange-300 font-thin text-sm italic text-center'>

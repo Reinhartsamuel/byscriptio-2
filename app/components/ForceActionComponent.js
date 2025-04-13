@@ -10,13 +10,6 @@ import { getCollectionFirebase } from '../utils/firebaseApi';
 
 export default function ForceActionComponent({ detail }) {
   const [loading, setLoading] = useState(false);
-  const [selectedPair, setSelectedPair] = useState('');
-  // const { handleForce } = useForceAction({
-  //   detail,
-  //   setLoading,
-  //   pair: selectedPair,
-  // });
-
   async function closeAtMarketPrice() {
     try {
       setLoading(true);
@@ -66,54 +59,37 @@ export default function ForceActionComponent({ detail }) {
   }
 
 
-  async function forceEntry (type) {
+  async function forceEntry (action) {
+    setLoading(true);
     try {
-      console.log(type, 'type');
+      const body = {
+        autotrader_id : detail?.id,
+        action : action
+      }
+      const res = await fetch('/api/3commas/smart-trade/force-action',{
+        method : 'POST',
+        body : JSON.stringify(body)
+      })
+      const {data,error} = await res.json();
+      if (error) throw new Error(error);
       Swal.fire({
-        icon : 'info',
-        title : 'Coming soon'
+        icon : 'success',
+        title : `Force ${action} success with id : ${data?.id || data?.data?.id}`,
       })
     } catch (error) {
       Swal.fire({
-        title: `Error force ${type}`,
+        title: `Error force ${action}`,
         text: error.message,
         icon: 'error',
       })
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className='rounded-lg dark:bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
       <h1 className='text-gray-700 dark:text-gray-200'>Force Entry / Exit</h1>
-      <div className='flex flex-col gap-0'>
-        {
-          [
-            ...new Set(
-              detail?.trading_plan_pair?.map((k) =>
-                k?.split('_')?.slice(1)?.join('_')
-              )
-            ),
-          ].map((j, i) => (
-            <div
-              className='flex items-center mb-4 cursor-pointer'
-              key={i}
-              onClick={() => setSelectedPair(j)}
-            >
-              <input
-                type='radio'
-                checked={selectedPair === j}
-                readOnly
-                value={j}
-                className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              />
-              <p className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'>
-                {j}
-              </p>
-            </div>
-          ))
-        }
-      </div>
-
       <div className='flex flex-row gap-2 justify-between'>
         <button
           onClick={closeAtMarketPrice}
