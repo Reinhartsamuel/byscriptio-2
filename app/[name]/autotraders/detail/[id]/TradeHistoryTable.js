@@ -91,33 +91,9 @@ const TradeHistoryTable = (props) => {
             </thead>
             <tbody>
               {data?.map((x, i) => {
-                const action = () => {
-                  if (x?.type === 'autotrade') {
-                    return x?.requestBody &&
-                      JSON.parse(x?.requestBody)?.action ===
-                      'close_at_market_price'
-                      ? 'SELL'
-                      : x?.action === 'SELL' ? 'SELL' :
-                      x?.action === 'BUY' ? 'BUY' : 'BUY';
-                  } else if (x?.type === 'force_entry') {
-                    return 'FORCE BUY';
-                  } else if (x?.type === 'force_exit') {
-                    return 'FORCE SELL';
-                  }
-                };
                 const actionColor = () => {
-                  if (x?.type === 'autotrade') {
-                    return x?.requestBody &&
-                    JSON.parse(x?.requestBody)?.action ===
-                    'close_at_market_price'
-                    ? 'text-red-600'
-                    : x?.action === 'SELL' ? 'text-red-600' :
-                    x?.action === 'BUY' ? 'text-green-600' : 'text-green-600';
-                  } else if (x?.type === 'force_entry') {
-                    return 'text-green-600';
-                  } else if (x?.type === 'force_exit') {
-                    return 'text-red-600';
-                  }
+                  if (x?.action === 'BUY' || x?.action === 'FORCE_BUY') return 'text-green-600';
+                  if (x?.action === 'SELL' || x?.action === 'FORCE_SELL') return 'text-red-600';
                 };
                 return (
                   <tr
@@ -140,7 +116,7 @@ const TradeHistoryTable = (props) => {
                       <p
                         className={`text-center text-md font-bold ${actionColor()}`}
                       >
-                        {action()}
+                        {x?.action}
                       </p>
                     </td>
                     <td className='px-2 py-1 text-xs'>

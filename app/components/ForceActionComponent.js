@@ -6,7 +6,7 @@ import { cn } from '@/lib/util';
 import PropTypes from 'prop-types'; // ES6
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { getCollectionFirebase } from '../utils/firebaseApi';
+import { addDocumentFirebase, getCollectionFirebase } from '../utils/firebaseApi';
 
 export default function ForceActionComponent({ detail }) {
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,14 @@ export default function ForceActionComponent({ detail }) {
         { field: 'createdAt', direction: 'desc' },
         1
       );
+      if (findLatestTrade?.length === 0) {
+        Swal.fire({
+          title: 'Cannot close trade',
+          text: `There is no trade to close`,
+          icon: 'warning',
+        })
+        return;
+      }
 
       const res = await fetch(`/api/signal/smart-trade/get?id=${findLatestTrade[0].smart_trade_id}`);
       const { data: latestTradeDetail, error } = await res.json();
@@ -39,6 +47,34 @@ export default function ForceActionComponent({ detail }) {
         });
         const resultClose = await close.json();
         console.log(resultClose);
+        if (!resultClose.error) {
+          await addDocumentFirebase('3commas_logs', {
+            ...resultClose,
+            exchange_external_id : detail?.exchange_external_id,
+            exchange_thumbnail : detail?.exchange_thumbnail,
+            exchange_name : detail?.exchange_name,
+            name : detail.name,
+            email : detail.email,
+            uid : detail.uid,
+            createdAt : new Date(),
+            action : `CLOSE_${findLatestTrade[0]?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
+            smart_trade_id : latestTradeDetail?.id,
+            type : `CLOSE_${findLatestTrade[0]?.action}`,
+            autotrader_id : detail?.id,
+            pair: detail?.trading_plan_pair[0]?.split('_').splice(1).join('_'),
+          })
+          Swal.fire({
+            title: 'Success',
+            text: `Close at market price success`,
+            icon:'success',
+          });
+        } else {
+          Swal.fire({
+            title: 'Error',
+            text: `Close at market price failed`,
+            icon:'error',
+          });
+        }
       } else {
         Swal.fire({
           title: 'Cannot close trade',

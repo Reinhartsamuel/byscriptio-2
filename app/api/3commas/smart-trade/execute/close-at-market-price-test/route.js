@@ -50,7 +50,8 @@ export async function POST(request) {
         console.error('Trade execution failed:', error);
         return new Response(JSON.stringify({
             status: 'error',
-            error: error.message
+            error: error,
+            message: error.message
         }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }

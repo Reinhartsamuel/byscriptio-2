@@ -21,7 +21,7 @@ export async function getSmartTradeStatus(id) {
     });
     const data = await response.json();
     return {
-        status: data.status,
-        id
+        ...data,
+        id,
     }
 }
