@@ -315,7 +315,7 @@ export default function ModalAddAutotraderNew({
             Only exchanges that support {marketType} trading are shown. Need to add a new exchange? 
             <button className="ml-1 text-indigo-600 hover:text-indigo-700">Connect Exchange</button>
           </p>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             {exchanges_accounts?.filter((exchange) => exchange.type?.toLowerCase() === marketType)?.map((exchange) => (
               <label
                 key={exchange.id}

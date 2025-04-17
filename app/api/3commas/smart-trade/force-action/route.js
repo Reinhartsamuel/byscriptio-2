@@ -74,7 +74,7 @@ export async function POST(request) {
                         .add({
                             ...checkStatus,
                             action: `CLOSE_${historyTradesFromDb[0]?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
-                            smart_trade_id: historyTradesFromDb[0]?.smart_trade_id,
+                            smart_trade_id: String(historyTradesFromDb[0]?.smart_trade_id),
                             createdAt: new Date(),
                             type: `CLOSE_${historyTradesFromDb[0]?.action}`,
                             autotrader_id: body.autotrader_id,
@@ -146,7 +146,7 @@ export async function POST(request) {
             .add({
                 ...resultxx?.data, // add all the data from resultxx.data, then add the othe
                 ...checkStatus2,
-                smart_trade_id: resultxx?.data?.id,
+                smart_trade_id: String(resultxx?.data?.id),
                 createdAt: new Date(),
                 action: `FORCE_${body.action === 'buy' ? 'BUY' : 'SELL'}`,
                 autotrader_id: body.autotrader_id,
