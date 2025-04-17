@@ -1,5 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { getSmartTradeStatus } from "@/app/utils/getSmartTradeStatus";
+import { pairNameFor3commas } from "@/app/utils/pairNameFor3commas";
 import { adminDb } from "@/lib/firebase-admin-config";
 
 export async function POST(request) {
@@ -23,7 +24,10 @@ export async function POST(request) {
         // 1. check latest trades from 3commas_logs based on pair and autotrader_id
         let historyTradesFromDb = [];
         const _tradingPlanId = bot.trading_plan_pair[0]?.split('_')[0];
-        const _pair = bot.trading_plan_pair[0]?.split('_').slice(1).join('_')
+        const _pair = bot.trading_plan_pair[0]?.split('_').slice(1).join('_');
+
+
+
         const latestTradeHistory = await adminDb
             .collection('3commas_logs')
             .where('autotrader_id', '==', bot.id)
@@ -43,9 +47,8 @@ export async function POST(request) {
         if (historyTradesFromDb.length > 0) {
             console.log('found an active trade!! closing it....', historyTradesFromDb[0]?.smart_trade_id)
             const {status} = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
-            console.log(status,'ANAK NGENTOT');
             if (status.type === 'waiting_targets' || status.type === 'created') {
-                const res = await fetch('http://localhost:3000/api/3commas/smart-trade/execute/close-at-market-price-test', {
+                const res = await fetch('https://byscript.io/api/3commas/smart-trade/execute/close-at-market-price-test', {
                     method: 'POST',
                     body: JSON.stringify({
                         id: historyTradesFromDb[0]?.smart_trade_id
@@ -108,7 +111,7 @@ export async function POST(request) {
         // 5. execute force action
         const payload = {
             accountId: bot.exchange_external_id,
-            pair: _pair,
+            pair: await pairNameFor3commas(bot, _pair),
             value: String(parseFloat(bot.tradeAmount) / parseFloat(PRICE_USD)), // amount in token, not in usd, so (amountUsd/price),
             type: body.action,
         }
@@ -116,7 +119,7 @@ export async function POST(request) {
 
 
         const resxx = await fetch(
-            `http://localhost:3000/api/3commas/smart-trade/execute`,
+            `https://byscript.io/api/3commas/smart-trade/execute`,
             {
                 method: 'POST',
                 body: JSON.stringify(payload)

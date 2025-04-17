@@ -99,9 +99,10 @@ export default function ForceActionComponent({ detail }) {
     setLoading(true);
     try {
       const body = {
-        autotrader_id : detail?.id,
+        autotrader_id : detail.id,
         action : action
       }
+      console.log(body, 'body to send to force action');
       const res = await fetch('/api/3commas/smart-trade/force-action',{
         method : 'POST',
         body : JSON.stringify(body)

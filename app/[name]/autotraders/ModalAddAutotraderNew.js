@@ -16,8 +16,7 @@ import Tooltip from '@/app/components/ui/Tooltip';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
 import Spinner from '@/app/components/ui/Spinner';
-import handleError3Commas from '@/app/utils/handleError3Commas';
-import { deleteDocumentFirebase, getCollectionFirebase, updateDocumentFirebase } from '@/app/utils/firebaseApi';
+import {  getCollectionFirebase } from '@/app/utils/firebaseApi';
 import { addActivityLog } from '@/app/utils/activityLog';
 
 export default function ModalAddAutotraderNew({
@@ -237,6 +236,13 @@ export default function ModalAddAutotraderNew({
         text: `Successfully created ${selectedPairConfigs.length} autotrader(s)!`,
       });
       resetState();
+      await addActivityLog({
+        customerId: customer?.id || null,
+        uid: user?.id || null,
+        ipLocation: ipLocation,
+        type: 'CREATE AUTOTRADER',
+        userAgent: navigator?.userAgent,
+      });
     } catch (error) {
       console.error('Error creating autotraders:', error);
       Swal.fire({

@@ -1,6 +1,7 @@
 import { coins } from "@/app/dummy";
 import { closePreviousTrade } from "@/app/utils/closePreviousTrade";
 import { executeNewTrade } from "@/app/utils/executeNewTrade";
+import { pairNameFor3commas } from "@/app/utils/pairNameFor3commas";
 // import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
 import { adminDb } from "@/lib/firebase-admin-config";
 import { FieldValue } from "firebase-admin/firestore";
@@ -221,7 +222,8 @@ export async function POST(request) {
             // console.log(autotrader, 'autotrader kuda')
             const bodySend = {
                 account_id: autotrader.exchange_external_id,
-                pair: body.pair,
+                // pair: body.pair,
+                pair: await pairNameFor3commas(autotrader, body.pair),
                 instant: false,
                 position: {
                     type: body.type,
