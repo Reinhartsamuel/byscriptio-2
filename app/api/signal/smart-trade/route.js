@@ -221,7 +221,7 @@ export async function POST(request) {
         const resultPromise = await Promise.allSettled(autotraders.map(async (autotrader) => {
             // console.log(autotrader, 'autotrader kuda')
             const bodySend = {
-                account_id: autotrader.exchange_external_id,
+                account_id: autotrader?.exchange_external_id ?  autotrader.exchange_external_id  : 'no account id',
                 // pair: body.pair,
                 pair: await pairNameFor3commas(autotrader, body.pair),
                 instant: false,
@@ -243,6 +243,9 @@ export async function POST(request) {
                 stop_loss: {
                     enabled: false,
                 },
+            }
+            if (!autotrader?.exchange_external_id) {
+                bodySend.autotrader_id = autotrader?.id;
             }
 
             // 2. find latest trade history on 3commas_logs where same trading_plan_id and pair

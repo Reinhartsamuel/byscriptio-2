@@ -18,7 +18,6 @@ export async function executeNewTrade({
     const finalUrl = baseUrl + queryParams;
     const signatureMessage = queryParams + JSON.stringify(bodySend);
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-    console.log(`executinggggggggg ${JSON.stringify(bodySend)}`)
     const updatedBodySend = {
         ...bodySend,
         position: {
@@ -28,6 +27,8 @@ export async function executeNewTrade({
             }
         }
     }
+    console.log(`executinggggggggg ${JSON.stringify(updatedBodySend)}`)
+    // return {pepek : 'anjing'}
     const response2 = await fetch(finalUrl, {
         method: 'POST',
         body: JSON.stringify(updatedBodySend),
@@ -41,7 +42,7 @@ export async function executeNewTrade({
     // result of execute smart trade, update to 3commas_logs
     // if error, return error and console log
     if (responseExecute.error || responseExecute.error_description) {
-        console.log('Failed to execute smart trade', responseExecute);
+        console.log('Failed to execute smart trade', responseExecute, 'payload:', JSON.stringify(updatedBodySend));
         if (nonce <= MAX_EXECUTION_RETRIES) {
             console.log('retrying execute smart trade', nonce);
             return await executeNewTrade({

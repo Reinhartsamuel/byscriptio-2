@@ -7,6 +7,7 @@ import Modal from './ui/Modal';
 import { deleteDocumentFirebase, getCollectionFirebase } from '../utils/firebaseApi';
 import AutotraderCard from './AutotraderCard';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Spinner from './ui/Spinner';
 
 // const dummyAutotraders  = [{
 //   name : 'test',
@@ -20,6 +21,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 const ExchangeComponent = ({ exchange }) => {
   const [showModal, setShowModal] = useState(false);
   const [autotraders, setAutotraders] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   async function getAutotraders() {
     if (
@@ -49,11 +51,36 @@ const ExchangeComponent = ({ exchange }) => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteDocumentFirebase('exchange_accounts', exchange?.id)
-          .then(() => {
-            alert('Success')
-            window.location.reload();
+        setLoading(true);
+        fetch(`/api/playground/3commas/`, {
+          method: 'POST',
+          body: JSON.stringify({
+            "queryParams": `/ver1/accounts/${exchange.external_id}/remove`,
+            "method": 'POST'
           })
+        }).then((res) => {
+          res.json()
+            .then((result) => {
+              if (result.status === true) {
+                deleteDocumentFirebase('exchange_accounts', exchange.id)
+                  .then(() => {
+                    alert('Success')
+                    window.location.reload();
+                  })
+              } else {
+                Swal.fire({
+                  title: 'Error',
+                  text: result.message === 'not_found' ? 'Exchange not found' : 'Something went wrong',
+                  icon: 'error'
+                })
+              }
+            })
+        }).catch((error) => {
+          alert(`Error deleting exchange: ${error.message}`)
+        }).finally(() => {
+          setLoading(false);
+        })
+
       }
     })
   }
@@ -94,7 +121,7 @@ const ExchangeComponent = ({ exchange }) => {
 
             <span className='text-gray-200 text-xs'>{moment.unix(exchange?.createdAt?.seconds).fromNow()}</span>
           </p>
-         {exchange?.usd_amount &&  <p className='text-gray-200 text-sm'>
+          {exchange?.usd_amount && <p className='text-gray-200 text-sm'>
             USD {parseInt(exchange?.usd_amount)?.toFixed(2)}
           </p>}
         </div>
@@ -143,10 +170,11 @@ const ExchangeComponent = ({ exchange }) => {
               </p>
               <button
                 onClick={onDeletePrompt}
+                disabled={loading}
                 type='button'
-                className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
+                className={cn('text-sm underline text-gray-600', loading? 'cursor-not-allowed' : 'cursor-pointer')}
               >
-                🗑️ Delete Exchange
+               {loading ? <Spinner /> : '🗑️ Delete Exchange'}
               </button>
             </div>
 

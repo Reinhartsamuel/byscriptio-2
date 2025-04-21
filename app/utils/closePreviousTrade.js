@@ -47,9 +47,9 @@ export async function closePreviousTrade({
         // check status of the latest trade history
         const { status } = await getSmartTradeStatus(arr[0].smart_trade_id);
         console.log(status, arr[0].smart_trade_id, 'this is status weve longing for');
-        if (status?.type !== 'panic_sold') {
+        if (status?.type !== 'panic_sold' && status?.type !== 'failed') {
 
-            console.log(`found ${arr[0].smart_trade_id} trade, trying to close first`);
+            console.log(`found ${arr[0].smart_trade_id} trade and it's not panic_sold nor failed, so trying to close first`);
             console.log(`trying to close trade ${arr[0].smart_trade_id}`)
             // close at market price function here
             // console.log(`trying to close trade ${arr[0].smart_trade_id}`)
@@ -70,7 +70,7 @@ export async function closePreviousTrade({
             const responseCloseMarket = await response2.json();
             if (responseCloseMarket.error || responseCloseMarket.error_description) {
                 console.log('Failed to close trade', responseCloseMarket, JSON.stringify(body));
-                throw new Error('Failed to close trade');
+                throw new Error('Failed to close trade' + '  ' +  JSON.stringify(responseCloseMarket.error) + '  ' + JSON.stringify(responseCloseMarket.error_description));
             }
             const smart_trade_id = String(responseCloseMarket.id || '');
             delete responseCloseMarket.id;
