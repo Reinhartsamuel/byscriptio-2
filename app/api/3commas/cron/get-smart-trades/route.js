@@ -2,7 +2,7 @@ import { adminDb } from "@/lib/firebase-admin-config";
 
 export async function GET () {
     try {
-        const {data, error, error_attributes} = await fetch(`https://byscript.io/api/playground/3commas`,{
+        const {data, error, error_attributes, error_description} = await fetch(`https://byscript.io/api/playground/3commas`,{
             method : 'POST',
             body : JSON.stringify({
                 "queryParams" : "/v2/smart_trades?per_page=100&page=1&status=all",
@@ -10,11 +10,13 @@ export async function GET () {
             })
         });
         if (error) {
+            console.log(error,error_attributes, error_description)
             return Response.json({
                 error,
                 error_attributes
             })
         }
+
 
         const result = await Promise.all(data.map(async(smartTrade) => {
             console.log('processing smart trade with id :', smartTrade.id, smartTrade);
@@ -45,6 +47,7 @@ export async function GET () {
             result
         })
     } catch (error) {
+        console.log(JSON.stringify(error), 'error cron')
         return new Response(JSON.stringify({
             status :false, 
             error : error.message,
