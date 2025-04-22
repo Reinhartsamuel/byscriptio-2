@@ -18,7 +18,7 @@ export async function GET () {
         }
 
 
-        const result = await Promise.all(data.map(async(smartTrade) => {
+        const result = await Promise.all(data?.map(async(smartTrade) => {
             console.log('processing smart trade with id :', smartTrade.id, smartTrade);
             let searchCorrespondingTrade = [];
             const querySnapshot = await adminDb
@@ -29,7 +29,7 @@ export async function GET () {
                 searchCorrespondingTrade.push({id : doc.id, ...doc.data()})
             });
 
-            await Promise.all(searchCorrespondingTrade.map(async(x) => {
+            await Promise.all(searchCorrespondingTrade?.map(async(x) => {
                 console.log(`updating smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id}`)
                 const withoutId = JSON.parse(JSON.stringify(smartTrade));
                 delete withoutId.id;
