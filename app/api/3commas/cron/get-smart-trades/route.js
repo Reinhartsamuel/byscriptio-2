@@ -2,7 +2,7 @@ import { adminDb } from "@/lib/firebase-admin-config";
 
 export async function GET () {
     try {
-        const {data, error, error_attributes} = await fetch(`/api/playground/3commas`,{
+        const {data, error, error_attributes} = await fetch(`https://byscript.io/api/playground/3commas`,{
             method : 'POST',
             body : JSON.stringify({
                 "queryParams" : "/v2/smart_trades?per_page=100&page=1&status=all",
