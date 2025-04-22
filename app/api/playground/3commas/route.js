@@ -42,7 +42,9 @@ export async function POST(request) {
         console.log(data,'data... response not ok')
         return new Response(JSON.stringify({
             status: false,
+            error: data.error + ' ' + data?.error_attributes,
             message: data.error,
+            error_attributes : data?.error_attributes,
             errorCode: data.code
         }), {
             status: 400,

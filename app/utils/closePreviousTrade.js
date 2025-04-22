@@ -95,7 +95,7 @@ export async function closePreviousTrade({
                 requestBody: JSON.stringify(bodySend),
                 webhookId
             }
-            const updateTradeAmount = parseFloat(responseCloseMarket.margin.amount) + parseFloat(responseCloseMarket.profit.usd);
+            const updateTradeAmount = parseFloat(responseCloseMarket?.margin?.amount) + parseFloat(responseCloseMarket?.profit?.usd);
             console.log(updateTradeAmount, 'updateTradeAmount')
             if (!isNaN(updateTradeAmount)) {
                 bodySend.position.units.value = String(updateTradeAmount);

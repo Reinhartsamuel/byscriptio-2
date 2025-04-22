@@ -59,7 +59,8 @@ export async function onCheck3CApi({
     if (myExchange?.length > 0) {
       // const exchangeData = myExchange[0];
 
-      await Promise.allSettled(myExchange.map(async (exchangeData) => {
+      await Promise.allSettled(myExchange.map(async (exchangeData, i) => {
+        console.log('processing exchange:::',exchangeData, `index: ${i}`)
         const find = await getCollectionFirebase('exchange_accounts', [
           {
             field: 'external_id',
@@ -71,22 +72,27 @@ export async function onCheck3CApi({
         if (find?.length > 0) {
           return 'Already connected';
         }
-        const addData = {
-          customerId: customer.id,
-          external_id: exchangeData.id,
-          uid: authFirebase.currentUser?.uid,
-          email: authFirebase.currentUser?.email || customer?.email,
-          name: authFirebase?.currentUser?.displayName || customer?.name,
-          exchange_name: getName(exchangeData.exchange_name),
-          exchange_thumbnail: exchangeThumbnail,
-          type: getType(exchangeData.exchange_name),
-        };
+        try {
+          const addData = {
+            customerId: customer.id,
+            external_id: exchangeData.id,
+            uid: authFirebase.currentUser?.uid,
+            email: authFirebase.currentUser?.email || customer?.email,
+            name: authFirebase?.currentUser?.displayName || customer?.name,
+            exchange_name: getName(exchangeData.exchange_name),
+            exchange_thumbnail: exchangeThumbnail,
+            type: getType(exchangeData.exchange_name),
+          };
+          console.log(addData,'addData')
+          await setDocumentFirebase(
+            'exchange_accounts',
+            newlyCreatedId + "-"+getType(exchangeData.exchange_name),
+            addData,
+          );
+        } catch (error) {
+          console.log(error, 'error adding data')
+        }
 
-        await setDocumentFirebase(
-          'exchange_accounts',
-          newlyCreatedId + "-"+getType(exchangeData.exchange_name),
-          addData,
-        );
         await Promise.allSettled([
           await fetch('/api/email', {
             method: 'POST',

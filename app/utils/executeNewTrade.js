@@ -53,6 +53,26 @@ export async function executeNewTrade({
                 webhookId
             }); // retry MAX_EXECUTION_RETRIES times
         }
+        adminDb
+        .collection('3commas_logs')
+        .add({
+            ...responseExecute,
+            name: autotrader?.name || '',
+            email: autotrader?.email || '',
+            uid: autotrader?.uid || '',
+            exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+            exchange_name: autotrader?.exchange_name || '',
+            exchange_external_id: autotrader?.exchange_external_id || '',
+            smart_trade_id,
+            autotrader_id: autotrader.id,
+            createdAt: new Date(),
+            trading_plan_id: body.trading_plan_id,
+            action: body.type === 'sell' ? 'SELL' : 'BUY',
+            type: 'autotrade',
+            pair: body.pair,
+            smart_trade: true,
+            requestBody: bodySend,
+        })
         return {
             error: responseExecute.error + ', ' + responseExecute.error_description,
             error_attributes: responseExecute.error_attributes
@@ -81,7 +101,7 @@ export async function executeNewTrade({
             type: 'autotrade',
             pair: body.pair,
             smart_trade: true,
-            requestId: bodySend,
+            requestBody: bodySend,
         })
     return { ...responseExecute, smart_trade_id };
 }

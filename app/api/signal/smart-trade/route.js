@@ -220,6 +220,7 @@ export async function POST(request) {
 
         const resultPromise = await Promise.allSettled(autotraders.map(async (autotrader) => {
             // console.log(autotrader, 'autotrader kuda')
+            // await executingSpotSignal(body, autotrader, addWebhookResult.id);
             const bodySend = {
                 account_id: autotrader?.exchange_external_id ?  autotrader.exchange_external_id  : 'no account id',
                 // pair: body.pair,
@@ -381,3 +382,50 @@ export async function POST(request) {
         })
     }
 }
+
+// async function executingSpotSignal(body, autotrader,webhookId) {
+//     const bodySend = {
+//         account_id: autotrader?.exchange_external_id ?  autotrader.exchange_external_id  : 'no account id',
+//         // pair: body.pair,
+//         pair: await pairNameFor3commas(autotrader, body.pair),
+//         instant: false,
+//         position: {
+//             type: body.type,
+//             units: {
+//                 value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price)) // amount in token, not in usd, so (amountUsd/price)
+//             },
+//             order_type: "market"
+//         },
+//         leverage: {
+//             enabled: true,
+//             type: "isolated",
+//             value: "1"
+//         },
+//         take_profit: {
+//             enabled: false,
+//         },
+//         stop_loss: {
+//             enabled: false,
+//         },
+//     }
+//     if (!autotrader?.exchange_external_id) {
+//         bodySend.autotrader_id = autotrader?.id;
+//     }
+
+//     if (body.type === 'sell') {
+
+
+//     } else if (body.type === 'buy') {
+//         const responseExecute = await executeNewTrade({
+//             bodySend,
+//             body,
+//             nonce: 1,
+//             updateTradeAmount: null,
+//             autotrader,
+//             webhookId: webhookId,
+//         })
+//     } else {
+//         throw new Error(`Signal type is unknown! Signal.type : ${body.type}`)
+//     }
+//     return body;
+// }

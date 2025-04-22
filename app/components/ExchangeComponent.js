@@ -8,6 +8,8 @@ import { deleteDocumentFirebase, getCollectionFirebase } from '../utils/firebase
 import AutotraderCard from './AutotraderCard';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import Spinner from './ui/Spinner';
+import { useExchangeStore } from '../store/exchangesStore';
+import { authFirebase } from '../config/firebase';
 
 // const dummyAutotraders  = [{
 //   name : 'test',
@@ -22,6 +24,7 @@ const ExchangeComponent = ({ exchange }) => {
   const [showModal, setShowModal] = useState(false);
   const [autotraders, setAutotraders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { getExchangeAccounts } = useExchangeStore();
 
   async function getAutotraders() {
     if (
@@ -65,7 +68,8 @@ const ExchangeComponent = ({ exchange }) => {
                 deleteDocumentFirebase('exchange_accounts', exchange.id)
                   .then(() => {
                     alert('Success')
-                    window.location.reload();
+                    if (authFirebase.currentUser?.email) getExchangeAccounts(authFirebase.currentUser?.email);
+                    // window.location.reload();
                   })
               } else {
                 Swal.fire({
