@@ -1,16 +1,25 @@
 import { adminDb } from "@/lib/firebase-admin-config";
-
-export async function GET () {
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
+export async function GET() {
     try {
-        const {data, error, error_attributes, error_description} = await fetch(`https://byscript.io/api/playground/3commas`,{
-            method : 'POST',
-            body : JSON.stringify({
-                "queryParams" : "/v2/smart_trades?per_page=100&page=1&status=all",
-                "method" : "GET"
+        const { signal } = new AbortController()
+        const res = await fetch(`https://byscript.io/api/playground/3commas?time=${new Date().getTime()}`, {
+            method: 'POST',
+            next: { revalidate: 0 },
+            signal,
+            body: JSON.stringify({
+                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all",
+                "method": "GET"
             })
         });
+        const { data, error, error_attributes, error_description } = await res.json();
+        console.log( data, 'data' )
+        console.log( error, 'error')
+        console.log( error_attributes, 'error_attributes')
+        console.log( error_description, 'error_description' )
+        // return new Response('ok')
         if (error) {
-            console.log(error,error_attributes, error_description)
+            console.log(error, error_attributes, error_description)
             return Response.json({
                 error,
                 error_attributes
@@ -18,40 +27,47 @@ export async function GET () {
         }
 
 
-        const result = await Promise.all(data?.map(async(smartTrade) => {
+        const result = await Promise.allSettled(data?.map(async (smartTrade) => {
             console.log('processing smart trade with id :', smartTrade.id, smartTrade);
             let searchCorrespondingTrade = [];
             const querySnapshot = await adminDb
-            .collection('3commas_logs')
-            .where('smart_trade_id', '==', String(smartTrade.id))
-            .get();
+                .collection('3commas_logs')
+                .where('smart_trade_id', '==', String(smartTrade.id))
+                .get();
             querySnapshot.forEach((doc) => {
-                searchCorrespondingTrade.push({id : doc.id, ...doc.data()})
+                searchCorrespondingTrade.push({ id: doc.id, ...doc.data() })
             });
+            console.log(searchCorrespondingTrade,'searchCorrespondingTrade')
 
-            await Promise.all(searchCorrespondingTrade?.map(async(x) => {
+            await Promise.all(searchCorrespondingTrade?.map(async (x) => {
                 console.log(`updating smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id}`)
                 const withoutId = JSON.parse(JSON.stringify(smartTrade));
                 delete withoutId.id;
-                await adminDb
-                .collection('3commas_logs')
-                .doc(x.id)
-                .update({
-                    ...withoutId
-                })
+                if (x.id) {
+                    const update = await adminDb
+                    .collection('3commas_logs')
+                    .doc(x.id)
+                    .update({
+                        ...withoutId
+                    })
+                    console.log(`update: ${update}, smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id} is updated`)
+                } else {
+                    console.log(`NOOOOO smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id} is not updated`)
+                }
+               
             }))
         }))
         return Response.json({
-            status : true,
+            status: true,
             data,
             result
         })
     } catch (error) {
-        console.log(JSON.stringify(error), 'error cron')
+        console.log(error, 'error cron')
         return new Response(JSON.stringify({
-            status :false, 
-            error : error.message,
+            status: false,
+            error: error.message,
 
-        }),{status : 500})
+        }), { status: 500 })
     }
 } 

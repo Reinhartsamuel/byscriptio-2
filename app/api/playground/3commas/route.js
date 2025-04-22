@@ -3,6 +3,7 @@ import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const baseUrl = 'https://api.3commas.io';
+export const maxDuration = 60; // This function can run for a maximum of 60 seconds
 
 // queryParamsExample ==> `/v2/smart_trades`;
 // example body ==>
