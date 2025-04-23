@@ -13,7 +13,7 @@ export async function POST() {
             })
         });
         const { data, error, error_attributes, error_description } = await res.json();
-        console.log( data.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated' )
+        console.log( data?.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated' )
         console.log( error, 'error')
         console.log( error_attributes, 'error_attributes')
         console.log( error_description, 'error_description')
