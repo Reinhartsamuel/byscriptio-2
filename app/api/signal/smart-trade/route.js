@@ -465,7 +465,8 @@ async function executeSpotTrade({
                 x.smart_trade_id !== null &&
                 x.smart_trade_id !== '' &&
                 x.smart_trade_id !== 'undefined' &&
-                x.action === 'BUY'
+                x.action === 'BUY' &&
+                x.status?.type === 'waiting_targets'
         );
         const promises = await Promise.allSettled(arr?.map(async (x) => {
             const queryParamsCloseMarket = `/public/api/v2/smart_trades/${x.smart_trade_id}/close_by_market`;
