@@ -455,7 +455,7 @@ async function executeSpotTrade({
             .where('pair', '==', body.pair)
             .where('trading_plan_id', '==', body.trading_plan_id)
             .orderBy('createdAt', 'desc')
-            .limit(10)
+            .limit(1)
             .get();
         latestTradeHistory.forEach((doc) => {
             arr.push({ ...doc.data(), id: doc.id });
@@ -464,6 +464,7 @@ async function executeSpotTrade({
             (x) =>
                 x.smart_trade_id !== null &&
                 x.smart_trade_id !== '' &&
+                x.smart_trade_id !== 'undefined' &&
                 x.action === 'BUY'
         );
         const promises = await Promise.allSettled(arr?.map(async (x) => {
