@@ -34,7 +34,7 @@ export async function POST() {
                 .where('smart_trade_id', '==', String(smartTrade.id))
                 .get();
             querySnapshot.forEach((doc) => {
-                searchCorrespondingTrade.push({ id: doc.id, ...doc.data() })
+                searchCorrespondingTrade.push({  ...doc.data(), id: doc.id, })
             });
             searchCorrespondingTrade = searchCorrespondingTrade.filter((x) => !x.already_updated);
 

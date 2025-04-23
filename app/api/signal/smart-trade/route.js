@@ -481,14 +481,14 @@ async function executeSpotTrade({
                 }
             });
             const responseCloseMarket = await response.json();
-            const smart_trade_id = String(responseCloseMarket.id || '');
-
+            const dataWithoutId = { ...responseCloseMarket };
+            delete dataWithoutId.id;
             const sendDataTo3CommasLogs = {
-                ...responseCloseMarket,
+                ...dataWithoutId,
                 name: autotrader?.name || '',
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',
-                smart_trade_id,
+                smart_trade_id: String(responseCloseMarket?.id),
                 autotrader_id: autotrader.id,
                 createdAt: new Date(),
                 exchange_external_id: autotrader?.exchange_external_id || '',
