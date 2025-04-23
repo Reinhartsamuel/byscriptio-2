@@ -8,7 +8,7 @@ export async function POST() {
             next: { revalidate: 0 },
             signal,
             body: JSON.stringify({
-                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at&order_direction=DESC",
+                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at",
                 "method": "GET"
             })
         });
