@@ -231,7 +231,8 @@ export async function POST(request) {
             if (body.market_type === 'spot') {
                 const result = await executeSpotTrade({
                     autotrader,
-                    body
+                    body,
+                    webhookId: addWebhookResult.id,
                 })
                 console.log(result, 'result SPOTTTTTT')
                 return { result }
@@ -527,10 +528,12 @@ async function executeSpotTrade({
             }
         });
         const responseExecute = await response2.json();
+        console.log(responseExecute,'responseExecute bjirrr');
         const dataWithoutId = { ...responseExecute };
         delete dataWithoutId.id;
 
-        const newDoc = await adminDb
+        try {
+            const newDoc = await adminDb
             .collection('3commas_logs')
             .add({
                 ...dataWithoutId,
@@ -538,19 +541,23 @@ async function executeSpotTrade({
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',
                 smart_trade_id: String(responseExecute?.id),
-                autotrader_id: autotrader.id,
+                autotrader_id: autotrader?.id || '',
                 createdAt: new Date(),
                 exchange_external_id: autotrader?.exchange_external_id || '',
                 exchange_name: autotrader?.exchange_name || '',
                 exchange_thumbnail: autotrader?.exchange_thumbnail || '',
                 type: 'autotrade',
-                trading_plan_id: body.trading_plan_id,
-                action: body.type.toUpperCase(),
-                pair: body.pair,
+                trading_plan_id: body?.trading_plan_id,
+                action: body?.type ? body?.type.toUpperCase() : 'unknown action',
+                pair: body?.pair,
                 smart_trade: true,
-                webhookId
+                webhookId : webhookId || ''
             })
-        console.log(newDoc.id, 'newDoc.id for buy signal')
+            console.log(newDoc.id, 'newDoc.id for buy signal')     
+        } catch (error) {
+            console.log(JSON.stringify(error), 'error saving to database for BUY SPOTTTT');
+        }
+
         return {
             ...dataWithoutId,
             smart_trade_id: responseExecute?.id || null
