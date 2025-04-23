@@ -13,10 +13,10 @@ export async function POST() {
             })
         });
         const { data, error, error_attributes, error_description } = await res.json();
-        console.log( data?.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated' )
-        console.log( error, 'error')
-        console.log( error_attributes, 'error_attributes')
-        console.log( error_description, 'error_description')
+        console.log(data?.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated')
+        console.log(error, 'error')
+        console.log(error_attributes, 'error_attributes')
+        console.log(error_description, 'error_description')
         // return new Response('ok')
         if (error) {
             console.log(error, error_attributes, error_description)
@@ -34,7 +34,7 @@ export async function POST() {
                 .where('smart_trade_id', '==', String(smartTrade.id))
                 .get();
             querySnapshot.forEach((doc) => {
-                searchCorrespondingTrade.push({  ...doc.data(), id: doc.id, })
+                searchCorrespondingTrade.push({ ...doc.data(), id: doc.id, })
             });
             searchCorrespondingTrade = searchCorrespondingTrade.filter((x) => !x.already_updated);
 
@@ -42,19 +42,37 @@ export async function POST() {
                 console.log(`updating smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id}`)
                 const withoutId = JSON.parse(JSON.stringify(smartTrade));
                 delete withoutId.id;
+
+                const dataToUpdate = {
+                    ...withoutId,
+                };
+                if (smartTrade?.status?.type === 'panic_sold' || smartTrade?.status?.type === 'failed') {
+                    dataToUpdate.already_updated = true;
+
+                    if (smartTrade?.profit?.usd) {
+                        // update initialBalance 
+                        const docc = await adminDb.collection('dca_bots').doc(x.autotrader_id).get();
+                        const bot = { ...docc.data(), id: docc.id };
+                        await adminDb
+                            .collection('dca_bots')
+                            .doc(x.autotrader_id)
+                            .update({
+                                tradeAmount:
+                                    parseFloat(bot?.tradeAmount) + parseFloat(smartTrade?.profit?.usd),
+                                updatedAt: new Date()
+                            })
+                    }
+                }
                 if (x.id) {
                     const update = await adminDb
-                    .collection('3commas_logs')
-                    .doc(x.id)
-                    .update({
-                        ...withoutId,
-                        already_updated : true
-                    })
+                        .collection('3commas_logs')
+                        .doc(x.id)
+                        .update(dataToUpdate)
                     console.log(`update: ${update}, smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id} is updated`)
                 } else {
                     console.log(`NOOOOO smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id} is not updated`)
                 }
-               
+
             }))
         }))
         return Response.json({
