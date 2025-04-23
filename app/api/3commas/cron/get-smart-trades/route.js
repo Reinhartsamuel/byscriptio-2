@@ -1,6 +1,6 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 export const maxDuration = 60; // This function can run for a maximum of 60 seconds
-export async function GET() {
+export async function POST() {
     try {
         const { signal } = new AbortController()
         const res = await fetch(`https://byscript.io/api/playground/3commas?time=${new Date().getTime()}`, {
