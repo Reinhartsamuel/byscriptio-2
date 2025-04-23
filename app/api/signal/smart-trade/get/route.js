@@ -23,6 +23,7 @@ export async function GET(request) {
         });
         const data = await response.json();
         if (!response.ok) {
+            console.log(data, 'data... response not ok')
             return new Response(JSON.stringify({
                 status: false,
                 message: data.error,
