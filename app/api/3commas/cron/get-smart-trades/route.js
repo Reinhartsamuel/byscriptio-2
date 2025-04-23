@@ -8,15 +8,15 @@ export async function POST() {
             next: { revalidate: 0 },
             signal,
             body: JSON.stringify({
-                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all",
+                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at&order_direction=DESC",
                 "method": "GET"
             })
         });
         const { data, error, error_attributes, error_description } = await res.json();
-        console.log( data, 'data' )
+        console.log( data.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated' )
         console.log( error, 'error')
         console.log( error_attributes, 'error_attributes')
-        console.log( error_description, 'error_description' )
+        console.log( error_description, 'error_description')
         // return new Response('ok')
         if (error) {
             console.log(error, error_attributes, error_description)
@@ -25,7 +25,6 @@ export async function POST() {
                 error_attributes
             })
         }
-
 
         const result = await Promise.allSettled(data?.map(async (smartTrade) => {
             console.log('processing smart trade with id :', smartTrade.id, smartTrade);
@@ -37,7 +36,7 @@ export async function POST() {
             querySnapshot.forEach((doc) => {
                 searchCorrespondingTrade.push({ id: doc.id, ...doc.data() })
             });
-            console.log(searchCorrespondingTrade,'searchCorrespondingTrade')
+            searchCorrespondingTrade = searchCorrespondingTrade.filter((x) => !x.already_updated);
 
             await Promise.all(searchCorrespondingTrade?.map(async (x) => {
                 console.log(`updating smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id}`)
@@ -48,7 +47,8 @@ export async function POST() {
                     .collection('3commas_logs')
                     .doc(x.id)
                     .update({
-                        ...withoutId
+                        ...withoutId,
+                        already_updated : true
                     })
                     console.log(`update: ${update}, smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id} is updated`)
                 } else {
