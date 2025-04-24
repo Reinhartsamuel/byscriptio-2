@@ -31,6 +31,7 @@ const CoinImageComponent = ({ coin, position, width, showUsdt, inset }) => {
       }
       src={src}
       alt={coin}
+      onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/20'; }}
     />
   );
 };

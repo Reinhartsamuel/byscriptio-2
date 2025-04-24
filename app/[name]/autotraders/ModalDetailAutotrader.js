@@ -69,6 +69,12 @@ export default function ModalDetailAutotrader({
                   </p>
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Market Type</p>
+                  <p className='font-bold text-sm text-gray-300'>
+                    {detail?.marketType?.toUpperCase()}
+                  </p>
+                </div>
+                <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Created at</p>
                   <p className='dark:text-gray-100 font-light text-sm'>
                     {moment

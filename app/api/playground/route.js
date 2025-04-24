@@ -1,193 +1,26 @@
-import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
-import { pairNameFor3commas } from "@/app/utils/pairNameFor3commas";
 import { adminDb } from "@/lib/firebase-admin-config";
 
-const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
-const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
-
-const baseUrl = 'https://api.3commas.io';
-export async function POST(request) {
+export async function GET () {
   try {
-    const body = await request.json();
     const doc = await adminDb
-      .collection('dca_bots')
-      .doc('nhpxcdnS4WnBdCGcEkEG')
-      .get();
-    const autotrader = { id: doc.id, ...doc.data() };
-    const result = await executeSpotTrade({
-      autotrader,
-      body
-    })
+    .collection('3commas_logs')
+    .doc('OWL1dxRHhUy0FTk4yrt6')
+    .get();
+    const memek = {};
+    const keys = Object.keys({...doc.data(), id: doc.id}).sort();
+    keys.forEach((key) => {
+        memek[key] = doc.data()[key];
+    });
     return Response.json({
-      result
+      ...memek
     })
   } catch (error) {
-    console.error(error.message, 'error in executeNewTrade');
-    return new Response(JSON.stringify({
-      error: JSON.stringify(error),
+    return Response.json({
+      error: error.message,
       status: false,
-    }), { status: 500 });
-  }
-
-}
-async function executeSpotTrade({
-  autotrader,
-  body,
-
-}) {
-  const bodySend = {
-    account_id: autotrader?.exchange_external_id ? autotrader.exchange_external_id : 'no account id',
-    // pair: body.pair,
-    pair: await pairNameFor3commas(autotrader, body.pair),
-    instant: false,
-    position: {
-      type: body.type,
-      units: {
-        value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price)) // amount in token, not in usd, so (amountUsd/price)
-      },
-      order_type: "market"
-    },
-    leverage: {
-      enabled: true,
-      type: "isolated",
-      value: "1"
-    },
-    take_profit: {
-      enabled: false,
-    },
-    stop_loss: {
-      enabled: false,
-    },
-  }
-  if (!autotrader?.exchange_external_id) {
-    bodySend.autotrader_id = autotrader?.id;
-  }
-
-  if (body.type === 'sell') {
-    // find to database where autotrader_id, pair, and 
-    let arr = [];
-    console.log(`autotrader.id: ${autotrader.id}`)
-    console.log(`body.pair: ${body.pair}`)
-    console.log(`body.trading_plan_id: ${body.trading_plan_id}`)
-    const latestTradeHistory = await adminDb
-      .collection('3commas_logs')
-      .where('autotrader_id', '==', autotrader.id)
-      .where('pair', '==', body.pair)
-      .where('trading_plan_id', '==', body.trading_plan_id)
-      .orderBy('createdAt', 'desc')
-      .limit(20)
-      .get();
-    latestTradeHistory.forEach((doc) => {
-      arr.push({ ...doc.data(), id: doc.id });
-    })
-    arr = arr.filter(
-      (x) =>
-        x.smart_trade_id !== null &&
-        x.smart_trade_id !== '' &&
-        x.action === 'BUY'
-    );
-    console.log(arr, 'found trades to be closed ngentot')
-    console.log('masih bisa')
-    const promises = await Promise.allSettled(arr?.map(async (x) => {
-      const queryParamsCloseMarket = `/public/api/v2/smart_trades/${x.smart_trade_id}/close_by_market`;
-      console.log(`queryParamsCloseMarket: ${queryParamsCloseMarket}`)
-      const finalUrlCloseMarket = baseUrl + queryParamsCloseMarket;
-      const signatureMessage = queryParamsCloseMarket;
-      const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-      const response = await fetch(finalUrlCloseMarket, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          APIKEY: API_KEY,
-          Signature: signature,
-        }
-      });
-      const responseCloseMarket = await response.json();
-      const smart_trade_id = String(responseCloseMarket.id || '');
-
-      const sendDataTo3CommasLogs = {
-        ...responseCloseMarket,
-        name: autotrader?.name || '',
-        email: autotrader?.email || '',
-        uid: autotrader?.uid || '',
-        smart_trade_id,
-        autotrader_id: autotrader.id,
-        createdAt: new Date(),
-        exchange_external_id: autotrader?.exchange_external_id || '',
-        exchange_name: autotrader?.exchange_name || '',
-        exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-        type: 'autotrade',
-        trading_plan_id: body.trading_plan_id,
-        action: body.type.toUpperCase(),
-        pair: body.pair,
-        smart_trade: true,
-        previousBuyId: arr[0]?.id || '',
-        // webhookId
-      }
-      const newDoc = await adminDb
-        .collection('3commas_logs')
-        .add(sendDataTo3CommasLogs)
-      console.log(newDoc.id, 'newDoc.id')
-      return sendDataTo3CommasLogs;
-    }))
-    console.log(promises, 'promises');
-    return promises;
-    // return Response.json({
-    //   status: true,
-    //   result: promises
-    // })
-  } else if (body.type === 'buy') {
-    const queryParams = `/public/api/v2/smart_trades`;
-    const finalUrl = baseUrl + queryParams;
-    const signatureMessage = queryParams + JSON.stringify(bodySend);
-    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-    console.log(`executinggggggggg ${JSON.stringify(bodySend)}`)
-    // return {pepek : 'anjing'}
-    const response2 = await fetch(finalUrl, {
-      method: 'POST',
-      body: JSON.stringify(bodySend),
-      headers: {
-        'Content-Type': 'application/json',
-        APIKEY: API_KEY,
-        Signature: signature,
-      }
     });
-    const responseExecute = await response2.json();
-    const dataWithoutId = { ...responseExecute };
-    delete dataWithoutId.id;
-
-    const newDoc = await adminDb
-      .collection('3commas_logs')
-      .add({
-        ...dataWithoutId,
-        name: autotrader?.name || '',
-        email: autotrader?.email || '',
-        uid: autotrader?.uid || '',
-        smart_trade_id: String(responseExecute?.id),
-        autotrader_id: autotrader.id,
-        createdAt: new Date(),
-        exchange_external_id: autotrader?.exchange_external_id || '',
-        exchange_name: autotrader?.exchange_name || '',
-        exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-        type: 'autotrade',
-        trading_plan_id: body.trading_plan_id,
-        action: body.type.toUpperCase(),
-        pair: body.pair,
-        smart_trade: true,
-        // webhookId
-      })
-    console.log(newDoc.id, 'newDoc.id for buy signal')
-    return {
-      ...dataWithoutId,
-      smart_trade_id: responseExecute?.id || null
-    }
-  } else {
-    return {
-      error: 'Signal type is unknown! Signal.type : ' + body.type,
-    }
   }
 }
-
 
 // import generateSignatureRsa from '@/app/utils/generateSignatureRsa';
 // import { promises as fs } from 'fs';

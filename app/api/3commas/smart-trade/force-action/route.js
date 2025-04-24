@@ -46,8 +46,8 @@ export async function POST(request) {
         // 2. if latest trade is present, check the status from it's smart_trade_id
         if (historyTradesFromDb.length > 0) {
             console.log('found an active trade!! closing it....', historyTradesFromDb[0]?.smart_trade_id)
-            const {status} = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
-            if (status.type === 'waiting_targets' || status.type === 'created') {
+            const { status } = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
+            if (status?.type === 'waiting_targets' || status?.type === 'created') {
                 const res = await fetch('https://byscript.io/api/3commas/smart-trade/execute/close-at-market-price-test', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -56,10 +56,10 @@ export async function POST(request) {
                 });
                 const responseCloseMarket = await res.json();
                 console.log(responseCloseMarket, 'responseCloseMarket');
-                const {data, error, message} = responseCloseMarket;
+                const { data, error, message } = responseCloseMarket;
                 if (error) {
                     console.log(error, 'error closing previous trade!', message);
-                    return new Response(JSON.stringify({ message: 'Cannot close previous trade!',error: responseCloseMarket?.error_description }), {
+                    return new Response(JSON.stringify({ message: 'Cannot close previous trade!', error: responseCloseMarket?.error_description }), {
                         status: 500,
                         headers: {
                             'Content-Type': 'application/json',
@@ -78,11 +78,14 @@ export async function POST(request) {
                             createdAt: new Date(),
                             type: `CLOSE_${historyTradesFromDb[0]?.action}`,
                             autotrader_id: body.autotrader_id,
-                            exchange_external_id : bot.exchange_external_id,
+                            exchange_external_id: bot.exchange_external_id,
                             pair: _pair,
                             trading_plan_id: _tradingPlanId,
-                            exchange_name : bot.exchange_name,
-                            exchange_thumbnail : bot.exchange_thumbnail,
+                            exchange_name: bot.exchange_name,
+                            exchange_thumbnail: bot.exchange_thumbnail,
+                            uid: bot?.uid || '',
+                            email: bot?.email || '',
+                            name: bot?.name || '',
                         });
                 }
             } else {
@@ -127,16 +130,6 @@ export async function POST(request) {
         );
         const resultxx = await resxx.json();
         console.log(resultxx, 'resultxx');
-        if (resultxx?.error) {
-            return new Response(JSON.stringify({
-                error: resultxx?.error + ' ' + JSON.stringify(resultxx?.error_attributes)
-            }), {
-                status: 500,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        }
 
 
         // 6. add to 3commas_logs
@@ -150,13 +143,37 @@ export async function POST(request) {
                 createdAt: new Date(),
                 action: `FORCE_${body.action === 'buy' ? 'BUY' : 'SELL'}`,
                 autotrader_id: body.autotrader_id,
-                exchange_external_id : bot.exchange_external_id,
-                exchange_thumbnail : bot.exchange_thumbnail,
-                exchange_name : bot.exchange_name,
+                exchange_external_id: bot.exchange_external_id,
+                exchange_thumbnail: bot.exchange_thumbnail,
+                exchange_name: bot.exchange_name,
                 pair: _pair,
                 trading_plan_id: _tradingPlanId,
             });
 
+        if (resultxx?.error) {
+            await adminDb
+                .collection('3commas_logs')
+                .add({
+                    ...resultxx,
+                    smart_trade_id: String(resultxx?.data?.id),
+                    createdAt: new Date(),
+                    action: `FORCE_${body.action === 'buy' ? 'BUY' : 'SELL'}`,
+                    autotrader_id: body.autotrader_id,
+                    exchange_external_id: bot.exchange_external_id,
+                    exchange_thumbnail: bot.exchange_thumbnail,
+                    exchange_name: bot.exchange_name,
+                    pair: _pair,
+                    trading_plan_id: _tradingPlanId,
+                });
+            return new Response(JSON.stringify({
+                error: resultxx?.error + ' ' + JSON.stringify(resultxx?.error_attributes)
+            }), {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
         return Response.json({
             coindeskData,
             data: checkStatus2,
