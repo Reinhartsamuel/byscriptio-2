@@ -230,7 +230,7 @@ function SmartTradesTable({ trades }) {
               </div>
               <div>
                 <p className="text-xs text-gray-400">Trade Value</p>
-                <p className="text-sm">${details?.position?.price?.value}</p>
+                <p className="text-sm">${details?.position?.units?.value}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400">Profit (USD)</p>
