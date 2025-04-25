@@ -86,6 +86,7 @@ export async function POST(request) {
                             uid: bot?.uid || '',
                             email: bot?.email || '',
                             name: bot?.name || '',
+                            tradeAmount : bot?.tradeAmount || 0,
                         });
                 }
             } else {
@@ -148,6 +149,7 @@ export async function POST(request) {
                 exchange_name: bot.exchange_name,
                 pair: _pair,
                 trading_plan_id: _tradingPlanId,
+                tradeAmount : bot?.tradeAmount || 0,
             });
 
         if (resultxx?.error) {
@@ -164,6 +166,7 @@ export async function POST(request) {
                     exchange_name: bot.exchange_name,
                     pair: _pair,
                     trading_plan_id: _tradingPlanId,
+                    tradeAmount : bot?.tradeAmount || 0,
                 });
             return new Response(JSON.stringify({
                 error: resultxx?.error + ' ' + JSON.stringify(resultxx?.error_attributes)

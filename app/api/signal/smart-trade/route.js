@@ -503,7 +503,8 @@ async function executeSpotTrade({
                 smart_trade: true,
                 previousBuyId: arr[0]?.id || '',
                 webhookId,
-                marketType:'spot'
+                marketType:'spot',
+                tradeAmount : autotrader?.tradeAmount || 0,
             }
             const newDoc = await adminDb
                 .collection('3commas_logs')
@@ -555,7 +556,8 @@ async function executeSpotTrade({
                 pair: body?.pair,
                 smart_trade: true,
                 webhookId : webhookId || '',
-                maketType : 'spot'
+                maketType : 'spot',
+                tradeAmount : autotrader?.tradeAmount || 0,
             })
             console.log(newDoc.id, 'newDoc.id for buy signal')     
         } catch (error) {

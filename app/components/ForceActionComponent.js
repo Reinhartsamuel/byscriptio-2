@@ -67,6 +67,7 @@ export default function ForceActionComponent({ detail }) {
           type: action,
           autotrader_id: detail?.id,
           pair: detail?.trading_plan_pair[0]?.split('_').splice(1).join('_'),
+          tradeAmount : detail?.tradeAmount || 0,
         })
         if (!resultClose.error) {
           Swal.fire({
