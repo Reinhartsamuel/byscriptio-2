@@ -346,13 +346,16 @@ export default function ModalAddAutotraderNew({
                   </div>
                 </div>
                 <div className='flex flex-col gap-1 text-sm'>
-                  <p className='text-gray-700 dark:text-gray-300'>
+                  <p className='text-sm text-gray-300'>
+                    {exchange?.exchange_external_name}
+                  </p>
+                  <p className='text-gray-400'>
                     ID: {exchange?.external_id}
                   </p>
-                  <p className='text-gray-700 dark:text-gray-300'>
+                  <p className='text-gray-400'>
                     {moment.unix(exchange?.createdAt?.seconds).fromNow()}
                   </p>
-                  <p className='text-gray-700 dark:text-gray-300'>
+                  <p className='text-gray-400'>
                     {exchange?.external_name}
                   </p>
                 </div>
@@ -448,7 +451,7 @@ export default function ModalAddAutotraderNew({
                     </button>
                   )}
 
-                  <div className="flex gap-4">
+                  <div className="flex lg:flex-row flex-col gap-4">
                     <div className="flex-1">
                       <label className="mb-2 block text-sm font-medium text-gray-200">
                         Select Pair {index + 1}

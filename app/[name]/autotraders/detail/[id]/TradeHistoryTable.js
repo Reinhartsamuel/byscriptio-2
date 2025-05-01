@@ -77,7 +77,7 @@ function SmartTradesTable({ trades }) {
     setOpenModal(true);
   }
   return (
-    <div className="overflow-x-auto rounded-xl shadow-lg">
+    <div className="overflow-x-auto w-full rounded-xl shadow-lg">
       <table className="min-w-full text-sm text-left text-gray-300 dark:bg-gray-900">
         <thead className="text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap">
           <tr>
@@ -165,12 +165,12 @@ function SmartTradesTable({ trades }) {
                 {JSON.stringify(details, null, 2)}
               </code>
             </div>
-          ) : details?.error ? (
+          ) : details?.error || details?.status?.type ==='failed' ? (
             // ERROR VIEW
             <div className="grid grid-cols-1 gap-4 text-red-400">
               <div>
-                <p className="text-xs text-gray-400">Error Type</p>
-                <p className="text-sm font-medium">{details?.error}</p>
+                <p className="text-xs text-gray-400">Error:</p>
+                <p className="text-sm font-medium">{details?.error || details?.status?.error}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400">Error Description</p>
@@ -229,8 +229,8 @@ function SmartTradesTable({ trades }) {
                 <p className="text-sm">${details?.position?.price?.value}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400">Trade Value</p>
-                <p className="text-sm">${details?.position?.units?.value}</p>
+                <p className="text-xs text-gray-400">Trade Amount</p>
+                <p className="text-sm">USD {details?.tradeAmount || '-'}</p>
               </div>
               <div>
                 <p className="text-xs text-gray-400">Profit (USD)</p>

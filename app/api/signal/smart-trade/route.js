@@ -574,3 +574,22 @@ async function executeSpotTrade({
         }
     }
 }
+
+
+
+async function calculateContract ({
+    bot,
+    price,
+    pair,
+    market_type
+}) {
+    try {
+        const contract_multiplier = 10;
+        if (!bot.tradeAmount) throw new Error('');
+        const contract = parseFloat(bot.tradeAmount) * price * contract_multiplier;
+        return parseFloat(contract);
+    } catch (error) {
+        console.log(error.message, 'error calculateContract');
+        return 0;
+    }
+}

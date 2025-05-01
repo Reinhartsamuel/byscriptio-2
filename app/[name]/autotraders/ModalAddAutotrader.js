@@ -429,20 +429,28 @@ function TradingPlanSelectComponent({ data, setData }) {
 
   const handleSelectPair = (checked, value) => {
     if (checked) {
-      setSelectedPairs([...selectedPairs, JSON.parse(value)]);
-      const tpp = [...data.trading_plan_pair];
-      tpp.push(selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair);
-      // console.log(tpp, 'tpp');
-      setData({ ...data, trading_plan_pair: tpp });
+      // Create new arrays instead of mutating existing ones
+      const newSelectedPairs = [...selectedPairs, JSON.parse(value)];
+      const newTradingPlanPair = [...data.trading_plan_pair];
+      newTradingPlanPair.push(selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair);
+      
+      setSelectedPairs(newSelectedPairs);
+      setData({
+        ...data,
+        trading_plan_pair: newTradingPlanPair
+      });
     } else {
-      setSelectedPairs(
-        selectedPairs.filter((pair) => pair.id !== JSON.parse(value).id)
+      const newSelectedPairs = selectedPairs.filter(
+        (pair) => pair.id !== JSON.parse(value).id
       );
-      const tppToDelete =
-        selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair;
-      const tpp = data.trading_plan_pair?.filter((x) => x !== tppToDelete);
-      // console.log(tpp, 'tpp');
-      setData({ ...data, trading_plan_pair: tpp });
+      const tppToDelete = selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair;
+      const newTradingPlanPair = data.trading_plan_pair?.filter((x) => x !== tppToDelete);
+      
+      setSelectedPairs(newSelectedPairs);
+      setData({
+        ...data,
+        trading_plan_pair: newTradingPlanPair
+      });
     }
   };
 

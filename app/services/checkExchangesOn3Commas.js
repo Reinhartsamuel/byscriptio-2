@@ -7,8 +7,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import exchangeConnectTemplate from '../utils/emailHtmlTemplates/exchangeConnectTemplate';
 import moment from 'moment';
 
-function getType(exchange_type) {
-  const type = exchange_type.toLowerCase();
+function getType(exchange_name) {
+  const type = exchange_name.toLowerCase();
   if (type.includes('spot')) return 'SPOT';
   if (type.includes('futures')) return 'FUTURES';
   if (type.includes('margin')) return 'MARGIN';
@@ -54,13 +54,13 @@ export async function onCheck3CApi({
 
     if (error) throw new Error(error);
     const myExchange = data?.filter((x) => x.name === newlyCreatedId);
-    console.log({ myExchange });
+    console.log(myExchange, 'myExchange');
 
     if (myExchange?.length > 0) {
       // const exchangeData = myExchange[0];
 
       await Promise.allSettled(myExchange.map(async (exchangeData, i) => {
-        console.log('processing exchange:::',exchangeData, `index: ${i}`)
+        console.log('processing exchange:::', exchangeData, `index: ${i}`)
         const find = await getCollectionFirebase('exchange_accounts', [
           {
             field: 'external_id',
@@ -82,13 +82,16 @@ export async function onCheck3CApi({
             exchange_name: getName(exchangeData.exchange_name),
             exchange_thumbnail: exchangeThumbnail,
             type: getType(exchangeData.exchange_name),
+            exchange_external_name: exchangeData.exchange_name.toUpperCase(),
+            exchange_external_code: exchangeData?.market_code || '',
           };
-          console.log(addData,'addData')
-          await setDocumentFirebase(
+          console.log(addData, 'addData')
+          const setDocc = await setDocumentFirebase(
             'exchange_accounts',
-            newlyCreatedId + "-"+getType(exchangeData.exchange_name),
+            newlyCreatedId + "-" + exchangeData.exchange_name.toUpperCase(),
             addData,
           );
+          console.log(setDocc, i, 'setDocc')
         } catch (error) {
           console.log(error, 'error adding data')
         }

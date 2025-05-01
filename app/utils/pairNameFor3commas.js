@@ -11,6 +11,7 @@ export async function pairNameFor3commas(bot, _pair) {
             })
         });
         const res = await x.json();
+        console.log('anjiiiinkkkkk', res)
         if (res.data?.exchange_name === 'Binance Futures USDT-M') {
             return `${_pair}USDT`;
         } else if (res.data?.exchange_name === 'Binance Futures COIN-M') {

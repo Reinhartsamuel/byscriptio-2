@@ -43,65 +43,47 @@ export async function executeNewTrade({
     // if error, return error and console log
     if (responseExecute.error || responseExecute.error_description) {
         console.log('Failed to execute smart trade', responseExecute, 'payload:', JSON.stringify(updatedBodySend));
-        if (nonce <= MAX_EXECUTION_RETRIES) {
-            console.log('retrying execute smart trade', nonce);
-            return await executeNewTrade({
-                bodySend,
-                body,
-                nonce: nonce + 1,
-                updateTradeAmount,
-                webhookId
-            }); // retry MAX_EXECUTION_RETRIES times
-        }
-        adminDb
-        .collection('3commas_logs')
-        .add({
-            ...responseExecute,
-            name: autotrader?.name || '',
-            email: autotrader?.email || '',
-            uid: autotrader?.uid || '',
-            exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-            exchange_name: autotrader?.exchange_name || '',
-            exchange_external_id: autotrader?.exchange_external_id || '',
-            smart_trade_id,
-            autotrader_id: autotrader.id,
-            createdAt: new Date(),
-            trading_plan_id: body.trading_plan_id,
-            action: body.type === 'sell' ? 'SELL' : 'BUY',
-            type: 'autotrade',
-            pair: body.pair,
-            smart_trade: true,
-            requestBody: bodySend,
-        })
-        return {
-            error: responseExecute.error + ', ' + responseExecute.error_description,
-            error_attributes: responseExecute.error_attributes
-        }
+        // if (nonce <= MAX_EXECUTION_RETRIES) {
+        //     console.log('retrying execute smart trade', nonce);
+        //     return await executeNewTrade({
+        //         bodySend,
+        //         body,
+        //         nonce: nonce + 1,
+        //         updateTradeAmount,
+        //         webhookId
+        //     }); // retry MAX_EXECUTION_RETRIES times
+        // }
     }
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;
 
+    console.log(body, 'bjir')
+    console.log(bodySend, 'kudaa')
+    console.log()
+
     // save to 3commas_logs without waiting for it to finish
+    const dataToAdd = {
+        ...responseExecute,
+        name: autotrader?.name || '',
+        email: autotrader?.email || '',
+        uid: autotrader?.uid || '',
+        exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+        exchange_name: autotrader?.exchange_name || '',
+        exchange_external_id: autotrader?.exchange_external_id || '',
+        smart_trade_id,
+        autotrader_id: autotrader.id,
+        createdAt: new Date(),
+        trading_plan_id: body.trading_plan_id,
+        action: body.type === 'sell' ? 'SELL' : 'BUY',
+        type: 'autotrade',
+        pair: body.pair,
+        smart_trade: true,
+        requestBody: bodySend,
+    };
+    dataToAdd.pair = body.pair;
     adminDb
         .collection('3commas_logs')
-        .add({
-            ...responseExecute,
-            name: autotrader?.name || '',
-            email: autotrader?.email || '',
-            uid: autotrader?.uid || '',
-            exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-            exchange_name: autotrader?.exchange_name || '',
-            exchange_external_id: autotrader?.exchange_external_id || '',
-            smart_trade_id,
-            autotrader_id: autotrader.id,
-            createdAt: new Date(),
-            trading_plan_id: body.trading_plan_id,
-            action: body.type === 'sell' ? 'SELL' : 'BUY',
-            type: 'autotrade',
-            pair: body.pair,
-            smart_trade: true,
-            requestBody: bodySend,
-        })
+        .add(dataToAdd)
     return { ...responseExecute, smart_trade_id };
 }
