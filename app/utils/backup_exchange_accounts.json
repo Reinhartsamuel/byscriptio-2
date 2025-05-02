@@ -1,0 +1,2960 @@
+{
+  "status": "okelah",
+  "lengthUpdated": 0,
+  "arr": [
+    {
+      "uid": "",
+      "name": "darren",
+      "email": "darren.suciono@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32941144,
+      "createdAt": {
+        "_seconds": 1733481547,
+        "_nanoseconds": 866000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537258,
+        "_nanoseconds": 154000000
+      },
+      "id": "04OTTA4ZmlqqoddhxUdH",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725541664,
+        "_nanoseconds": 485000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Tanti",
+      "email": "tantimardiana08@gmail.com",
+      "uid": "WS1WfPTNM6bNjtSbx57iS2BKu5i1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32791067,
+      "id": "0uUMh4bqOxZj6Y4hgjU1",
+      "lastUpdated": {
+        "_seconds": 1734539259,
+        "_nanoseconds": 522000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "external_id": 32976693,
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "email": "edwinfardyanto@gmail.com",
+      "name": "Edwin Ardyanto",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://api.scorecard.cash/uploads/bybit_303e7734d1.png",
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 938000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 938000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "15OZS2Xb2hPpsCsH6KFx"
+    },
+    {
+      "name": "Tanti",
+      "email": "tantimardiana08@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32457424,
+      "createdAt": {
+        "_seconds": 1733714105,
+        "_nanoseconds": 455000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "uid": "WS1WfPTNM6bNjtSbx57iS2BKu5i1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734524840,
+        "_nanoseconds": 729000000
+      },
+      "id": "1CXZDgoykV70Lgv7sHHx",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1741601094,
+        "_nanoseconds": 13000000
+      },
+      "lastUpdated": {
+        "_seconds": 1741601094,
+        "_nanoseconds": 13000000
+      },
+      "uid": "v4WYqsZMCehhMNMsMicxK1yDLbe2",
+      "lastUpdatedBy": {
+        "uid": "v4WYqsZMCehhMNMsMicxK1yDLbe2",
+        "email": "byscriptofficial@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "vtZoEgoIC3xkzbYyPZUB",
+      "name": "byscript official",
+      "external_id": 33099071,
+      "type": "SPOT",
+      "email": "byscriptofficial@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "1kMJiBNkGIQGPypdLpCC"
+    },
+    {
+      "uid": "",
+      "name": "Farrell",
+      "email": "anandafarrell66@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32998855,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736333140,
+        "_nanoseconds": 356000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736333140,
+        "_nanoseconds": 356000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "1qz6rHRksOuken4denhR"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725541836,
+        "_nanoseconds": 969000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Rizky Ais",
+      "email": "rizkyais2727@gmail.com",
+      "external_id": 32806364,
+      "id": "2Pcw9M0OSjMG2GdcMB7v",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "lastUpdated": {
+        "_seconds": 1740641013,
+        "_nanoseconds": 346000000
+      },
+      "lastUpdatedBy": {
+        "uid": "yTxBDM8G9naMXhlpuM5zKWVzBtA2",
+        "email": "rizkyais2727@gmail.com"
+      },
+      "uid": "yTxBDM8G9naMXhlpuM5zKWVzBtA2",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "",
+      "name": "Alvin 2",
+      "email": "altisari02@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32660559,
+      "createdAt": {
+        "_seconds": 1733715336,
+        "_nanoseconds": 57000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734524830,
+        "_nanoseconds": 496000000
+      },
+      "id": "2dfL1hLOty4g7fUZhjjt",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "edwin ardyanto",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32957909,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1734524820,
+        "_nanoseconds": 63000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdated": {
+        "_seconds": 1734573273,
+        "_nanoseconds": 738000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "3te0YJLdNv0s0dZFG7An"
+    },
+    {
+      "uid": "gmSOGL3tNASSGlHZlayRhyKa10t2",
+      "name": "rega marizal",
+      "email": "regamarizal@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731669661,
+        "_nanoseconds": 243000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32903980,
+      "id": "47bnFpHkWupSXtwe1Uhh",
+      "lastUpdated": {
+        "_seconds": 1734537551,
+        "_nanoseconds": 125000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "E48ovTK4mLgfypjVEZk7Nxm56fo1",
+      "name": "Handika Crypto",
+      "email": "handikacryptoo@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1732809075,
+        "_nanoseconds": 361000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32926479,
+      "id": "4PmbaYTmS3QugzDuvZn7",
+      "lastUpdated": {
+        "_seconds": 1734537481,
+        "_nanoseconds": 543000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "external_id": 32976694,
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "email": "edwinfardyanto@gmail.com",
+      "name": "Edwin Ardyanto",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://api.scorecard.cash/uploads/bybit_303e7734d1.png",
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 939000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 939000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "4Xe9B7sHxRDoGpFNLnas"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1737446874,
+        "_nanoseconds": 950000000
+      },
+      "uid": "kUvu6VmJ5IM2BL0EAzvQ6F8L8sg1",
+      "exchange_thumbnail": "https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png",
+      "name": "Muhammad Yusuf",
+      "email": "muh.yusuf75@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1737447502,
+        "_nanoseconds": 279000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33020203,
+      "id": "4qykjvDaEjBXvvDtzuip",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "6tktAoA0DZNZT044PmGMtOeLZcf1",
+      "name": "Bahar Nc Alamsyah",
+      "email": "nc.alamsyah@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32986574,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735648449,
+        "_nanoseconds": 769000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735648449,
+        "_nanoseconds": 769000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "5khgqo0YBD8HvMnAXopi"
+    },
+    {
+      "uid": "G4CwHPglHaevhKuOxJd5omqyQsq1",
+      "name": "Narendra Noor Faezal",
+      "email": "narendra@infia.co",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "createdAt": {
+        "_seconds": 1732078332,
+        "_nanoseconds": 611000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32911600,
+      "id": "6TeAj8SPha3pgkc9xnzQ",
+      "lastUpdated": {
+        "_seconds": 1734537511,
+        "_nanoseconds": 675000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1739544442,
+        "_nanoseconds": 18000000
+      },
+      "lastUpdated": {
+        "_seconds": 1739544442,
+        "_nanoseconds": 18000000
+      },
+      "uid": "pWoR8yF8vVNCxq9y9OJKV4VAQaV2",
+      "lastUpdatedBy": {
+        "uid": "pWoR8yF8vVNCxq9y9OJKV4VAQaV2",
+        "email": "prasetyo17ivan@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "jTluF3g0eff9uEDs9Jyc",
+      "name": "Ivan Prasetyo",
+      "external_id": 33065406,
+      "type": "SPOT",
+      "email": "prasetyo17ivan@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "7lwlg4ZCrAanDmOVNpXY"
+    },
+    {
+      "uid": "ABfoXjuKcFOjUkpAJJ5X6X248dq1",
+      "name": "Dean Pribadi",
+      "email": "dean.nabawy@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731453860,
+        "_nanoseconds": 962000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32899780,
+      "id": "8EN5PLMPkcaCrCmMZTGY",
+      "lastUpdated": {
+        "_seconds": 1734537769,
+        "_nanoseconds": 842000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1727366618,
+        "_nanoseconds": 553000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Hendy",
+      "email": "bigtimes888@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32855768,
+      "id": "8oV9LVxnkfRqGlhJRmRI",
+      "lastUpdated": {
+        "_seconds": 1734538736,
+        "_nanoseconds": 409000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1725541613,
+        "_nanoseconds": 420000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "abi",
+      "email": "abi.bayu@gmail.com",
+      "external_id": 32735809,
+      "id": "8ugNu8kadTEb7ILo95RP",
+      "type": "SPOT",
+      "lastUpdated": {
+        "_seconds": 1737193380,
+        "_nanoseconds": 394000000
+      },
+      "lastUpdatedBy": {
+        "uid": "bvrcNppCjHduI3ta740WlAmza5W2",
+        "email": "abi.bayu@gmail.com"
+      },
+      "uid": "bvrcNppCjHduI3ta740WlAmza5W2",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1726043907,
+        "_nanoseconds": 912000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Alharris",
+      "email": "rockpreneur@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32818979,
+      "id": "9Ai7sTTRyleN0LNASRBw",
+      "lastUpdated": {
+        "_seconds": 1734538869,
+        "_nanoseconds": 660000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "qJfVfIxByLhubrnLMoeBdTj1L6C2",
+      "name": "Aldo Jusman",
+      "email": "aldo.jusman@xlfutureleaders.com",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "external_id": 32948328,
+      "createdAt": {
+        "_seconds": 1733674142,
+        "_nanoseconds": 580000000
+      },
+      "lastUpdated": {
+        "_seconds": 1733674142,
+        "_nanoseconds": 580000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "type": "FUTURES",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "9VnWza5AY6iHFn22suRV"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1726475936,
+        "_nanoseconds": 882000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "ogut",
+      "email": "ogut",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32734157,
+      "id": "A4Y6WloOEGSCFJS0WCMH",
+      "lastUpdated": {
+        "_seconds": 1734538783,
+        "_nanoseconds": 710000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "NNcHVPJb4se0ilNkCXIOmAqdnxi1",
+      "name": "urban stuff",
+      "email": "urbanstuff.jkt@gmail.com",
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1731670467,
+        "_nanoseconds": 265000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32903894,
+      "id": "AH2iJ77g2kF2RQjjt0s4",
+      "lastUpdated": {
+        "_seconds": 1734537536,
+        "_nanoseconds": 27000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BYBIT",
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "lastUpdatedBy": {
+        "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+        "email": "merdekauntungsejahtera@gmail.com"
+      },
+      "exchange_thumbnail": "https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95",
+      "customerId": "j43Ue6GolL16PkDiPtQP",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "type": "FUTURES",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "createdAt": {
+        "_seconds": 1742924230,
+        "_nanoseconds": 113000000
+      },
+      "lastUpdated": {
+        "_seconds": 1742924230,
+        "_nanoseconds": 113000000
+      },
+      "external_id": 33120281,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "Azl3wXjpakF0jEw5PsxH-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 809000000
+      },
+      "lastUpdated": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 809000000
+      },
+      "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+      "lastUpdatedBy": {
+        "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+        "email": "reinhartsams@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "LVnyjBYzk0j5V98CKUQe",
+      "name": "Reinhart Samuel",
+      "external_id": 33163160,
+      "type": "FUTURES",
+      "email": "reinhartsams@gmail.com",
+      "market_code": "binance_futures_coin",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "CBNPRFOSzw7SM70ZPvPI-BINANCE FUTURES COIN-M"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 808000000
+      },
+      "lastUpdated": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 808000000
+      },
+      "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+      "lastUpdatedBy": {
+        "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+        "email": "reinhartsams@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "LVnyjBYzk0j5V98CKUQe",
+      "name": "Reinhart Samuel",
+      "external_id": 33163159,
+      "type": "FUTURES",
+      "email": "reinhartsams@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "CBNPRFOSzw7SM70ZPvPI-BINANCE FUTURES USDT-M"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 800000000
+      },
+      "lastUpdated": {
+        "_seconds": 1746009885,
+        "_nanoseconds": 800000000
+      },
+      "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+      "lastUpdatedBy": {
+        "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+        "email": "reinhartsams@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "LVnyjBYzk0j5V98CKUQe",
+      "name": "Reinhart Samuel",
+      "external_id": 33163158,
+      "type": "SPOT",
+      "email": "reinhartsams@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "CBNPRFOSzw7SM70ZPvPI-BINANCE SPOT"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1728567362,
+        "_nanoseconds": 920000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Nine",
+      "email": "9nahriamusfira@gmail.com",
+      "external_id": 32864388,
+      "id": "CHoavMHDO8Yx2Z9eQdo2",
+      "uid": "9xwxwmy5QNV414MjRaYeiI4OHqK2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734538142,
+        "_nanoseconds": 86000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "41n3BV5lq2dkp6nnKmtEAvglh8l2",
+      "name": "Wei Sen",
+      "email": "w3is3n@gmail.com",
+      "createdAt": {
+        "_seconds": 1737369291,
+        "_nanoseconds": 912000000
+      },
+      "lastUpdated": {
+        "_seconds": 1737369869,
+        "_nanoseconds": 656000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33018425,
+      "id": "ChX7uPXiJclGWwbxnQyl",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "",
+      "name": "Imam Solihin",
+      "email": "mmsolihin@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32936087,
+      "createdAt": {
+        "_seconds": 1733715088,
+        "_nanoseconds": 870000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734524835,
+        "_nanoseconds": 812000000
+      },
+      "id": "D91Vjbtgrra8jukLxZfZ",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "nPoLtT5PR6hRa6Cj9bppwDVJvfA2",
+      "name": "Hanggoro Boedirahardjo",
+      "email": "hanggoro.zip@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32988716,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735792265,
+        "_nanoseconds": 477000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735792265,
+        "_nanoseconds": 477000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "DgyzCatiVwst7g09ASON"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1740295542,
+        "_nanoseconds": 31000000
+      },
+      "lastUpdated": {
+        "_seconds": 1740295542,
+        "_nanoseconds": 31000000
+      },
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "lastUpdatedBy": {
+        "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+        "email": "merdekauntungsejahtera@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "j43Ue6GolL16PkDiPtQP",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "external_id": 33078448,
+      "type": "SPOT",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "DhteRRMkoqEuKby0asBy"
+    },
+    {
+      "exchange_name": "BYBIT",
+      "uid": "xtgnvT10ukUfazTLbZi0S5NgMvH3",
+      "lastUpdatedBy": {
+        "uid": "xtgnvT10ukUfazTLbZi0S5NgMvH3",
+        "email": "anisakurniasih20@guru.smp.belajar.id"
+      },
+      "exchange_thumbnail": "https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95",
+      "customerId": "STyBwZTONi3RIE0z3dpC",
+      "name": "Anisa Kurniasih",
+      "type": "FUTURES",
+      "email": "anisakurniasih20@guru.smp.belajar.id",
+      "createdAt": {
+        "_seconds": 1742086383,
+        "_nanoseconds": 623000000
+      },
+      "lastUpdated": {
+        "_seconds": 1742086383,
+        "_nanoseconds": 623000000
+      },
+      "external_id": 33106751,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "Dwp2CpufYqMosJe0pjt5-FUTURES"
+    },
+    {
+      "exchange_name": "BYBIT",
+      "createdAt": {
+        "_seconds": 1742086383,
+        "_nanoseconds": 448000000
+      },
+      "lastUpdated": {
+        "_seconds": 1742086383,
+        "_nanoseconds": 448000000
+      },
+      "uid": "xtgnvT10ukUfazTLbZi0S5NgMvH3",
+      "lastUpdatedBy": {
+        "uid": "xtgnvT10ukUfazTLbZi0S5NgMvH3",
+        "email": "anisakurniasih20@guru.smp.belajar.id"
+      },
+      "exchange_thumbnail": "https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95",
+      "customerId": "STyBwZTONi3RIE0z3dpC",
+      "name": "Anisa Kurniasih",
+      "external_id": 33106750,
+      "type": "SPOT",
+      "email": "anisakurniasih20@guru.smp.belajar.id",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "Dwp2CpufYqMosJe0pjt5-SPOT"
+    },
+    {
+      "uid": "G4CwHPglHaevhKuOxJd5omqyQsq1",
+      "name": "Narendra Noor Faezal",
+      "email": "narendra@infia.co",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "external_id": 32911601,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1733472841,
+        "_nanoseconds": 64000000
+      },
+      "lastUpdated": {
+        "_seconds": 1733472841,
+        "_nanoseconds": 64000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "E4WVTGTNwqQpdI6CZ07a"
+    },
+    {
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 33000604,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736432642,
+        "_nanoseconds": 877000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736432642,
+        "_nanoseconds": 877000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "E4sRo7QFMIZj7kudjnaH"
+    },
+    {
+      "exchange_name": "BYBIT",
+      "uid": "7tg1BFAGV9bWJeVZIZVVBNDJfM33",
+      "exchange_thumbnail": "https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95",
+      "name": "Efrain Riyadi",
+      "email": "frenzent@gmail.com",
+      "createdAt": {
+        "_seconds": 1737451922,
+        "_nanoseconds": 941000000
+      },
+      "lastUpdated": {
+        "_seconds": 1737454216,
+        "_nanoseconds": 797000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32981616,
+      "id": "E7x9AgjvqjQGTYfSvgWM",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725845706,
+        "_nanoseconds": 614000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Hasnal Wenes",
+      "email": "hasnalwenes@gmail.com",
+      "uid": "dvAIFZkKaMZUb5kaYYd1VnCEV5n2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32814412,
+      "id": "FQHolrPoQb25Of51j5np",
+      "lastUpdated": {
+        "_seconds": 1734538948,
+        "_nanoseconds": 789000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1740417019,
+        "_nanoseconds": 679000000
+      },
+      "lastUpdated": {
+        "_seconds": 1740417019,
+        "_nanoseconds": 679000000
+      },
+      "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+      "lastUpdatedBy": {
+        "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+        "email": "victorleesanjaya@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "aqu4X1EuDYSAhs32rFkW",
+      "name": "Victor Lisanjaya",
+      "external_id": 33080536,
+      "type": "SPOT",
+      "email": "victorleesanjaya@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "FSym9O7d15ycpCETjTdh"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1725541954,
+        "_nanoseconds": 920000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Filip Natanael",
+      "email": "filipnatanael@gmail.com",
+      "uid": "HnDyNQetAsSgormrmCiQaaoITEo1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32832086,
+      "id": "FbGliCO1iTf6FF8myrDk",
+      "lastUpdated": {
+        "_seconds": 1734538900,
+        "_nanoseconds": 839000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "TJStFDP9UfUPZqGYScO7zXNtrEJ3",
+      "name": "Joko Soemitro",
+      "email": "soemitro.joko@gmail.com",
+      "exchange_name": "OKX",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg",
+      "external_id": 32988881,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735806897,
+        "_nanoseconds": 157000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735806897,
+        "_nanoseconds": 157000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "FePucdofxNli46k75dIa"
+    },
+    {
+      "uid": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+      "name": "Reinhart Samuel",
+      "email": "reinhartsams@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32981384,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735531033,
+        "_nanoseconds": 721000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735531033,
+        "_nanoseconds": 721000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "FrNEiHsg1l0KqghNesDl"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725541583,
+        "_nanoseconds": 868000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Erdieny Fahliza Triandini",
+      "email": "erdienyft10@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32705502,
+      "id": "GjpCOf57ebTca8OqZ8tf",
+      "lastUpdated": {
+        "_seconds": 1734539350,
+        "_nanoseconds": 858000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "michelle chintya",
+      "email": "michellechintya179@gmail.com",
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1729266978,
+        "_nanoseconds": 928000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "external_id": 32873567,
+      "id": "GzMyhljxP2Sx08Jx1dxd",
+      "type": "SPOT",
+      "lastUpdated": {
+        "_seconds": 1734703207,
+        "_nanoseconds": 499000000
+      },
+      "lastUpdatedBy": {
+        "uid": "rmq4QNvArRXqbKEoB9p2PKCITXs2",
+        "email": "michellechintya179@gmail.com"
+      },
+      "uid": "rmq4QNvArRXqbKEoB9p2PKCITXs2",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "",
+      "name": "Alvin",
+      "email": "alvinalbertha92@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32943714,
+      "createdAt": {
+        "_seconds": 1733564158,
+        "_nanoseconds": 611000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537115,
+        "_nanoseconds": 633000000
+      },
+      "id": "HbuagSPZEJpVsyCwIFvz",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "ZSHqXeQ3jeWFT2x8VhTwELBXLcd2",
+      "name": "Benardy B",
+      "email": "benardy.boen@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731046377,
+        "_nanoseconds": 612000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32893237,
+      "id": "I1hKToITrK1R7nWoJTsp",
+      "lastUpdated": {
+        "_seconds": 1734538074,
+        "_nanoseconds": 868000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "RofN0tqUxyWKt4XW07H2Qd99djh1",
+      "name": "Marinanda Azahra",
+      "email": "nandzhr@gmail.com",
+      "exchange_name": "OKX",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg",
+      "external_id": 32999145,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736345884,
+        "_nanoseconds": 187000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736345884,
+        "_nanoseconds": 187000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "JfwVFPnLCfPu6zbsdOA4"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1741010602,
+        "_nanoseconds": 151000000
+      },
+      "lastUpdated": {
+        "_seconds": 1741010602,
+        "_nanoseconds": 151000000
+      },
+      "uid": "uKrwSuEmSWcSy10IPXnFfHVuPtH2",
+      "lastUpdatedBy": {
+        "uid": "uKrwSuEmSWcSy10IPXnFfHVuPtH2",
+        "email": "geraldstrada10@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "GXWxls85qzN35XvIOFHe",
+      "name": "Gerald Hugo",
+      "external_id": 33090073,
+      "type": "SPOT",
+      "email": "geraldstrada10@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "Kn22o5NmYNjEG89rqiua"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "Yx9ACnq6SkNyeKQVpwKZsJJSq0z2",
+      "lastUpdatedBy": {
+        "uid": "Yx9ACnq6SkNyeKQVpwKZsJJSq0z2",
+        "email": "dave.chugani@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "NoJPfRNZDGCyDTeDAJh6",
+      "name": "Dev Kumarr",
+      "type": "FUTURES",
+      "email": "dave.chugani@gmail.com",
+      "createdAt": {
+        "_seconds": 1745906494,
+        "_nanoseconds": 644000000
+      },
+      "lastUpdated": {
+        "_seconds": 1745906494,
+        "_nanoseconds": 644000000
+      },
+      "external_id": 33161734,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "MZ4Eo97GVu32F3dt2lgN-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1745906494,
+        "_nanoseconds": 612000000
+      },
+      "lastUpdated": {
+        "_seconds": 1745906494,
+        "_nanoseconds": 612000000
+      },
+      "uid": "Yx9ACnq6SkNyeKQVpwKZsJJSq0z2",
+      "lastUpdatedBy": {
+        "uid": "Yx9ACnq6SkNyeKQVpwKZsJJSq0z2",
+        "email": "dave.chugani@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "NoJPfRNZDGCyDTeDAJh6",
+      "name": "Dev Kumarr",
+      "external_id": 33161732,
+      "type": "SPOT",
+      "email": "dave.chugani@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "MZ4Eo97GVu32F3dt2lgN-SPOT"
+    },
+    {
+      "uid": "vHxFqvqeHmO0xyuiOaaYvacInq22",
+      "name": "pop pop",
+      "email": "ferrypop27@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 33055620,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1739031349,
+        "_nanoseconds": 402000000
+      },
+      "lastUpdated": {
+        "_seconds": 1739031349,
+        "_nanoseconds": 402000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "N4BrKSCTZp3NHJeFvoGE"
+    },
+    {
+      "uid": "kvD9DeAuygT51VxPR4ELH5e1qB92",
+      "name": "aang yogie",
+      "email": "aangyogie@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32936372,
+      "createdAt": {
+        "_seconds": 1733476616,
+        "_nanoseconds": 299000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537267,
+        "_nanoseconds": 636000000
+      },
+      "id": "O41YqlCcZdzaii5IttAd",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725538256,
+        "_nanoseconds": 324000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "elok",
+      "email": "eloklisabetha90@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32705484,
+      "id": "OC9MzpH45to5oAQhzgBZ",
+      "lastUpdated": {
+        "_seconds": 1734539368,
+        "_nanoseconds": 674000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1741168600,
+        "_nanoseconds": 800000000
+      },
+      "lastUpdated": {
+        "_seconds": 1741168600,
+        "_nanoseconds": 800000000
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "external_id": 33092662,
+      "type": "SPOT",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "OKiKYQw1jIqFOkhRe9VO"
+    },
+    {
+      "uid": "6tktAoA0DZNZT044PmGMtOeLZcf1",
+      "name": "Bahar Nc Alamsyah",
+      "email": "nc.alamsyah@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32986575,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1735648489,
+        "_nanoseconds": 636000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735648489,
+        "_nanoseconds": 636000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "OxfzYuWc6rWRsu2IqLel"
+    },
+    {
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "external_id": 32976692,
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "email": "edwinfardyanto@gmail.com",
+      "name": "Edwin Ardyanto",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://api.scorecard.cash/uploads/bybit_303e7734d1.png",
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 936000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735548602,
+        "_nanoseconds": 936000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "PzBKjxtie9kxOjhpAksV"
+    },
+    {
+      "uid": "qJfVfIxByLhubrnLMoeBdTj1L6C2",
+      "name": "Aldo Jusman",
+      "email": "aldo.jusman@xlfutureleaders.com",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "createdAt": {
+        "_seconds": 1733674067,
+        "_nanoseconds": 652000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32948327,
+      "id": "QcivckXMQump4MPPp1eU",
+      "lastUpdated": {
+        "_seconds": 1734524845,
+        "_nanoseconds": 963000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725846566,
+        "_nanoseconds": 217000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Alvin 2",
+      "email": "altisari02@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32785329,
+      "id": "RBYeEOhYlSzowlxBnjdL",
+      "lastUpdated": {
+        "_seconds": 1734538884,
+        "_nanoseconds": 629000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BITGET",
+      "uid": "9pneS7eslcWtjFiOIpJAbl4NoAo2",
+      "lastUpdatedBy": {
+        "uid": "9pneS7eslcWtjFiOIpJAbl4NoAo2",
+        "email": "syarifcakep007@gmail.com"
+      },
+      "exchange_thumbnail": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Logo_Biget.svg/1200px-Logo_Biget.svg.png",
+      "name": "Ahmad Syarif",
+      "external_id": "",
+      "email": "syarifcakep007@gmail.com",
+      "createdAt": {
+        "_seconds": 1738753813,
+        "_nanoseconds": 274000000
+      },
+      "lastUpdated": {
+        "_seconds": 1738753813,
+        "_nanoseconds": 274000000
+      },
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "Rqkf2VfFD0tSxZP27o7Y"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "type": "FUTURES",
+      "email": "edwinfardyanto@gmail.com",
+      "createdAt": {
+        "_seconds": 1741708347,
+        "_nanoseconds": 10000000
+      },
+      "lastUpdated": {
+        "_seconds": 1741708347,
+        "_nanoseconds": 10000000
+      },
+      "external_id": 33100834,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "TWGwDjYIPgMRp2UhFH4U-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1741708347,
+        "_nanoseconds": 1000000
+      },
+      "lastUpdated": {
+        "_seconds": 1741708347,
+        "_nanoseconds": 1000000
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "external_id": 33100831,
+      "type": "SPOT",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "TWGwDjYIPgMRp2UhFH4U-SPOT"
+    },
+    {
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "external_id": 33000587,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736432147,
+        "_nanoseconds": 394000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736432147,
+        "_nanoseconds": 394000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "U3YcR4SHyuR0aEppyfMN"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1738562346,
+        "_nanoseconds": 406000000
+      },
+      "uid": "YosDKinhBoSOxH0VybKOisPmtU02",
+      "exchange_thumbnail": "https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png",
+      "name": "Rossi Hardin",
+      "email": "rosssovia@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1738562862,
+        "_nanoseconds": 264000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33045964,
+      "id": "UH3XLQcTpn8noO0ZOX3S",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "Vj0cfJmE0IcX2U02tpvmtVxaGvf2",
+      "name": "anjay mabar",
+      "email": "fiqo0595@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1729266960,
+        "_nanoseconds": 340000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32872058,
+      "id": "Vnc8WKV8kcW5mh7C2fl4",
+      "lastUpdated": {
+        "_seconds": 1734538127,
+        "_nanoseconds": 320000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "Rifki Maulana",
+      "email": "rifkimaulanaya@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32949335,
+      "createdAt": {
+        "_seconds": 1733713772,
+        "_nanoseconds": 1000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "id": "WHD3Yvtg5RXUJtwiEfP6",
+      "type": "SPOT",
+      "lastUpdated": {
+        "_seconds": 1736234716,
+        "_nanoseconds": 247000000
+      },
+      "lastUpdatedBy": {
+        "uid": "kvZTFKRruaMmZizB6S3FyB2fytj2",
+        "email": "rifkimaulanaya@gmail.com"
+      },
+      "uid": "kvZTFKRruaMmZizB6S3FyB2fytj2",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BYBIT",
+      "uid": "PYYxVu5NmoYIjAzHZ7zQyqfJYQY2",
+      "exchange_thumbnail": "https://www.octobot.cloud/_next/image?url=https%3A%2F%2Fnwhpvrguwcihhizrnyoe.supabase.co%2Fstorage%2Fv1%2Fobject%2Fsign%2Fexchange-icons%2Fbybit-logo-dark.png%3Ftoken%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJleGNoYW5nZS1pY29ucy9ieWJpdC1sb2dvLWRhcmsucG5nIiwiaWF0IjoxNzA3ODE5NjI0LCJleHAiOjE5OTE2NDM2MjR9.T62WhhpedQ2kym7gSF4hv2qts8QSJh4XHQp3pCjITRM%26t%3D2024-02-13T10%253A20%253A20.488Z&w=640&q=95",
+      "name": "Alexander Franklyn",
+      "email": "afranklyn240900@gmail.com",
+      "createdAt": {
+        "_seconds": 1738466195,
+        "_nanoseconds": 250000000
+      },
+      "lastUpdated": {
+        "_seconds": 1738477475,
+        "_nanoseconds": 726000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33043910,
+      "id": "aCJMf1JkwawRCMzttddL",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725541826,
+        "_nanoseconds": 369000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "darren",
+      "email": "darren.suciono@gmail.com",
+      "uid": "I2YW2n5wMkZUICcAbL1OxK62UKz1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32792494,
+      "id": "azrEsPINIeDoec1DSebL",
+      "lastUpdated": {
+        "_seconds": 1734539237,
+        "_nanoseconds": 878000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "yMhDtX4VzCQXxzt9Bx9xe072HwO2",
+      "name": "Hansen San",
+      "email": "santosi.hansen@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731566633,
+        "_nanoseconds": 568000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32902063,
+      "id": "bWLxu4VoIHlX3UnEUom8",
+      "lastUpdated": {
+        "_seconds": 1734537695,
+        "_nanoseconds": 593000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "",
+      "name": "agres",
+      "email": "agress321@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32940659,
+      "createdAt": {
+        "_seconds": 1733481612,
+        "_nanoseconds": 963000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537125,
+        "_nanoseconds": 651000000
+      },
+      "id": "bwSWaKUqgjMcFrBIs44e",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1726113450,
+        "_nanoseconds": 445000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Farrel Farisky",
+      "email": "farrel.farisky@gmail.com",
+      "uid": "PiKjmCw7Znc2CaVCiRSqmRqby3j2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32842852,
+      "id": "cTAUUQidytvAPQOd75er",
+      "lastUpdated": {
+        "_seconds": 1734538831,
+        "_nanoseconds": 709000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "QqB070WnFqbYI8DShSAWG1rxoI42",
+      "name": "prasdiman1",
+      "email": "prasdiman9@gmail.com",
+      "exchange_name": "BITGET",
+      "exchange_thumbnail": "https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format",
+      "external_id": 32995638,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1736165817,
+        "_nanoseconds": 567000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736165817,
+        "_nanoseconds": 567000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "crjfduHPj1FRlwqg2qKL"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1742366304,
+        "_nanoseconds": 428000000
+      },
+      "lastUpdated": {
+        "_seconds": 1742366304,
+        "_nanoseconds": 428000000
+      },
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "lastUpdatedBy": {
+        "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+        "email": "merdekauntungsejahtera@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "j43Ue6GolL16PkDiPtQP",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "external_id": 33111296,
+      "type": "SPOT",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "e8OafPolHMebDC5oDEOl-SPOT"
+    },
+    {
+      "uid": "vHxFqvqeHmO0xyuiOaaYvacInq22",
+      "name": "pop pop",
+      "email": "ferrypop27@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 33055619,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1739031249,
+        "_nanoseconds": 521000000
+      },
+      "lastUpdated": {
+        "_seconds": 1739031249,
+        "_nanoseconds": 521000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "ffx7cdesyJRZ7EMEuoHC"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1740297582,
+        "_nanoseconds": 452000000
+      },
+      "lastUpdated": {
+        "_seconds": 1740297582,
+        "_nanoseconds": 452000000
+      },
+      "uid": "rIE2PLJq9NafAS8FMvE1s6aaqcA3",
+      "lastUpdatedBy": {
+        "uid": "rIE2PLJq9NafAS8FMvE1s6aaqcA3",
+        "email": "andreocristiano99@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "4YY3Ko3Ru2qTIKKGvj5G",
+      "name": "Andreas Finance",
+      "external_id": 33078490,
+      "type": "SPOT",
+      "email": "andreocristiano99@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "gr4rRu5QHUL3ZVKlmRE6"
+    },
+    {
+      "uid": "PkoxZ7FZQ9huMFsBzP4taP48pqj1",
+      "name": "vinsen patrick",
+      "email": "vinsenpatrick@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731950147,
+        "_nanoseconds": 662000000
+      },
+      "createdBy": "RomXA3UVAbMZB55BLWzE42Dh3kz2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32909242,
+      "id": "hQYUTZIhXFZGy4QUm7k6",
+      "lastUpdated": {
+        "_seconds": 1734537525,
+        "_nanoseconds": 106000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "TJStFDP9UfUPZqGYScO7zXNtrEJ3",
+      "name": "Joko Soemitro",
+      "email": "soemitro.joko@gmail.com",
+      "exchange_name": "OKX",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/1e2874ba-6b40-41f6-9a08-cf016fc6e850_okx_logo.svg",
+      "external_id": 32988882,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1735806929,
+        "_nanoseconds": 389000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735806929,
+        "_nanoseconds": 389000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "htR93I1aHP9quvWPtmaM"
+    },
+    {
+      "name": "Randy Priyatna",
+      "email": "randepe@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32936621,
+      "createdAt": {
+        "_seconds": 1733473608,
+        "_nanoseconds": 316000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "id": "i5y9G4c8xFSAhB2yx8My",
+      "uid": "7svU1FCA4LMABEBnULFzjUHg3m62",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537275,
+        "_nanoseconds": 284000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725541635,
+        "_nanoseconds": 469000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Farrell",
+      "email": "anandafarrell66@gmail.com",
+      "external_id": 32768705,
+      "id": "iPOBtMde2617mzNBX2tl",
+      "type": "SPOT",
+      "lastUpdated": {
+        "_seconds": 1736066626,
+        "_nanoseconds": 716000000
+      },
+      "lastUpdatedBy": {
+        "uid": "kRJ8eR9lwjOixf0ABN8McwH0K1E2",
+        "email": "anandafarrell66@gmail.com"
+      },
+      "uid": "kRJ8eR9lwjOixf0ABN8McwH0K1E2",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "Xr6l5EYx37hX3GBbICuUmjAcDhA2",
+      "name": "Marco kaban",
+      "email": "kabanmarco89@gmail.com",
+      "exchange_name": "BYBIT",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/f0739090-3719-40a8-9427-a541475733e5_bybit_logo.svg",
+      "createdAt": {
+        "_seconds": 1731454462,
+        "_nanoseconds": 654000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32900170,
+      "id": "igrF7Ac20GR6MAFUSTYP",
+      "lastUpdated": {
+        "_seconds": 1734537744,
+        "_nanoseconds": 879000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "e9jQ0AMWJpQkcloWYccPyHlgtud2",
+      "name": "ifdial rayhan",
+      "email": "ifdialray@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1733313394,
+        "_nanoseconds": 651000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32938748,
+      "id": "jOV0Xp1VKzTiMFRHwkXF",
+      "lastUpdated": {
+        "_seconds": 1734537464,
+        "_nanoseconds": 975000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "Tanti",
+      "email": "tantimardiana08@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32936395,
+      "createdAt": {
+        "_seconds": 1733481832,
+        "_nanoseconds": 587000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "uid": "WS1WfPTNM6bNjtSbx57iS2BKu5i1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734537105,
+        "_nanoseconds": 100000000
+      },
+      "id": "jtSYWRTb4uO3Ajub1l98",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725541654,
+        "_nanoseconds": 302000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "carney sinaga soedarmadji",
+      "email": "carney.ss@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32779139,
+      "id": "kohatW9UZC01HwJPXyt6",
+      "lastUpdated": {
+        "_seconds": 1734539278,
+        "_nanoseconds": 740000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1726194362,
+        "_nanoseconds": 957000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Dymas Rizqy I",
+      "email": "dymasrizqi@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32669607,
+      "id": "kuoPrlfP79ade0GA5CjQ",
+      "lastUpdated": {
+        "_seconds": 1734538797,
+        "_nanoseconds": 247000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "OKX",
+      "createdAt": {
+        "_seconds": 1740057692,
+        "_nanoseconds": 967000000
+      },
+      "lastUpdated": {
+        "_seconds": 1740057692,
+        "_nanoseconds": 967000000
+      },
+      "uid": "C9T4hhxDxQPvha16thbNzhNlSiw1",
+      "lastUpdatedBy": {
+        "uid": "C9T4hhxDxQPvha16thbNzhNlSiw1",
+        "email": "timika@gmail.com"
+      },
+      "exchange_thumbnail": "https://www.coinroutes.com/static/8efb3275f19122028391461734d9122d/7efda/okx.webp",
+      "customerId": "bBh68xSFTzUvgtlSG900",
+      "name": "Kepala Suku",
+      "external_id": 33074375,
+      "type": "SPOT",
+      "email": "timika@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "kvYYNPKCwTCjdWBz88Dr"
+    },
+    {
+      "uid": "KEOz8B0t6nWqveBUas5Ue9eOy472",
+      "name": "Balqis Azizah Pradana",
+      "email": "balqiskiki2207@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32990469,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735895585,
+        "_nanoseconds": 896000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735895585,
+        "_nanoseconds": 897000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "lWbSKREkbxleCQ2wDeK8"
+    },
+    {
+      "uid": "6tktAoA0DZNZT044PmGMtOeLZcf1",
+      "name": "Bahar Nc Alamsyah",
+      "email": "nc.alamsyah@gmail.com",
+      "exchange_name": "BITGET",
+      "exchange_thumbnail": "https://images.prismic.io/3commas/de1e3082-4fef-4741-a010-a6ea0cc59c3a_1+1.png?auto=compress,format",
+      "external_id": 32986520,
+      "type": "FUTURES",
+      "createdAt": {
+        "_seconds": 1735648523,
+        "_nanoseconds": 319000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735648523,
+        "_nanoseconds": 319000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "mVBuxbZY2tNOO3MC1jX6"
+    },
+    {
+      "uid": "Bp5LDc9fk6VG5i8gf5HbtIzbTpa2",
+      "name": "android yudha",
+      "email": "androidyudha84@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32999073,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736344670,
+        "_nanoseconds": 834000000
+      },
+      "lastUpdated": {
+        "_seconds": 1736344670,
+        "_nanoseconds": 834000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "muqGSQeTb28o5qQnVxEX"
+    },
+    {
+      "uid": "",
+      "name": "Nine",
+      "email": "9nahriamusfira@gmail.com",
+      "exchange_name": "GATE",
+      "external_id": 32967795,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1734513148,
+        "_nanoseconds": 262000000
+      },
+      "lastUpdated": {
+        "_seconds": 1734513148,
+        "_nanoseconds": 262000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "nXppGrxFTXk6yrdIe659"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "TKOIH48rvJRlncDeXL7RwKMPhxn2",
+      "lastUpdatedBy": {
+        "uid": "TKOIH48rvJRlncDeXL7RwKMPhxn2",
+        "email": "taronext73@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "7IWkMK4nLQu4HdTMyQto",
+      "name": "Taro 89",
+      "type": "FUTURES",
+      "email": "taronext73@gmail.com",
+      "createdAt": {
+        "_seconds": 1744276582,
+        "_nanoseconds": 364000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744276582,
+        "_nanoseconds": 364000000
+      },
+      "external_id": 33138875,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "ndyZs4JdOOYUro3oFASI-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1744276582,
+        "_nanoseconds": 325000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744276582,
+        "_nanoseconds": 325000000
+      },
+      "uid": "TKOIH48rvJRlncDeXL7RwKMPhxn2",
+      "lastUpdatedBy": {
+        "uid": "TKOIH48rvJRlncDeXL7RwKMPhxn2",
+        "email": "taronext73@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "7IWkMK4nLQu4HdTMyQto",
+      "name": "Taro 89",
+      "external_id": 33138873,
+      "type": "SPOT",
+      "email": "taronext73@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "ndyZs4JdOOYUro3oFASI-SPOT"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1737365442,
+        "_nanoseconds": 38000000
+      },
+      "uid": "JAui0Q6QS4dOEBKFLOj3tAWRTnB3",
+      "name": "Axel Efraim",
+      "email": "axelefraim23@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1737370353,
+        "_nanoseconds": 809000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33018365,
+      "id": "o3C1p5WIOxvkeKmBdQjO",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1739543305,
+        "_nanoseconds": 570000000
+      },
+      "lastUpdated": {
+        "_seconds": 1739543305,
+        "_nanoseconds": 570000000
+      },
+      "uid": "pwDAiXkIe4QcTmMb08y19JfWNz12",
+      "lastUpdatedBy": {
+        "uid": "pwDAiXkIe4QcTmMb08y19JfWNz12",
+        "email": "antonioliusman@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "WKouFabZsJekCINtWFTI",
+      "name": "antonio liusman",
+      "external_id": 33065380,
+      "type": "SPOT",
+      "email": "antonioliusman@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "oGBrbrBBnyXCRz3dRVl9"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1744978291,
+        "_nanoseconds": 370000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744978291,
+        "_nanoseconds": 370000000
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "external_id": 33148709,
+      "type": "FUTURES",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "p9dVOn90DgTPXxoTpjna-FUTURES"
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1744978291,
+        "_nanoseconds": 366000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744978291,
+        "_nanoseconds": 366000000
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "external_id": 33148708,
+      "type": "SPOT",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "p9dVOn90DgTPXxoTpjna-SPOT"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1737290478,
+        "_nanoseconds": 322000000
+      },
+      "uid": "2S4rf4ybnvXfDW3WBANEFKYTRwL2",
+      "name": "MERDEKA UNTUNG SEJAHTERA",
+      "email": "merdekauntungsejahtera@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1737304690,
+        "_nanoseconds": 587000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33016611,
+      "id": "pspxTdY34lIeO5KEcmkh",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1725541644,
+        "_nanoseconds": 387000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "agres",
+      "email": "agress321@gmail.com",
+      "uid": "pO492pKNfEhSNWqhhj7q5qVoMwl1",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32770126,
+      "id": "qHQOMtdW7MPgd82lXIDb",
+      "lastUpdated": {
+        "_seconds": 1734539298,
+        "_nanoseconds": 756000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1727366598,
+        "_nanoseconds": 205000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Randy Priyatna",
+      "email": "randepe@gmail.com",
+      "external_id": 32852376,
+      "id": "rcY6TxM61HbG90jj8rcL",
+      "uid": "7svU1FCA4LMABEBnULFzjUHg3m62",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "lastUpdated": {
+        "_seconds": 1734538770,
+        "_nanoseconds": 875000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "Giovanni Satrio Putra",
+      "email": "giovannisatrio@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 33002215,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1736745169,
+        "_nanoseconds": 491000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdated": {
+        "_seconds": 1736745385,
+        "_nanoseconds": 11000000
+      },
+      "lastUpdatedBy": {
+        "uid": "dimK3jZlIsScKq8qTZkhLdn2OTD3",
+        "email": "giovannisatrio@gmail.com"
+      },
+      "uid": "dimK3jZlIsScKq8qTZkhLdn2OTD3",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "rptzBE618FowXrgQeJJu"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1725530179,
+        "_nanoseconds": 958000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Alexander Surya",
+      "email": "alexahongsurya@gmail.com",
+      "uid": "aGeoE3VWLDM4uzT3oz2eLFQhB0J2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32736588,
+      "id": "rw0bTuAi9S5uPwcu17yr",
+      "lastUpdated": {
+        "_seconds": 1734539420,
+        "_nanoseconds": 172000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 642000000
+      },
+      "lastUpdated": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 642000000
+      },
+      "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+      "lastUpdatedBy": {
+        "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+        "email": "victorleesanjaya@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "aqu4X1EuDYSAhs32rFkW",
+      "name": "Victor Lisanjaya",
+      "type": "FUTURES",
+      "email": "victorleesanjaya@gmail.com",
+      "external_id": 33162396,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "sGhXHXZYIQwueIVKfzZq-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 641000000
+      },
+      "lastUpdated": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 641000000
+      },
+      "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+      "lastUpdatedBy": {
+        "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+        "email": "victorleesanjaya@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "aqu4X1EuDYSAhs32rFkW",
+      "name": "Victor Lisanjaya",
+      "external_id": 33162394,
+      "type": "MARGIN",
+      "email": "victorleesanjaya@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "sGhXHXZYIQwueIVKfzZq-MARGIN"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 639000000
+      },
+      "lastUpdated": {
+        "_seconds": 1745949158,
+        "_nanoseconds": 639000000
+      },
+      "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+      "lastUpdatedBy": {
+        "uid": "ASvSrHQuCvQSs62jHWKjhkR5GmF3",
+        "email": "victorleesanjaya@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "aqu4X1EuDYSAhs32rFkW",
+      "name": "Victor Lisanjaya",
+      "external_id": 33162393,
+      "type": "SPOT",
+      "email": "victorleesanjaya@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "sGhXHXZYIQwueIVKfzZq-SPOT"
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "kvD9DeAuygT51VxPR4ELH5e1qB92",
+      "createdAt": {
+        "_seconds": 1727452153,
+        "_nanoseconds": 508000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "aang yogie",
+      "email": "aangyogie@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32856857,
+      "id": "sNImTNhjlWneX7oZ5tkF",
+      "lastUpdated": {
+        "_seconds": 1734538154,
+        "_nanoseconds": 450000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1738633092,
+        "_nanoseconds": 907000000
+      },
+      "uid": "dSJNi2kCNWY4sS1xKdDX2pmydOa2",
+      "name": "Nauval Zulfikar",
+      "email": "zulfikar.nauval1998@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1738641154,
+        "_nanoseconds": 759000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33047731,
+      "id": "sRPsfJHcGlGCAjXAGjko",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1725530189,
+        "_nanoseconds": 609000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Muhammad Nashir",
+      "email": "mnashir76787@gmail.com",
+      "uid": "WBv1dqDN6DUHZ9UzBK6g0GsVRRs2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32741045,
+      "id": "sgq20KiKpPCsbhttkjN5",
+      "lastUpdated": {
+        "_seconds": 1734539404,
+        "_nanoseconds": 422000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "KZzFcHeeZDR1PY9Z6R59R9m9m5w2",
+      "name": "yudea chandra",
+      "email": "yudeachandra1609@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731339321,
+        "_nanoseconds": 326000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32897523,
+      "id": "syjQnlpEVLBd3KDWpBVG",
+      "lastUpdated": {
+        "_seconds": 1734538051,
+        "_nanoseconds": 964000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1726194264,
+        "_nanoseconds": 8000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "azmi ryan",
+      "email": "azmindonesia@gmail.com",
+      "uid": "q1uH9ttWhBXvUEjMn1ze7VOymN23",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32455705,
+      "id": "tQvKPfIzwZAiaM7m6WjZ",
+      "lastUpdated": {
+        "_seconds": 1734538814,
+        "_nanoseconds": 910000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "name": "patrick agustinus nugroho",
+      "email": "nugrohopatrick18@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731481467,
+        "_nanoseconds": 7000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "external_id": 32820520,
+      "id": "uMrJFXrJfWTjbsGX4O84",
+      "type": "SPOT",
+      "lastUpdated": {
+        "_seconds": 1735822779,
+        "_nanoseconds": 45000000
+      },
+      "lastUpdatedBy": {
+        "uid": "gIrwb201xeO6Bc0Ppuv8COn1Bv93",
+        "email": "nugrohopatrick18@gmail.com"
+      },
+      "uid": "gIrwb201xeO6Bc0Ppuv8COn1Bv93",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725541845,
+        "_nanoseconds": 502000000
+      },
+      "companyId": "byscript",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Imam Solihin",
+      "email": "mmsolihin@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32817851,
+      "id": "uQQY33rrzWnTXsTOQoTU",
+      "lastUpdated": {
+        "_seconds": 1734539156,
+        "_nanoseconds": 221000000
+      },
+      "type": "SPOT",
+      "exchange_thumbnail": "https://static.airpackapp.com/fe-next/homepage/prod/_next/static/media/open_sesame_night.47e06968.png?w=750&q=75",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "type": "FUTURES",
+      "email": "edwinfardyanto@gmail.com",
+      "createdAt": {
+        "_seconds": 1744944152,
+        "_nanoseconds": 239000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744944152,
+        "_nanoseconds": 239000000
+      },
+      "external_id": 33148295,
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "uWv68F7WGKGCGLQ6l09b-FUTURES"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "createdAt": {
+        "_seconds": 1744944152,
+        "_nanoseconds": 231000000
+      },
+      "lastUpdated": {
+        "_seconds": 1744944152,
+        "_nanoseconds": 231000000
+      },
+      "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "customerId": "baYONz3HjDKfMBPtOrfF",
+      "name": "Edwin Ardyanto",
+      "external_id": 33148293,
+      "type": "SPOT",
+      "email": "edwinfardyanto@gmail.com",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "uWv68F7WGKGCGLQ6l09b-SPOT"
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "K7wiXyAD48NXMEP24SPNntQdqsi1",
+      "name": "muhammad ridwan halim",
+      "email": "ridwancrens@gmail.com",
+      "createdAt": {
+        "_seconds": 1738136051,
+        "_nanoseconds": 876000000
+      },
+      "lastUpdated": {
+        "_seconds": 1738136062,
+        "_nanoseconds": 55000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33035893,
+      "id": "wCqGuA9zanfjDEnMA1Mn",
+      "type": "SPOT",
+      "exchange_thumbnail": "https://firebasestorage.googleapis.com/v0/b/byscript-io.appspot.com/o/exchange_logos%2FBinance-Logo.wine%20(1).png?alt=media&token=8e85962a-5728-44e2-a93a-388d0421e88d",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725529901,
+        "_nanoseconds": 106000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Alvin",
+      "email": "alvinalbertha92@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32650667,
+      "id": "wGLpb3ZActQhPJYPt75G",
+      "lastUpdated": {
+        "_seconds": 1734539437,
+        "_nanoseconds": 140000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725541870,
+        "_nanoseconds": 355000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Fadzri",
+      "email": "blokn139@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32821697,
+      "id": "wNtMpiMdixGkIePHWFjZ",
+      "lastUpdated": {
+        "_seconds": 1734539135,
+        "_nanoseconds": 72000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "GATE",
+      "createdAt": {
+        "_seconds": 1737532264,
+        "_nanoseconds": 99000000
+      },
+      "uid": "Dpn4gE1xqDWy4kMi8juAhEVc6BU2",
+      "exchange_thumbnail": "https://cdn6.aptoide.com/imgs/5/d/e/5def8825b276d757f9f0bcd00bdf842a_fgraphic.png",
+      "name": "Faiq Azmi",
+      "email": "faiqazmi1289@gmail.com",
+      "lastUpdated": {
+        "_seconds": 1737532353,
+        "_nanoseconds": 201000000
+      },
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 33022214,
+      "id": "wWWWuaLJOCqBuKaBEkbw",
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725529799,
+        "_nanoseconds": 806000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Hendra Agustian",
+      "email": "agustianhendra16@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32462786,
+      "id": "xd8ld4hWSF5fC3YbszOH",
+      "lastUpdated": {
+        "_seconds": 1734539454,
+        "_nanoseconds": 605000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "uid": "a33WQiyRSmcD6DSpEFEJ8a0vobw2",
+      "name": "Dimas Ramadhan",
+      "email": "dimsezz95@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "external_id": 32985451,
+      "type": "SPOT",
+      "createdAt": {
+        "_seconds": 1735556230,
+        "_nanoseconds": 609000000
+      },
+      "lastUpdated": {
+        "_seconds": 1735556230,
+        "_nanoseconds": 609000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "exchange_external_name": null,
+      "market_type": null,
+      "id": "xs3kg7ixFfDS5KENC0bt"
+    },
+    {
+      "uid": "BmbBdr8FjWYud12Oh1b0Wqlw6TC3",
+      "name": "Vicky Susanto",
+      "email": "kwonvic@gmail.com",
+      "exchange_name": "BINANCE",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdAt": {
+        "_seconds": 1731230646,
+        "_nanoseconds": 944000000
+      },
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "companyId": "byscript",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32895650,
+      "id": "yLlSl0s3Ho7LyVm05kdy",
+      "lastUpdated": {
+        "_seconds": 1734538065,
+        "_nanoseconds": 249000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    },
+    {
+      "exchange_name": "BINANCE",
+      "uid": "",
+      "createdAt": {
+        "_seconds": 1725541945,
+        "_nanoseconds": 202000000
+      },
+      "companyId": "byscript",
+      "exchange_thumbnail": "https://3commas.cdn.prismic.io/3commas/3671e430-78b2-47d9-ae24-4dfbbbbe3a7d_binance_logo.svg",
+      "createdBy": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+      "name": "Andrew",
+      "email": "aooo.nft@gmail.com",
+      "lastUpdatedBy": {
+        "uid": "CADyUn6k7qMkhn89ftO4Gr4zGpw2",
+        "email": "edwinfardyanto@gmail.com"
+      },
+      "external_id": 32833599,
+      "id": "zZVrnwsAsdrZtl4skDjN",
+      "lastUpdated": {
+        "_seconds": 1734538917,
+        "_nanoseconds": 525000000
+      },
+      "type": "SPOT",
+      "exchange_external_name": null,
+      "market_type": null
+    }
+  ]
+}

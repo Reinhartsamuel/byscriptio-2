@@ -2,6 +2,7 @@ import { coins } from "@/app/dummy";
 import { closePreviousTrade } from "@/app/utils/closePreviousTrade";
 import { executeNewTrade } from "@/app/utils/executeNewTrade";
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
+import { getMultiplier } from "@/app/utils/getMultiplier";
 import { pairNameFor3commas } from "@/app/utils/pairNameFor3commas";
 // import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
 import { adminDb } from "@/lib/firebase-admin-config";
@@ -246,7 +247,7 @@ export async function POST(request) {
 
 
 
-
+            const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
             const bodySend = {
                 account_id: autotrader?.exchange_external_id ? autotrader.exchange_external_id : 'no account id',
                 // pair: body.pair,
@@ -255,7 +256,10 @@ export async function POST(request) {
                 position: {
                     type: body.type,
                     units: {
-                        value: String(parseFloat(autotrader.tradeAmount) / parseFloat(body.price)) // amount in token, not in usd, so (amountUsd/price)
+                        value: String(
+                            parseFloat(autotrader.tradeAmount) /
+                             (parseFloat(body.price) * multiplier)
+                            ) // amount in token, not in usd, so (amountUsd/price)
                     },
                     order_type: "market"
                 },
@@ -572,24 +576,5 @@ async function executeSpotTrade({
         return {
             error: 'Signal type is unknown! Signal.type : ' + body.type,
         }
-    }
-}
-
-
-
-async function calculateContract ({
-    bot,
-    price,
-    pair,
-    market_type
-}) {
-    try {
-        const contract_multiplier = 10;
-        if (!bot.tradeAmount) throw new Error('');
-        const contract = parseFloat(bot.tradeAmount) * price * contract_multiplier;
-        return parseFloat(contract);
-    } catch (error) {
-        console.log(error.message, 'error calculateContract');
-        return 0;
     }
 }

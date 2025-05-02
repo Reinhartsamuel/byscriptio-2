@@ -3,13 +3,13 @@ import generateSignatureRsa from "./generateSignatureRsa";
 
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
-const MAX_EXECUTION_RETRIES = 3;
+// const MAX_EXECUTION_RETRIES = 3;
 
 const baseUrl = 'https://api.3commas.io';
 export async function executeNewTrade({
     bodySend,
     body,
-    nonce,
+    // nonce,
     updateTradeAmount,
     autotrader,
     webhookId,
@@ -80,6 +80,7 @@ export async function executeNewTrade({
         pair: body.pair,
         smart_trade: true,
         requestBody: bodySend,
+        webhookId,
     };
     dataToAdd.pair = body.pair;
     adminDb
