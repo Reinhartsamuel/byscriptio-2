@@ -1,8 +1,9 @@
 'use client';
+import { IoEyeOutline } from "react-icons/io5";
 
 import React, { useState } from 'react';
 import moment from 'moment';
-
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import Spinner from '@/app/components/ui/Spinner';
 import PairImageComponent from '@/app/components/ui/PairImageComponent';
 import PropTypes from 'prop-types';
@@ -11,6 +12,7 @@ import useCountDocuments from '@/app/hooks/CountHook';
 import { cn } from '@/lib/util';
 import Modal from '@/app/components/ui/Modal';
 import { authFirebase } from '@/app/config/firebase';
+import { addDocumentFirebase } from "@/app/utils/firebaseApi";
 
 const TradeHistoryTable = (props) => {
   const { collectionName = '3commas_logs', conditions = [] } = props;
@@ -67,6 +69,7 @@ function SmartTradesTable({ trades }) {
   const [openModal, setOpenModal] = useState(false);
   const [details, setDetails] = useState(null);
   const [showRaw, setShowRaw] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleClose = () => {
     setOpenModal(false);
   }
@@ -76,6 +79,55 @@ function SmartTradesTable({ trades }) {
     setDetails(trade);
     setOpenModal(true);
   }
+
+
+  async function closeAtMarketPrice(detail) {
+    setLoading(true);
+    try {
+      const body = {
+        autotrader_id: detail.id,
+        action: 'sell'
+      }
+      const res = await fetch('/api/3commas/smart-trade/force-action', {
+        method: 'POST',
+        body: JSON.stringify(body)
+      })
+      const { data, error } = await res.json();
+      if (error) throw new Error(error)
+
+      if (data?.error) {
+        return Swal.fire({
+          title: 'Cannot close trade',
+          text: data?.error_description + ' ' + error,
+        })
+      }
+      delete data?.id
+
+      await addDocumentFirebase('3commas_logs', {
+        ...data,
+        action: `CLOSE_${detail?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
+        smart_trade_id: String(detail?.smart_trade_id),
+        createdAt: new Date(),
+        type: `CLOSE_${detail?.action}`,
+        autotrader_id: body.autotrader_id,
+        exchange_external_id: detail.exchange_external_id,
+        pair: detail?.pair || '',
+        trading_plan_id: detail?.trading_plan_id || '',
+        exchange_name: detail.exchange_name,
+        exchange_thumbnail: detail.exchange_thumbnail,
+        uid: detail?.uid || '',
+        email: detail?.email || '',
+        name: detail?.name || '',
+        tradeAmount: detail?.tradeAmount || 0,
+        marketType: detail?.marketType || 'unknown'
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="overflow-x-auto w-full rounded-xl shadow-lg">
       <table className="min-w-full text-sm text-left text-gray-300 dark:bg-gray-900">
@@ -91,6 +143,7 @@ function SmartTradesTable({ trades }) {
             <th className="px-4 py-3">Exchange</th>
             <th className="px-4 py-3">Timestamp</th>
             <th className="px-4 py-3">Exchange commission</th>
+            <th className="px-4 py-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -103,7 +156,7 @@ function SmartTradesTable({ trades }) {
               <tr
                 key={index}
                 className={cn("border-b border-gray-700 hover:bg-gray-800 cursor-pointer active:bg-gray-600", trade?.error && "text-red-400")}
-                onClick={() => handleOpen(trade)}
+
               >
                 <td className="px-4 py-3 flex flex-col items-center gap-2">
                   <PairImageComponent pair={trade?.pair} width={8} />
@@ -141,6 +194,29 @@ function SmartTradesTable({ trades }) {
                 <td className="px-4 py-3 whitespace-nowrap">
                   <p>{trade?.data ? trade?.data?.commission : 'no data'}</p>
                 </td>
+                <td className="flex gap-1 items-center">
+                  <button
+                    onClick={() => handleOpen(trade)}
+                    type="button"
+                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
+                      whitespace-nowrap
+                      "
+                  >
+                    <IoEyeOutline />
+                  </button>
+                  {(trade?.marketType === 'futures' || trade?.trading_plan_id === 'XMA FUTURES') &&
+                    <button
+                      onClick={() => closeAtMarketPrice(trade)}
+                      type="button"
+                      disabled={loading}
+                      className={cn("text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 whitespace-nowrap",
+                        loading && "cursor-not-allowed"
+                      )}
+                    >
+                      {loading ? <Spinner/> : "Close At Market Price"}
+                    </button>
+                  }
+                </td>
               </tr>
             )
           }
@@ -165,7 +241,7 @@ function SmartTradesTable({ trades }) {
                 {JSON.stringify(details, null, 2)}
               </code>
             </div>
-          ) : details?.error || details?.status?.type ==='failed' ? (
+          ) : details?.error || details?.status?.type === 'failed' ? (
             // ERROR VIEW
             <div className="grid grid-cols-1 gap-4 text-red-400">
               <div>
@@ -272,7 +348,7 @@ function SmartTradesTable({ trades }) {
 
 SmartTradesTable.propTypes = {
   trades: PropTypes.array,
- 
+
 };
 TradeHistoryTable.propTypes = {
   bot_id: PropTypes.string,

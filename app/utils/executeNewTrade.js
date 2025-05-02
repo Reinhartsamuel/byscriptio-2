@@ -80,6 +80,7 @@ export async function executeNewTrade({
         pair: pairFromBody,
         smart_trade: true,
         requestBody: bodySend,
+        marketType: autotrader?.marketType || 'unknown',
         webhookId,
     };
     adminDb

@@ -98,6 +98,7 @@ export async function closePreviousTrade({
                 previousBuyId: arr[0]?.id || '',
                 smart_trade: true,
                 requestBody: JSON.stringify(bodySend),
+                marketType: autotrader?.marketType || 'unknown',
                 webhookId
             }
             const updateTradeAmount = parseFloat(responseCloseMarket?.margin?.amount) + parseFloat(responseCloseMarket?.profit?.usd);

@@ -21,77 +21,17 @@ export async function POST(request) {
         const bot = { ...doc.data(), id: doc.id };
 
 
-        // 1. check latest trades from 3commas_logs based on pair and autotrader_id
-        let historyTradesFromDb = [];
         const _tradingPlanId = bot.trading_plan_pair[0]?.split('_')[0];
         const _pair = bot.trading_plan_pair[0]?.split('_').slice(1).join('_');
 
-
-
-        const latestTradeHistory = await adminDb
-            .collection('3commas_logs')
-            .where('autotrader_id', '==', bot.id)
-            .where('pair', '==', _pair)
-            .where('trading_plan_id', '==', _tradingPlanId)
-            .orderBy('createdAt', 'desc')
-            .limit(1)
-            .get();
-        latestTradeHistory.forEach((doc) => {
-            historyTradesFromDb.push({ ...doc.data(), id: doc.id });
-        })
-        console.log(historyTradesFromDb.map((x) => x.id), 'historyTradesFromDb');
-        // return Response.json({ bot, historyTradesFromDb });
-
-
-        // 2. if latest trade is present, check the status from it's smart_trade_id
-        if (historyTradesFromDb.length > 0) {
-            console.log('found an active trade!! closing it....', historyTradesFromDb[0]?.smart_trade_id)
-            const { status } = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
-            if (status?.type === 'waiting_targets' || status?.type === 'created') {
-                const res = await fetch('https://byscript.io/api/3commas/smart-trade/execute/close-at-market-price-test', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        id: historyTradesFromDb[0]?.smart_trade_id
-                    })
-                });
-                const responseCloseMarket = await res.json();
-                console.log(responseCloseMarket, 'responseCloseMarket');
-                const { data, error, message } = responseCloseMarket;
-                if (error) {
-                    console.log(error, 'error closing previous trade!', message);
-                    return new Response(JSON.stringify({ message: 'Cannot close previous trade!', error: responseCloseMarket?.error_description }), {
-                        status: 500,
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                }
-                if (data) {
-                    const checkStatus = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
-                    // 3. if status is not closed, close it
-                    await adminDb
-                        .collection('3commas_logs')
-                        .add({
-                            ...checkStatus,
-                            action: `CLOSE_${historyTradesFromDb[0]?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
-                            smart_trade_id: String(historyTradesFromDb[0]?.smart_trade_id),
-                            createdAt: new Date(),
-                            type: `CLOSE_${historyTradesFromDb[0]?.action}`,
-                            autotrader_id: body.autotrader_id,
-                            exchange_external_id: bot.exchange_external_id,
-                            pair: _pair,
-                            trading_plan_id: _tradingPlanId,
-                            exchange_name: bot.exchange_name,
-                            exchange_thumbnail: bot.exchange_thumbnail,
-                            uid: bot?.uid || '',
-                            email: bot?.email || '',
-                            name: bot?.name || '',
-                            tradeAmount : bot?.tradeAmount || 0,
-                        });
-                }
-            } else {
-                console.log('trade is not waiting_targets nor created, cannot close it!');
-            }
+        if (bot?.marketType === 'futures') {
+            // 1. check latest trades from 3commas_logs based on pair and autotrader_id ONLY IF FUTURES
+            await closePreviousTradeBeforeContinue({
+                bot,
+                _tradingPlanId,
+                _pair,
+                body
+            })
         }
 
         //4. get crypto price from coindesk
@@ -136,7 +76,7 @@ export async function POST(request) {
         // 6. add to 3commas_logs
 
         let checkStatus2;
-        if (resultxx.data.id){
+        if (resultxx.data.id) {
             checkStatus2 = await getSmartTradeStatus(resultxx.data.id);
         }
         await adminDb
@@ -153,7 +93,8 @@ export async function POST(request) {
                 exchange_name: bot.exchange_name,
                 pair: _pair,
                 trading_plan_id: _tradingPlanId,
-                tradeAmount : bot?.tradeAmount || 0,
+                tradeAmount: bot?.tradeAmount || 0,
+                marketType: bot?.marketType || 'unknown'
             });
 
         if (resultxx?.error) {
@@ -170,7 +111,8 @@ export async function POST(request) {
                     exchange_name: bot.exchange_name,
                     pair: _pair,
                     trading_plan_id: _tradingPlanId,
-                    tradeAmount : bot?.tradeAmount || 0,
+                    tradeAmount: bot?.tradeAmount || 0,
+                    marketType: bot?.marketType || 'unknown'
                 });
             return new Response(JSON.stringify({
                 error: resultxx?.error + ' ' + JSON.stringify(resultxx?.error_attributes)
@@ -193,5 +135,80 @@ export async function POST(request) {
                 'Content-Type': 'application/json',
             },
         });
+    }
+}
+
+async function closePreviousTradeBeforeContinue({
+    bot,
+    _tradingPlanId,
+    _pair,
+    body
+}) {
+    let historyTradesFromDb = [];
+    const latestTradeHistory = await adminDb
+        .collection('3commas_logs')
+        .where('autotrader_id', '==', bot.id)
+        .where('pair', '==', _pair)
+        .where('trading_plan_id', '==', _tradingPlanId)
+        .orderBy('createdAt', 'desc')
+        .limit(1)
+        .get();
+    latestTradeHistory.forEach((doc) => {
+        historyTradesFromDb.push({ ...doc.data(), id: doc.id });
+    })
+    console.log(historyTradesFromDb.map((x) => x.id), 'historyTradesFromDb');
+    // return Response.json({ bot, historyTradesFromDb });
+
+
+    // 2. if latest trade is present, check the status from it's smart_trade_id
+    if (historyTradesFromDb.length > 0) {
+        console.log('found an active trade!! closing it....', historyTradesFromDb[0]?.smart_trade_id)
+        const { status } = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
+        if (status?.type === 'waiting_targets' || status?.type === 'created') {
+            const res = await fetch('https://byscript.io/api/3commas/smart-trade/execute/close-at-market-price-test', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: historyTradesFromDb[0]?.smart_trade_id
+                })
+            });
+            const responseCloseMarket = await res.json();
+            console.log(responseCloseMarket, 'responseCloseMarket');
+            const { data, error, message } = responseCloseMarket;
+            if (error) {
+                console.log(error, 'error closing previous trade!', message);
+                return new Response(JSON.stringify({ message: 'Cannot close previous trade!', error: responseCloseMarket?.error_description }), {
+                    status: 500,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            }
+            if (data) {
+                const checkStatus = await getSmartTradeStatus(historyTradesFromDb[0]?.smart_trade_id);
+                // 3. if status is not closed, close it
+                await adminDb
+                    .collection('3commas_logs')
+                    .add({
+                        ...checkStatus,
+                        action: `CLOSE_${historyTradesFromDb[0]?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
+                        smart_trade_id: String(historyTradesFromDb[0]?.smart_trade_id),
+                        createdAt: new Date(),
+                        type: `CLOSE_${historyTradesFromDb[0]?.action}`,
+                        autotrader_id: body.autotrader_id,
+                        exchange_external_id: bot.exchange_external_id,
+                        pair: _pair,
+                        trading_plan_id: _tradingPlanId,
+                        exchange_name: bot.exchange_name,
+                        exchange_thumbnail: bot.exchange_thumbnail,
+                        uid: bot?.uid || '',
+                        email: bot?.email || '',
+                        name: bot?.name || '',
+                        tradeAmount: bot?.tradeAmount || 0,
+                        marketType: bot?.marketType || 'unknown'
+                    });
+            }
+        } else {
+            console.log('trade is not waiting_targets nor created, cannot close it!');
+        }
     }
 }
