@@ -121,6 +121,11 @@ function SmartTradesTable({ trades }) {
         tradeAmount: detail?.tradeAmount || 0,
         marketType: detail?.marketType || 'unknown'
       })
+      Swal.fire({
+        title: 'Trade closed',
+        text: `Trade ${detail?.smart_trade_id} closed at market price`,
+        icon: 'success',
+      })
     } catch (error) {
       console.log(error);
     } finally {
