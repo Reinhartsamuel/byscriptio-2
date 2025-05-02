@@ -328,10 +328,10 @@ export default function ModalAddAutotrader({
                       setData({
                         ...data,
                         exchange_name: JSON.parse(e.target.value)?.exchange_name,
-                        exchange_thumbnail: JSON.parse(e.target.value)
-                          ?.exchange_thumbnail,
-                        exchange_external_id:
-                          JSON.parse(e.target.value)?.external_id || '',
+                        exchange_thumbnail: JSON.parse(e.target.value)?.exchange_thumbnail || '',
+                        exchange_external_id: JSON.parse(e.target.value)?.external_id || '',
+                        exchange_external_name: JSON.parse(e.target.value)?.exchange_external_name || '',
+                        market_code: JSON.parse(e.target.value)?.market_code || '',
                       });
                     }}
                     checked={data?.exchange_external_id === exchange?.external_id}
@@ -433,7 +433,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       const newSelectedPairs = [...selectedPairs, JSON.parse(value)];
       const newTradingPlanPair = [...data.trading_plan_pair];
       newTradingPlanPair.push(selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair);
-      
+
       setSelectedPairs(newSelectedPairs);
       setData({
         ...data,
@@ -445,7 +445,7 @@ function TradingPlanSelectComponent({ data, setData }) {
       );
       const tppToDelete = selectedTradingPlan?.name + '_' + JSON.parse(value)?.pair;
       const newTradingPlanPair = data.trading_plan_pair?.filter((x) => x !== tppToDelete);
-      
+
       setSelectedPairs(newSelectedPairs);
       setData({
         ...data,

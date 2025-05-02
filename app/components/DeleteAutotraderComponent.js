@@ -62,12 +62,12 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
         icon: 'success',
         showConfirmButton: true,
       }).then(() =>
-        // result
-        {
-          // console.log(result, 'resultt');
-          getAutotraders(authFirebase.currentUser?.email);
-          setOpenModal(false);
-        }
+      // result
+      {
+        // console.log(result, 'resultt');
+        getAutotraders(authFirebase.currentUser?.email);
+        setOpenModal(false);
+      }
       );
     } catch (error) {
       return Swal.fire({
@@ -91,10 +91,10 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
       // if yes, DO NOT DELETE!!
       if (detail.bot_id) {
         const findLastSignal = await getLatestSignal(detail.bot_id);
-      // THROW ERROR IF :
-      // 1. has active order 
-      // 2. last order's action is not close_at_market_price or type is neither force_exit nor force_entry
-        if (findLastSignal?.length > 0 ) {
+        // THROW ERROR IF :
+        // 1. has active order 
+        // 2. last order's action is not close_at_market_price or type is neither force_exit nor force_entry
+        if (findLastSignal?.length > 0) {
           if (
             findLastSignal[0]?.response?.value?.action === 'close_at_market_price' &&
             findLastSignal[0]?.type !== 'force_exit' &&
@@ -107,7 +107,7 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
         //     ? 'SELL'
         //     : 'BUY';
 
-            
+
         // if (findLastSignal?.length > 0 && lastAction !== 'SELL') {
         //   throw new Error(
         //     `You have a ${lastAction} order on ${findLastSignal[0]?.response?.value?.pair}. Please close it first.`
@@ -140,6 +140,7 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
   return (
     // <div className='border-[0.1rem] border-red-500 dark:border-red-900 rounded-lg p-2 mt-5'>
     <div className='rounded-lg border-red-500 dark:border-red-900 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
+      <h1 className='text-gray-400 text-sm'>Delete autotrader</h1>
       <div className='flex flex-col items-center'>
         <p className='text-red-600 font-bold dark:text-red-700 text-center mx-auto cursor-pointer'>
           💀 Danger!

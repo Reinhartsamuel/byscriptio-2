@@ -73,10 +73,6 @@ export default function ForceActionComponent({ detail }) {
         }
 
       }));
-      Swal.fire({
-        text: `${resultPromise?.map((res) => `Smart trade ${res.smart_trade_id}` + res?.value?.smart_trade_id || res?.reason).join(',')}`,
-        icon: 'info',
-      });
     } catch (error) {
       console.log(error)
       Swal.fire({
@@ -122,27 +118,8 @@ export default function ForceActionComponent({ detail }) {
 
   return (
     <div className='rounded-lg dark:bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
-      <h1 className='text-gray-700 dark:text-gray-200'>Force Entry</h1>
+      <h1 className='text-gray-400 text-sm'>Force Entry</h1>
       <div className='flex flex-row gap-2 justify-between'>
-
-        {detail?.marketType === 'futures' &&
-          <button
-            onClick={closeAllAtMarketPrice}
-            className={cn(
-              'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200 cursor-pointer bg-gray-600 hover:bg-gray-700 active:bg-gray-500'
-            )}
-          >
-            {loading ? (
-              <Spinner />
-            ) : (
-              <>
-                <IoMdCloseCircleOutline />
-                <p className='whitespace-nowrap'>Close all at market price</p>
-              </>
-            )}
-          </button>
-        }
-
         <button
           onClick={() => forceEntry('buy')}
           disabled={detail?.status !== 'ACTIVE'}
@@ -162,7 +139,7 @@ export default function ForceActionComponent({ detail }) {
             </>
           )}
         </button>
-        <button
+        {detail?.marketType === 'futures' && <button
           onClick={() => forceEntry('sell')}
           disabled={detail?.status !== 'ACTIVE'}
           className={cn(
@@ -180,7 +157,58 @@ export default function ForceActionComponent({ detail }) {
               <p className='whitespace-nowrap'>Force Sell</p>
             </>
           )}
-        </button>
+        </button>}
+
+
+
+
+        {/* 
+
+
+ 
+ */}
+      </div>
+
+      <h1 className='text-gray-400 text-sm'>Force Exit</h1>
+      <div className='flex flex-row gap-2 justify-between'>
+        {detail?.marketType === 'futures' &&
+          <button
+            onClick={closeAllAtMarketPrice}
+            className={cn(
+              'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200 cursor-pointer bg-gray-600 hover:bg-gray-700 active:bg-gray-500'
+            )}
+          >
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <IoMdCloseCircleOutline />
+                <p className='whitespace-nowrap'>Close all at market price</p>
+              </>
+            )}
+          </button>
+        }
+        {detail?.marketType === 'spot' && <button
+          onClick={() => forceEntry('sell')}
+          disabled={detail?.status !== 'ACTIVE'}
+          className={cn(
+            'flex items-center w-full justify-center flex-wrap-nowrap gap-2 px-4 py-2 rounded-xl border border-neutral-600 text-white transition duration-200',
+            detail?.status === 'ACTIVE'
+              ? 'cursor-pointer bg-red-600 hover:bg-red-700 active:bg-red-500'
+              : 'cursor-not-allowed bg-gray-600'
+          )}
+        >
+          {loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <IoExit />
+              <p className='whitespace-nowrap'>Force Sell</p>
+            </>
+          )}
+        </button>}
+
+
       </div>
     </div>
   );

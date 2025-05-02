@@ -12,6 +12,7 @@ import useStartStopAction from '@/app/hooks/startStopActionHook';
 import ForceActionComponent from '@/app/components/ForceActionComponent';
 import DeleteAutotraderComponent from '@/app/components/DeleteAutotraderComponent';
 import TradeHistoryTable from './detail/[id]/TradeHistoryTable';
+import useFetchData from '@/app/hooks/QueryHook';
 
 export default function ModalDetailAutotrader({
   detail,
@@ -26,6 +27,20 @@ export default function ModalDetailAutotrader({
     detail,
     setDetail,
   });
+
+  const conditions = [
+    {field : 'pair', operator:'==', value:detail?.trading_plan_pair?.split('_')?.slice(1)?.join('_')|| ''}, 
+    {field : 'trading_plan_id', operator:'==', value:detail?.trading_plan_pair?.split('_')?.[0]}
+  ]
+
+  const { data, loadMore, loading:fetchLoading, error } = useFetchData({
+    collectionName : 'webhooks',
+    conditions,
+    authRequired: true,
+    dependencies: [conditions],
+    type: 'getDocs',
+    limitQuery: 1,
+  })
 
   return (
     <>
@@ -107,6 +122,17 @@ export default function ModalDetailAutotrader({
                     {detail?.exchange_external_id &&
                       <p className='ml-1 text-gray-400 dark:text-gray-100 font-light text-sm'>({detail?.exchange_external_id})</p>
                     }
+                  </div>
+
+                </div>
+                <div className='flex w-full justify-between min-h-10 items-end'>
+                  <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Last Signal</p>
+                  <div className='flex'>
+                    {data?.length > 0 ? 
+                 `${data[0]?.action} ${moment().unix(detail?.createdAt?.seconds).fromNow()}`
+                  :
+                  ''
+                  }
                   </div>
 
                 </div>
