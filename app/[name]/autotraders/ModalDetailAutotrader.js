@@ -6,13 +6,14 @@ import { cn } from '@/lib/util';
 import moment from 'moment';
 import { FaBoltLightning } from 'react-icons/fa6';
 import { IoMdClose } from 'react-icons/io';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'; // ES6
 import useStartStopAction from '@/app/hooks/startStopActionHook';
 import ForceActionComponent from '@/app/components/ForceActionComponent';
 import DeleteAutotraderComponent from '@/app/components/DeleteAutotraderComponent';
 import TradeHistoryTable from './detail/[id]/TradeHistoryTable';
 import useFetchData from '@/app/hooks/QueryHook';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 
 export default function ModalDetailAutotrader({
   detail,
@@ -21,6 +22,7 @@ export default function ModalDetailAutotrader({
   setDetail,
 }) {
   const [loading, setLoading] = useState(false);
+  const [latestSignal, setLatestSignal] = useState(null);
 
   const { handleStartStop } = useStartStopAction({
     setLoading,
@@ -28,19 +30,51 @@ export default function ModalDetailAutotrader({
     setDetail,
   });
 
-  const conditions = [
-    {field : 'pair', operator:'==', value:detail?.trading_plan_pair?.split('_')?.slice(1)?.join('_')|| ''}, 
-    {field : 'trading_plan_id', operator:'==', value:detail?.trading_plan_pair?.split('_')?.[0]}
-  ]
+  // const conditions = [
+  //   {field : 'pair', operator:'==', value:  detail?.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_') || ''}, 
+  //   {field : 'trading_plan_id', operator:'==', value:detail?.trading_plan_pair[0]?.split('_')?.[0]}
+  // ]
 
-  const { data, loadMore, loading:fetchLoading, error } = useFetchData({
-    collectionName : 'webhooks',
-    conditions,
-    authRequired: true,
-    dependencies: [conditions],
-    type: 'getDocs',
-    limitQuery: 1,
-  })
+  // const { data, loadMore, loading:fetchLoading, error } = useFetchData({
+  //   collectionName : 'webhooks',
+  //   conditions,
+  //   authRequired: true,
+  //   dependencies: [conditions],
+  //   type: 'getDocs',
+  //   limitQuery: 1,
+  // })
+
+  // console.log(data, 'latest signal')
+
+
+  useEffect(() => {
+    async function getLastSignal() {
+      // console.log(, `detail.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_')`)
+
+      try {
+        const res = await getCollectionFirebase('webhooks', [
+          { field: 'pair', operator: '==', value: detail?.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_') || '' },
+          { field: 'trading_plan_id', operator: '==', value: detail?.trading_plan_pair[0]?.split('_')?.[0] }
+        ],
+          {
+            field: 'createdAt', order: 'desc'
+          },
+          1
+        )
+        console.log(res, 'latest signal')
+        if (res?.length > 0) {
+          setLatestSignal(res[0])
+        }
+      } catch (error) {
+        console.log(error, 'error')
+      }
+
+    }
+
+    if (openModal) {
+      getLastSignal()
+    }
+  }, [openModal])
 
   return (
     <>
@@ -127,12 +161,8 @@ export default function ModalDetailAutotrader({
                 </div>
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Last Signal</p>
-                  <div className='flex'>
-                    {data?.length > 0 ? 
-                 `${data[0]?.action} ${moment().unix(detail?.createdAt?.seconds).fromNow()}`
-                  :
-                  ''
-                  }
+                  <div className='flex text-gray-300'>
+                    {latestSignal?.action} {moment.unix(latestSignal?.createdAt?.seconds).fromNow()}
                   </div>
 
                 </div>
