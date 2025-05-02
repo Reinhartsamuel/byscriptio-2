@@ -30,6 +30,7 @@ export const maxDuration = 60; // This function can run for a maximum of 60 seco
 export async function POST(request) {
     try {
         const body = await request.json();
+        const _pair = body.pair;
         try {
             const messageTelegram = `pair: ${body?.pair} SMART TRADE SIGNAL \n price: ${body?.price} \n timeframe: ${body?.time_frame} \n timestamp: ${body?.timestamp} \n date: ${moment.unix(body?.timestamp).format('DD-MM-YYYY HH:mm')} \n action: ${body?.type?.toUpperCase()} \n trading_plan_id: ${body?.trading_plan_id}`
             fetch(`https://api.telegram.org/bot${telegram_bot_token}/sendMessage`, {
@@ -285,6 +286,7 @@ export async function POST(request) {
                 bodySend,
                 autotrader,
                 webhookId: addWebhookResult.id,
+                pairFromBody : _pair
             });
 
             // 4. execute smart trade
@@ -296,6 +298,7 @@ export async function POST(request) {
                 updateTradeAmount: responseCloseMarket?.updateTradeAmount,
                 autotrader,
                 webhookId: addWebhookResult.id,
+                pairFromBody : _pair
             })
 
 

@@ -11,7 +11,8 @@ export async function closePreviousTrade({
     body,
     bodySend,
     autotrader,
-    webhookId
+    webhookId,
+    pairFromBody
 }) {
     let arr = [];
     try {
@@ -42,14 +43,17 @@ export async function closePreviousTrade({
     // by close_at_market_price function
     if (
         arr.length > 0 &&
-        arr[0].status?.type
-        !== 'panic_sell_pending' && arr[0].status?.type && arr[0].status?.type!== 'panic_sold') {
-            console.log(`found ${arr[0].smart_trade_id} trade and it's not closed, so trying to close first`);
+        arr[0].status?.type !== 'panic_sell_pending' &&
+        arr[0].status?.type &&
+        arr[0].status?.type !== 'panic_sold'
+    ) {
+        console.log(`found ${arr[0].smart_trade_id} trade and it's not closed, so trying to close first`);
         // check status of the latest trade history
         const { status } = await getSmartTradeStatus(arr[0].smart_trade_id);
         console.log(status, arr[0].smart_trade_id, 'this is status weve longing for');
-        if (status?.type !== 'panic_sold' && status?.type !== 'failed') {
 
+
+        if (status?.type !== 'panic_sold' && status?.type !== 'failed') {
             console.log(`found ${arr[0].smart_trade_id} trade and it's not panic_sold nor failed, so trying to close first`);
             console.log(`trying to close trade ${arr[0].smart_trade_id}`)
             // close at market price function here
@@ -90,7 +94,7 @@ export async function closePreviousTrade({
                 type: 'autotrade',
                 trading_plan_id: body.trading_plan_id,
                 action: `CLOSE_${arr[0].action}`,
-                pair: body.pair,
+                pair: pairFromBody,
                 previousBuyId: arr[0]?.id || '',
                 smart_trade: true,
                 requestBody: JSON.stringify(bodySend),

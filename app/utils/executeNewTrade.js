@@ -13,6 +13,7 @@ export async function executeNewTrade({
     updateTradeAmount,
     autotrader,
     webhookId,
+    pairFromBody
 }) {
     const queryParams = `/public/api/v2/smart_trades`;
     const finalUrl = baseUrl + queryParams;
@@ -60,7 +61,6 @@ export async function executeNewTrade({
 
     console.log(body, 'bjir')
     console.log(bodySend, 'kudaa')
-    console.log()
 
     // save to 3commas_logs without waiting for it to finish
     const dataToAdd = {
@@ -77,12 +77,11 @@ export async function executeNewTrade({
         trading_plan_id: body.trading_plan_id,
         action: body.type === 'sell' ? 'SELL' : 'BUY',
         type: 'autotrade',
-        pair: body.pair,
+        pair: pairFromBody,
         smart_trade: true,
         requestBody: bodySend,
         webhookId,
     };
-    dataToAdd.pair = body.pair;
     adminDb
         .collection('3commas_logs')
         .add(dataToAdd)

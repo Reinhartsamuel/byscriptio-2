@@ -134,7 +134,11 @@ export async function POST(request) {
 
 
         // 6. add to 3commas_logs
-        const checkStatus2 = await getSmartTradeStatus(resultxx.data.id);
+
+        let checkStatus2;
+        if (resultxx.data.id){
+            checkStatus2 = await getSmartTradeStatus(resultxx.data.id);
+        }
         await adminDb
             .collection('3commas_logs')
             .add({
