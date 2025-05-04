@@ -15,7 +15,7 @@ const page = async () => {
       },
     }
   );
-  const { data, error } = await res.json();
+  const { data, error } = await res.text();
   return (
     <>
       <div className='w-full min-h-screen lg:px-20 lg:pt-10'>
