@@ -2,6 +2,8 @@
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
 
 
+export const dynamic = 'force-dynamic';
+
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const baseUrl = 'https://api.3commas.io';

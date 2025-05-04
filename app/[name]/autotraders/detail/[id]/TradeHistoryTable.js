@@ -164,6 +164,17 @@ function SmartTradesTable({ trades }) {
 
               >
                 <td className="px-4 py-3 flex flex-col items-center gap-2">
+                <button
+                    onClick={() => handleOpen(trade)}
+                    type="button"
+                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
+                      whitespace-nowrap
+                      "
+                  >
+                    <IoEyeOutline />
+                  </button>
+                </td>
+                <td className="px-4 py-3 flex flex-col items-center gap-2">
                   <PairImageComponent pair={trade?.pair} width={8} />
                   <p className='text-xs'>{trade?.pair}</p>
                 </td>
@@ -200,15 +211,6 @@ function SmartTradesTable({ trades }) {
                   <p>{trade?.data ? trade?.data?.commission : 'no data'}</p>
                 </td>
                 <td className="flex gap-1 items-center">
-                  <button
-                    onClick={() => handleOpen(trade)}
-                    type="button"
-                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
-                      whitespace-nowrap
-                      "
-                  >
-                    <IoEyeOutline />
-                  </button>
                   {(trade?.marketType === 'futures' || trade?.trading_plan_id === 'XMA FUTURES') &&
                     <button
                       onClick={() => closeAtMarketPrice(trade)}
