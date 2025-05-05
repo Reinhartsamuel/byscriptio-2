@@ -70,32 +70,39 @@ export async function POST(request) {
             }
         );
         const resultxx = await resxx.json();
+        const smart_trade_id = String(resultxx?.data?.id);
         console.log(resultxx, 'resultxx');
-
+        delete resultxx?.data?.id;
 
         // 6. add to 3commas_logs
-
         let checkStatus2;
-        if (resultxx.data.id) {
+        if (resultxx?.data?.id) {
             checkStatus2 = await getSmartTradeStatus(resultxx.data.id);
         }
+        console.log('smartTrade id anjinggg', smart_trade_id)
+        const addData = {
+            ...resultxx?.data, // add all the data from resultxx.data, then add the othe
+            ...checkStatus2,
+            smart_trade_id,
+            createdAt: new Date(),
+            action: `FORCE_${body.action === 'buy' ? 'BUY' : 'SELL'}`,
+            autotrader_id: body.autotrader_id,
+            exchange_external_id: bot.exchange_external_id,
+            exchange_thumbnail: bot.exchange_thumbnail,
+            exchange_name: bot.exchange_name,
+            name: bot.name,
+            email: bot.email,
+            pair: _pair,
+            trading_plan_id: _tradingPlanId,
+            tradeAmount: bot?.tradeAmount || 0,
+            marketType: bot?.marketType || 'unknown'
+        }
+        addData.pair = _pair;
+
+        console.log(addData, 'inilah addData nya')
         await adminDb
             .collection('3commas_logs')
-            .add({
-                ...resultxx?.data, // add all the data from resultxx.data, then add the othe
-                ...checkStatus2,
-                smart_trade_id: String(resultxx?.data?.id),
-                createdAt: new Date(),
-                action: `FORCE_${body.action === 'buy' ? 'BUY' : 'SELL'}`,
-                autotrader_id: body.autotrader_id,
-                exchange_external_id: bot.exchange_external_id,
-                exchange_thumbnail: bot.exchange_thumbnail,
-                exchange_name: bot.exchange_name,
-                pair: _pair,
-                trading_plan_id: _tradingPlanId,
-                tradeAmount: bot?.tradeAmount || 0,
-                marketType: bot?.marketType || 'unknown'
-            });
+            .add(addData);
 
         if (resultxx?.error) {
             await adminDb
@@ -125,7 +132,7 @@ export async function POST(request) {
         }
         return Response.json({
             coindeskData,
-            data: checkStatus2,
+            data: {...checkStatus2, smart_trade_id},
         })
     } catch (error) {
         console.error('Error fetching data:', error);

@@ -24,8 +24,9 @@ export const maxDuration = 60; // This function can run for a maximum of 60 seco
 
 
 export async function POST(request) {
-  const body = await request.json();
-  try {
+    try {
+      const body = await request.json();
+      console.log(body, 'body')
     const totalParams = `/public/api` + body.queryParams;
     const finalUrl = baseUrl + totalParams;
     const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);

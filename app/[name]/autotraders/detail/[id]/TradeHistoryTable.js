@@ -138,6 +138,7 @@ function SmartTradesTable({ trades }) {
       <table className="min-w-full text-sm text-left text-gray-300 dark:bg-gray-900">
         <thead className="text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap">
           <tr>
+            <th className="px-4 py-3"></th>
             <th className="px-4 py-3">Pair</th>
             <th className="px-4 py-3">Action</th>
             <th className="px-4 py-3">Profit (USD)</th>
@@ -163,7 +164,7 @@ function SmartTradesTable({ trades }) {
                 className={cn("border-b border-gray-700 hover:bg-gray-800 cursor-pointer active:bg-gray-600", trade?.error && "text-red-400")}
 
               >
-                <td className="px-4 py-3 flex flex-col items-center gap-2">
+                <td className="px-4 py-3 text-red-400 whitespace-nowrap">
                 <button
                     onClick={() => handleOpen(trade)}
                     type="button"

@@ -12,7 +12,6 @@ import useStartStopAction from '@/app/hooks/startStopActionHook';
 import ForceActionComponent from '@/app/components/ForceActionComponent';
 import DeleteAutotraderComponent from '@/app/components/DeleteAutotraderComponent';
 import TradeHistoryTable from './detail/[id]/TradeHistoryTable';
-import useFetchData from '@/app/hooks/QueryHook';
 import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 
 export default function ModalDetailAutotrader({
@@ -29,23 +28,6 @@ export default function ModalDetailAutotrader({
     detail,
     setDetail,
   });
-
-  // const conditions = [
-  //   {field : 'pair', operator:'==', value:  detail?.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_') || ''}, 
-  //   {field : 'trading_plan_id', operator:'==', value:detail?.trading_plan_pair[0]?.split('_')?.[0]}
-  // ]
-
-  // const { data, loadMore, loading:fetchLoading, error } = useFetchData({
-  //   collectionName : 'webhooks',
-  //   conditions,
-  //   authRequired: true,
-  //   dependencies: [conditions],
-  //   type: 'getDocs',
-  //   limitQuery: 1,
-  // })
-
-  // console.log(data, 'latest signal')
-
 
   useEffect(() => {
     async function getLastSignal() {

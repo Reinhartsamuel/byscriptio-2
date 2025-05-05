@@ -158,15 +158,6 @@ export default function ForceActionComponent({ detail }) {
             </>
           )}
         </button>}
-
-
-
-
-        {/* 
-
-
- 
- */}
       </div>
 
       <h1 className='text-gray-400 text-sm'>Force Exit</h1>
