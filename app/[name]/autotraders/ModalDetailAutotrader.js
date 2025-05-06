@@ -31,19 +31,16 @@ export default function ModalDetailAutotrader({
 
   useEffect(() => {
     async function getLastSignal() {
-      // console.log(, `detail.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_')`)
-
       try {
         const res = await getCollectionFirebase('webhooks', [
           { field: 'pair', operator: '==', value: detail?.trading_plan_pair[0]?.split('_')?.slice(1)?.join('_') || '' },
           { field: 'trading_plan_id', operator: '==', value: detail?.trading_plan_pair[0]?.split('_')?.[0] }
         ],
           {
-            field: 'createdAt', order: 'desc'
+            field: 'createdAt', direction: 'desc'
           },
           1
         )
-        console.log(res, 'latest signal')
         if (res?.length > 0) {
           setLatestSignal(res[0])
         }
