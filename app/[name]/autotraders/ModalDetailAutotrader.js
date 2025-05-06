@@ -145,6 +145,15 @@ export default function ModalDetailAutotrader({
                   </div>
 
                 </div>
+                {detail?.initialInvestment ?
+                  <div className='flex w-full justify-between min-h-10 items-end'>
+                    <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
+                      Initial Investment
+                    </p>
+                    <p className='dark:text-gray-100 font-light text-sm'>
+                      USD {detail?.initialInvestment}
+                    </p>
+                  </div> : <></>}
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>
                     Trade amount

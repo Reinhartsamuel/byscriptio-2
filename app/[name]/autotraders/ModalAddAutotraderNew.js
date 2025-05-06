@@ -209,7 +209,7 @@ export default function ModalAddAutotraderNew({
           name: authFirebase.currentUser?.displayName,
           email: authFirebase.currentUser?.email,
           tradeAmount: parseFloat(config.tradeAmount),
-          initialAmount: parseFloat(config.tradeAmount),
+          initialInvestment: parseFloat(config.tradeAmount),
           exchange_name: selectedExchange.exchange_name,
           exchange_external_id: selectedExchange.external_id,
           exchange_thumbnail: selectedExchange.exchange_thumbnail,
