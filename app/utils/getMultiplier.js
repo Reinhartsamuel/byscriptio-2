@@ -20,7 +20,26 @@ export async function getMultiplier(coin, autotrader) {
         return 1;
     }
 
-    const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
+    const searchPairName = 
+    market_code === 'bybit_usdt_perpetual' ? 'USDT_DOGEUSDT' :
+    market_code === 'bybit_spot' ? 'USDT_DOGE' :
+    market_code === 'binance' ? 'USDT_DOGE' :
+    market_code === 'gate_io_usdt_perpetual' ? 'USDT_DOGE_USDT' :
+    market_code === 'binance_tr' ? 'USDT_DOGE' :
+    market_code === 'okex_futures' ? 'DOGE_DOGE-USD-SWAP' :
+    market_code === 'huobi' ? 'USDT_DOGE' :
+    market_code === 'okex' ? 'USDT_DOGE' :
+    market_code === 'gate_io' ? 'USDT_DOGE' :
+    market_code === 'binance_futures' ? 'USDT_DOGEUSDT' :
+    market_code === 'bybit' ? 'DOGE_DOGEUSD' :
+    market_code === 'binance_us' ? 'USDT_DOGE' :
+    market_code === 'bitfinex' ? 'USDT_DOGE' :
+    market_code === 'kucoin' ? 'USDT_DOGE' :
+    market_code === 'bitstamp' ? 'USD_DOGE' :
+    market_code === 'bybit_usdt_perpetual' ? 'USDT_DOGEUSDT' :
+    '';
+
+    // const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
     console.log(searchPairName, 'searchPairName anjeeeng');
     if (searchPairName === undefined) {
         return 1;
