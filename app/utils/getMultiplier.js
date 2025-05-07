@@ -8,8 +8,9 @@ const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const baseUrl = 'https://api.3commas.io';
 
 
-export async function getMultiplier(coin, autotrader, marketCode) {
+export async function getMultiplier(coin, autotrader) {
     console.log('calling getMultiplier')
+    const { market_code } = await getExchangeData(autotrader);
     const market = market_code ? MARKET_TYPES?.find((x) => x.code === market_code) : MARKET_TYPES.find((x) =>
         x.code?.includes(autotrader?.exchange_name?.toLowerCase()) &&
         (x.code?.includes('futures') || x.code?.includes('perpetual'))
