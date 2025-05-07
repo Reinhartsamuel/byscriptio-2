@@ -21,22 +21,22 @@ export async function getMultiplier(coin, autotrader) {
     }
 
     const searchPairName = 
-    market_code === 'bybit_usdt_perpetual' ? 'USDT_DOGEUSDT' :
-    market_code === 'bybit_spot' ? 'USDT_DOGE' :
-    market_code === 'binance' ? 'USDT_DOGE' :
-    market_code === 'gate_io_usdt_perpetual' ? 'USDT_DOGE_USDT' :
-    market_code === 'binance_tr' ? 'USDT_DOGE' :
-    market_code === 'okex_futures' ? 'DOGE_DOGE-USD-SWAP' :
-    market_code === 'huobi' ? 'USDT_DOGE' :
-    market_code === 'okex' ? 'USDT_DOGE' :
-    market_code === 'gate_io' ? 'USDT_DOGE' :
-    market_code === 'binance_futures' ? 'USDT_DOGEUSDT' :
-    market_code === 'bybit' ? 'DOGE_DOGEUSD' :
-    market_code === 'binance_us' ? 'USDT_DOGE' :
-    market_code === 'bitfinex' ? 'USDT_DOGE' :
-    market_code === 'kucoin' ? 'USDT_DOGE' :
-    market_code === 'bitstamp' ? 'USD_DOGE' :
-    market_code === 'bybit_usdt_perpetual' ? 'USDT_DOGEUSDT' :
+    market_code === 'bybit_usdt_perpetual' ? 'USDT_VETUSDT' :
+    market_code === 'bybit_spot' ? 'USDT_VET' :
+    market_code === 'binance' ? 'USDT_VET' :
+    market_code === 'gate_io_usdt_perpetual' ? 'USDT_VET_USDT' :
+    market_code === 'binance_tr' ? 'USDT_VET' :
+    market_code === 'okex_futures' ? 'VET_VET-USD-SWAP' :
+    market_code === 'huobi' ? 'USDT_VET' :
+    market_code === 'okex' ? 'USDT_VET' :
+    market_code === 'gate_io' ? 'USDT_VET' :
+    market_code === 'binance_futures' ? 'USDT_VETUSDT' :
+    market_code === 'bybit' ? 'VET_VETUSD' :
+    market_code === 'binance_us' ? 'USDT_VET' :
+    market_code === 'bitfinex' ? 'USDT_VET' :
+    market_code === 'kucoin' ? 'USDT_VET' :
+    market_code === 'bitstamp' ? 'USD_VET' :
+    market_code === 'bybit_usdt_perpetual' ? 'USDT_VETUSDT' :
     '';
 
     // const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
