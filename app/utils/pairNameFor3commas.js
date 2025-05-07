@@ -1,4 +1,4 @@
-export async function pairNameFor3commas(bot, _pair) {
+export async function pairNameFor3commas(bot, _pair, market_code) {
     if (bot?.marketType === 'spot') return _pair;
     const exchange = bot?.exchange_name?.toLowerCase();
     if (exchange === 'binance') {

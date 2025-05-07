@@ -2,6 +2,7 @@ import { coins } from "@/app/dummy";
 import { closePreviousTrade } from "@/app/utils/closePreviousTrade";
 import { executeNewTrade } from "@/app/utils/executeNewTrade";
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
+import { getExchangeData } from "@/app/utils/getExchangeData";
 import { getMultiplier } from "@/app/utils/getMultiplier";
 import { pairNameFor3commas } from "@/app/utils/pairNameFor3commas";
 // import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
@@ -246,13 +247,12 @@ export async function POST(request) {
 
 
 
-
-
-            const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
+            const { market_code } = await getExchangeData(autotrader);
+            const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader, market_code);
             const bodySend = {
                 account_id: autotrader?.exchange_external_id ? autotrader.exchange_external_id : 'no account id',
                 // pair: body.pair,
-                pair: await pairNameFor3commas(autotrader, body.pair),
+                pair: await pairNameFor3commas(autotrader, body.pair, market_code),
                 instant: false,
                 position: {
                     type: body.type,
