@@ -267,6 +267,7 @@ export async function POST(request) {
                 leverage: {
                     enabled: true,
                     type: "isolated",
+                    leverage_type: "isolated",
                     value: "1"
                 },
                 take_profit: {

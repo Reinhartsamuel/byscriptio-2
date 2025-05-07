@@ -99,7 +99,7 @@ const ExchangeComponent = ({ exchange }) => {
         // console.log(exchange, 'exchange')
       }} className='flex flex-col justify-between gap-2 cursor-pointer w-full p-4 border rounded-lg shadow bg-gray-900 border-gray-700 max-h-[6rem] hover:scale-105 transition ease-in-out 1s active:scale-95'>
         <div className='flex w-full justify-between'>
-          <div className='flex w-full justify-between'>
+          <div className='flex flex-col lg:flex-row w-full lg:justify-between'>
             <div className='flex gap-2'>
               <img
                 alt={exchange?.exchange_name}
