@@ -73,6 +73,7 @@ export async function closePreviousTrade({
                 }
             });
             const responseCloseMarket = await response2.json();
+            console.log(responseCloseMarket, 'responseCloseMarket cuyyy', `accountId:${autotrader?.exchange_external_id}, user : ${autotrader.name}`);
             if (responseCloseMarket.error || responseCloseMarket.error_description) {
                 console.log('Failed to close trade', responseCloseMarket, JSON.stringify(body));
                 // throw new Error('Failed to close trade' + '  ' +  JSON.stringify(responseCloseMarket.error) + '  ' + JSON.stringify(responseCloseMarket.error_description));
