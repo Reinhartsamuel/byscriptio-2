@@ -13,9 +13,10 @@ export async function cancelTrade ({
         let historyLogs = [];
         const querySnapshot = await adminDb
         .collection('3commas_logs')
-        .where('autotrader_id', '==', autotrader.id)
-        .where('pair', '==', body.pair)
         .where('trading_plan_id', '==', body.trading_plan_id)
+        .where('pair', '==', body.pair)
+        .where('status_type', '==', 'waiting_position')
+        .where('autotrader_id', '==', autotrader.id)
         .orderBy('createdAt', 'desc')
         .limit(10)
         .get();
