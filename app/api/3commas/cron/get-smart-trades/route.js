@@ -45,6 +45,7 @@ export async function POST() {
 
                 const dataToUpdate = {
                     ...withoutId,
+                    status_type : withoutId?.status?.type || ''
                 };
                 if (smartTrade?.status?.type === 'panic_sold' || smartTrade?.status?.type === 'failed') {
                     dataToUpdate.already_updated = true;

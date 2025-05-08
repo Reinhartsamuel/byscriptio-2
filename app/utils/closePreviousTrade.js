@@ -83,6 +83,7 @@ export async function closePreviousTrade({
             // this is for adding 3commas_logs
             const sendDataTo3CommasLogs = {
                 ...responseCloseMarket,
+                status_type : responseCloseMarket?.status?.type || '',
                 name: autotrader?.name || '',
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',

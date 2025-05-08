@@ -62,6 +62,7 @@ export async function executeNewTrade({
     // save to 3commas_logs without waiting for it to finish
     const dataToAdd = {
         ...responseExecute,
+        status_type : responseExecute?.status?.type || '',
         name: autotrader?.name || '',
         email: autotrader?.email || '',
         uid: autotrader?.uid || '',

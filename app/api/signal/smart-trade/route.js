@@ -515,6 +515,7 @@ async function executeSpotTrade({
             delete dataWithoutId.id;
             const sendDataTo3CommasLogs = {
                 ...dataWithoutId,
+                status_type : dataWithoutId?.status?.type || '',
                 name: autotrader?.name || '',
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',
