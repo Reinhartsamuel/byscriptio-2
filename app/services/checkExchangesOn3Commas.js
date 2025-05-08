@@ -83,7 +83,7 @@ export async function onCheck3CApi({
             exchange_thumbnail: exchangeThumbnail,
             type: getType(exchangeData.exchange_name),
             exchange_external_name: exchangeData.exchange_name.toUpperCase(),
-            exchange_external_code: exchangeData?.market_code || '',
+            market_code: exchangeData?.market_code || '',
           };
           console.log(addData, 'addData')
           const setDocc = await setDocumentFirebase(

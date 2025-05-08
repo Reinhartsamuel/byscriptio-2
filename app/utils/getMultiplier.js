@@ -20,26 +20,7 @@ export async function getMultiplier(coin, autotrader) {
         return 1;
     }
 
-    const searchPairName = 
-    market_code === 'bybit_usdt_perpetual' ? 'USDT_VETUSDT' :
-    market_code === 'bybit_spot' ? 'USDT_VET' :
-    market_code === 'binance' ? 'USDT_VET' :
-    market_code === 'gate_io_usdt_perpetual' ? 'USDT_VET_USDT' :
-    market_code === 'binance_tr' ? 'USDT_VET' :
-    market_code === 'okex_futures' ? 'VET_VET-USD-SWAP' :
-    market_code === 'huobi' ? 'USDT_VET' :
-    market_code === 'okex' ? 'USDT_VET' :
-    market_code === 'gate_io' ? 'USDT_VET' :
-    market_code === 'binance_futures' ? 'USDT_VETUSDT' :
-    market_code === 'bybit' ? 'VET_VETUSD' :
-    market_code === 'binance_us' ? 'USDT_VET' :
-    market_code === 'bitfinex' ? 'USDT_VET' :
-    market_code === 'kucoin' ? 'USDT_VET' :
-    market_code === 'bitstamp' ? 'USD_VET' :
-    market_code === 'bybit_usdt_perpetual' ? 'USDT_VETUSDT' :
-    '';
-
-    // const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
+    const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
     console.log(searchPairName, 'searchPairName anjeeeng');
     if (searchPairName === undefined) {
         return 1;
@@ -60,7 +41,6 @@ export async function getMultiplier(coin, autotrader) {
     console.log(data, 'this is data to find quanto multiplier anjeeeng');
 
     return data?.quanto_multiplier ? parseFloat(data?.quanto_multiplier) : 1;
-
     // amount = contract
     // position = usdt
 }

@@ -1,14 +1,16 @@
-export async function pairNameFor3commas(bot, _pair, market_code) {
+export async function pairNameFor3commas(bot, _pair) {
     if (bot?.marketType === 'spot') return _pair;
     const exchange = bot?.exchange_name?.toLowerCase();
     if (exchange === 'binance') {
         // check whether it's coinM or USDT
+        const payload = {
+            "queryParams" : `/ver1/accounts/${bot.exchange_external_id}`,
+            "method" : "GET"
+        }
+        
         const x = await fetch('https://byscript.io/api/playground/3commas', {
             method: 'POST',
-            body: JSON.stringify({
-                "queryParams" : `/ver1/accounts/${bot.exchange_external_id}`,
-                "method" : "GET"
-            })
+            body: JSON.stringify(payload)
         });
         const res = await x.json();
         if (res.data?.exchange_name === 'Binance Futures USDT-M') {

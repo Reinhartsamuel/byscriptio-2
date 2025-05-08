@@ -24,7 +24,7 @@ const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 
 const baseUrl = 'https://api.3commas.io';
-export const maxDuration = 60; // This function can run for a maximum of 60 seconds 
+export const maxDuration = 300; // This function can run for a maximum of 300 seconds 
 
 
 export async function POST(request) {
@@ -259,15 +259,23 @@ export async function POST(request) {
                     units: {
                         value: String(
                             parseFloat(autotrader.tradeAmount) /
-                             (parseFloat(body.price) * multiplier)
-                            ) // amount in token, not in usd, so (amountUsd/price)
+                            (parseFloat(body.price) * multiplier)
+                        ) // amount in token, not in usd, so (amountUsd/price)
                     },
                     order_type: "market"
                 },
                 leverage: {
                     enabled: true,
-                    type: "isolated",
-                    leverage_type: "isolated",
+                    type: autotrader?.exchange_name ?
+                        autotrader?.exchange_name?.toLowerCase()?.includes('bybit') ?
+                            "cross" :
+                            "isolated" :
+                        "isolated",
+                    leverage_type: autotrader?.exchange_name ?
+                        autotrader?.exchange_name?.toLowerCase()?.includes('bybit') ?
+                            "cross" :
+                            "isolated" :
+                        "isolated",
                     value: "1"
                 },
                 take_profit: {
@@ -287,7 +295,7 @@ export async function POST(request) {
                 bodySend,
                 autotrader,
                 webhookId: addWebhookResult.id,
-                pairFromBody : _pair
+                pairFromBody: _pair
             });
 
             // 4. execute smart trade
@@ -299,7 +307,7 @@ export async function POST(request) {
                 updateTradeAmount: responseCloseMarket?.updateTradeAmount,
                 autotrader,
                 webhookId: addWebhookResult.id,
-                pairFromBody : _pair
+                pairFromBody: _pair
             })
 
 
@@ -511,8 +519,8 @@ async function executeSpotTrade({
                 smart_trade: true,
                 previousBuyId: arr[0]?.id || '',
                 webhookId,
-                marketType:'spot',
-                tradeAmount : autotrader?.tradeAmount || 0,
+                marketType: 'spot',
+                tradeAmount: autotrader?.tradeAmount || 0,
             }
             const newDoc = await adminDb
                 .collection('3commas_logs')
@@ -540,34 +548,34 @@ async function executeSpotTrade({
             }
         });
         const responseExecute = await response2.json();
-        console.log(responseExecute,'responseExecute bjirrr');
+        console.log(responseExecute, 'responseExecute bjirrr');
         const dataWithoutId = { ...responseExecute };
         delete dataWithoutId.id;
 
         try {
             const newDoc = await adminDb
-            .collection('3commas_logs')
-            .add({
-                ...dataWithoutId,
-                name: autotrader?.name || '',
-                email: autotrader?.email || '',
-                uid: autotrader?.uid || '',
-                smart_trade_id: String(responseExecute?.id),
-                autotrader_id: autotrader?.id || '',
-                createdAt: new Date(),
-                exchange_external_id: autotrader?.exchange_external_id || '',
-                exchange_name: autotrader?.exchange_name || '',
-                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-                type: 'autotrade',
-                trading_plan_id: body?.trading_plan_id,
-                action: body?.type ? body?.type.toUpperCase() : 'unknown action',
-                pair: body?.pair,
-                smart_trade: true,
-                webhookId : webhookId || '',
-                maketType : 'spot',
-                tradeAmount : autotrader?.tradeAmount || 0,
-            })
-            console.log(newDoc.id, 'newDoc.id for buy signal')     
+                .collection('3commas_logs')
+                .add({
+                    ...dataWithoutId,
+                    name: autotrader?.name || '',
+                    email: autotrader?.email || '',
+                    uid: autotrader?.uid || '',
+                    smart_trade_id: String(responseExecute?.id),
+                    autotrader_id: autotrader?.id || '',
+                    createdAt: new Date(),
+                    exchange_external_id: autotrader?.exchange_external_id || '',
+                    exchange_name: autotrader?.exchange_name || '',
+                    exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                    type: 'autotrade',
+                    trading_plan_id: body?.trading_plan_id,
+                    action: body?.type ? body?.type.toUpperCase() : 'unknown action',
+                    pair: body?.pair,
+                    smart_trade: true,
+                    webhookId: webhookId || '',
+                    maketType: 'spot',
+                    tradeAmount: autotrader?.tradeAmount || 0,
+                })
+            console.log(newDoc.id, 'newDoc.id for buy signal')
         } catch (error) {
             console.log(JSON.stringify(error), 'error saving to database for BUY SPOTTTT');
         }

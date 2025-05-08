@@ -59,9 +59,6 @@ export async function executeNewTrade({
     delete responseExecute.id;
     delete responseExecute.pair;
 
-    console.log(body, 'bjir')
-    console.log(bodySend, 'kudaa')
-
     // save to 3commas_logs without waiting for it to finish
     const dataToAdd = {
         ...responseExecute,

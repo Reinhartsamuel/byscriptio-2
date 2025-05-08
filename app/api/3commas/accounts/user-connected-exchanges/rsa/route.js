@@ -8,7 +8,7 @@ import generateSignatureRsa from '@/app/utils/generateSignatureRsa';
 const API_KEY = process.env.THREE_COMMAS_API_KEY_BOT_CREATION;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY;
 
-export const maxDuration = 25; // This function can run for a maximum of 25 seconds
+export const maxDuration = 300; // This function can run for a maximum of 300 seconds
 
 
 export async function GET(request) {
