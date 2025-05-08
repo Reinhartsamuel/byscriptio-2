@@ -1,4 +1,5 @@
 import { coins } from "@/app/dummy";
+import { cancelTrade } from "@/app/utils/cancelTrade";
 import { closePreviousTrade } from "@/app/utils/closePreviousTrade";
 import { executeNewTrade } from "@/app/utils/executeNewTrade";
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
@@ -94,7 +95,7 @@ export async function POST(request) {
         }
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action: body?.type === 'sell' ? 'SELL' : 'BUY',
+            action: body?.type?.toUpperCase(),
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
@@ -237,7 +238,7 @@ export async function POST(request) {
                     webhookId: addWebhookResult.id,
                 })
                 console.log(result, 'result SPOTTTTTT')
-                return { result }
+                return result 
             }
             // SPOT EXECUTION
             // SPOT EXECUTION
@@ -245,6 +246,17 @@ export async function POST(request) {
             // SPOT EXECUTION
 
 
+            // CANCEL SMART TRADE FUTURES
+            // CANCEL SMART TRADE FUTURES
+            if (body.type === 'cancel_long' || body.type === 'cancel_short') {
+                const res = await cancelTrade({
+                    body,
+                    autotrader
+                });
+                return res;
+            }
+            // CANCEL SMART TRADE FUTURES
+            // CANCEL SMART TRADE FUTURES
 
 
 
@@ -262,7 +274,7 @@ export async function POST(request) {
                             (parseFloat(body.price) * multiplier)
                         ) // amount in token, not in usd, so (amountUsd/price)
                     },
-                    order_type: "market"
+                    order_type: body?.order_type || "market"
                 },
                 leverage: {
                     enabled: true,
@@ -278,10 +290,10 @@ export async function POST(request) {
                         "isolated",
                     value: "1"
                 },
-                take_profit: {
+                take_profit: body?.take_profit || {
                     enabled: false,
                 },
-                stop_loss: {
+                stop_loss: body?.stop_loss || {
                     enabled: false,
                 },
             }
