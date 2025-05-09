@@ -165,7 +165,7 @@ function SmartTradesTable({ trades }) {
 
               >
                 <td className="px-4 py-3 text-red-400 whitespace-nowrap">
-                <button
+                  <button
                     onClick={() => handleOpen(trade)}
                     type="button"
                     className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
@@ -180,8 +180,27 @@ function SmartTradesTable({ trades }) {
                   <p className='text-xs'>{trade?.pair}</p>
                 </td>
                 <td className={cn("px-4 py-3 font-bold", actionColor())}>{trade?.action}</td>
-                <td className="px-4 py-3 text-red-400 whitespace-nowrap">$ {!isNaN(trade?.profit?.usd) ? parseFloat(trade?.profit?.usd)?.toFixed(3) : ''}</td>
-                <td className="px-4 py-3 text-red-400">{trade?.profit?.percent}%</td>
+                <td
+                  className={cn(
+                    "px-4 py-3 whitespace-nowrap",
+                    trade?.profit?.usd ?
+                    parseFloat(trade?.profit?.usd) > 0 ? "text-green-400" 
+                    : 'text-red-400'
+                    : "text-gray-300",
+                    )
+                    
+                  }
+                >
+                  $ {!isNaN(trade?.profit?.usd) ? parseFloat(trade?.profit?.usd)?.toFixed(3) : ''}
+                </td>
+                <td 
+                className={cn("px-4 py-3", 
+                  trade?.profit?.percent?
+                  parseFloat(trade?.profit?.percent) > 0 ? "text-green-400"
+                  : 'text-red-400'
+                  : "text-gray-300",
+                )}
+                >{trade?.profit?.percent}%</td>
                 <td className="px-4 py-3">${trade?.position?.price?.value}</td>
                 <td
                   className={cn("px-4 py-3 whitespace-nowrap", trade?.error ? "text-red-400" : "")}
@@ -221,7 +240,7 @@ function SmartTradesTable({ trades }) {
                         loading && "cursor-not-allowed"
                       )}
                     >
-                      {loading ? <Spinner/> : "Close At Market Price"}
+                      {loading ? <Spinner /> : "Close At Market Price"}
                     </button>
                   }
                 </td>
