@@ -59,17 +59,17 @@ export async function POST(request) {
             config.body = JSON.stringify(body.bodySend);
         }
         const response = await fetch(finalUrl, config);
-        console.log(finalUrl, 'finalUrl');
-        console.log(config, 'config');
-        console.log('\n=====SIGNATURE START\n ', signature, '\n=====SIGNATURE END\n');
+        // console.log(finalUrl, 'finalUrl');
+        // console.log(config, 'config');
+        // console.log('\n=====SIGNATURE START\n ', signature, '\n=====SIGNATURE END\n');
         let data;
         const contentType = response.headers.get('content-type');
 
         if (contentType && contentType.includes('application/json')) {
-            console.log('data is json')
+            // console.log('data is json')
             data = await response.json();
         } else {
-            console.log('data is text')
+            // console.log('data is text')
             data = await response.text();
         }
         if (!response.ok) {

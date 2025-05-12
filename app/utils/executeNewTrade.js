@@ -17,22 +17,24 @@ export async function executeNewTrade({
 }) {
     const queryParams = `/public/api/v2/smart_trades`;
     const finalUrl = baseUrl + queryParams;
-    const signatureMessage = queryParams + JSON.stringify(bodySend);
-    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-    const updatedBodySend = {
-        ...bodySend,
-        position: {
-            ...bodySend.position,
-            units: {
-                value: updateTradeAmount ? String(updateTradeAmount) : bodySend.position.units.value // check if the previous trade updates the tradeAmount, otherwise use the original tradeAmount
-            }
+    const finalBodySend = updateTradeAmount
+        ? {
+            ...bodySend,
+            position: {
+                ...bodySend.position,
+                units: {
+                    value: String(updateTradeAmount),
+                },
+            },
         }
-    }
-    console.log(`executinggggggggg ${JSON.stringify(updatedBodySend)}`)
+        : bodySend;
+    const signatureMessage = queryParams + JSON.stringify(finalBodySend);
+    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+    console.log(`executinggggggggg ${JSON.stringify(finalBodySend)}`)
     // return {pepek : 'anjing'}
     const response2 = await fetch(finalUrl, {
         method: 'POST',
-        body: JSON.stringify(updatedBodySend),
+        body: JSON.stringify(finalBodySend),
         headers: {
             'Content-Type': 'application/json',
             APIKEY: API_KEY,
@@ -43,7 +45,7 @@ export async function executeNewTrade({
     // result of execute smart trade, update to 3commas_logs
     // if error, return error and console log
     if (responseExecute.error || responseExecute.error_description) {
-        console.log('Failed to execute smart trade', responseExecute, 'payload:', JSON.stringify(updatedBodySend));
+        console.log('Failed to execute smart trade', responseExecute, 'payload:', JSON.stringify(finalBodySend));
         // if (nonce <= MAX_EXECUTION_RETRIES) {
         //     console.log('retrying execute smart trade', nonce);
         //     return await executeNewTrade({
@@ -62,7 +64,7 @@ export async function executeNewTrade({
     // save to 3commas_logs without waiting for it to finish
     const dataToAdd = {
         ...responseExecute,
-        status_type : responseExecute?.status?.type || '',
+        status_type: responseExecute?.status?.type || '',
         name: autotrader?.name || '',
         email: autotrader?.email || '',
         uid: autotrader?.uid || '',
