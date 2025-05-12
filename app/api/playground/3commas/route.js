@@ -47,7 +47,8 @@ export async function POST(request) {
             error: data.error + ' ' + data?.error_attributes,
             message: data.error,
             error_attributes : data?.error_attributes,
-            errorCode: data.code
+            errorCode: data.code,
+            error_description: data?.error_description
         }), {
             status: 400,
             headers: { 'Content-Type': 'application/json' }
