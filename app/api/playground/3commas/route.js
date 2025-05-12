@@ -26,23 +26,52 @@ export const maxDuration = 60; // This function can run for a maximum of 60 seco
 export async function POST(request) {
     try {
         const body = await request.json();
-        console.log(body, 'body')
-        let totalParams = `/public/api` + body.queryParams;
-        if (body?.bodySend && Object.keys(body?.bodySend).length > 0) {
-            totalParams += JSON.stringify(body.bodySend)
+        if (!body.queryParams) {
+            return new Response(JSON.stringify({
+                status: false,
+                message: 'queryParams is required!',
+            }))
         }
-        const finalUrl = baseUrl + totalParams;
-        const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
-        const response = await fetch(finalUrl, {
+        if (!body.method) {
+            return new Response(JSON.stringify({
+                status: false,
+                message: 'method is required!',
+            }))
+        }
+        const queryParams = '/public/api' + body.queryParams;
+        const finalUrl = baseUrl + queryParams;
+
+        let signatureMessage = queryParams
+        if (body?.bodySend && Object.keys(body.bodySend).length > 0) {
+            signatureMessage += JSON.stringify(body.bodySend);
+        }
+        const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+        const config = {
             method: body.method,
-            body: body.bodySend ? JSON.stringify(body.bodySend) : null,
             headers: {
                 'Content-Type': 'application/json',
                 APIKEY: API_KEY,
                 Signature: signature,
             }
-        });
-        const data = await response.json();
+        }
+
+        if (body?.bodySend && Object.keys(body.bodySend).length > 0) {
+            config.body = JSON.stringify(body.bodySend);
+        }
+        const response = await fetch(finalUrl, config);
+        console.log(finalUrl, 'finalUrl');
+        console.log(config, 'config');
+        console.log('\n=====SIGNATURE START\n ', signature, '\n=====SIGNATURE END\n');
+        let data;
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('application/json')) {
+            console.log('data is json')
+            data = await response.json();
+        } else {
+            console.log('data is text')
+            data = await response.text();
+        }
         if (!response.ok) {
             console.log(data, 'data... response not ok')
             const returnErrorData = {
