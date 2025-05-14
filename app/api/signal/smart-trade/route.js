@@ -519,21 +519,22 @@ async function executeSpotTrade({
                 name: autotrader?.name || '',
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',
+                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                exchange_name: autotrader?.exchange_name || '',
+                exchange_external_id: autotrader?.exchange_external_id || '',
                 smart_trade_id: String(responseCloseMarket?.id),
                 autotrader_id: autotrader.id,
                 createdAt: new Date(),
-                exchange_external_id: autotrader?.exchange_external_id || '',
-                exchange_name: autotrader?.exchange_name || '',
-                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-                type: 'autotrade',
                 trading_plan_id: body.trading_plan_id,
                 action: body.type.toUpperCase(),
+                type: 'autotrade',
                 pair: body.pair,
                 smart_trade: true,
+                requestBody: bodySend,
                 previousBuyId: arr[0]?.id || '',
-                webhookId,
                 marketType: 'spot',
                 tradeAmount: autotrader?.tradeAmount || 0,
+                webhookId,
             }
             const newDoc = await adminDb
                 .collection('3commas_logs')
@@ -549,7 +550,7 @@ async function executeSpotTrade({
         const finalUrl = baseUrl + queryParams;
         const signatureMessage = queryParams + JSON.stringify(bodySend);
         const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
-        console.log(`executinggggggggg ${JSON.stringify(bodySend)}`)
+        console.log(`executinggggggggg SPOT ${JSON.stringify(bodySend)}`)
         // return {pepek : 'anjing'}
         const response2 = await fetch(finalUrl, {
             method: 'POST',
@@ -570,22 +571,24 @@ async function executeSpotTrade({
                 .collection('3commas_logs')
                 .add({
                     ...dataWithoutId,
+                    status_type : dataWithoutId?.status?.type || '',
                     name: autotrader?.name || '',
                     email: autotrader?.email || '',
                     uid: autotrader?.uid || '',
+                    exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                    exchange_name: autotrader?.exchange_name || '',
+                    exchange_external_id: autotrader?.exchange_external_id || '',
                     smart_trade_id: String(responseExecute?.id),
                     autotrader_id: autotrader?.id || '',
                     createdAt: new Date(),
-                    exchange_external_id: autotrader?.exchange_external_id || '',
-                    exchange_name: autotrader?.exchange_name || '',
-                    exchange_thumbnail: autotrader?.exchange_thumbnail || '',
-                    type: 'autotrade',
                     trading_plan_id: body?.trading_plan_id,
                     action: body?.type ? body?.type.toUpperCase() : 'unknown action',
+                    type: 'autotrade',
                     pair: body?.pair,
                     smart_trade: true,
-                    webhookId: webhookId || '',
+                    requestBody: bodySend,
                     maketType: 'spot',
+                    webhookId: webhookId || '',
                     tradeAmount: autotrader?.tradeAmount || 0,
                 })
             console.log(newDoc.id, 'newDoc.id for buy signal')
