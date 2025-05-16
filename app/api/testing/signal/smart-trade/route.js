@@ -27,15 +27,14 @@ export async function POST(request) {
         console.log(body, 'testing smarttrade body');
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action: body?.method === 'DELETE' ? 'cancel' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown', 
+            action: body?.method === 'DELETE' ? 'cancel' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
             flag: 'testing',
+            rawSignal: JSON.stringify(body),
             // result: result.map((x) => x?.status),
         });
-        // Process the request
-        // TODO: Add your business logic here
 
         // trading_plan_id is constructed of trading plan name and pair
         const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;
@@ -44,14 +43,31 @@ export async function POST(request) {
         let autotraders = [];
         let result = null;
 
-        if (body.account_id === 'all') {
-        // 1. find active autotraders
-        const querySnapshot = await adminDb
+
+        if (body.method === 'CANCEL') {
+            return await cancelSmartTrade({
+                body,
+                webhookId: addWebhookResult.id,
+            });
+        } else if (body.method === 'CLOSE') {
+            return await closeAtMarketPrice({
+                body,
+                webhookId: addWebhookResult.id,
+            });
+        }
+
+        //1. Build the query
+        let query = adminDb
             .collection('dca_bots')
             .where('trading_plan_pair', 'array-contains', body.trading_plan_id + '_' + body.pair)
             .where('status', '==', 'ACTIVE')
-            .where('smart_trade', '==', true)
-            .get();
+            .where('smart_trade', '==', true);
+
+        // 2. Conditionally add `account_id` filter if it's not 'all'
+        if (body.account_id !== 'all') {
+            query = query.where('exchange_external_id', '==', Number(body.account_id));
+        }
+        const querySnapshot = await query.get();
         if (querySnapshot.empty) {
             console.log(
                 `no bots found lookup under ${tp_unique_id} timestamp : `,
@@ -64,42 +80,15 @@ export async function POST(request) {
             autotraders.push({ ...doc.data(), id: doc.id });
         });
 
-        } else { // specific account_id
-            const querySnapshot = await adminDb
-            .collection('dca_bots')
-            .where('trading_plan_pair', 'array-contains', body.trading_plan_id + '_' + body.pair)
-            .where('status', '==', 'ACTIVE')
-            .where('smart_trade', '==', true)
-            .where(Number(body.account_id))
-            .get();
-            if (querySnapshot.empty) {
-                console.log(
-                    `no bots found account id : ${body.account_id} timestamp : `,
-                    new Date().getTime(),
-                    JSON.stringify(body)
-                );
-                return Response.json({ status: false, message: 'No bots foundd' });
-            }
-            querySnapshot.forEach((doc) => {
-                autotraders.push({...doc.data(), id: doc.id });
-            });
-            const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
-                return await createSmartTrade({
-                    autotrader,
-                    body,
-                    webhookId :addWebhookResult.id,
-                })
-            }));
-            result = res.map((x) => x.value);
-        };
+        const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
+            return await createSmartTrade({
+                autotrader,
+                body,
+                webhookId: addWebhookResult.id,
+            })
+        }));
+        result = res.map((x) => x.value);
 
-
-
-
-
-
-
-        // CANCEL smart trade
 
         return NextResponse.json(
             {
@@ -110,7 +99,6 @@ export async function POST(request) {
             },
             { status: 200 }
         );
-
     } catch (error) {
         console.error('Error processing request:', error);
         return NextResponse.json(
@@ -128,22 +116,46 @@ async function createSmartTrade({
     webhookId,
     pairFromBody,
 }) {
-    // const payloadExample = {
-    //     "account_id": 32455218,
-    //     "pair": "USDT_BTC",
-    //     "instant": "true",
+    // const exampleBody = {
+    //     "account_id": "all",
+    //     "pair": "USDT_SOL",
     //     "position": {
     //         "type": "buy",
+    //         "order_type": "limit",
     //         "units": {
-    //             "value": "0.01"
+    //             "value": "trade_amount"
     //         },
-    //         "order_type": "market"
+    //         "price": {
+    //             "value": "' + str.tostring(limit_entry_buy) + '"
+    //         }
     //     },
     //     "leverage": {
     //         "enabled": true,
     //         "type": "custom",
-    //         "value": "12"
-    //     }
+    //         "value": "1"
+    //     },
+    //     "take_profit": {
+    //         "enabled": true,
+    //         "steps": [
+    //             {
+    //                 "order_type": "limit",
+    //                 "volume": "100",
+    //                 "price": {
+    //                     "value": "' + str.tostring(limit_entry_price) + '",
+    //                     "type": "last"
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     "stop_loss": {
+    //         "enabled": false
+    //     },
+    //     "method": "CREATE",
+    //     "trading_plan_id": "GRID_CUANTERUS",
+    //     "market_type": "futures",
+    //     "timestamp": "' + str.tostring(timenow) + '",
+    //     "compound": "false",
+    //     "flag": "testing"
     // };
     const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
     const payload = {
@@ -164,7 +176,7 @@ async function createSmartTrade({
             "value": body.leverage?.value || body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
-        "instant":body?.instant || false,
+        "instant": body?.instant || false,
         ...body,
     };
     const signatureMessage = queryParams + JSON.stringify(payload);
@@ -211,95 +223,272 @@ async function createSmartTrade({
         .collection('3commas_logs')
         .add(dataToAdd)
     return { ...responseExecute, smart_trade_id };
-
 }
 
 
 
 async function cancelSmartTrade({
-    autotrader,
-    positionCalculation = "compound",
-
+    body,
+    webhookId
 }) {
-    // const payloadExample = {
-    //     "account_id": 32455218,
-    //     "pair": "USDT_BTC",
-    //     "instant": "true",
-    //     "position": {
-    //         "type": "buy",
-    //         "units": {
-    //             "value": "0.01"
-    //         },
-    //         "order_type": "market"
-    //     },
-    //     "leverage": {
-    //         "enabled": true,
-    //         "type": "custom",
-    //         "value": "12"
-    //     }
-    // };
+    // const exampleBody = {
+    //     "account_id": "all",
+    //     "pair": "USDT_SOL",
+    //     "method": "CANCEL",
+    //     "trading_plan_id": "GRID_CUANTERUS",
+    //     "market_type": "futures",
+    //     "timestamp": "' + str.tostring(timenow) + '",
+    //     "status": "waiting_position",
+    //     "flag": "testing"
+    // }
+    try {
+        let tradesHistory = [];
+        // build query
+        let query = adminDb
+            .collection('3commas_logs')
+            .where('trading_plan_id', '==', body.trading_plan_id)
+            .where('pair', '==', body.pair)
+            .where('status_type', '==', body.status);
 
-    const payload = {
-        "account_id": Number(autotrader.exchange_external_id),
-        "pair": "USDT_BTC",
-        "instant": "true",
-        "position": {
-            "type": "buy",
-            "units": {
-                "value": "0.01"
-            },
-            "order_type": "market"
-        },
-        "leverage": {
-            "enabled": true,
-            "type": "custom",
-            "value": "12"
+        if (body.account_id !== 'all') {
+            query = query.where('exchange_external_id', '==', Number(body.account_id));
         }
-    };
 
 
+
+        const querySnapshot = await query.get();
+        if (querySnapshot.empty) {
+            console.log(
+                `no trades found lookup under ${body.trading_plan_id} timestamp : `,
+                new Date().getTime(),
+                JSON.stringify(body)
+            );
+            return Response.json({ status: false, message: 'No trades found' });
+        }
+        querySnapshot.forEach((doc) => {
+            tradesHistory.push({ ...doc.data(), id: doc.id });
+        })
+
+
+        const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
+            const doc = await adminDb
+                .collection('dca_bots')
+                .doc(item.autotrader_id)
+                .get();
+            const autotrader = { ...doc.data(), id: doc.id };
+            console.log(`cancelling trade ${item.smart_trade_id}, autotrader_id ${item.autotrader_id}, pair: ${item.pair}, trading_plan_id: ${item.trading_plan_id}`)
+            const totalParams = '/public/api' + `/v2/smart_trades/${item.smart_trade_id}`;
+            const finalUrl = baseUrl + totalParams;
+            const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
+            const response = await fetch(finalUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    APIKEY: API_KEY,
+                    Signature: signature,
+                }
+            });
+            const responseCancel = await response.json();
+            const smart_trade_id = String(responseCancel.id || '');
+            const dataWithoutId = delete responseCancel.id;
+            const sendDataTo3CommasLogs = {
+                ...dataWithoutId,
+                status_type: dataWithoutId?.status?.type || '',
+                name: autotrader?.name || '',
+                email: autotrader?.email || '',
+                uid: autotrader?.uid || '',
+                smart_trade_id,
+                autotrader_id: autotrader.id,
+                createdAt: new Date(),
+                exchange_external_id: autotrader?.exchange_external_id || '',
+                exchange_name: autotrader?.exchange_name || '',
+                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                type: 'autotrade',
+                trading_plan_id: body.trading_plan_id,
+                action: `CANCEL_${item?.action}`,
+                pair: body.pair,
+                previousBuyId: item?.id || '',
+                smart_trade: true,
+                marketType: autotrader?.marketType || 'unknown',
+                webhookId
+            };
+
+            adminDb
+                .collection('3commas_logs')
+                .add(sendDataTo3CommasLogs)
+            return sendDataTo3CommasLogs;
+        }))
+        console.log(resPromise.map((x) => x.value), `\n====== result cancelling trade ======, body: ${JSON.stringify(body)}`);
+        return NextResponse.json(
+            {
+                message: 'Success',
+                tradesHistory,
+                result: resPromise.map((x) => x.value),
+            },
+            { status: 200 }
+        )
+    } catch (error) {
+        console.log(error.message, `\n====== Error in cancelSmartTrade ======, body: ${JSON.stringify(body)}`);
+        return NextResponse.json(
+            { error: 'Internal Server Error', errorMessage: error.message, message: error.message, },
+            { status: 500 }
+        );
+    }
 }
 
 async function closeAtMarketPrice({
-    autotrader,
-    positionCalculation = "compound",
-
+    body,
+    webhookId
 }) {
-    // const payloadExample = {
-    //     "account_id": 32455218,
-    //     "pair": "USDT_BTC",
-    //     "instant": "true",
+    // const exampleBody = {
+    //     "account_id": "all",
+    //     "pair": "USDT_SOL",
     //     "position": {
     //         "type": "buy",
+    //         "order_type": "limit",
     //         "units": {
-    //             "value": "0.01"
+    //             "value": "trade_amount"
     //         },
-    //         "order_type": "market"
+    //         "price": {
+    //             "value": "' + str.tostring(limit_entry_buy) + '"
+    //         }
     //     },
     //     "leverage": {
     //         "enabled": true,
     //         "type": "custom",
-    //         "value": "12"
-    //     }
+    //         "value": "1"
+    //     },
+    //     "take_profit": {
+    //         "enabled": true,
+    //         "steps": [
+    //             {
+    //                 "order_type": "limit",
+    //                 "volume": "100",
+    //                 "price": {
+    //                     "value": "' + str.tostring(limit_entry_price) + '",
+    //                     "type": "last"
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     "stop_loss": {
+    //         "enabled": false
+    //     },
+    //     "method": "CLOSE",
+    //     "trading_plan_id": "GRID_CUANTERUS",
+    //     "market_type": "futures",
+    //     "timestamp": "' + str.tostring(timenow) + '",
+    //     "compound": "false",
+    //     "flag": "testing"
     // };
 
-    const payload = {
-        "account_id": Number(autotrader.exchange_external_id),
-        "pair": "USDT_BTC",
-        "instant": "true",
-        "position": {
-            "type": "buy",
-            "units": {
-                "value": "0.01"
-            },
-            "order_type": "market"
-        },
-        "leverage": {
-            "enabled": true,
-            "type": "custom",
-            "value": "12"
+    try {
+        let tradesHistory = [];
+        // build query
+        let query = adminDb
+            .collection('3commas_logs')
+            .where('trading_plan_id', '==', body.trading_plan_id)
+            .where('pair', '==', body.pair)
+            .where('status_type', '==', 'waiting_targets');
+
+        if (body.account_id !== 'all') {
+            query = query.where('exchange_external_id', '==', Number(body.account_id));
         }
-    };
+
+        const querySnapshot = await query.get();
+        if (querySnapshot.empty) {
+            console.log(
+                `no trades found lookup under ${body.trading_plan_id} timestamp : `,
+                new Date().getTime(),
+                JSON.stringify(body)
+            );
+            return Response.json({ status: false, message: 'No trades found' });
+        }
+        querySnapshot.forEach((doc) => {
+            tradesHistory.push({ ...doc.data(), id: doc.id });
+        })
 
 
+        const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
+            const doc = await adminDb
+                .collection('dca_bots')
+                .doc(item.autotrader_id)
+                .get();
+            const autotrader = { ...doc.data(), id: doc.id };
+            console.log(`cancelling trade ${item.smart_trade_id}, autotrader_id ${item.autotrader_id}, pair: ${item.pair}, trading_plan_id: ${item.trading_plan_id}`)
+            const queryParamsCloseMarket = `/public/api/v2/smart_trades/${item.smart_trade_id}/close_by_market`;
+            console.log(`queryParamsCloseMarket: ${queryParamsCloseMarket}`)
+            const finalUrlCloseMarket = baseUrl + queryParamsCloseMarket;
+            const signatureMessage = queryParamsCloseMarket;
+            const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+            const response2 = await fetch(finalUrlCloseMarket, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    APIKEY: API_KEY,
+                    Signature: signature,
+                }
+            });
+            const responseCloseMarket = await response2.json();
+            console.log(responseCloseMarket, 'responseCloseMarket cuyyy', `accountId:${autotrader?.exchange_external_id}, user : ${autotrader.name}`);
+            const smart_trade_id = String(responseCloseMarket.id || '');
+            delete responseCloseMarket.id;
+            // this is for adding 3commas_logs
+            const sendDataTo3CommasLogs = {
+                ...responseCloseMarket,
+                status_type: responseCloseMarket?.status?.type || '',
+                name: autotrader?.name || '',
+                email: autotrader?.email || '',
+                uid: autotrader?.uid || '',
+                smart_trade_id,
+                autotrader_id: autotrader.id,
+                createdAt: new Date(),
+                exchange_external_id: autotrader?.exchange_external_id || '',
+                exchange_name: autotrader?.exchange_name || '',
+                exchange_thumbnail: autotrader?.exchange_thumbnail || '',
+                type: 'autotrade',
+                trading_plan_id: body.trading_plan_id,
+                action: `CLOSE_${item.action}`,
+                pair: body?.pair || '',
+                previousBuyId: item?.id || '',
+                smart_trade: true,
+                requestBody: null,
+                marketType: autotrader?.marketType || 'unknown',
+                webhookId
+            }
+
+            if (body?.compound) {
+                const updatedTradeAmount = parseFloat(autotrader) + parseFloat(item?.profit?.usd);
+                if (!isNaN(updatedTradeAmount)) {
+                    // update tradeAmount without waiting
+                    adminDb
+                        .collection('dca_bots')
+                        .doc(autotrader.id)
+                        .update({
+                            tradeAmount: updatedTradeAmount
+                        }).catch((error) => {
+                            console.log(error.message, `error updating autotrader tradeAmount for smart_trade_id ${smart_trade_id}`, JSON.stringify(body));
+                        });
+                }
+            }
+            delete responseCloseMarket.pair;
+            adminDb.collection('3commas_logs').add(sendDataTo3CommasLogs);
+            return sendDataTo3CommasLogs;
+        }));
+        console.log(resPromise.map((x) => x.value), `\n====== result close market price ======, body: ${JSON.stringify(body)}`);
+        return NextResponse.json(
+            {
+                message: 'Success',
+                tradesHistory,
+                result: resPromise.map((x) => x.value),
+            },
+            { status: 200 }
+        )
+    } catch (error) {
+        console.log(error.message, `\n====== Error in closeat marketprice ======, body: ${JSON.stringify(body)}`);
+        return NextResponse.json(
+            { error: 'Internal Server Error', errorMessage: error.message, message: error.message, },
+            { status: 500 }
+        );
+    }
 }
