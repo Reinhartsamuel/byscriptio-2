@@ -19,7 +19,7 @@ export async function closePreviousTrade({
         const latestTradeHistory = await adminDb
             .collection('3commas_logs')
             .where('autotrader_id', '==', autotrader.id)
-            .where('pair', '==', body.pair)
+            .where('pair', '==', pairFromBody)
             .where('trading_plan_id', '==', body.trading_plan_id)
             .orderBy('createdAt', 'desc')
             .limit(1)
@@ -83,7 +83,7 @@ export async function closePreviousTrade({
             // this is for adding 3commas_logs
             const sendDataTo3CommasLogs = {
                 ...responseCloseMarket,
-                status_type : responseCloseMarket?.status?.type || '',
+                status_type: responseCloseMarket?.status?.type || '',
                 name: autotrader?.name || '',
                 email: autotrader?.email || '',
                 uid: autotrader?.uid || '',
@@ -128,7 +128,11 @@ export async function closePreviousTrade({
         // console.log('waiting for 10 seconds')
         // await new Promise(resolve => setTimeout(resolve, 5000));
     } else {
-        console.log('latest trade for this is not found', arr, JSON.stringify(body));
+        console.log(
+            'latest trade for this is not found',
+            arr,
+            JSON.stringify(body)
+        );
         return null;
     }
 }
