@@ -86,12 +86,13 @@ export async function POST(request) {
                 autotrader,
                 body,
                 webhookId: addWebhookResult.id,
+                pairFromBody: body.pair,
             });
             console.log("resultCreateSmartTrade:::", resultCreateSmartTrade, JSON.stringify(body));
             return resultCreateSmartTrade;
         }));
         result = res.map((x) => x.value);
-
+        console.log('res:::', res)
         return NextResponse.json(
             {
                 message: 'Success',

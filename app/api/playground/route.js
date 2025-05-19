@@ -6,7 +6,7 @@ export async function POST(request) {
     const body = await request.json();
     const doc = await adminDb
       .collection('webhooks')
-      .doc('XY3pIPDZ78Vl8kPRIalI')
+      .doc('hPoRzS6l6YJhtUzK5b69')
       .get();
       const raw = doc.data().rawSignal;
     return Response.json({
