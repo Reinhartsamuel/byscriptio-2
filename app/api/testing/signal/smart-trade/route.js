@@ -219,6 +219,7 @@ async function createSmartTrade({
         marketType: autotrader?.marketType || 'unknown',
         webhookId,
     };
+    console.log(dataToAdd, 'dataToAdd', JSON.stringify(body))
     adminDb
         .collection('3commas_logs')
         .add(dataToAdd)
