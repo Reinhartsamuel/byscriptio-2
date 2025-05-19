@@ -171,7 +171,8 @@ async function createSmartTrade({
                     (parseFloat(body.position.price.value) * multiplier)
                 )
             },
-            "order_type": body.position?.order_type || "market" // limit or market
+            "order_type": body.position?.order_type || "market", // limit or market,
+            "price" : body.position?.price 
         },
         "leverage": {
             "enabled": body.leverage?.enabled || false,
