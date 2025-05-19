@@ -193,6 +193,7 @@ async function createSmartTrade({
         }
     });
     const responseExecute = await response2.json();
+    console.log('responseExecute:::', responseExecute, JSON.stringify(body));
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;

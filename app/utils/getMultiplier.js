@@ -9,19 +9,19 @@ const baseUrl = 'https://api.3commas.io';
 
 
 export async function getMultiplier(coin, autotrader) {
-    console.log('calling getMultiplier')
+    // console.log('calling getMultiplier')
     const { market_code } = await getExchangeData(autotrader);
     const market = market_code ? MARKET_TYPES?.find((x) => x.code === market_code) : MARKET_TYPES.find((x) =>
         x.code?.includes(autotrader?.exchange_name?.toLowerCase()) &&
         (x.code?.includes('futures') || x.code?.includes('perpetual'))
     );
-    console.log(market, 'market anjeeeng');
+    // console.log(market, 'market anjeeeng');
     if (market_code === null) {
         return 1;
     }
 
     const searchPairName = PAIRS.find((x) => x.market_code === market_code)?.pairs?.find((x) => x.includes(coin));
-    console.log(searchPairName, 'searchPairName anjeeeng');
+    // console.log(searchPairName, 'searchPairName anjeeeng');
     if (searchPairName === undefined) {
         return 1;
     }
@@ -38,7 +38,7 @@ export async function getMultiplier(coin, autotrader) {
         }
     });
     const data = await response.json();
-    console.log(data, 'this is data to find quanto multiplier anjeeeng');
+    // console.log(data, 'this is data to find quanto multiplier anjeeeng');
 
     return data?.quanto_multiplier ? parseFloat(data?.quanto_multiplier) : 1;
     // amount = contract
