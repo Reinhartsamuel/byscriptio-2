@@ -42,6 +42,7 @@ export async function POST() {
                 console.log(`updating smart trade id ${smartTrade.id} to 3commas_logs doc id ${x.id}`)
                 const withoutId = JSON.parse(JSON.stringify(smartTrade));
                 delete withoutId.id;
+                delete withoutId.pair;
 
                 const dataToUpdate = {
                     ...withoutId,

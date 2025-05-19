@@ -24,6 +24,8 @@ export async function POST(request) {
         // }
 
         const body = await request.json();
+        const _pair = body?.pair || '';
+        console.log(`_pair_pair_pair_pair_pair_pair_pair_pair`, _pair)
         // console.log(body, 'testing smarttrade body');
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
@@ -86,9 +88,9 @@ export async function POST(request) {
                 autotrader,
                 body,
                 webhookId: addWebhookResult.id,
-                pairFromBody: body.pair,
+                pairFromBody: _pair
             });
-            console.log("resultCreateSmartTrade:::", resultCreateSmartTrade, JSON.stringify(body));
+            // console.log("resultCreateSmartTrade:::", resultCreateSmartTrade, JSON.stringify(body));
             return resultCreateSmartTrade;
         }));
         result = res.map((x) => x.value);
@@ -200,37 +202,54 @@ async function createSmartTrade({
         }
     });
     const responseExecute = await response2.json();
-    console.log('responseExecute:::', responseExecute, JSON.stringify(body));
+    // console.log('responseExecute:::', responseExecute, JSON.stringify(body));
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;
+    console.log(responseExecute, 'responseExecute habis didelete anjinggggg')
+    console.log(responseExecute.pair, 'responseExecute habis didelete anjingggggpepekkkk');
+    const safeCopy = JSON.parse(JSON.stringify(responseExecute));
 
     // save to 3commas_logs without waiting for it to finish
     const dataToAdd = {
-        ...responseExecute,
-        status_type: responseExecute?.status?.type || '',
+        ...safeCopy,
+        status_type: safeCopy?.status?.type || '',
         name: autotrader?.name || '',
         email: autotrader?.email || '',
         uid: autotrader?.uid || '',
         exchange_thumbnail: autotrader?.exchange_thumbnail || '',
         exchange_name: autotrader?.exchange_name || '',
         exchange_external_id: autotrader?.exchange_external_id || '',
-        smart_trade_id,
         autotrader_id: autotrader.id,
         createdAt: new Date(),
         trading_plan_id: body.trading_plan_id,
         action: body.position.type === 'sell' ? 'SELL' : 'BUY',
         type: 'autotrade',
-        pair: pairFromBody,
         smart_trade: true,
         requestBody: payload,
         marketType: autotrader?.marketType || 'unknown',
         webhookId,
     };
-    console.log(dataToAdd, 'dataToAdd', JSON.stringify(body))
+    delete dataToAdd.pair;
+    dataToAdd.pair = pairFromBody;
+    dataToAdd.smart_trade_id = smart_trade_id
+
+    if (dataToAdd.pair !== pairFromBody) {
+        console.log('beda anjing bangsat')
+        dataToAdd.pair = pairFromBody;
+    } else {
+        console.log(dataToAdd.pair, 'dataToAdd.pair memek')
+        console.log(pairFromBody, 'pairFromBody ngentiaw')
+    }
+    // console.log(dataToAdd, 'dataToAdd', JSON.stringify(body))
     const added = await adminDb
         .collection('3commas_logs')
         .add(dataToAdd);
+
+
+        const doccc = await adminDb.collection('3commas_logs').doc(added.id).get();
+        const docdataa = {...doccc.data(), id : doccc.id};
+        console.log('musang musang musanggg', docdataa.pair)
     console.log(`added to 3commas_logs ${added.id}`)
     return { ...responseExecute, smart_trade_id };
 }
