@@ -92,7 +92,6 @@ export async function POST(request) {
             return resultCreateSmartTrade;
         }));
         result = res.map((x) => x.value);
-        console.log('res:::', res)
         return NextResponse.json(
             {
                 message: 'Success',
@@ -186,11 +185,11 @@ async function createSmartTrade({
     console.log(payload, 'payloadddddd');
     const queryParams = `/public/api/v2/smart_trades`;
     const signatureMessage = queryParams + JSON.stringify(payload);
-    console.log(signatureMessage, 'signatureMessageddddd');
+    // console.log(signatureMessage, 'signatureMessageddddd');
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
     // console.log(signature, 'signatureddddd');
     const finalUrl = baseUrl + queryParams;
-    console.log('finalUrl:::', finalUrl);
+    // console.log('finalUrl:::', finalUrl);
     const response2 = await fetch(finalUrl, {
         method: 'POST',
         body: JSON.stringify(payload),
