@@ -88,7 +88,7 @@ export async function POST(request) {
             })
         }));
         result = res.map((x) => x.value);
-
+        console.log('result:::::', result, JSON.stringify(body));
 
         return NextResponse.json(
             {
