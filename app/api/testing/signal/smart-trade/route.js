@@ -172,7 +172,7 @@ async function createSmartTrade({
                 )
             },
             "order_type": body.position?.order_type || "market", // limit or market,
-            "price" : body.position?.price 
+            "price": body.position?.price
         },
         "leverage": {
             "enabled": body.leverage?.enabled || false,
@@ -219,7 +219,7 @@ async function createSmartTrade({
         autotrader_id: autotrader.id,
         createdAt: new Date(),
         trading_plan_id: body.trading_plan_id,
-        action: body.type === 'sell' ? 'SELL' : 'BUY',
+        action: body.position.type === 'sell' ? 'SELL' : 'BUY',
         type: 'autotrade',
         pair: pairFromBody,
         smart_trade: true,
@@ -228,9 +228,10 @@ async function createSmartTrade({
         webhookId,
     };
     console.log(dataToAdd, 'dataToAdd', JSON.stringify(body))
-    adminDb
+    const added = await adminDb
         .collection('3commas_logs')
-        .add(dataToAdd)
+        .add(dataToAdd);
+    console.log(`added to 3commas_logs ${added.id}`)
     return { ...responseExecute, smart_trade_id };
 }
 
