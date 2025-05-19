@@ -24,7 +24,7 @@ export async function POST(request) {
         // }
 
         const body = await request.json();
-        console.log(body, 'testing smarttrade body');
+        // console.log(body, 'testing smarttrade body');
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
             action: body?.method === 'DELETE' ? 'cancel' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
@@ -79,16 +79,18 @@ export async function POST(request) {
         querySnapshot.forEach((doc) => {
             autotraders.push({ ...doc.data(), id: doc.id });
         });
+        console.log(autotraders.length, 'length')
 
         const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
-            return await createSmartTrade({
+            const resultCreateSmartTrade = await createSmartTrade({
                 autotrader,
                 body,
                 webhookId: addWebhookResult.id,
-            })
+            });
+            console.log("resultCreateSmartTrade:::", resultCreateSmartTrade, JSON.stringify(body));
+            return resultCreateSmartTrade;
         }));
         result = res.map((x) => x.value);
-        console.log('result:::::', result, JSON.stringify(body));
 
         return NextResponse.json(
             {
@@ -159,6 +161,7 @@ async function createSmartTrade({
     // };
     const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
     const payload = {
+        ...body,
         "account_id": Number(autotrader.exchange_external_id),
         "position": {
             "type": body.position.type, // buy or sell
@@ -177,12 +180,15 @@ async function createSmartTrade({
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,
-        ...body,
     };
-    const signatureMessage = queryParams + JSON.stringify(payload);
-    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+    console.log(payload, 'payloadddddd');
     const queryParams = `/public/api/v2/smart_trades`;
+    const signatureMessage = queryParams + JSON.stringify(payload);
+    console.log(signatureMessage, 'signatureMessageddddd');
+    const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+    // console.log(signature, 'signatureddddd');
     const finalUrl = baseUrl + queryParams;
+    console.log('finalUrl:::', finalUrl);
     const response2 = await fetch(finalUrl, {
         method: 'POST',
         body: JSON.stringify(payload),

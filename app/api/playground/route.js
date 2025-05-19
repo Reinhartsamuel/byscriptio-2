@@ -5,17 +5,12 @@ export async function POST(request) {
   try {
     const body = await request.json();
     const doc = await adminDb
-      .collection('dca_bots')
-      .doc(body.autotrader_id)
+      .collection('webhooks')
+      .doc('bmuUqb3RWR1C2iigf2db')
       .get();
-    const autotrader = { ...doc.data(), id: doc.id };
-
-    const returnValue = {
-        ...autotrader,
-    }
+      const raw = doc.data().rawSignal;
     return Response.json({
-      status: 'okelah',
-      ...returnValue
+      added : JSON.parse(raw)
     })
   } catch (error) {
     return Response.json({
