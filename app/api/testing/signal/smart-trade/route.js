@@ -11,17 +11,17 @@ const baseUrl = 'https://api.3commas.io';
 
 export async function POST(request) {
     try {
-        // Get authorization header
-        const authHeader = request.headers.get('authorization');
-        // Extract the token
-        const token = authHeader.split(' ')[1];
-        const tokenValid = token === 'saslksdlkakASNDNJK#k124nkj if (!authHeader || !authHeader.startsWith("Bearer "")){'
-        if (!tokenValid || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json(
-                { error: 'Unauthorized - Missing or invalid token' },
-                { status: 401 }
-            );
-        }
+        // // Get authorization header
+        // const authHeader = request.headers.get('authorization');
+        // // Extract the token
+        // const token = authHeader.split(' ')[1];
+        // const tokenValid = token === 'saslksdlkakASNDNJK#k124nkj if (!authHeader || !authHeader.startsWith("Bearer "")){'
+        // if (!tokenValid || !authHeader.startsWith('Bearer ')) {
+        //     return NextResponse.json(
+        //         { error: 'Unauthorized - Missing or invalid token' },
+        //         { status: 401 }
+        //     );
+        // }
 
         const body = await request.json();
         console.log(body, 'testing smarttrade body');
