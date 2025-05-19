@@ -206,8 +206,6 @@ async function createSmartTrade({
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;
-    console.log(responseExecute, 'responseExecute habis didelete anjinggggg')
-    console.log(responseExecute.pair, 'responseExecute habis didelete anjingggggpepekkkk');
     const safeCopy = JSON.parse(JSON.stringify(responseExecute));
 
     // save to 3commas_logs without waiting for it to finish
