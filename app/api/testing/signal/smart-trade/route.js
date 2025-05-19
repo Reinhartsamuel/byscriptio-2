@@ -234,22 +234,10 @@ async function createSmartTrade({
     dataToAdd.pair = pairFromBody;
     dataToAdd.smart_trade_id = smart_trade_id
 
-    if (dataToAdd.pair !== pairFromBody) {
-        console.log('beda anjing bangsat')
-        dataToAdd.pair = pairFromBody;
-    } else {
-        console.log(dataToAdd.pair, 'dataToAdd.pair memek')
-        console.log(pairFromBody, 'pairFromBody ngentiaw')
-    }
-    // console.log(dataToAdd, 'dataToAdd', JSON.stringify(body))
     const added = await adminDb
         .collection('3commas_logs')
         .add(dataToAdd);
 
-
-        const doccc = await adminDb.collection('3commas_logs').doc(added.id).get();
-        const docdataa = {...doccc.data(), id : doccc.id};
-        console.log('musang musang musanggg', docdataa.pair)
     console.log(`added to 3commas_logs ${added.id}`)
     return { ...responseExecute, smart_trade_id };
 }
