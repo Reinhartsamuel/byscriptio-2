@@ -29,7 +29,7 @@ export async function POST(request) {
         // console.log(body, 'testing smarttrade body');
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action: body?.method === 'DELETE' ? 'cancel' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
+            action: body?.method === 'CANCEL' ? 'CANCEL' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
