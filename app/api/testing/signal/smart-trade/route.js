@@ -168,10 +168,14 @@ async function createSmartTrade({
         "position": {
             "type": body.position.type, // buy or sell
             "units": {
-                "value": String(
-                    parseFloat(autotrader.tradeAmount) /
+                "value": !isNaN(body.position?.units?.value) ? String(
+                    parseFloat(body.position?.units?.value) /
                     (parseFloat(body.position.price.value) * multiplier)
-                )
+                ) :
+                    String(
+                        parseFloat(autotrader.tradeAmount) /
+                        (parseFloat(body.position.price.value) * multiplier)
+                    )
             },
             "order_type": body.position?.order_type || "market", // limit or market,
             "price": body.position?.price

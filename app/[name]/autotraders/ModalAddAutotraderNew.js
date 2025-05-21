@@ -16,7 +16,7 @@ import Tooltip from '@/app/components/ui/Tooltip';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
 import PropTypes from 'prop-types';
 import Spinner from '@/app/components/ui/Spinner';
-import {  getCollectionFirebase } from '@/app/utils/firebaseApi';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import { addActivityLog } from '@/app/utils/activityLog';
 
 export default function ModalAddAutotraderNew({
@@ -49,16 +49,20 @@ export default function ModalAddAutotraderNew({
   // Fetch trading plans on mount or when marketType changes
   useEffect(() => {
     const fetchTradingPlans = async () => {
+      console.log(userPackage, 'userPackage from fetch tradningplans');
       try {
-        const plans = await getCollectionFirebase('trading_plans', [
+        let _tradingPlans = await getCollectionFirebase('trading_plans', [
           {
             field: 'status',
             operator: '==',
             value: 'ACTIVE'
           },
         ]);
-        console.log('Fetched trading plans:', plans);
-        setTradingPlans(plans);
+        console.log('Fetched trading _tradingPlans:', _tradingPlans);
+        const allTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === 'all'); // filter by availability to "all"
+        const specificTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === userPackage?.id); // filter by availability specific to my userPackage.id
+        _tradingPlans = [...allTradingPlans, ...specificTradingPlans];
+        setTradingPlans(_tradingPlans);
       } catch (error) {
         console.error('Error fetching trading plans:', error);
         Swal.fire({
@@ -68,8 +72,8 @@ export default function ModalAddAutotraderNew({
         });
       }
     };
-    fetchTradingPlans();
-  }, [marketType]);
+    if (addModal) fetchTradingPlans();
+  }, [marketType, addModal]);
 
   // Reset pairs when trading plan changes
   useEffect(() => {
@@ -218,7 +222,7 @@ export default function ModalAddAutotraderNew({
           autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
           marketType,
           resultString: config.pair.pair,
-          smart_trade:true
+          smart_trade: true
         };
         console.log(autotraderData, 'autotraderData');
 
@@ -313,7 +317,7 @@ export default function ModalAddAutotraderNew({
             </Tooltip>
           </div>
           <p className="text-sm text-gray-500">
-            Only exchanges that support {marketType} trading are shown. Need to add a new exchange? 
+            Only exchanges that support {marketType} trading are shown. Need to add a new exchange?
             <button className="ml-1 text-indigo-600 hover:text-indigo-700">Connect Exchange</button>
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
@@ -382,32 +386,32 @@ export default function ModalAddAutotraderNew({
             {tradingPlans
               ?.filter(plan => plan.marketType?.toLowerCase() === marketType)
               ?.map((plan) => (
-              <label
-                key={plan.id}
-                className={cn(
-                  'flex cursor-pointer flex-col space-y-2 rounded-lg border p-4 transition-colors',
-                  selectedTradingPlan?.id === plan.id
-                    ? 'border-indigo-600 bg-indigo-500'
-                    : 'border-gray-200 hover:border-indigo-200'
-                )}
-              >
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="tradingPlan"
-                    checked={selectedTradingPlan?.id === plan.id}
-                    onChange={() => setSelectedTradingPlan(plan)}
-                    className="h-4 w-4 text-indigo-600"
-                  />
-                  <p className='text-lg font-bold text-gray-50'>
-                    {plan?.name}
-                  </p>
-                </div>
-                {plan.description && (
-                  <p className="text-sm text-gray-700">{plan.description}</p>
-                )}
-              </label>
-            ))}
+                <label
+                  key={plan.id}
+                  className={cn(
+                    'flex cursor-pointer flex-col space-y-2 rounded-lg border p-4 transition-colors',
+                    selectedTradingPlan?.id === plan.id
+                      ? 'border-indigo-600 bg-indigo-500'
+                      : 'border-gray-200 hover:border-indigo-200'
+                  )}
+                >
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="tradingPlan"
+                      checked={selectedTradingPlan?.id === plan.id}
+                      onChange={() => setSelectedTradingPlan(plan)}
+                      className="h-4 w-4 text-indigo-600"
+                    />
+                    <p className='text-lg font-bold text-gray-50'>
+                      {plan?.name}
+                    </p>
+                  </div>
+                  {plan.description && (
+                    <p className="text-sm text-gray-700">{plan.description}</p>
+                  )}
+                </label>
+              ))}
           </div>
         </div>
 
@@ -434,7 +438,7 @@ export default function ModalAddAutotraderNew({
             <p className="text-sm text-gray-500">
               Configure multiple pairs at once. Each pair will create a separate autotrader with its own trade amount.
             </p>
-            
+
             <div className="space-y-4">
               {selectedPairConfigs.map((config, index) => (
                 <div
@@ -486,8 +490,7 @@ export default function ModalAddAutotraderNew({
                                 <Listbox.Option
                                   key={pair.id}
                                   className={({ active }) =>
-                                    `relative cursor-pointer select-none py-2 pl-3 pr-9 ${
-                                      active ? 'bg-indigo-100 text-indigo-900' : 'text-gray-900'
+                                    `relative cursor-pointer select-none py-2 pl-3 pr-9 ${active ? 'bg-indigo-100 text-indigo-900' : 'text-gray-900'
                                     }`
                                   }
                                   value={pair}
@@ -500,9 +503,8 @@ export default function ModalAddAutotraderNew({
                                       </span>
                                       {selected && (
                                         <span
-                                          className={`absolute inset-y-0 right-0 flex items-center pr-3 ${
-                                            active ? 'text-indigo-600' : 'text-indigo-600'
-                                          }`}
+                                          className={`absolute inset-y-0 right-0 flex items-center pr-3 ${active ? 'text-indigo-600' : 'text-indigo-600'
+                                            }`}
                                         >
                                           <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
