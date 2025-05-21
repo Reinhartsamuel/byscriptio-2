@@ -236,9 +236,9 @@ async function createSmartTrade({
         "position": {
             "type": body.position.type, // buy or sell
             "units": {
-                "value": !isNaN(body.position?.units?.value) ? String(
-                    parseFloat(body.position?.units?.value) /
-                    (parseFloat(body.position.price.value) * multiplier)
+                "value": !isNaN(body.position?.units?.value) ? String(      // if trade amount is fixed from
+                    parseFloat(body.position?.units?.value) /               //
+                    (parseFloat(body.position.price.value) * multiplier)    //
                 ) :
                     String(
                         parseFloat(autotrader.tradeAmount) /
@@ -477,6 +477,7 @@ async function closeAtMarketPrice({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', 'waiting_targets');
+            if (body?.for_type !== 'all') query = query.where('action', '==', body?.for_type);
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
