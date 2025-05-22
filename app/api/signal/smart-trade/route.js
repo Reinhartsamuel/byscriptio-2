@@ -251,7 +251,9 @@ async function createSmartTrade({
         "leverage": {
             "enabled": body.leverage?.enabled || false,
             "type": body.leverage?.type || "isolated",
-            "value": body.leverage?.value || body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
+            // "value": body.leverage?.value || body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
+            "value": body.leverage?.value ? body?.leverage?.value : 
+            body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,
@@ -293,7 +295,7 @@ async function createSmartTrade({
         autotrader_id: autotrader.id,
         createdAt: new Date(),
         trading_plan_id: body.trading_plan_id,
-        action: body.position.type === 'sell' ? 'SELL' : 'BUY',
+        action: body.position?.type !== undefined ? body.position?.type?.toUpperCase() : 'unknown',
         type: 'autotrade',
         smart_trade: true,
         requestBody: payload,
@@ -477,7 +479,7 @@ async function closeAtMarketPrice({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', 'waiting_targets');
-            if (body?.for_type !== 'all') query = query.where('action', '==', body?.for_type);
+            if (body?.for_type !== 'all' && body?.type !== undefined) query = query.where('action', '==', body.for_type.toUpperCase());
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
