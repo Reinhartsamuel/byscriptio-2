@@ -168,9 +168,9 @@ async function createSmartTrade({
         "position": {
             "type": body.position.type, // buy or sell
             "units": {
-                "value": !isNaN(body.position?.units?.value) ? String(
-                    parseFloat(body.position?.units?.value) /
-                    (parseFloat(body.position.price.value) * multiplier)
+                "value": !isNaN(body.position?.units?.value) ? String(      // if trade amount is fixed from
+                    parseFloat(body.position?.units?.value) /               //
+                    (parseFloat(body.position.price.value) * multiplier)    //
                 ) :
                     String(
                         parseFloat(autotrader.tradeAmount) /
@@ -183,7 +183,9 @@ async function createSmartTrade({
         "leverage": {
             "enabled": body.leverage?.enabled || false,
             "type": body.leverage?.type || "isolated",
-            "value": body.leverage?.value || body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
+            // "value": body.leverage?.value || body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
+            "value":body.leverage?.enabled && body.leverage?.value ? body?.leverage?.value : 
+            body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 1,
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,
