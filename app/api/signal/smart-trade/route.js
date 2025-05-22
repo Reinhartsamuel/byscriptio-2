@@ -400,7 +400,8 @@ async function cancelSmartTrade({
                 previousBuyId: item?.id || '',
                 smart_trade: true,
                 marketType: autotrader?.marketType || 'unknown',
-                webhookId
+                webhookId,
+                requestBody : null
             };
 
             adminDb

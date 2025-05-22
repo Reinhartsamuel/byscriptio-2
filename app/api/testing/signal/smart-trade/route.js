@@ -6,6 +6,8 @@ import { NextResponse } from 'next/server';
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 // const MAX_EXECUTION_RETRIES = 3;
+export const maxDuration = 300; // This function can run for a maximum of 300 seconds
+
 
 const baseUrl = 'https://api.3commas.io';
 
@@ -332,7 +334,8 @@ async function cancelSmartTrade({
                 previousBuyId: item?.id || '',
                 smart_trade: true,
                 marketType: autotrader?.marketType || 'unknown',
-                webhookId
+                webhookId,
+                requestBody : null
             };
 
             adminDb
