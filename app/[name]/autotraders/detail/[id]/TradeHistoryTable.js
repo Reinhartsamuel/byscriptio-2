@@ -12,7 +12,6 @@ import useCountDocuments from '@/app/hooks/CountHook';
 import { cn } from '@/lib/util';
 import Modal from '@/app/components/ui/Modal';
 import { authFirebase } from '@/app/config/firebase';
-import { addDocumentFirebase } from "@/app/utils/firebaseApi";
 
 const TradeHistoryTable = (props) => {
   const { collectionName = '3commas_logs', conditions = [] } = props;
@@ -84,48 +83,28 @@ function SmartTradesTable({ trades }) {
   async function closeAtMarketPrice(detail) {
     setLoading(true);
     try {
-      const body = {
-        autotrader_id: detail.id,
-        action: 'sell'
-      }
-      const res = await fetch('/api/3commas/smart-trade/force-action', {
+      if (!detail?.smart_trade_id) throw new Error('Invalid smart trade id');
+      const res = await fetch(`/api/3commas/smart-trade/execute/close-at-market-price-test`, {
         method: 'POST',
-        body: JSON.stringify(body)
-      })
-      const { data, error } = await res.json();
-      if (error) throw new Error(error)
-
+        body: JSON.stringify({
+          id: detail.smart_trade_id,
+        })
+      });
+      const result = await res.json();
+      const { data, error } = result;
+      if (error) throw new Error(error);
       if (data?.error) {
         return Swal.fire({
           title: 'Cannot close trade',
-          text: data?.error_description + ' ' + error,
+          text: data?.error_description + '' + error + data?.error,
+        })
+      } else if (result?.success) {
+        Swal.fire({
+          title: 'Trade closed',
+          text: `Trade ${detail?.smart_trade_id} closed at market price`,
+          icon: 'success',
         })
       }
-      delete data?.id
-
-      await addDocumentFirebase('3commas_logs', {
-        ...data,
-        action: `CLOSE_${detail?.action}`, // add the action from previous trade, not the action from the request, so we can track the action from the previous trade, not the action from the request, s,
-        smart_trade_id: String(detail?.smart_trade_id),
-        createdAt: new Date(),
-        type: `CLOSE_${detail?.action}`,
-        autotrader_id: body.autotrader_id,
-        exchange_external_id: detail.exchange_external_id,
-        pair: detail?.pair || '',
-        trading_plan_id: detail?.trading_plan_id || '',
-        exchange_name: detail.exchange_name,
-        exchange_thumbnail: detail.exchange_thumbnail,
-        uid: detail?.uid || '',
-        email: detail?.email || '',
-        name: detail?.name || '',
-        tradeAmount: detail?.tradeAmount || 0,
-        marketType: detail?.marketType || 'unknown'
-      })
-      Swal.fire({
-        title: 'Trade closed',
-        text: `Trade ${detail?.smart_trade_id} closed at market price`,
-        icon: 'success',
-      })
     } catch (error) {
       console.log(error);
     } finally {
@@ -184,22 +163,22 @@ function SmartTradesTable({ trades }) {
                   className={cn(
                     "px-4 py-3 whitespace-nowrap",
                     trade?.profit?.usd ?
-                    parseFloat(trade?.profit?.usd) > 0 ? "text-green-400" 
-                    : 'text-red-400'
-                    : "text-gray-300",
-                    )
-                    
+                      parseFloat(trade?.profit?.usd) > 0 ? "text-green-400"
+                        : 'text-red-400'
+                      : "text-gray-300",
+                  )
+
                   }
                 >
                   $ {!isNaN(trade?.profit?.usd) ? parseFloat(trade?.profit?.usd)?.toFixed(3) : ''}
                 </td>
-                <td 
-                className={cn("px-4 py-3", 
-                  trade?.profit?.percent?
-                  parseFloat(trade?.profit?.percent) > 0 ? "text-green-400"
-                  : 'text-red-400'
-                  : "text-gray-300",
-                )}
+                <td
+                  className={cn("px-4 py-3",
+                    trade?.profit?.percent ?
+                      parseFloat(trade?.profit?.percent) > 0 ? "text-green-400"
+                        : 'text-red-400'
+                      : "text-gray-300",
+                  )}
                 >{trade?.profit?.percent}%</td>
                 <td className="px-4 py-3">${trade?.position?.price?.value}</td>
                 <td
@@ -231,7 +210,7 @@ function SmartTradesTable({ trades }) {
                   <p>{trade?.data ? trade?.data?.commission : 'no data'}</p>
                 </td>
                 <td className="flex gap-1 items-center">
-                  {(trade?.marketType === 'futures' || trade?.trading_plan_id === 'XMA FUTURES') &&
+                  {(trade?.status_type === 'waiting_targets') &&
                     <button
                       onClick={() => closeAtMarketPrice(trade)}
                       type="button"
