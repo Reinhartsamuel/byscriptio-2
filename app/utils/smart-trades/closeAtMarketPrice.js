@@ -131,7 +131,7 @@ export async function closeAtMarketPrice({
             }
 
             if (body?.compound) {
-                const updatedTradeAmount = parseFloat(autotrader) + parseFloat(item?.profit?.usd);
+                const updatedTradeAmount = parseFloat(autotrader.tradeAmount) + parseFloat(item?.profit?.usd);
                 if (!isNaN(updatedTradeAmount)) {
                     // update tradeAmount without waiting
                     adminDb
