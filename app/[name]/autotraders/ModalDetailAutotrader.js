@@ -141,7 +141,19 @@ export default function ModalDetailAutotrader({
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Last Signal</p>
                   <div className='flex text-gray-300'>
-                    {latestSignal?.action} {moment.unix(latestSignal?.createdAt?.seconds).fromNow()}
+                    <span
+                      className={
+                        cn('font-bold mr-1',
+                          latestSignal?.action === 'BUY'
+                           ? 'text-green-500'
+                            : latestSignal?.action === 'SELL'
+                             ? 'text-red-500'
+                              : 'text-red-100'
+                      )}
+                    >
+                      {latestSignal?.action}
+                    </span>
+                    at ${latestSignal?.price && latestSignal.price.toLocaleString()} ({moment.unix(latestSignal?.createdAt?.seconds).fromNow()})
                   </div>
 
                 </div>

@@ -129,21 +129,6 @@ export async function closeAtMarketPrice({
                 marketType: autotrader?.marketType || 'unknown',
                 webhookId
             }
-
-            if (body?.compound) {
-                const updatedTradeAmount = parseFloat(autotrader.tradeAmount) + parseFloat(item?.profit?.usd);
-                if (!isNaN(updatedTradeAmount)) {
-                    // update tradeAmount without waiting
-                    adminDb
-                        .collection('dca_bots')
-                        .doc(autotrader.id)
-                        .update({
-                            tradeAmount: updatedTradeAmount
-                        }).catch((error) => {
-                            console.log(error.message, `error updating autotrader tradeAmount for smart_trade_id ${smart_trade_id}`, JSON.stringify(body));
-                        });
-                }
-            }
             delete responseCloseMarket.pair;
             adminDb.collection('3commas_logs').add(sendDataTo3CommasLogs);
             return sendDataTo3CommasLogs;
