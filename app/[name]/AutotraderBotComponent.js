@@ -98,14 +98,16 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
               </thead>
               <tbody>
                 {data?.map((x, i) => (
-                  <tr 
-                    key={i} 
+                  <tr
+                    key={i}
                     className="border-b border-gray-700 hover:bg-gray-800 cursor-pointer active:bg-gray-600"
                     onClick={() => handleDetail(x)}
                   >
                     <td className="px-4 py-3">{i + 1}</td>
                     <td className="px-4 py-3">{x.id}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">{x.trading_plan_pair[0].split('_')[1]}</td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {x.trading_plan_pair[0].split('_').slice(-2).join('_')}
+                    </td>
                     <td className="px-4 py-3 whitespace-nowrap">{x.trading_plan_pair[0].split('_')[0]}</td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded ${x.status === 'ACTIVE' ? 'text-green-400' : x.status === 'STOPPED' ? 'text-red-400' : 'text-yellow-400'}`}>

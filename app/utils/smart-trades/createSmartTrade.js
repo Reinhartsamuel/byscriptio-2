@@ -51,7 +51,6 @@ export async function createSmartTrade({
     //     "trading_plan_id": "GRID_CUANTERUS",
     //     "market_type": "futures",
     //     "timestamp": "' + str.tostring(timenow) + '",
-    //     "compound": "false",
     //     "flag": "testing"
     // };
     const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);

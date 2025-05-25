@@ -144,6 +144,9 @@ export async function POST(request) {
         console.log(autotraders.length, 'length')
 
         const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
+            adminDb.collection('dca_bots').doc(autotrader.id).update({
+                lastSignal: body
+            }).catch((err) => console.error(err.message, 'error updating last signal', JSON.stringify(body)));
             const resultCreateSmartTrade = await createSmartTrade({
                 autotrader,
                 body,
