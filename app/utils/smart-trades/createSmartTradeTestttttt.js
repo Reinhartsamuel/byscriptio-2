@@ -60,18 +60,14 @@ export async function createSmartTradeTestttttt({
         "position": {
             "type": body.position.type, // buy or sell
             "units": {
-                // "value": !isNaN(body.position?.units?.value) ? String(      // if trade amount is fixed from
-                //     parseFloat(body.position?.units?.value) /               //
-                //     (parseFloat(body.position.price.value) * multiplier)    //
-                // ) :
-                //     String(
-                //         parseFloat(autotrader.tradeAmount) /
-                //         (parseFloat(body.position.price.value) * multiplier)
-                //     )
-                "value" :String(
-                    parseFloat(autotrader.tradeAmount) /
-                    (parseFloat(body.position.price.value) * multiplier)
-                )
+                "value": !isNaN(body.position?.units?.value) ? String(      // if trade amount is fixed from
+                    parseFloat(body.position?.units?.value) /               //
+                    (parseFloat(body.position.price.value) * multiplier)    //
+                ) :
+                    String(
+                        parseFloat(autotrader.tradeAmount) /
+                        (parseFloat(body.position.price.value) * multiplier)
+                    )
                 // "value" : parseFloat(autotrader.tradeAmount)
             },
             "order_type": body.position?.order_type || "market", // limit or market,
