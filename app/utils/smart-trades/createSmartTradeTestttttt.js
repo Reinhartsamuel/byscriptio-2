@@ -1,6 +1,6 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 import generateSignatureRsa from "../generateSignatureRsa";
-// import { getMultiplier } from "../getMultiplier";
+import { getMultiplier } from "../getMultiplier";
 import { pairNameFor3commas } from "../pairNameFor3commas";
 
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
@@ -53,7 +53,7 @@ export async function createSmartTradeTestttttt({
     //     "timestamp": "' + str.tostring(timenow) + '",
     //     "flag": "testing"
     // };
-    // const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
+    const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
     const payload = {
         ...body,
         "account_id": Number(autotrader.exchange_external_id),
@@ -68,7 +68,11 @@ export async function createSmartTradeTestttttt({
                 //         parseFloat(autotrader.tradeAmount) /
                 //         (parseFloat(body.position.price.value) * multiplier)
                 //     )
-                "value" : parseFloat(autotrader.tradeAmount)
+                "value" :String(
+                    parseFloat(autotrader.tradeAmount) /
+                    (parseFloat(body.position.price.value) * multiplier)
+                )
+                // "value" : parseFloat(autotrader.tradeAmount)
             },
             "order_type": body.position?.order_type || "market", // limit or market,
             "price": body.position?.price
