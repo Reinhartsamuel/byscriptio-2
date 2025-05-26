@@ -1,16 +1,20 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 
 
-export async function POST(request) {
+export async function GET(request) {
   try {
-    const body = await request.json();
-    const doc = await adminDb
-      .collection('webhooks')
-      .doc('hPoRzS6l6YJhtUzK5b69')
+    let result = [];
+    const querySnapshot = await adminDb
+      .collection('3commas_logs')
+      .where('status_type', 'in', ['panic_sold', 'waiting_position'])
+      .limit(100)
       .get();
-      const raw = doc.data().rawSignal;
+    querySnapshot.forEach((doc) => {
+      result.push({ ...doc.data(), id: doc.id });
+    })
+
     return Response.json({
-      added : JSON.parse(raw)
+      result: result.map((x) => x.status_type)
     })
   } catch (error) {
     return Response.json({

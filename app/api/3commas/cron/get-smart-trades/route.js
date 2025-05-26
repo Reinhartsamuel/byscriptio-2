@@ -1,18 +1,31 @@
+import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
 import { adminDb } from "@/lib/firebase-admin-config";
 export const maxDuration = 60; // This function can run for a maximum of 60 seconds
+const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
+const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
+const baseUrl = 'https://api.3commas.io';
+
 export async function POST() {
     try {
-        const { signal } = new AbortController()
-        const res = await fetch(`https://byscript.io/api/playground/3commas?time=${new Date().getTime()}`, {
-            method: 'POST',
-            next: { revalidate: 0 },
-            signal,
-            body: JSON.stringify({
-                "queryParams": "/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at",
-                "method": "GET"
-            })
-        });
-        const { data, error, error_attributes, error_description } = await res.json();
+        const queryParams = '/public/api' + '/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at';
+        const finalUrl = baseUrl + queryParams;
+
+
+        let signatureMessage = queryParams;
+        const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+        const config = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                APIKEY: API_KEY,
+                Signature: signature,
+            }
+        }
+        const response = await fetch(finalUrl, config);
+        const data = await response.json();
+        const error = data?.error;
+        const error_attributes = data?.error_attributes;
+        const error_description = data?.error_description;
         console.log(data?.map((x) => x.id), 'data.map((x) => x.id), these are smart trade ids to be upadated')
         console.log(error, 'error')
         console.log(error_attributes, 'error_attributes')

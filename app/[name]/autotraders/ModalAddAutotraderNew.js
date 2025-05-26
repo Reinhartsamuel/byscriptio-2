@@ -222,7 +222,8 @@ export default function ModalAddAutotraderNew({
           autotrader_name: moment().format('YYYY-MM-DD') + '-' + moment().unix(),
           marketType,
           resultString: config.pair.pair,
-          smart_trade: true
+          smart_trade: true,
+          autocompound: selectedTradingPlan?.autocompound ? true : false,
         };
         console.log(autotraderData, 'autotraderData');
 

@@ -123,6 +123,7 @@ export async function createSmartTrade({
         smart_trade: true,
         requestBody: payload,
         marketType: autotrader?.marketType || 'unknown',
+        autocompound: autotrader?.autocompound || false,
         webhookId,
     };
     delete dataToAdd.pair;

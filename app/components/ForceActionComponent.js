@@ -29,7 +29,7 @@ export default function ForceActionComponent({ detail }) {
         })
         return;
       }
-      const resultPromise = await Promise.allSettled(findLatestTrade.map(async (trade) => {
+      await Promise.allSettled(findLatestTrade.map(async (trade) => {
         const res = await fetch(`/api/signal/smart-trade/get?id=${trade.smart_trade_id}`);
         const { data: latestTradeDetail, error } = await res.json();
         if (error) throw new Error(error)
@@ -45,7 +45,7 @@ export default function ForceActionComponent({ detail }) {
           console.log(resultClose);
 
           const action = detail?.marketType === 'spot' ?
-            'FORCE_SELL'
+            'FSELL'
             : `CLOSE_${trade?.action}`;
           await addDocumentFirebase('3commas_logs', {
             ...resultClose?.data,
