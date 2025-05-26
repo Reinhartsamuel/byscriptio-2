@@ -48,10 +48,11 @@ export async function POST(request) {
                 "type": body.action,
                 "order_type": "market",
                 "units": {
-                    "value": String(
-                        parseFloat(bot.tradeAmount) /
-                        (parseFloat(PRICE_USD) * multiplier)
-                    )
+                    // "value": String(
+                    //     parseFloat(bot.tradeAmount) /
+                    //     (parseFloat(PRICE_USD) * multiplier)
+                    // )
+                    "value" : "trade_amount"
                 },
                 "price": {
                     "value": PRICE_USD
