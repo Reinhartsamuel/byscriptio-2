@@ -25,6 +25,7 @@ export const maxDuration = 300; // This function can run for a maximum of 300 se
 export async function POST(request) {
     try {
         const body = await request.json();
+        console.log(JSON.stringify(body), 'bodyyyyyy');
         const _pair = body.pair;
         try {
             const messageTelegram = `pair: ${body?.pair} SMART TRADE SIGNAL \n price: ${body?.price} \n timeframe: ${body?.time_frame} \n timestamp: ${body?.timestamp} \n date: ${moment.unix(body?.timestamp).format('DD-MM-YYYY HH:mm')} \n action: ${body?.type?.toUpperCase()} \n trading_plan_id: ${body?.trading_plan_id}`

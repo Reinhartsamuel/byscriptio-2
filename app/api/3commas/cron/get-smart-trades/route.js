@@ -64,7 +64,7 @@ export async function POST() {
                 if (smartTrade?.status?.type === 'panic_sold' || smartTrade?.status?.type === 'failed') {
                     dataToUpdate.already_updated = true;
 
-                    if (smartTrade?.profit?.usd) {
+                    if (smartTrade?.profit?.usd && smartTrade?.autocompound) {
                         // update initialBalance 
                         const docc = await adminDb.collection('dca_bots').doc(x.autotrader_id).get();
                         const bot = { ...docc.data(), id: docc.id };

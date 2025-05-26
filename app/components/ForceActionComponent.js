@@ -45,7 +45,7 @@ export default function ForceActionComponent({ detail }) {
           console.log(resultClose);
 
           const action = detail?.marketType === 'spot' ?
-            'FSELL'
+            'SELL'
             : `CLOSE_${trade?.action}`;
           await addDocumentFirebase('3commas_logs', {
             ...resultClose?.data,
@@ -94,17 +94,32 @@ export default function ForceActionComponent({ detail }) {
         autotrader_id: detail.id,
         action: action
       }
-      // console.log(body, 'body to send to force action');
+      // return console.log(body, 'body to send to force action');
       const res = await fetch('/api/3commas/smart-trade/force-action', {
         method: 'POST',
         body: JSON.stringify(body)
       })
-      const { data, error } = await res.json();
-      if (error) throw new Error(error);
-      Swal.fire({
-        icon: 'success',
-        title: `Force ${action} success with id : ${data?.id || data?.data?.id}`,
-      })
+      const result = await res.json();
+      // console.log('result:', result);
+      if (result?.smart_trade_id) {
+        Swal.fire({
+          title: `Force ${action} success`,
+          text: `Trade created, id : ${result.smart_trade_id}`,
+          icon: 'success',
+        })
+      } else if (result?.error) {
+        Swal.fire({
+          title: `Error force ${action}`,
+          text: `${result.error}
+           ${result?.error_attributes ?
+            Object.keys(result?.error_attributes)
+            ?.map((key) => `${key} : ${result?.error_attributes?.[key]} `) 
+            : ''}
+            ${result?.error_description || ''}`,
+          icon: 'error',
+        })
+      }
+    
     } catch (error) {
       Swal.fire({
         title: `Error force ${action}`,

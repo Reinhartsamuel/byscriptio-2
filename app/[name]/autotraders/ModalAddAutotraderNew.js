@@ -215,6 +215,8 @@ export default function ModalAddAutotraderNew({
           tradeAmount: parseFloat(config.tradeAmount),
           initialInvestment: parseFloat(config.tradeAmount),
           exchange_name: selectedExchange.exchange_name,
+          exchange_external_name:selectedExchange?.exchange_external_name || '',
+          market_code: selectedExchange?.market_code || '',
           exchange_external_id: selectedExchange.external_id,
           exchange_thumbnail: selectedExchange.exchange_thumbnail,
           status: 'STOPPED',
