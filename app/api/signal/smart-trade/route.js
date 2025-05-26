@@ -21,6 +21,20 @@ const telegram_bot_token = process.env.TELEGRAM_BOT_TOKEN;
 
 export const maxDuration = 300; // This function can run for a maximum of 300 seconds 
 
+function determineAction(body) {
+    if (!body) return 'unknown';
+    
+    // Check for CANCEL and CLOSE methods first
+    if (body.method === 'CANCEL') return 'CANCEL';
+    if (body.method === 'CLOSE') return 'CLOSE';
+    
+    // Check position type
+    if (body.position && typeof body.position.type === 'string') {
+        return body.position.type.toUpperCase();
+    }
+    
+    return 'unknown';
+}
 
 export async function POST(request) {
     try {
@@ -90,7 +104,7 @@ export async function POST(request) {
         }
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action: body?.method === 'CANCEL' ? 'CANCEL' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
+            action:determineAction(body),
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),

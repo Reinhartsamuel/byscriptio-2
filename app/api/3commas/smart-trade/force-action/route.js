@@ -1,6 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { getMultiplier } from "@/app/utils/getMultiplier";
-import { createSmartTrade } from "@/app/utils/smart-trades/createSmartTrade";
+// import { createSmartTrade } from "@/app/utils/smart-trades/createSmartTrade";
+import { createSmartTradeTestttttt } from "@/app/utils/smart-trades/createSmartTradeTestttttt";
 import { adminDb } from "@/lib/firebase-admin-config";
 
 export async function POST(request) {
@@ -83,7 +84,7 @@ export async function POST(request) {
             "timestamp": new Date()
         };
 
-        const resultCreateSmartTrade = await createSmartTrade({
+        const resultCreateSmartTrade = await createSmartTradeTestttttt({
             autotrader: bot,
             body: payload,
             webhookId: '',
