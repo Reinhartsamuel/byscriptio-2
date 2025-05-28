@@ -1,7 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
-import { getMultiplier } from "@/app/utils/getMultiplier";
-// import { createSmartTrade } from "@/app/utils/smart-trades/createSmartTrade";
-import { createSmartTradeTestttttt } from "@/app/utils/smart-trades/createSmartTradeTestttttt";
+// import { getMultiplier } from "@/app/utils/getMultiplier";
+import { createSmartTrade } from "@/app/utils/smart-trades/createSmartTrade";
 import { adminDb } from "@/lib/firebase-admin-config";
 
 export async function POST(request) {
@@ -22,7 +21,7 @@ export async function POST(request) {
         const bot = { ...doc.data(), id: doc.id };
         const _tradingPlanId = bot.trading_plan_pair[0]?.split('_')[0];
         const _pair = bot.trading_plan_pair[0]?.split('_').slice(1).join('_');
-        const multiplier = await getMultiplier(_pair?.split('_')[1], bot);
+        // const multiplier = await getMultiplier(_pair?.split('_')[1], bot);
 
         const asset_symbol = _pair.split('_')[1];
         const coindeskDataPromise = await fetch(`
@@ -85,7 +84,7 @@ export async function POST(request) {
             "timestamp": new Date()
         };
 
-        const resultCreateSmartTrade = await createSmartTradeTestttttt({
+        const resultCreateSmartTrade = await createSmartTrade({
             autotrader: bot,
             body: payload,
             webhookId: '',
