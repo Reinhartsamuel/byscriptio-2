@@ -7,6 +7,20 @@ import { NextResponse } from 'next/server';
 // const MAX_EXECUTION_RETRIES = 3;
 export const maxDuration = 300; // This function can run for a maximum of 300 seconds
 
+function determineAction(body) {
+    if (!body) return 'unknown';
+    
+    // Check for CANCEL and CLOSE methods first
+    if (body.method === 'CANCEL') return 'CANCEL';
+    if (body.method === 'CLOSE') return 'CLOSE';
+    
+    // Check position type
+    if (body?.position && typeof body?.position?.type === 'string') {
+        return body.position.type.toUpperCase();
+    }
+    
+    return 'unknown';
+}
 export async function POST(request) {
     try {
         // // Get authorization header
@@ -22,19 +36,19 @@ export async function POST(request) {
         // }
 
         const body = await request.json();
+        console.log(JSON.stringify(body), 'bodyyyyyy');
         const _pair = body?.pair || '';
-        console.log(`_pair_pair_pair_pair_pair_pair_pair_pair`, _pair)
         // console.log(body, 'testing smarttrade body');
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action: body?.method === 'CANCEL' ? 'CANCEL' : body?.position?.type ? body?.position?.type?.toUpperCase() : 'unknown',
+            action:determineAction(body),
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
-            flag: 'testing',
             rawSignal: JSON.stringify(body),
             // result: result.map((x) => x?.status),
         });
+        console.log(`added webhook with id ${addWebhookResult.id}`)
 
         // trading_plan_id is constructed of trading plan name and pair
         const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;

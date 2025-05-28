@@ -29,7 +29,7 @@ function determineAction(body) {
     if (body.method === 'CLOSE') return 'CLOSE';
     
     // Check position type
-    if (body.position && typeof body.position.type === 'string') {
+    if (body?.position && typeof body?.position?.type === 'string') {
         return body.position.type.toUpperCase();
     }
     
@@ -111,6 +111,7 @@ export async function POST(request) {
             rawSignal: JSON.stringify(body),
             // result: result.map((x) => x?.status),
         });
+        console.log(`added webhook with id ${addWebhookResult.id}`)
 
         // trading_plan_id is constructed of trading plan name and pair
         const tp_unique_id = body?.trading_plan_id + '_' + body?.pair;
