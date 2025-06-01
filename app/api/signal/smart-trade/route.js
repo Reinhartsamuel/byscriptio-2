@@ -109,6 +109,7 @@ export async function POST(request) {
             type: 'autotrade',
             createdAt: new Date(),
             rawSignal: JSON.stringify(body),
+            flag: body?.flag || '',
             // result: result.map((x) => x?.status),
         });
         console.log(`added webhook with id ${addWebhookResult.id}`)
