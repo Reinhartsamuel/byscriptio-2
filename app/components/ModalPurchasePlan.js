@@ -45,8 +45,8 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   }
 
   async function handleSubmit() {
-    console.log(detail, 'detail');
-    console.log(data, 'data');
+    // console.log(detail, 'detail');
+    // console.log(data, 'data');
     if (!checkReadTc)
       return Swal.fire('', 'Please check the Terms and Conditions', 'warning');
 

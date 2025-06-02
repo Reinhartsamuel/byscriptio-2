@@ -249,11 +249,9 @@ export default function ModalDetailAutotrader({
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className='block'>
-            <ForceActionComponent detail={detail} />
-            <DeleteAutotraderComponent detail={detail} setOpenModal={setOpenModal} />
+              <ForceActionComponent detail={detail} />
+              <DeleteAutotraderComponent detail={detail} setOpenModal={setOpenModal} />
+              </div>
           </div>
         </div>
         {/* <div className='flex flex-col gap-2 w-full overflow-scroll'> */}
@@ -265,6 +263,9 @@ export default function ModalDetailAutotrader({
               value: String(detail.id) || null,
             },
           ]}
+          showPair={false}
+          showAutotrader={false}
+          showExchange={false}
         />
         {/* </div> */}
       </Modal>

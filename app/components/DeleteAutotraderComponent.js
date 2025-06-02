@@ -139,7 +139,7 @@ const DeleteAutotraderComponent = ({ detail, setOpenModal }) => {
   }
   return (
     // <div className='border-[0.1rem] border-red-500 dark:border-red-900 rounded-lg p-2 mt-5'>
-    <div className='rounded-lg border-red-500 dark:border-red-900 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
+    <div className='rounded-lg border-red-500 dark:border-red-900 lg:p-4 shadow-md font-sans flex flex-col gap-1 flex-wrap w-full'>
       <h1 className='text-gray-400 text-sm'>Delete autotrader</h1>
       <div className='flex flex-col items-center'>
         <p className='text-red-600 font-bold dark:text-red-700 text-center mx-auto cursor-pointer'>

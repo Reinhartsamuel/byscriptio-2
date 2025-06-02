@@ -14,7 +14,13 @@ import Modal from '@/app/components/ui/Modal';
 import { authFirebase } from '@/app/config/firebase';
 
 const TradeHistoryTable = (props) => {
-  const { collectionName = '3commas_logs', conditions = [] } = props;
+  const {
+    collectionName = '3commas_logs',
+    conditions = [],
+    showPair = true,
+    showAutotrader = true,
+    showExchange = true,
+  } = props;
 
   const { data, loadMore, loading, error } = useFetchData({
     collectionName,
@@ -42,7 +48,12 @@ const TradeHistoryTable = (props) => {
     <>
       <div className='p-2 lg:px-4 dark:bg-gray-800 rounded'>
         <div className='max-h-96 overflow-scroll'>
-          <SmartTradesTable trades={data} />
+          <SmartTradesTable
+            trades={data}
+            showPair={showPair}
+            showAutotrader={showAutotrader}
+            showExchange={showExchange}
+          />
           <div className='flex w-full justify-center mt-5 items-center gap-4'>
             <p className='text-xs dark:text-gray-100 font-light'>
               Total: {count}
@@ -64,7 +75,12 @@ const TradeHistoryTable = (props) => {
 
 export default TradeHistoryTable;
 
-function SmartTradesTable({ trades }) {
+function SmartTradesTable({ 
+  trades,
+  showPair,
+  showAutotrader,
+  showExchange,
+}) {
   const [openModal, setOpenModal] = useState(false);
   const [details, setDetails] = useState(null);
   const [showRaw, setShowRaw] = useState(false);
@@ -114,21 +130,21 @@ function SmartTradesTable({ trades }) {
 
   return (
     <div className="overflow-x-auto w-full rounded-xl shadow-lg">
-      <table className="min-w-full text-sm text-left text-gray-300 dark:bg-gray-900">
-        <thead className="text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap">
+      <table className="min-w-full text-[0.6rem] lg:text-xs text-center text-gray-300 dark:bg-gray-900">
+        <thead className="text-[0.6rem] lg:text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap">
           <tr>
-            <th className="px-4 py-3"></th>
-            <th className="px-4 py-3">Pair</th>
-            <th className="px-4 py-3">Action</th>
-            <th className="px-4 py-3">Profit (USD)</th>
-            <th className="px-4 py-3">Profit (%)</th>
-            <th className="px-4 py-3">Price</th>
-            <th className="px-4 py-3">Status</th>
-            <th className="px-4 py-3">Autotrader</th>
-            <th className="px-4 py-3">Exchange</th>
-            <th className="px-4 py-3">Timestamp</th>
-            <th className="px-4 py-3">Exchange commission</th>
-            <th className="px-4 py-3"></th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1"></th>
+            {showPair && <th className="px-2 py-1 lg:px-2 lg:py-1">Pair</th>}
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Action</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Profit (%)</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Profit (USD)</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Price</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Status</th>
+            {showAutotrader && <th className="px-2 py-1 lg:px-2 lg:py-1">Autotrader</th>}
+            {showExchange && <th className="px-2 py-1 lg:px-2 lg:py-1">Exchange</th>}
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Timestamp</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1">Exchange commission</th>
+            <th className="px-2 py-1 lg:px-2 lg:py-1"></th>
           </tr>
         </thead>
         <tbody>
@@ -143,25 +159,34 @@ function SmartTradesTable({ trades }) {
                 className={cn("border-b border-gray-700 hover:bg-gray-800 cursor-pointer active:bg-gray-600", trade?.error && "text-red-400")}
 
               >
-                <td className="px-4 py-3 text-red-400 whitespace-nowrap">
+                <td className="px-1 py-[0.5] lg:px-2 lg:py-1 text-red-400 whitespace-nowrap">
                   <button
                     onClick={() => handleOpen(trade)}
                     type="button"
-                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
+                    className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-[0.6rem] lg:text-xs px-5 py-2.5 me-2 mb-4 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700
                       whitespace-nowrap
                       "
                   >
                     <IoEyeOutline />
                   </button>
                 </td>
-                <td className="px-4 py-3 flex flex-col items-center gap-2">
+                {showPair && <td className="px-1 py-[0.5] lg:px-2 lg:py-1 flex flex-col items-center gap-2">
                   <PairImageComponent pair={trade?.pair} width={8} />
-                  <p className='text-xs'>{trade?.pair}</p>
-                </td>
-                <td className={cn("px-4 py-3 font-bold", actionColor())}>{trade?.action}</td>
+                  <p className='text-[0.6rem] lg:text-xs'>{trade?.pair}</p>
+                </td>}
+                <td className={cn("px-1 py-[0.5] lg:px-2 lg:py-1 font-bold", actionColor())}>{trade?.action}</td>
+
+                <td
+                  className={cn("px-1 py-[0.5] lg:px-2 lg:py-1",
+                    trade?.profit?.percent ?
+                      parseFloat(trade?.profit?.percent) > 0 ? "text-green-400"
+                        : 'text-red-400'
+                      : "text-gray-300",
+                  )}
+                >{trade?.profit?.percent}%</td>
                 <td
                   className={cn(
-                    "px-4 py-3 whitespace-nowrap",
+                    "px-1 py-[0.5] lg:px-2 lg:py-1 whitespace-nowrap",
                     trade?.profit?.usd ?
                       parseFloat(trade?.profit?.usd) > 0 ? "text-green-400"
                         : 'text-red-400'
@@ -170,24 +195,16 @@ function SmartTradesTable({ trades }) {
 
                   }
                 >
-                  $ {!isNaN(trade?.profit?.usd) ? parseFloat(trade?.profit?.usd)?.toFixed(3) : ''}
+                  {!isNaN(parseFloat(trade?.profit?.usd)) ? `$ ${parseFloat(trade?.profit?.usd)?.toFixed(3)}` : '-'}
                 </td>
+                <td className="px-1 py-[0.5] lg:px-2 lg:py-1">{trade?.position?.price?.value && '$' + trade?.position?.price?.value}</td>
                 <td
-                  className={cn("px-4 py-3",
-                    trade?.profit?.percent ?
-                      parseFloat(trade?.profit?.percent) > 0 ? "text-green-400"
-                        : 'text-red-400'
-                      : "text-gray-300",
-                  )}
-                >{trade?.profit?.percent}%</td>
-                <td className="px-4 py-3">${trade?.position?.price?.value}</td>
-                <td
-                  className={cn("px-4 py-3 whitespace-nowrap", trade?.error ? "text-red-400" : "")}
+                  className={cn("px-1 py-[0.5] lg:px-2 lg:py-1 whitespace-nowrap", trade?.error ? "text-red-400" : "")}
                 >
                   {trade?.error ? 'Error!' : trade?.status?.title}
                 </td>
-                <td className="px-4 py-3">{trade?.autotrader_id}</td>
-                <td className="px-4 py-3 flex items-center gap-2">
+                {showAutotrader && <td className="px-1 py-[0.5] lg:px-2 lg:py-1">{trade?.autotrader_id}</td>}
+                {showExchange && <td className="px-1 py-[0.5] lg:px-2 lg:py-1 flex items-center gap-2">
                   <div className="flex flex-col items-center">
                     <img
                       src={trade?.exchange_thumbnail}
@@ -195,8 +212,8 @@ function SmartTradesTable({ trades }) {
                       className="max-w-20"
                     />
                   </div>
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap">
+                </td>}
+                <td className="px-1 py-[0.5] lg:px-2 lg:py-1 whitespace-nowrap">
                   <div className=' flex flex-col justify-center'>
                     <p>
                       {moment
@@ -206,7 +223,7 @@ function SmartTradesTable({ trades }) {
                     <p>{moment.unix(trade?.createdAt?.seconds).fromNow()}</p>
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap">
+                <td className="px-1 py-[0.5] lg:px-2 lg:py-1 whitespace-nowrap">
                   <p>{trade?.data ? trade?.data?.commission : 'no data'}</p>
                 </td>
                 <td className="flex gap-1 items-center">
@@ -354,6 +371,9 @@ function SmartTradesTable({ trades }) {
 
 SmartTradesTable.propTypes = {
   trades: PropTypes.array,
+  showPair:PropTypes.bool,
+  showAutotrader:PropTypes.bool,
+  showExchange:PropTypes.bool,
 
 };
 TradeHistoryTable.propTypes = {
@@ -361,4 +381,7 @@ TradeHistoryTable.propTypes = {
   trading_plan_pair: PropTypes.string,
   collectionName: PropTypes.string,
   conditions: PropTypes.array,
+  showPair:PropTypes.bool,
+  showAutotrader:PropTypes.bool,
+  showExchange:PropTypes.bool,
 };

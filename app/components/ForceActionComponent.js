@@ -132,7 +132,7 @@ export default function ForceActionComponent({ detail }) {
   }
 
   return (
-    <div className='rounded-lg dark:bg-gray-800 p-2 lg:p-4 shadow-md mx-2 font-sans flex flex-col gap-1 flex-wrap w-full'>
+    <div className='rounded-lg dark:bg-gray-800  lg:p-4 shadow-md  font-sans flex flex-col gap-1 flex-wrap w-full'>
       <h1 className='text-gray-400 text-sm'>Force Entry</h1>
       <div className='flex flex-row gap-2 justify-between'>
         <button
