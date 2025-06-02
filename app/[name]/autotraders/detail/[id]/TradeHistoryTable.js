@@ -28,7 +28,7 @@ const TradeHistoryTable = (props) => {
     authRequired: true,
     dependencies: [conditions],
     type: 'getDocs',
-    limitQuery: 10,
+    limitQuery: 20,
   })
   const { count } = useCountDocuments({
     collectionName,
@@ -47,7 +47,7 @@ const TradeHistoryTable = (props) => {
   return (
     <>
       <div className='p-2 lg:px-4 dark:bg-gray-800 rounded'>
-        <div className='max-h-96 overflow-scroll'>
+        <div className=' h-[calc(100vh-100px)] md:h-auto lg:max-h-96 overflow-scroll'>
           <SmartTradesTable
             trades={data}
             showPair={showPair}
@@ -75,7 +75,7 @@ const TradeHistoryTable = (props) => {
 
 export default TradeHistoryTable;
 
-function SmartTradesTable({ 
+function SmartTradesTable({
   trades,
   showPair,
   showAutotrader,
@@ -130,8 +130,8 @@ function SmartTradesTable({
 
   return (
     <div className="overflow-x-auto w-full rounded-xl shadow-lg">
-      <table className="min-w-full text-[0.6rem] lg:text-xs text-center text-gray-300 dark:bg-gray-900">
-        <thead className="text-[0.6rem] lg:text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap">
+      <table className="min-w-full text-[0.6rem] lg:text-xs text-center text-gray-300 dark:bg-gray-900 relative">
+        <thead className="text-[0.6rem] lg:text-xs uppercase bg-gray-800 text-gray-400 whitespace-nowrap sticky top-0 z-10">
           <tr>
             <th className="px-2 py-1 lg:px-2 lg:py-1"></th>
             {showPair && <th className="px-2 py-1 lg:px-2 lg:py-1">Pair</th>}
@@ -371,9 +371,9 @@ function SmartTradesTable({
 
 SmartTradesTable.propTypes = {
   trades: PropTypes.array,
-  showPair:PropTypes.bool,
-  showAutotrader:PropTypes.bool,
-  showExchange:PropTypes.bool,
+  showPair: PropTypes.bool,
+  showAutotrader: PropTypes.bool,
+  showExchange: PropTypes.bool,
 
 };
 TradeHistoryTable.propTypes = {
@@ -381,7 +381,7 @@ TradeHistoryTable.propTypes = {
   trading_plan_pair: PropTypes.string,
   collectionName: PropTypes.string,
   conditions: PropTypes.array,
-  showPair:PropTypes.bool,
-  showAutotrader:PropTypes.bool,
-  showExchange:PropTypes.bool,
+  showPair: PropTypes.bool,
+  showAutotrader: PropTypes.bool,
+  showExchange: PropTypes.bool,
 };
