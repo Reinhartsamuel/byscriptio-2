@@ -112,6 +112,18 @@ export async function POST(request) {
             flag: body?.flag || '',
             // result: result.map((x) => x?.status),
         });
+        if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS') {
+            adminDb.collection('webhooks_safe_preview').add({
+                ...body,
+                action:determineAction(body),
+            smart_trade: true,
+            type: 'autotrade',
+            createdAt: new Date(),
+            rawSignal: JSON.stringify(body),
+            flag: body?.flag || '',
+                // result: result.map((x) => x?.status),
+            });
+        }
         console.log(`added webhook with id ${addWebhookResult.id}`)
 
         // trading_plan_id is constructed of trading plan name and pair
