@@ -81,6 +81,9 @@ export const handleLoginGoogle = async ({
         isNewUser: true,
         photoURL: user.photoURL,
         token,
+        isPremium: false,
+        expiredAt: new Date(),
+        paymentStatus: 'UNPAID',
         affiliatorCustomerId: hasCookie('affiliateId') ? getCookie('affiliateId') : null,
       };
 
@@ -96,7 +99,6 @@ export const handleLoginGoogle = async ({
       } else {
         customerId = await addDocumentFirebase('customers', newCustomerData);
       }
-      // customerId = await addDocumentFirebase('customers', newCustomerData);
       setCustomer({
         id: customerId,
         ...newCustomerData,
@@ -238,6 +240,9 @@ export const handleLoginEmail = async ({
         isNewUser: true,
         photoURL: user.photoURL,
         token,
+        isPremium: false,
+        expiredAt: new Date(),
+        paymentStatus: 'UNPAID',
       });
     } else {
       // console.log(findCustomer, 'this is findcustomer')
