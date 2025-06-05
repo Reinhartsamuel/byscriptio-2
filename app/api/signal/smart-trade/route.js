@@ -112,7 +112,7 @@ export async function POST(request) {
             flag: body?.flag || '',
             // result: result.map((x) => x?.status),
         });
-        if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS') {
+        if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS' && body?.method === 'CREATE') {
             adminDb.collection('webhooks_safe_preview').add({
                 ...body,
                 action:determineAction(body),

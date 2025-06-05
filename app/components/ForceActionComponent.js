@@ -17,7 +17,8 @@ export default function ForceActionComponent({ detail }) {
       const findLatestTrade = await getCollectionFirebase(
         '3commas_logs',
         [
-          { field: 'autotrader_id', operator: '==', value: detail.id }
+          { field: 'autotrader_id', operator: '==', value: detail.id },
+          { field: 'status_type', operator: '==', value: 'waiting_targets' },
         ],
         { field: 'createdAt', direction: 'desc' },
       );

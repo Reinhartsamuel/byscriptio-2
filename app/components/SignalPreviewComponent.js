@@ -23,9 +23,8 @@ const SignalPreviewComponent = () => {
   useEffect(() => {
     setLoading(true);
     const q = query(
-      collection(db, 'webhooks'),
+      collection(db, 'webhooks_safe_preview'),
       orderBy('createdAt', 'desc'),
-      where('flag', '!=', 'testing'),
       limit(10)
     );
     const unsubscribe = onSnapshot(
@@ -114,7 +113,7 @@ const SignalPreviewComponent = () => {
                 <td className='px-6 py-4'>
                   {x?.trading_plan_id?.split('_')[0]}
                 </td>
-                <td className='px-6 py-4 hidden md:table-cell'>${x?.price}</td>
+                <td className='px-6 py-4 hidden md:table-cell'>${x?.position?.price?.value}</td>
                 <td className='px-6 py-4'>
                   {moment
                     .unix(x?.createdAt?.seconds)
@@ -122,15 +121,9 @@ const SignalPreviewComponent = () => {
                 </td>
                 <td className='px-6 py-4'>
                   <p
-                    className={`text-center text-xl font-bold ${x?.action === 'close_at_market_price' ? 'text-red-600' :
-                          x?.action === 'BUY' ? 'text-green-600' :
-                          x?.action === 'SELL' ? 'text-red-600' :
-                          'text-green-600'}`}
+                    className={`text-center text-xl font-bold ${x?.action === 'BUY' ? 'text-green-500' : 'text-red-500'}`}
                   >
-                     {x?.action === 'close_at_market_price' ? 'sell' :
-                          x?.action === 'BUY' ? 'BUY' :
-                          x?.action === 'SELL' ? 'SELL' :
-                          'BUY'}
+                    {x?.action?.toUpperCase()}
                   </p>
                 </td>
               </tr>

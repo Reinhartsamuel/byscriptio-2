@@ -52,7 +52,7 @@ const testimonials1 = [
   {
     quote:
       'Metode algotrading bener2 bisa menghilangkan faktor emosi dalam trading, dan bikin trading jadi disiplin sesuai trading plan yang udah di-set di awal. Pilihan exchange juga banyak.',
-    name: 'Reinhart',
+    name: 'Ray',
     title: 'Trading tanpa pusing',
     avatar: '',
   },
