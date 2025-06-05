@@ -42,7 +42,8 @@ export default function ModalDetailAutotrader({
           1
         )
         if (res?.length > 0) {
-          setLatestSignal(res[0])
+          setLatestSignal(res[0]);
+          console.log(res[0], 'res[0]')
         }
       } catch (error) {
         console.log(error, 'error')
@@ -145,15 +146,15 @@ export default function ModalDetailAutotrader({
                       className={
                         cn('font-bold mr-1',
                           latestSignal?.action === 'BUY'
-                           ? 'text-green-500'
+                            ? 'text-green-500'
                             : latestSignal?.action === 'SELL'
-                             ? 'text-red-500'
+                              ? 'text-red-500'
                               : 'text-red-100'
-                      )}
+                        )}
                     >
                       {latestSignal?.action}
                     </span>
-                    at ${latestSignal?.price && latestSignal.price.toLocaleString()} ({moment.unix(latestSignal?.createdAt?.seconds).fromNow()})
+                    at ${latestSignal?.position?.price?.value && latestSignal.position?.price?.value?.toLocaleString()} ({moment.unix(latestSignal?.createdAt?.seconds).fromNow()})
                   </div>
 
                 </div>
@@ -251,7 +252,7 @@ export default function ModalDetailAutotrader({
               </div>
               <ForceActionComponent detail={detail} />
               <DeleteAutotraderComponent detail={detail} setOpenModal={setOpenModal} />
-              </div>
+            </div>
           </div>
         </div>
         {/* <div className='flex flex-col gap-2 w-full overflow-scroll'> */}

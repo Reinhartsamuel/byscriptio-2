@@ -83,14 +83,17 @@ const htmlContent = ({
                         Your byScript.io subscription has ended or hasn't been renewed. Your active autotraders will be deactivated. To reactivate, head to your dashboard and renew your subscription.
                       </p>
                       <br />
-                      <p>
-                        Your active autotraders:
-                      </p>
-                      <ul>
-                        ${autotraders?.map((item, i) => (`
-                          <li>${item.trading_plan_pair[0]} - $${item.tradeAmount}</li>
-                        `))}
-                      </ul>
+                      ${autotraders?.length > 0 &&
+                      `<>
+                        <p>
+                          Your active autotraders:
+                        </p>
+                        <ul>
+                          ${autotraders?.map((item, i) => (` <li>${item.trading_plan_pair[0]} - $${item.tradeAmount}</li>`))}
+                        </ul>
+                        <br />
+                      </>`
+                      }
                       <p>"Every trade is made byScript"🚀🚀</p>
                       <div class="button-container">
                         <a href="https://byscript.io/auth/login" class="button">Go to my dashboard</a>
