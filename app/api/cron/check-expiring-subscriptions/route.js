@@ -1,7 +1,7 @@
 import { adminDb } from "@/lib/firebase-admin-config";
 import { Timestamp } from "firebase-admin/firestore";
 import moment from "moment";
-import { expiredNotification } from "../email/expiry-notification/expiry-notification";
+import { expiredNotification } from "../../email/expiry-notification/expiry-notification";
 
 export async function POST() {
   try {
