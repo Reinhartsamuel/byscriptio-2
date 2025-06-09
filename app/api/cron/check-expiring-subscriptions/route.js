@@ -3,7 +3,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import moment from "moment";
 import { expiredNotification } from "../../email/expiry-notification/expiry-notification";
 
-export async function POST() {
+export async function GET() {
   try {
     const customersRef = adminDb.collection('customers');
     const now = moment();
