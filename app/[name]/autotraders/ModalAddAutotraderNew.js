@@ -177,28 +177,36 @@ export default function ModalAddAutotraderNew({
       return;
     }
 
-    // Check trade amounts for free tier
-    if (!userPackage) {
-      const invalidAmounts = selectedPairConfigs.filter(
-        config => parseFloat(config.tradeAmount) > 100
-      );
-
-      if (invalidAmounts.length > 0) {
-        Swal.fire({
-          title: 'Free Tier Limit Exceeded',
-          text: 'Free tier only allows maximum $100 of trade amount per pair. Would you like to upgrade?',
-          showDenyButton: true,
-          showCancelButton: true,
-          confirmButtonText: 'Upgrade Now',
-          denyButtonText: 'Cancel',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            setShowPricing(true);
-            handleClose();
-          }
-        });
-        return;
-      }
+    if (!customer?.isPremium) {
+      Swal.fire({
+        title: 'Free Tier Limit Exceeded',
+        text: 'Free tier only allows maximum $100 of trade amount per pair. Would you like to upgrade?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Upgrade Now',
+        denyButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowPricing(true);
+          handleClose();
+        }
+      });
+      return;
+    } else if (moment.unix(customer?.expiredAt?.seconds).isBefore(moment())) {
+      Swal.fire({
+        title: 'Account Expired',
+        text: 'Your account has expired. Please upgrade to continue.',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Upgrade Now',
+        denyButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowPricing(true);
+          handleClose();
+        }
+      });
+      return;
     }
 
     try {
@@ -206,7 +214,7 @@ export default function ModalAddAutotraderNew({
 
       // Create autotraders for each configuration
       for (const config of selectedPairConfigs) {
-        console.log(config, 'config');
+        // console.log(config, 'config');
 
         const autotraderData = {
           uid: authFirebase.currentUser?.uid,
@@ -215,7 +223,7 @@ export default function ModalAddAutotraderNew({
           tradeAmount: parseFloat(config.tradeAmount),
           initialInvestment: parseFloat(config.tradeAmount),
           exchange_name: selectedExchange.exchange_name,
-          exchange_external_name:selectedExchange?.exchange_external_name || '',
+          exchange_external_name: selectedExchange?.exchange_external_name || '',
           market_code: selectedExchange?.market_code || '',
           exchange_external_id: selectedExchange.external_id,
           exchange_thumbnail: selectedExchange.exchange_thumbnail,
