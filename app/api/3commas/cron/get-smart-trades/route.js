@@ -49,6 +49,7 @@ export async function POST() {
             querySnapshot.forEach((doc) => {
                 searchCorrespondingTrade.push({ ...doc.data(), id: doc.id, })
             });
+            console.log(`read searchCorrespondingTrade : ${searchCorrespondingTrade?.length}`)
             searchCorrespondingTrade = searchCorrespondingTrade.filter((x) => !x.already_updated);
 
             await Promise.all(searchCorrespondingTrade?.map(async (x) => {
