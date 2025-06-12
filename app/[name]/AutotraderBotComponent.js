@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { authFirebase } from '../config/firebase';
 import Spinner from '../components/ui/Spinner';
 import ModalDetailAutotrader from './autotraders/ModalDetailAutotrader';
-// import ModalAddAutotrader from './autotraders/ModalAddAutotrader';
 import { useAutotraderStore } from '../store/autotraderStore';
 import useCountDocuments from '../hooks/CountHook';
 import PropTypes from 'prop-types';
@@ -90,7 +89,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
                   <th className="px-4 py-3">Exchange</th>
                   <th className="px-4 py-3">Budget ($)</th>
                   <th className="px-4 py-3">Initial Budget</th>
-                  <th className="px-4 py-3">Compounding</th>
+                  <th className="px-4 py-3">Autocompound</th>
                   <th className="px-4 py-3">PnL ($)</th>
                   <th className="px-4 py-3">PnL (%)</th>
                   <th className="px-4 py-3">Last Signal</th>
@@ -118,10 +117,14 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
                     <td className="px-4 py-3">{x.exchange_name}</td>
                     <td className="px-4 py-3">{x.tradeAmount || '-'}</td>
                     <td className="px-4 py-3">{x.initialInvestment || '-'}</td>
-                    <td className="px-4 py-3">{x.compounding ? 'Yes' : 'No'}</td>
+                    <td className="px-4 py-3">{x.autocompound ? 'Yes' : 'No'}</td>
                     <td className="px-4 py-3">{x.pnl || '-'}</td>
                     <td className="px-4 py-3">{x.pnl_percentage || '-'}</td>
-                    <td className="px-4 py-3">{x.last_signal || '-'}</td>
+                    <td className="px-4 py-3">
+                      {x?.lastSignal ? 
+                      `${x?.lastSignal?.position?.type?.toUpperCase()} ${moment.unix(parseInt(x?.lastSignal?.timestamp)/1000).fromNow()}` :
+                        '-'}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -136,7 +139,6 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
           </div>
         </>
       )} */}
-      {/* <ModalAddAutotrader addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} /> */}
       <ModalAddAutotraderNew addModal={addModal} setAddModal={setAddModal} setShowPricing={setShowPricing} />
       <ModalDetailAutotrader
         openModal={detailModal}

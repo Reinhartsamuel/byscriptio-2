@@ -30,7 +30,7 @@ const ExchangesComponent = () => {
       {
         field: 'email',
         operator: '==',
-        value: authFirebase.currentUser.email,
+        value: authFirebase.currentUser?.email,
       },
     ],
     limitQuery: 50,

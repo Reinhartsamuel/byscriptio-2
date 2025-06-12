@@ -23,16 +23,16 @@ export const maxDuration = 300; // This function can run for a maximum of 300 se
 
 function determineAction(body) {
     if (!body) return 'unknown';
-    
+
     // Check for CANCEL and CLOSE methods first
     if (body.method === 'CANCEL') return 'CANCEL';
     if (body.method === 'CLOSE') return 'CLOSE';
-    
+
     // Check position type
     if (body?.position && typeof body?.position?.type === 'string') {
         return body.position.type.toUpperCase();
     }
-    
+
     return 'unknown';
 }
 
@@ -104,7 +104,7 @@ export async function POST(request) {
         }
         const addWebhookResult = await adminDb.collection('webhooks').add({
             ...body,
-            action:determineAction(body),
+            action: determineAction(body),
             smart_trade: true,
             type: 'autotrade',
             createdAt: new Date(),
@@ -115,12 +115,12 @@ export async function POST(request) {
         if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS' && body?.method === 'CREATE') {
             adminDb.collection('webhooks_safe_preview').add({
                 ...body,
-                action:determineAction(body),
-            smart_trade: true,
-            type: 'autotrade',
-            createdAt: new Date(),
-            rawSignal: JSON.stringify(body),
-            flag: body?.flag || '',
+                action: determineAction(body),
+                smart_trade: true,
+                type: 'autotrade',
+                createdAt: new Date(),
+                rawSignal: JSON.stringify(body),
+                flag: body?.flag || '',
                 // result: result.map((x) => x?.status),
             });
         }
@@ -173,9 +173,11 @@ export async function POST(request) {
         console.log(autotraders.length, 'length')
 
         const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
-            adminDb.collection('dca_bots').doc(autotrader.id).update({
-                lastSignal: body
-            }).catch((err) => console.error(err.message, 'error updating last signal', JSON.stringify(body)));
+            if (body?.method === 'CREATE') {
+                adminDb.collection('dca_bots').doc(autotrader.id).update({
+                    lastSignal: body
+                }).catch((err) => console.error(err.message, 'error updating last signal', JSON.stringify(body)));
+            }
             const resultCreateSmartTrade = await createSmartTrade({
                 autotrader,
                 body,

@@ -148,6 +148,7 @@ export default function ModalAddAutotraderNew({
   }, [addModal]);
 
   const handleSubmit = async () => {
+    // return console.log(customer);
     // Validate configurations
     if (!selectedExchange) {
       Swal.fire({
@@ -178,19 +179,11 @@ export default function ModalAddAutotraderNew({
     }
 
     if (!customer?.isPremium) {
-      Swal.fire({
-        title: 'Free Tier Limit Exceeded',
-        text: 'Free tier only allows maximum $100 of trade amount per pair. Would you like to upgrade?',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Upgrade Now',
-        denyButtonText: 'Cancel',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setShowPricing(true);
-          handleClose();
-        }
-      });
+      setShowPricing(true);
+      handleClose();
+       Swal.fire({
+        text: 'Subscribe to byScript.io plans to continue',
+      })
       return;
     } else if (moment.unix(customer?.expiredAt?.seconds).isBefore(moment())) {
       Swal.fire({
@@ -208,7 +201,6 @@ export default function ModalAddAutotraderNew({
       });
       return;
     }
-
     try {
       setLoading(true);
 
@@ -553,11 +545,6 @@ export default function ModalAddAutotraderNew({
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-7 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
                         />
                       </div>
-                      {!userPackage && (
-                        <p className="mt-1 text-xs text-gray-500">
-                          Free tier limited to $100 maximum trade amount
-                        </p>
-                      )}
                     </div>
                   </div>
                 </div>
