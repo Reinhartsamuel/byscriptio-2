@@ -5,6 +5,7 @@ import { adminDb } from "../../../lib/firebase-admin-config";
 
 export async function POST(request) {
   const body = await request.json();
+  console.log('boddddyyyyyy',body,)
   const { order_id, status_code, gross_amount,transaction_status, signature_key, transaction_time } = body;
 
   const serverKey = process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY_SANDBOX
