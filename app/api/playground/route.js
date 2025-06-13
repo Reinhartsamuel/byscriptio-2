@@ -104,7 +104,7 @@ const htmlContent = ({
           </html>
   `)
 
-export async function GET() {
+export async function POST() {
   try {
     // let result = [];
     // let q = adminDb
@@ -252,19 +252,21 @@ export async function GET() {
         ]
       })
     };
-    const resemail = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      body: JSON.stringify(emailBody),
-      headers: {
-        accept: 'application/json',
-        // eslint-disable-next-line no-undef
-        'api-key': process.env.BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-    })
+    // const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    //   method: 'POST',
+    //   body: JSON.stringify(emailBody),
+    //   headers: {
+    //     accept: 'application/json',
+    //     // eslint-disable-next-line no-undef
+    //     'api-key': process.env.BREVO_API_KEY,
+    //     'content-type': 'application/json',
+    //   },
+    // })
+    // const resemail = await res.json();
+    // console.log('resemail', resemail);
     return Response.json({
       status: true,
-      resemail
+      // resemail
     })
     // const resultPromise = await Promise.allSettled(result.map(async (item, i) => {
     //   // console.log(item, `indexxx: ${i}`);

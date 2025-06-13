@@ -50,6 +50,11 @@ export async function GET() {
       }
     });
 
+    console.log('Expiring today:', expiringToday);
+    console.log('Expiring in 1 day:', expiringInOneDay);
+    console.log('Expiring in 2 days:', expiringInTwoDays);
+    console.log('All:', all.length);
+
     // Notify users expiring in 2 days
     await Promise.allSettled(
       expiringInTwoDays.map(customer =>
