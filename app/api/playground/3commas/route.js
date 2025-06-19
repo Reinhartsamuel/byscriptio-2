@@ -26,6 +26,7 @@ export const maxDuration = 60; // This function can run for a maximum of 60 seco
 export async function POST(request) {
     try {
         const body = await request.json();
+        console.log('bodyyy',body);
         if (!body.queryParams) {
             return new Response(JSON.stringify({
                 status: false,
