@@ -1,4 +1,5 @@
 import generateSignatureRsa from "@/app/utils/generateSignatureRsa";
+import trackIp from "@/app/utils/trackIp";
 import { adminDb } from "@/lib/firebase-admin-config";
 export const maxDuration = 300; // This function can run for a maximum of 300 seconds
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
@@ -11,6 +12,7 @@ export async function POST() {
     try {
         const queryParams = '/public/api' + '/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at';
         const finalUrl = baseUrl + queryParams;
+        trackIp();
 
 
         let signatureMessage = queryParams;
