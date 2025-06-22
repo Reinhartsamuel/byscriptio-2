@@ -8,11 +8,11 @@ const baseUrl = 'https://api.3commas.io';
 
 
 
-export async function POST() {
+export async function POST(request) {
     try {
         const queryParams = '/public/api' + '/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at';
         const finalUrl = baseUrl + queryParams;
-        trackIp();
+        trackIp(request);
 
 
         let signatureMessage = queryParams;
