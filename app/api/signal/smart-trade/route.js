@@ -2,6 +2,7 @@ import { coins } from "@/app/dummy";
 import { cancelSmartTrade } from "@/app/utils/smart-trades/cancelSmartTrade";
 import { closeAtMarketPrice } from "@/app/utils/smart-trades/closeAtMarketPrice";
 import { createSmartTrade } from "@/app/utils/smart-trades/createSmartTrade";
+import trackIp from "@/app/utils/trackIp";
 // import tradeExecutedTemplate from "@/app/utils/emailHtmlTemplates/tradeExecutedTemplate";
 import { adminDb } from "@/lib/firebase-admin-config";
 import moment from "moment";
@@ -39,6 +40,7 @@ function determineAction(body) {
 export async function POST(request) {
     try {
         const body = await request.json();
+        trackIp(request);
         console.log(JSON.stringify(body), 'bodyyyyyy');
         const _pair = body.pair;
         try {

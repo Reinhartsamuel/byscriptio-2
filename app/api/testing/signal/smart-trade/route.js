@@ -1,6 +1,7 @@
 import { cancelSmartTrade } from '@/app/utils/smart-trades/cancelSmartTrade';
 import { closeAtMarketPrice } from '@/app/utils/smart-trades/closeAtMarketPrice';
 import { createSmartTrade } from '@/app/utils/smart-trades/createSmartTrade';
+import trackIp from '@/app/utils/trackIp';
 import { adminDb } from '@/lib/firebase-admin-config';
 import { NextResponse } from 'next/server';
 
@@ -36,6 +37,7 @@ export async function POST(request) {
         // }
 
         const body = await request.json();
+        trackIp(request);
         console.log(JSON.stringify(body), 'bodyyyyyy');
         const _pair = body?.pair || '';
         // console.log(body, 'testing smarttrade body');
