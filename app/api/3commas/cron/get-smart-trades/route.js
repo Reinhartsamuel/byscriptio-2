@@ -14,6 +14,14 @@ export async function POST(request) {
         const finalUrl = baseUrl + queryParams;
         trackIp(request);
 
+        let q = adminDb
+            .collection('3commas_logs')
+            .where('status_type', '==', 'waiting_targets')
+        const snapshot = await q
+            .count()
+            .get();
+        console.log('number of waiting targets::',snapshot.data().count);
+
 
         let signatureMessage = queryParams;
         const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
