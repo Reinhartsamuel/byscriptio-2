@@ -1,66 +1,58 @@
 import CryptoJS from "crypto-js";
 import { adminDb } from "../../../lib/firebase-admin-config";
+import { headers } from "next/headers";
 
 // const appMode = process.env.NEXT_PUBLIC_APP_MODE;
+const API_KEY = process.env.NOWPAYMENTS_API_KEY_REINHART;
+const IPN_SECRET_KEY = process.env.NOWPAYMENTS_IPN_SECRET_KEY_REINHART;
+
 
 export async function POST(request) {
-  const body = await request.json();
-  console.log('boddddyyyyyy',body,)
-  const { order_id, status_code, gross_amount,transaction_status, signature_key, transaction_time } = body;
-
-  const serverKey = process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY_SANDBOX
-  let errorData = undefined;
-
-  //create hash 
-  const hash = CryptoJS.SHA512(order_id + status_code + gross_amount + serverKey)
-  const hashString = hash.toString(CryptoJS.enc.Hex);
-  
-  //compare signature key
-  if (signature_key !== hashString) {
-    console.log("Invalid signature key", order_id);
-    return Response.json({ status: false, message: "Invalid signature key", serverKey, hashString, signature_key});
-  }
-
-  let orderData = {};
   try {
-    const docSnap = await adminDb.collection("orders").doc(order_id).get();
-    orderData = {id : docSnap.id, ...docSnap.data()};
-    // return Response.json({...orderData})
-  } catch (error) {
-    console.log(error.message);
-  }
-  // update payment status only if transaction status is settlement
-  if (transaction_status === "settlement") {
-    try {
-      const res = await adminDb.collection("orders").doc(order_id).update({
-        paymentStatus: "PAID",
-      });
-      console.log(res, 'res');
-      try {
-        await fetch({
-          url : 'https://autotrade-tau.vercel.app/api/email',
-          // url : 'http://localhost:3000/api/email',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type : 'callback',
-            email : orderData?.email || '',
-            name : orderData?.name || '',
-            time : transaction_time
-          })
-        })
-      } catch (error) {
-        console.log(error.message, 'error sending email create order');
-        errorData = error.message
-        // return Response.json({status : false, message : error.message, data : "Error sending email create order", body})
+    const body = await request.json();
+    console.log('boddddyyyyyy', body,);
+    const headersList = await headers();
+    const requestSignature = headersList.get('x-nowpayments-sig');
+    console.log(requestSignature, 'requestSignature');
+
+    const res1 = await fetch(`https://api.nowpayments.io/v1/payment/${body.payment_id}`,{
+      method : 'GET',
+      headers: { 
+        'x-api-key': API_KEY
       }
-      return Response.json({ message : "success", error: errorData });
-    } catch (error) {
-      return Response.json({ status: false, message: JSON.stringify(error) });
-    }
-  } else {
-    return Response.json({ status: false, message: "Transaction status not settlement" });
+    });
+    const data = await res1.json();
+    console.log(data, 'data to be matched');
+    console.log(API_KEY,'API_KEY');
+    console.log(IPN_SECRET_KEY,'IPN_SECRET_KEY');
+
+    const hmac = crypto.createHmac('sha512', requestSignature);
+    hmac.update(JSON.stringify(body, Object.keys(body).sort()));
+    const signature = hmac.digest('hex');
+    console.log(signature, 'calculated signature');
+    const isSignatureValid = requestSignature === signature;
+    console.log('isSignatureValid:', isSignatureValid);
+    const isStatusValid = data.payment_status === data.payment_status;
+    console.log(`
+      status from body: ${body.payment_status}, 
+      status from getrequest: ${data.payment_status}, 
+      are the status the same??: ${isStatusValid}
+      `);
+
+    return new Response(JSON.stringify({
+      status: true,
+      message: 'Hello!',
+      body
+    }, { status: 200 }))
+  } catch (error) {
+    return new Response(JSON.stringify({
+      status: false,
+      error: error.message,
+      message: 'Error on internal server!',
+      errorCode: error.errorCode
+    }), {
+      status: 500
+    })
   }
+
 }
