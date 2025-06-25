@@ -46,7 +46,7 @@ export async function POST(request) {
       }
     });
     const data = await res1.json();
-    console.log(data, 'data');
+    console.log(data, `check data for order_id ${body.order_id}`);
 
     // Step 3: Sort the body object alphabetically by keys
     const sortedBody = sortObjectAlphabetically(body);
@@ -59,19 +59,27 @@ export async function POST(request) {
     const isSignatureValid = requestSignature === generatedSignature;
     const isStatusValid = body.payment_status === data.payment_status;
     const isPaymentValid = isSignatureValid || isStatusValid;
-    console.log(`status from body: ${body.payment_status}, 
+        const doc1 = await adminDb
+      .collection('subscriptions')
+      .doc(body.order_id)
+      .get();
+    const paymentDocument = { ...doc1.data(), id: doc1.id };
+
+    console.log(`status for order_id ${body.order_id} user ${paymentDocument.name} ${paymentDocument.email} from body:  ${body.payment_status}, 
       status from getrequest: ${data.payment_status}, 
       isSignatureValid? ${isSignatureValid},
       isStatusValid? ${isStatusValid},
       isPaymentValid? ${isPaymentValid}`);
 
+
     if (!isPaymentValid) {
-      console.log(`returned message : 'payment not valid!'`);
+      // console.log(`returned message : 'payment not valid!'`);
       return new Response(JSON.stringify({
         message: 'payment not valid!'
       }), { status: 400 });
-    } else if (data.payment_status !== 'finished') {
-      console.log(`returned message : payment status : ${data.payment_status}`);
+    }
+     if (data.payment_status !== 'finished') {
+      // console.log(`returned message : payment status : ${data.payment_status}`);
       // send email to user regardless of payment status
       await sendEmailToUser({
         name: paymentDocument?.name,
@@ -89,13 +97,10 @@ export async function POST(request) {
       }), { status: 200 });
     }
 
-    const doc1 = adminDb
-      .collection('subscriptions')
-      .doc(body.order_id);
-    const paymentDocument = { ...doc1.data(), id: doc1.id };
-    const doc2 = adminDb
+    const doc2 = await adminDb
       .collection('products')
-      .doc(paymentDocument.productId);
+      .doc(paymentDocument.productId)
+      .get();
     const productDocument = { ...doc2.data(), id: doc2.id };
     // update database and customer isPremium, expiredAt, lastSubscriptionId
     const now = moment();
@@ -129,7 +134,7 @@ export async function POST(request) {
         }),
     ];
     const promisesResult = await Promise.allSettled(promises);
-    console.log(promisesResult, 'promisesResult');
+    console.log(promisesResult, `promisesResult order_id ${body.order_id} user ${paymentDocument.name} ${paymentDocument.email}`);
 
     // send email to admin
     await sendEmailToAdmin({
@@ -166,6 +171,7 @@ export async function POST(request) {
 
 
 async function sendEmailToUser(data) {
+  console.log('called sendEmailToUser');
   const emailBodyUser = {
     sender: {
       name: 'byScript.io',
@@ -189,7 +195,7 @@ async function sendEmailToUser(data) {
     }),
   };
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'post',
+    method: 'POST',
     body: JSON.stringify(emailBodyUser),
     headers: {
       accept: 'application/json',
@@ -203,6 +209,7 @@ async function sendEmailToUser(data) {
   return resultSendEmailUser;
 }
 async function sendEmailToAdmin(data) {
+  console.log('calledsendEmailToAdmin')
   const emailBodyAdmin = {
     sender: {
       name: 'byScript.io',
@@ -228,8 +235,8 @@ async function sendEmailToAdmin(data) {
       orderId: data?.orderId,
     }),
   };
-  await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'post',
+  const res =await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
     body: JSON.stringify(emailBodyAdmin),
     headers: {
       accept: 'application/json',
@@ -238,4 +245,7 @@ async function sendEmailToAdmin(data) {
       'content-type': 'application/json',
     },
   });
+  const resAdminEmail = await res.json();
+  console.log(resAdminEmail,'resAdminEmail');
+  return resAdminEmail;
 }
