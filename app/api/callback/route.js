@@ -8,8 +8,8 @@ import userPurchaseTemplate from "@/app/utils/emailHtmlTemplates/userPurchaseTem
 import newPurchaseNotificationTemplate from "@/app/utils/emailHtmlTemplates/newPurchaseNotificationTemplate";
 
 // const appMode = process.env.NEXT_PUBLIC_APP_MODE;
-const API_KEY = process.env.NOWPAYMENTS_API_KEY_REINHART;
-const IPN_SECRET_KEY = process.env.NOWPAYMENTS_IPN_SECRET_KEY_REINHART;
+const API_KEY = process.env.NOWPAYMENTS_API_KEY;
+const IPN_SECRET_KEY = process.env.NOWPAYMENTS_IPN_SECRET_KEY;
 
 function generateSignature(data, secret) {
   const hash = CryptoJS.HmacSHA512(data, secret);
@@ -87,7 +87,7 @@ export async function POST(request) {
         productName: paymentDocument.productName,
         price: paymentDocument.price,
         paymentStatus: data.payment_status === 'finished' ? 'PAID' : data.payment_status.toUpperCase(),
-        payInAddress: data?.pay_in_address,
+        payInAddress: data?.pay_address,
         orderId: paymentDocument.id,
         payAmount: body.actually_paid,
       })
@@ -144,6 +144,8 @@ export async function POST(request) {
       productPrice: paymentDocument?.price,
       paymentStatus: data?.payment_status,
       orderId: paymentDocument?.id,
+      price:paymentDocument?.price,
+      payment_id : body.payment_id
     })
 
     return new Response(JSON.stringify({
@@ -233,6 +235,7 @@ async function sendEmailToAdmin(data) {
       productPrice: data?.price,
       paymentStatus: data?.paymentStatus,
       orderId: data?.orderId,
+      paymentId : data.payment_id
     }),
   };
   const res =await fetch('https://api.brevo.com/v3/smtp/email', {

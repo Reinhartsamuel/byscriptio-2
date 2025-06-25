@@ -5,7 +5,7 @@ export async function POST(request) {
         const r = await fetch('https://api.nowpayments.io/v1/invoice', {
             method: 'POST',
             headers: {
-                'x-api-key': process.env.NOWPAYMENTS_API_KEY_REINHART,
+                'x-api-key': process.env.NOWPAYMENTS_API_KEY,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

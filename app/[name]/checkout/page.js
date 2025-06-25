@@ -37,8 +37,7 @@ export default function CheckoutPage() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          // price: data.price,
-          price : 200000,
+          price: data.price,
           subscriptionId,
           productName: data.productName,
           customer,

@@ -5,7 +5,8 @@ export default function newPurchaseNotificationTemplate(props) {
     productName,
     productPrice,
     paymentStatus,
-    orderId
+    orderId,
+    paymentId
   } = props;
   return `
     <!DOCTYPE html>
@@ -89,7 +90,7 @@ export default function newPurchaseNotificationTemplate(props) {
         </li>
       </ul>
       <br />
-      <p>User already </p>
+      <p>User already finished purchase, check subscription id ${orderId} on admin dashboard, payment id ${paymentId} on NOWPAYMENTS dashboard</p>
       <br />
       <br />
       <p>Receipt:</p>
