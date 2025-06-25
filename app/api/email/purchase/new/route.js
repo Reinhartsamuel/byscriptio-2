@@ -20,7 +20,7 @@ export async function POST(request) {
         name: body?.name,
         productName: body?.productName,
         productPrice: body?.price,
-        paymentStatus: 'WAITING CONFIRMATION',
+        paymentStatus: '',
         receiptUrl: body?.receiptUrl,
       }),
     };
@@ -72,7 +72,7 @@ export async function POST(request) {
         },
       })
     ]);
-    const result = await res.map((res) => res.json());
+    const result = res.map((x) => x.json());
     return Response.json({
         status : true,
         result

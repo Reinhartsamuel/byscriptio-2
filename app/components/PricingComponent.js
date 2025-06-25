@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { authFirebase, db } from '../config/firebase';
 import { priceFormat } from '../utils/priceFormat';
-import ModalPurchasePlan from './ModalPurchasePlan';
 import { useRouter } from 'next/navigation'
+import { useUserStore } from '../store/userStore';
+import calculateCommission from '../utils/calculateCommission';
+import { addDocumentFirebase } from '../utils/firebaseApi';
 
 export function PricingComponent() {
   const [prices, setPrices] = useState([]);
-  const [purchaseModal, setPurchaseModal] = useState(false);
-  const [detail, setDetail] = useState(null);
-  const router = useRouter()
+  const router = useRouter();
+  const { customer } = useUserStore();
   const getPricing = async () => {
     try {
       const arr = [];
@@ -33,11 +34,40 @@ export function PricingComponent() {
     }
   };
 
-  const handlePurchase = (plan) => {
-    console.log(plan, 'plan');
-    setDetail(plan);
+  const handlePurchase = async (plan) => {
+    // console.log(plan, 'plan');
+    // setDetail(plan);
     if (authFirebase?.currentUser) {
-      setPurchaseModal(true);
+      const newData = {
+        productId: plan?.id,
+        productName: plan?.name,
+        price: parseInt(plan?.price || 0),
+        affiliateCommission: customer?.affiliatorCustomerId
+          ? calculateCommission(
+            customer?.affiliateLevel,
+            parseInt(plan?.price) || 0
+          ).amount
+          : 0,
+        affiliatePercentage: customer?.affiliatorCustomerId
+          ? calculateCommission(
+            customer?.affiliateLevel,
+            parseInt(plan?.price) || 0
+          ).percentage
+          : 0,
+        affiliator: customer?.affiliator || {},
+        affiliatorCustomerId: customer?.affiliatorCustomerId || '',
+        receiptUrl: '',
+        uid: authFirebase.currentUser?.uid || customer?.uid,
+        name: authFirebase.currentUser?.displayName || customer?.name,
+        email: authFirebase.currentUser?.email || customer?.email,
+        customerId: customer?.id,
+        paymentStatus: 'PENDING',
+      };
+      addDocumentFirebase('subscriptions', newData).
+        then((id) => {
+          console.log(id, 'created id')
+          router.push(`checkout?sid=${id}`)
+        }).catch((e) => console.error(e.message))
     } else {
       router.push('/auth/login')
     }
@@ -147,11 +177,6 @@ export function PricingComponent() {
             ))}
         </div>
       </div>
-      <ModalPurchasePlan
-        purchaseModal={purchaseModal}
-        setPurchaseModal={setPurchaseModal}
-        detail={detail}
-      />
     </section>
   );
 }

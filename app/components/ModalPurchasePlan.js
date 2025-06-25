@@ -108,8 +108,6 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
               'warning'
             );
           } else {
-            
-
             let discount =voucherData?.type === 'DISCOUNT' ?  voucherData?.amount : detail?.price * voucherData?.amount / 100;
             let previousPrice = detail?.price;
             let price = voucherData?.type === 'DISCOUNT' ? detail?.price - parseInt(voucherData?.amount) : detail?.price * ((100-voucherData?.amount)/100);

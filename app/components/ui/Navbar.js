@@ -142,11 +142,11 @@ export default function Navbar() {
             { field: 'createdAt', direction: 'desc' },
             1
           );
-          console.log(findLastSubscription, 'findLastSubscription');
+          // console.log(findLastSubscription, 'findLastSubscription');
           const activeSubscription = moment(new Date()).isBefore(
             moment.unix(findLastSubscription[0]?.expiredAt?.seconds)
           );
-          console.log(activeSubscription, 'activeSubscription');
+          // console.log(activeSubscription, 'activeSubscription');
           const customerFromDatabase = await getCollectionFirebase(
             'customers',
             [

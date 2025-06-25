@@ -1,6 +1,12 @@
 export default function newPurchaseNotificationTemplate(props) {
-  const { name, email, productName, productPrice, paymentStatus, receiptUrl } =
-    props;
+  const {
+    name,
+    email,
+    productName,
+    productPrice,
+    paymentStatus,
+    orderId
+  } = props;
   return `
     <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +80,7 @@ export default function newPurchaseNotificationTemplate(props) {
         <li>Name: <span style="font-weight:bold">${name}</span></li>
         <li>Email: <span style="font-weight:bold">${email}</span></li>
         <li>Product: <span style="font-weight:bold">${productName}</span></li>
+        <li>Order ID: <span style="font-weight:bold">${orderId}</span></li>
         <li>
           Price: IDR <span style="font-weight:bold">${productPrice}</span>
         </li>
@@ -82,15 +89,11 @@ export default function newPurchaseNotificationTemplate(props) {
         </li>
       </ul>
       <br />
-      <p>Please go to BYSCRIPT ADMIN to confirm user payment.</p>
+      <p>User already </p>
       <br />
       <br />
       <p>Receipt:</p>
-      <img
-          src="${receiptUrl}"
-          width="60%"
-          style="padding:0;background-color:white;"
-        />
+      
       <br />
 
     </div>

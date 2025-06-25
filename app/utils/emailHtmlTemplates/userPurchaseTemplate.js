@@ -1,5 +1,14 @@
 export default function userPurchaseTemplate(props) {
-  const { name, productName, productPrice, paymentStatus, receiptUrl } = props;
+  const {
+    name,
+    productName,
+    productPrice,
+    paymentStatus,
+    payInAddress,
+    orderId,
+    payAmount,
+  } = props;
+
   return `<!DOCTYPE html>
 <html lang="en">
 
@@ -76,19 +85,16 @@ export default function userPurchaseTemplate(props) {
           Price: IDR <span style="font-weight:bold">${productPrice}</span>
         </li>
         <li>
-          Status :<span style="font-weight:bold">${paymentStatus}</span>
+          Payment Status:<span style="font-weight:bold">${paymentStatus}</span>
         </li>
       </ul>
       <br />
-      <p>Please wait for your purchase to be confirmed. Contact WA <a href="https://wa.me/6281313383848">here</a> for more info.</p>
+      <p>Contact Whatsapp <a href="https://wa.me/6281313383848">here</a> for more info.</p>
       <br />
       <br />
-      <p>Receipt:</p>
-      <img
-          src="${receiptUrl}"
-          width="60%"
-          style="padding:0;background-color:white;"
-        />
+      <p>Pay in Address: <span class="font-weight:bold; text-decoration:underline;">${payInAddress}</span></p>
+      <p>Order ID: <span class="font-weight:bold; text-decoration:underline;">${orderId}</span></p>
+      <p>Pay Amount: <span class="font-weight:bold; text-decoration:underline;">${payAmount}</span></p>
       <br />
 
     </div>

@@ -10,8 +10,6 @@ const baseUrl = 'https://api.3commas.io';
 
 export async function POST(request) {
     try {
-        const queryParams = '/public/api' + '/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at';
-        const finalUrl = baseUrl + queryParams;
         trackIp(request);
 
         let q = adminDb
@@ -22,7 +20,9 @@ export async function POST(request) {
             .get();
         console.log('number of waiting targets::',snapshot.data().count);
 
-
+        // 1. get latest 100 all status from 3commas
+        const queryParams = '/public/api' + '/v2/smart_trades?per_page=100&page=1&status=all&order_by=updated_at';
+        const finalUrl = baseUrl + queryParams;
         let signatureMessage = queryParams;
         const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
         const config = {
@@ -51,6 +51,7 @@ export async function POST(request) {
             })
         }
 
+        // 2. update corresponding trades to the database
         const result = await Promise.allSettled(data?.map(async (smartTrade) => {
             console.log('processing smart trade with id :', smartTrade.id, smartTrade);
             let searchCorrespondingTrade = [];
