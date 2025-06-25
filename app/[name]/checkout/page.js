@@ -37,7 +37,8 @@ export default function CheckoutPage() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          price: data.price,
+          // price: data.price,
+          price : 200000,
           subscriptionId,
           productName: data.productName,
           customer,
@@ -283,7 +284,7 @@ export default function CheckoutPage() {
 
         {paymentLink &&
           <div className='h-screen w-full md:w-1/2 flex flex-col gap-2' id='iframe-payment'>
-            <iframe src='https://nowpayments.io/payment/?iid=5049091234' style={{ width: '100%', height: '100%' }} />
+            <iframe src={`${paymentLink}&_=${Date.now()}`} style={{ width: '100%', height: '100%' }} />
             <div className="mt-4 text-sm text-gray-400">
               Powered by Nowpayments
             </div>

@@ -89,10 +89,10 @@ export async function POST(request) {
       }), { status: 200 });
     }
 
-    const doc = adminDb
+    const doc1 = adminDb
       .collection('subscriptions')
       .doc(body.order_id);
-    const paymentDocument = { ...doc.data(), id: doc.id };
+    const paymentDocument = { ...doc1.data(), id: doc1.id };
     const doc2 = adminDb
       .collection('products')
       .doc(paymentDocument.productId);
