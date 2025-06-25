@@ -87,15 +87,14 @@ export const expiredNotification = ({
                     }
                       </p>
                       <br />
-                      ${autotraders?.length > 0 &&
+                      ${autotraders?.length > 0 ?
                         `<p>
                           Your active autotraders:
                         </p>
                         <ul>
                           ${autotraders?.map((item) => (` <li>${item.trading_plan_pair[0]} - $${item.tradeAmount}</li>`)).join('')}
                         </ul>
-                        <br />`
-    }
+                        <br />` : ''}
                       <div class="button-container">
                         <a href="https://byscript.io/auth/login" class="button">Go to my dashboard</a>
                       </div>
