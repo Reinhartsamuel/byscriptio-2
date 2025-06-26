@@ -1,3 +1,6 @@
+function encodeName(name) {
+    return encodeURIComponent(name.trim());
+}
 export async function POST(request) {
     try {
         const body = await request.json();
@@ -8,8 +11,8 @@ export async function POST(request) {
             "order_id": subscriptionId,
             "order_description": `${customer?.name} - ${customer?.email} - ${productName}`,
             "ipn_callback_url": "https://www.byscript.io/api/callback",
-            "success_url": encodeURI(`https://byscript.io/${customer?.name}`),
-            "cancel_url": encodeURI(`https://byscript.io/${customer?.name}`),
+            "success_url": `https://byscript.io/${encodeName(customer?.name)}`,
+            "cancel_url": `https://byscript.io/${encodeName(customer?.name)}`,
             "partially_paid_url": "https://nowpayments.io",
             "is_fixed_rate": true,
             "is_fee_paid_by_user": false
