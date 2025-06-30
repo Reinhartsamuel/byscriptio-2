@@ -1,12 +1,13 @@
+import generateSignatureRsa from '@/app/utils/generateSignatureRsa';
 import { getMultiplier } from '@/app/utils/getMultiplier';
+import { pairNameFor3commas } from '@/app/utils/pairNameFor3commas';
 // import { cancelSmartTrade } from '@/app/utils/smart-trades/cancelSmartTrade';
 // import { closeAtMarketPrice } from '@/app/utils/smart-trades/closeAtMarketPrice';
 // import { createSmartTrade } from '@/app/utils/smart-trades/createSmartTrade';
 import trackIp from '@/app/utils/trackIp';
 import { adminDb } from '@/lib/firebase-admin-config';
 import { NextResponse } from 'next/server';
-import generateSignatureRsa from "../generateSignatureRsa";
-import { pairNameFor3commas } from "../pairNameFor3commas";
+
 
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
@@ -20,8 +21,9 @@ function determineAction(body) {
     if (!body) return 'unknown';
 
     // Check for CANCEL and CLOSE methods first
-    if (body.method === 'CANCEL') return 'CANCEL';
-    if (body.method === 'CLOSE') return 'CLOSE';
+    if (body.action === 'CANCEL') return 'CANCEL';
+    if (body.action === 'CLOSE') return 'CLOSE';
+    if (body.action === 'EDIT') return 'EDIT';
 
     // Check position type
     if (body?.position && typeof body?.position?.type === 'string') {
