@@ -507,6 +507,27 @@ async function test_editSmartTrade({
     body,
     webhookId
 }) {
+    if (!body.for_type) {
+        console.log('for_type is required');
+        return NextResponse.json(
+            { error: 'for_type is required', message: 'for_type is required', },
+            { status: 400 }
+        );
+    }
+    if (!body.position_type) {
+        console.log('position_type is required');
+        return NextResponse.json(
+            { error: 'position_type is required', message: 'position_type is required', },
+            { status: 400 }
+        );
+    }
+    if (!body.position_type) {
+        console.log('position_type is required');
+        return NextResponse.json(
+            { error: 'position_type is required', message: 'position_type is required', },
+            { status: 400 }
+        );
+    }
     try {
         let tradesHistory = [];
         // build query
@@ -515,6 +536,7 @@ async function test_editSmartTrade({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', body.for_type)
+            .where('action', '==', body.position_type.toUpperCase())
 
 
         if (body.account_id !== 'all') {
