@@ -512,7 +512,14 @@ async function test_editSmartTrade({
         return NextResponse.json(
             { error: 'position.type is required', message: 'position.type is required', },
             { status: 400 }
-        ); 
+        );
+    }
+    if (!body.status) {
+        console.log('status is required');
+        return NextResponse.json(
+            { error: 'status is required', message: 'status is required', },
+            { status: 400 }
+        );
     }
     try {
         let tradesHistory = [];
@@ -521,10 +528,10 @@ async function test_editSmartTrade({
             .collection('3commas_logs')
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
-            .where('action', '==', body.position_type.toUpperCase())
+            .where('status_type', '==', body.status)
 
         if (body.position.type !== 'all') {
-            query = query.where('status_type', '==', body.position.type)
+            query = query.where('action', '==', body.position.type.toUpperCase())
         }
 
         if (body.account_id !== 'all') {
@@ -568,6 +575,7 @@ async function test_editSmartTrade({
             const smart_trade_id = String(responseEdit.id || '');
             delete responseEdit.id;
             delete responseEdit.pair;
+            delete responseEdit.action;
             const safeCopy = JSON.parse(JSON.stringify(responseEdit));
             const dataToUpdate = {
                 ...safeCopy,
@@ -576,11 +584,12 @@ async function test_editSmartTrade({
                 updateResponse: responseEdit,
                 updateWebhook: webhookId,
             };
-            dataToUpdate.smart_trade_id = smart_trade_id
+            dataToUpdate.smart_trade_id = smart_trade_id;
+            dataToUpdate.action = 'EDIT';
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
     } catch (error) {
-        console.log(error.message,' error 500internal')
+        console.log(error.message, ' error 500internal')
         return NextResponse.json(
             { error: 'Internal Server Error', errorMessage: error.message, message: error.message, },
             { status: 500 }
