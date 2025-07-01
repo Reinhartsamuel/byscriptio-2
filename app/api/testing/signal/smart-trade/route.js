@@ -512,7 +512,7 @@ async function test_editSmartTrade({
         return NextResponse.json(
             { error: 'position.type is required', message: 'position.type is required', },
             { status: 400 }
-        );
+        ); 
     }
     try {
         let tradesHistory = [];
