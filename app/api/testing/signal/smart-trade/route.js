@@ -580,6 +580,7 @@ async function test_editSmartTrade({
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
     } catch (error) {
+        console.log(error.message,' error 500internal')
         return NextResponse.json(
             { error: 'Internal Server Error', errorMessage: error.message, message: error.message, },
             { status: 500 }
