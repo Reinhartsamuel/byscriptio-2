@@ -551,7 +551,7 @@ async function test_editSmartTrade({
             tradesHistory.push({ ...doc.data(), id: doc.id });
         });
 
-        await Promise.allSettled(tradesHistory.map(async (item) => {
+        const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
             const totalParams = '/public/api' + `/v2/smart_trades/${item.smart_trade_id}`;
             const finalUrl = baseUrl + totalParams;
             const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
@@ -588,6 +588,14 @@ async function test_editSmartTrade({
             dataToUpdate.action = 'EDIT';
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
+        console.log('returning', {
+            resPromise,
+            status: true
+        })
+        return NextResponse.json({
+            resPromise,
+            status: true
+        })
     } catch (error) {
         console.log(error.message, ' error 500internal')
         return NextResponse.json(
