@@ -586,6 +586,7 @@ async function test_editSmartTrade({
             };
             dataToUpdate.smart_trade_id = smart_trade_id;
             dataToUpdate.action = 'EDIT';
+            console.log(`updating dataToUpdate for trade ${dataToUpdate.smart_trade_id}, aurotrader ${dataToUpdate.autotrader_id}, user ${dataToUpdate.name}:::`,dataToUpdate);
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
         console.log('returning', {
