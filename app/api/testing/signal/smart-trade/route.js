@@ -507,17 +507,10 @@ async function test_editSmartTrade({
     body,
     webhookId
 }) {
-    if (!body.for_type) {
-        console.log('for_type is required');
+    if (!body.position.type) {
+        console.log('position.type is required');
         return NextResponse.json(
-            { error: 'for_type is required', message: 'for_type is required', },
-            { status: 400 }
-        );
-    }
-    if (!body.position_type) {
-        console.log('position_type is required');
-        return NextResponse.json(
-            { error: 'position_type is required', message: 'position_type is required', },
+            { error: 'position.type is required', message: 'position.type is required', },
             { status: 400 }
         );
     }
@@ -535,9 +528,11 @@ async function test_editSmartTrade({
             .collection('3commas_logs')
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
-            .where('status_type', '==', body.for_type)
             .where('action', '==', body.position_type.toUpperCase())
 
+        if (body.position.type !== 'all') {
+            query = query.where('status_type', '==', body.position.type)
+        }
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
