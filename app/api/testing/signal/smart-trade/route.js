@@ -514,13 +514,6 @@ async function test_editSmartTrade({
             { status: 400 }
         );
     }
-    if (!body.position_type) {
-        console.log('position_type is required');
-        return NextResponse.json(
-            { error: 'position_type is required', message: 'position_type is required', },
-            { status: 400 }
-        );
-    }
     try {
         let tradesHistory = [];
         // build query
