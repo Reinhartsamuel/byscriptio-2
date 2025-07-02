@@ -87,6 +87,18 @@ export async function POST(request) {
             })
         }
 
+        if (body.action !== 'CREATE') {
+            console.log(`RETURNING ERROR:::: Method is not supported! You sent method : ${body.method}`);
+            return new Response(JSON.stringify({
+                status: false,
+                errorCode: 400,
+                error : `Action is not supported! You sent action : ${body.action}`,
+                message: `Action is not supported! You sent action : ${body.action}. Only allowed action is 'CREATE', 'CLOSE', 'CANCEL', 'EDIT'`
+            }), {
+                status: 400
+            })
+        }
+
         //1. Build the query
         let query = adminDb
             .collection('dca_bots')
@@ -110,7 +122,7 @@ export async function POST(request) {
         querySnapshot.forEach((doc) => {
             autotraders.push({ ...doc.data(), id: doc.id });
         });
-        console.log(autotraders.length, 'length')
+        console.log(autotraders.length, 'autotraders.length');
 
         const res = await Promise.allSettled(autotraders.map(async (autotrader) => {
             const resultCreateSmartTrade = await test_createSmartTrade({
@@ -235,9 +247,9 @@ async function test_createSmartTrade({
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
     // console.log(signature, 'signatureddddd');
     const finalUrl = baseUrl + queryParams;
-    // console.log('finalUrl:::', finalUrl);
+    console.log('finalUrl:::', finalUrl);
     const response2 = await fetch(finalUrl, {
-        method: body.method || 'GET', // method is supposed to be post
+        method: body.method, // method is supposed to be post
         body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json',
@@ -245,8 +257,17 @@ async function test_createSmartTrade({
             Signature: signature,
         }
     });
+    console.log(response2, 'response2')
+    // console.log(response2.statusText,'response2.statusText')
+    // console.log(response2.headers,'response2.headers')
     const responseExecute = await response2.json();
-    // console.log('responseExecute:::', responseExecute, JSON.stringify(body));
+    try {
+        const njiay = await response2.json();
+        console.log(njiay, 'njiay')
+    } catch (error) {
+        console.log(error, 'error njiay')
+    }
+    console.log('responseExecute:::', responseExecute, JSON.stringify(body));
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;
@@ -342,7 +363,7 @@ async function test_cancelSmartTrade({
             const finalUrl = baseUrl + totalParams;
             const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
             const response = await fetch(finalUrl, {
-                method: body.method || 'GET', // method supposed to be DELETE
+                method: body.method, // method supposed to be DELETE
                 headers: {
                     'Content-Type': 'application/json',
                     APIKEY: API_KEY,
@@ -445,7 +466,7 @@ async function test_closeAtMarketPrice({
             const signatureMessage = queryParamsCloseMarket;
             const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
             const response2 = await fetch(finalUrlCloseMarket, {
-                method: body.method || 'GET', // body supposed to be POST
+                method: body.method, // body supposed to be POST
                 headers: {
                     'Content-Type': 'application/json',
                     APIKEY: API_KEY,
@@ -530,15 +551,23 @@ async function test_editSmartTrade({
             .where('pair', '==', body.pair)
             .where('status_type', '==', body.status)
 
+        console.log('============================================ QUERY START ============================================')
+        console.log(body.trading_plan_id, 'trading_plan_id');
+        console.log(body.pair, 'pair');
+        console.log(body.status, 'status_type');
+
         if (body.position.type !== 'all') {
             query = query.where('action', '==', body.position.type.toUpperCase())
+            console.log(body.position.type.toUpperCase(), 'action');
         }
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
+            console.log(body.account_id, 'exchange_external_id');
         }
 
         const querySnapshot = await query.get();
+        console.log('============================================ QUERY END ============================================')
         if (querySnapshot.empty) {
             console.log(
                 `no trades found lookup under ${body.trading_plan_id} timestamp : `,
@@ -569,7 +598,7 @@ async function test_editSmartTrade({
             const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
 
             const response = await fetch(finalUrl, {
-                method: body.method || 'GET', // body is supposed to be PATCH
+                method: body.method, // body is supposed to be PATCH
                 headers: {
                     'Content-Type': 'application/json',
                     APIKEY: API_KEY,
