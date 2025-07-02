@@ -554,13 +554,19 @@ async function test_editSmartTrade({
         const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
             const totalParams = '/public/api' + `/v2/smart_trades/${item.smart_trade_id}`;
             const finalUrl = baseUrl + totalParams;
-            const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
+            // const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
+
 
             let constructedBody = {};
             if (body.leverage) constructedBody.leverage = body.leverage;
             if (body.position) constructedBody.position = body.position;
             if (body.take_profit) constructedBody.take_profit = body.take_profit;
             if (body.stop_loss) constructedBody.stop_loss = body.stop_loss;
+
+
+            const signatureMessage = totalParams + JSON.stringify(constructedBody);
+            console.log(signatureMessage, 'signatureMessageddddd');
+            const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
 
             const response = await fetch(finalUrl, {
                 method: body.method || 'GET', // body is supposed to be PATCH
@@ -572,21 +578,17 @@ async function test_editSmartTrade({
                 body: JSON.stringify(constructedBody)
             });
             const responseEdit = await response.json();
-            const smart_trade_id = String(responseEdit.id || '');
             delete responseEdit.id;
             delete responseEdit.pair;
             delete responseEdit.action;
             const safeCopy = JSON.parse(JSON.stringify(responseEdit));
             const dataToUpdate = {
                 ...safeCopy,
-                smart_trade_id,
                 updateRequest: body,
                 updateResponse: responseEdit,
                 updateWebhook: webhookId,
             };
-            dataToUpdate.smart_trade_id = smart_trade_id;
-            dataToUpdate.action = 'EDIT';
-            console.log(`updating dataToUpdate for trade ${dataToUpdate.smart_trade_id}, aurotrader ${dataToUpdate.autotrader_id}, user ${dataToUpdate.name}:::`,dataToUpdate);
+            console.log(`updating dataToUpdate for trade ${dataToUpdate.smart_trade_id}, aurotrader ${dataToUpdate.autotrader_id}, user ${dataToUpdate.name}:::`, dataToUpdate);
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
         console.log('returning', {
