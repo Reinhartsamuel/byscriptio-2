@@ -588,14 +588,9 @@ async function test_editSmartTrade({
 
 
             let constructedBody = {
-                position: {
-                    units : {
-                        value : item.position.units.value
-                    }
-                }
+                position: item.position
             };
             if (body.leverage) constructedBody.leverage = body.leverage;
-            if (body.position) constructedBody.position = body.position;
             if (body.take_profit) constructedBody.take_profit = body.take_profit;
             if (body.stop_loss) constructedBody.stop_loss = body.stop_loss;
 
@@ -613,6 +608,7 @@ async function test_editSmartTrade({
                 },
                 body: JSON.stringify(constructedBody)
             });
+            console.log('constructedBody::::',constructedBody);
             const responseEdit = await response.json();
             delete responseEdit.id;
             delete responseEdit.pair;
