@@ -90,7 +90,7 @@ export async function POST(request) {
 
         if (body.action !== 'CREATE') {
             console.log(`RETURNING ERROR:::: Method is not supported! You sent method : ${body.method}`);
-            return new Response(JSON.stringify({
+            return new NextResponse(JSON.stringify({
                 status: false,
                 errorCode: 400,
                 error : `Action is not supported! You sent action : ${body.action}`,
@@ -118,7 +118,7 @@ export async function POST(request) {
                 new Date().getTime(),
                 JSON.stringify(body)
             );
-            return Response.json({ status: false, message: 'No bots foundd' });
+            return NextResponse.json({ status: false, message: 'No bots foundd' });
         }
         querySnapshot.forEach((doc) => {
             autotraders.push({ ...doc.data(), id: doc.id });
@@ -587,7 +587,13 @@ async function test_editSmartTrade({
             // const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
 
 
-            let constructedBody = {};
+            let constructedBody = {
+                position: {
+                    units : {
+                        value : item.position.units.value
+                    }
+                }
+            };
             if (body.leverage) constructedBody.leverage = body.leverage;
             if (body.position) constructedBody.position = body.position;
             if (body.take_profit) constructedBody.take_profit = body.take_profit;
