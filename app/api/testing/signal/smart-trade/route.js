@@ -588,7 +588,15 @@ async function test_editSmartTrade({
 
 
             let constructedBody = {
-                position: item.position
+                position: {
+                    type: body.position.type,
+                    units: {
+                        value : item.position.units.value,
+                    },
+                    price : {
+                        value: item.position.price.value
+                    }
+                },
             };
             if (body.leverage) constructedBody.leverage = body.leverage;
             if (body.take_profit) constructedBody.take_profit = body.take_profit;
@@ -621,6 +629,17 @@ async function test_editSmartTrade({
                 updateWebhook: webhookId,
             };
             console.log(`updating dataToUpdate for trade ${dataToUpdate.smart_trade_id}, aurotrader ${dataToUpdate.autotrader_id}, user ${dataToUpdate.name}:::`, dataToUpdate);
+            if (responseEdit.error) {
+                console.log('RETURNING ERRORRRRR ', {
+                error: responseEdit.error,
+                message: responseEdit.error,
+                dataToUpdate,
+            });
+                return NextResponse(JSON.stringify({
+                error: responseEdit.error,
+                message: responseEdit.error,
+                dataToUpdate,
+            }), {status : 500});}
             adminDb.collection('3commas_logs').doc(item.id).update(dataToUpdate);
         }))
         console.log('returning', {
