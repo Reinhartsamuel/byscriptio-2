@@ -48,6 +48,7 @@ export async function POST(request) {
 
         const body = await request.json();
         trackIp(request);
+        console.log(determineAction(body), body.trading_plan_id);
         console.log(JSON.stringify(body), 'bodyyyyyy');
         const _pair = body?.pair || '';
         // console.log(body, 'testing smarttrade body');
