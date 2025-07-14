@@ -139,7 +139,7 @@ export default function CheckoutPage() {
               "Oops! The voucher's quota has been reached",
               "warning",
             );
-          } else if (!voucherData?.productIds?.includes(data?.id)) {
+          } else if (!voucherData?.productIds?.includes(productDetail?.id)) {
             return Swal.fire(
               "",
               "Oops! The voucher code is not valid for this product",

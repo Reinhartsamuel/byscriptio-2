@@ -27,7 +27,7 @@ const navigation = [
   { name: 'Pricing', href: '/#pricing' },
   { name: "Announcements", href: "/announcement" },
   { name: 'Documentation', href: `https://docs.byscript.io`, target: '_blank' },
-  { name: 'Strategy Backtest', href: '/backtest'},
+  // { name: 'Strategy Backtest', href: '/backtest'},
   // { name: 'Subscription', href: '/subscriptions' },
   // { name: 'Marketplace', href: '/marketplace' },
   // { name: 'Affiliate', href: '/affiliate' },
