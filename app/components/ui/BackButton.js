@@ -1,15 +1,21 @@
-'use client'
-import { useRouter } from 'next/navigation'
-import React from 'react'
-import { FaArrowLeftLong } from 'react-icons/fa6';
+"use client";
+import { cn } from "@/lib/util";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import PropTypes from "prop-types";
 
-const BackButton = () => {
-    const router = useRouter();
+const BackButton = (props) => {
+  const router = useRouter();
   return (
-    <button onClick={() => router.back()}>
-        <FaArrowLeftLong color='lightgray' />
+    <button className={cn(props?.className)} onClick={() => router.back()}>
+      <FaArrowLeftLong color="lightgray" />
     </button>
-  )
-}
+  );
+};
 
-export default BackButton
+BackButton.propTypes = {
+  className: PropTypes.string,
+};
+
+export default BackButton;

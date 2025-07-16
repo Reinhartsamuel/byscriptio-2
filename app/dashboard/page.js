@@ -3,14 +3,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { authFirebase } from '../config/firebase';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
+
 import { useExchangeStore } from '../store/exchangesStore';
 import { useAutotraderStore } from '../store/autotraderStore';
-import CombinedTradeHistoryComponent from '../components/CombinedTradeHistoryComponent';
+
 import { useUserStore } from '../store/userStore';
 import { PricingComponent } from '../components/PricingComponent';
 import moment from 'moment';
 import { TourProvider, useTour } from '@reactour/tour';
+import TradingPlanCTA from '../components/TradingPlansCTA';
 
 // const SubscriptionComponent = dynamic(() => import('./SubscriptionComponent'), {
 //   ssr: false,
@@ -22,23 +23,18 @@ import { TourProvider, useTour } from '@reactour/tour';
 // const ActivitiesComponent = dynamic(() => import('./ActivitiesComponent'), {
 //   ssr: false,
 // });
-const AutotraderBotComponent = dynamic(
-  () => import('./AutotraderBotComponent'),
-  { ssr: false }
-);
-const ExchangesComponent = dynamic(() => import('./ExchangesComponent'), {
-  ssr: false,
-});
+
 
 const page = () =>
 // { params }
 {
   const [user, setUser] = useState(null);
-  const [showPricing, setShowPricing] = useState(false);
+  
   const router = useRouter();
   const { getExchangeAccounts } = useExchangeStore();
   const { getAutotraders } = useAutotraderStore();
   const { customer, userPackage } = useUserStore();
+  const [showPricing, setShowPricing] = useState(false);
 
 
   useEffect(() => {
@@ -92,17 +88,12 @@ const page = () =>
                   .format('DD MMMM YYYY')}` : 'You don\'t have any active subscription. Please purchase first.'}
             </h3>
           </div>
+          <TradingPlanCTA />
           <div className='block'>
-            <div className='grid grid-cols-1 lg:grid-cols-2'>
-              <ExchangesComponent setShowPricing={setShowPricing} />
-              {/* <div className='grid grid-cols-1 mt-10 mx-6 gap-2 lg:grid-cols-2'>
-          <SubscriptionComponent />
-          <BillingHistoryComponent />
-        </div> */}
-              <CombinedTradeHistoryComponent />
-            </div>
-            <div className=''>
-              <AutotraderBotComponent setShowPricing={setShowPricing} />
+            <div className='mt-4 text-center'>
+              <a href='/dashboard/profile' className='text-blue-500 hover:underline'>
+                Go to Profile →
+              </a>
             </div>
           </div>
         </div>

@@ -1,59 +1,69 @@
-import moment from 'moment';
+import moment from "moment";
 
 export default function calculateTradesDataData({
   tradesData,
   dateFilter,
   initialCapital = 150,
 }) {
-  const filteredTradesData = [];
+  // Create a new array with proper date parsing
+  const tradesWithDates = tradesData.map((trade) => {
+    // Parse date and create timestamp
+    const dateTime = moment(trade["Date/Time"], "YYYY-MM-DD HH:mm");
+    const timestamp = dateTime.isValid() ? dateTime.unix() : 0;
 
-  for (let trade of tradesData) {
-    const tradeDate = moment(trade['Date/Time'], 'YYYY-MM-DD HH:mm');
-    if (
-      tradeDate.isBetween(
-        moment(dateFilter.startDate, 'YYYY-MM-DD HH:mm'),
-        moment(dateFilter.endDate, 'YYYY-MM-DD HH:mm')
-      )
-    ) {
-      filteredTradesData.push(trade);
-    }
-  }
-  const newArr = [];
-  const copyArr = [];
+    // Clean numeric values
+    const cleanNumeric = (value) => {
+      if (typeof value === "string") {
+        // Remove commas and percentage signs
+        return parseFloat(value.replace(/,|%/g, ""));
+      }
+      return value;
+    };
 
-  for (let i = 0; i < filteredTradesData.length; i++) {
-    const currentTrade = filteredTradesData[i];
+    return {
+      ...trade,
+      timestamp,
+      "Profit %": cleanNumeric(trade["Profit %"]),
+      "Profit USDT": cleanNumeric(trade["Profit USDT"]),
+      "Drawdown %": cleanNumeric(trade["Drawdown %"]),
+      "Run-up %": cleanNumeric(trade["Run-up %"]),
+    };
+  });
 
-    // ALGOTRADE ROI CALCULATION=======================================================================
-    // ALGOTRADE ROI CALCULATION=======================================================================
-    // ALGOTRADE ROI CALCULATION=======================================================================
-    const profitDecimal = parseFloat(currentTrade['Profit %']) / 100;
-    const previousBalance = copyArr[i - 1]?.currentBalance || initialCapital;
-    const balanceAfter = previousBalance * (1 + profitDecimal);
+  // Sort by timestamp (oldest first)
+  const sortedTrades = [...tradesWithDates].sort(
+    (a, b) => a.timestamp - b.timestamp,
+  );
 
-    // BUY AND HOLD ROI CALCULATION=======================================================================
-    // BUY AND HOLD ROI CALCULATION=======================================================================
-    // BUY AND HOLD ROI CALCULATION=======================================================================
-    // const previousPrice = copyArr[i-1]?.['Price'] || null;
-    // const previousBuyAndHoldBalance = copyArr[i-1]?.['currentBuyAndHoldBalance'] || initialCapital;
-    // const currentBuyAndHoldBalance = (Number(currentTrade)/Number(previousBuyAndHoldBalance)) * previousBuyAndHoldBalance;
-    // const buyAndHoldBalanceAfter =
+  // Filter by date range
+  const startDate = moment(dateFilter.startDate, "YYYY-MM-DD HH:mm");
+  const endDate = moment(dateFilter.endDate, "YYYY-MM-DD HH:mm");
 
-    copyArr.push({
-      ...currentTrade,
-      currentBalance: balanceAfter,
-      //  currentBuyAndHoldBalance,
-      //  previousPrice
-    });
-    newArr.push({
-      ...currentTrade,
-      currentBalance: balanceAfter,
+  const filteredTrades = sortedTrades.filter((trade) => {
+    const tradeDate = moment.unix(trade.timestamp);
+    return tradeDate.isBetween(startDate, endDate, null, "[]");
+  });
+
+  // Calculate cumulative values
+  let currentBalance = initialCapital;
+  let cumulativeProfitUsdt = 0;
+
+  return filteredTrades.map((trade) => {
+    const profitDecimal = trade["Profit %"] / 100;
+
+    // Calculate new balance
+    currentBalance = currentBalance * (1 + profitDecimal);
+
+    // Calculate cumulative profit in USD
+    cumulativeProfitUsdt += trade["Profit USDT"];
+
+    return {
+      ...trade,
+      currentBalance,
       profitDecimal,
-      previousBalance,
-      timestamp: moment(currentTrade['Date/Time'], 'YYYY-MM-DD HH:mm').unix(),
-    });
-  }
-  return newArr.sort((a, b) => {
-    return Number(a.timestamp) - Number(b.timestamp);
+      cumulativeProfitUsdt,
+      cumulativeProfitPercent:
+        ((currentBalance - initialCapital) / initialCapital) * 100,
+    };
   });
 }

@@ -146,8 +146,9 @@ export const handleLoginGoogle = async ({
     });
     // update log done
 
-    const name = user?.displayName || user?.email?.split('@')[0];
-    router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
+    // const name = user?.displayName || user?.email?.split('@')[0];
+    // router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
+    router.push('/dashboard');
     const isNewUser = !findUser && findCustomer?.length === 0;
     try {
       fetch(isNewUser ? '/api/email/login/new-user' : '/api/email/login', {

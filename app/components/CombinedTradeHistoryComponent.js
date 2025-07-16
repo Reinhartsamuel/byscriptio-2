@@ -2,7 +2,7 @@
 import React from 'react';
 import useCountDocuments from '../hooks/CountHook';
 import { authFirebase } from '../config/firebase';
-import TradeHistoryTable from '../[name]/autotraders/detail/[id]/TradeHistoryTable';
+import TradeHistoryTable from '../dashboard/autotraders/detail/[id]/TradeHistoryTable';
 
 const CombinedTradeHistoryComponent = () => {
   const { count } = useCountDocuments({
