@@ -2,20 +2,20 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-} from 'firebase/auth';
-import { authFirebase } from '../config/firebase';
+} from "firebase/auth";
+import { authFirebase } from "../config/firebase";
 import {
   addDocumentFirebase,
   getCollectionFirebase,
   getSingleDocumentFirebase,
   setDocumentFirebase,
   updateDocumentFirebase,
-} from '../utils/firebaseApi';
-import { increment } from 'firebase/firestore';
-import Swal from 'sweetalert2';
-import checkExchangesAutotraders from './checkExchangesAutotraders';
-import { addActivityLog } from '../utils/activityLog';
-import { getCookie, hasCookie } from 'cookies-next';
+} from "../utils/firebaseApi";
+import { increment } from "firebase/firestore";
+import Swal from "sweetalert2";
+import checkExchangesAutotraders from "./checkExchangesAutotraders";
+import { addActivityLog } from "../utils/activityLog";
+import { getCookie, hasCookie } from "cookies-next";
 
 const provider = new GoogleAuthProvider();
 
@@ -40,10 +40,10 @@ export const handleLoginGoogle = async ({
     await checkExchangesAutotraders(user.email, user.uid);
 
     // FIND USER
-    const findUser = await getSingleDocumentFirebase('users', user.uid);
+    const findUser = await getSingleDocumentFirebase("users", user.uid);
     if (findUser !== null) {
       setUser(findUser);
-      await updateDocumentFirebase('users', user.uid, {
+      await updateDocumentFirebase("users", user.uid, {
         lastLogin: new Date(),
         numberOfLogin: increment(1),
         token,
@@ -58,22 +58,24 @@ export const handleLoginGoogle = async ({
         createdAt: new Date(),
         photoURL: user.photoURL,
         token,
-        affiliatorCustomerId: hasCookie('affiliateId') ? getCookie('affiliateId') : null,
+        affiliatorCustomerId: hasCookie("affiliateId")
+          ? getCookie("affiliateId")
+          : null,
       };
-      await setDocumentFirebase('users', user.uid, newUserData);
+      await setDocumentFirebase("users", user.uid, newUserData);
       setUser(newUserData);
     }
 
     // FIND CUSTOMER
     let customerId = null;
-    const findCustomer = await getCollectionFirebase('customers', [
-      { field: 'email', operator: '==', value: user.email },
+    const findCustomer = await getCollectionFirebase("customers", [
+      { field: "email", operator: "==", value: user.email },
     ]);
     if (findCustomer?.length === 0) {
       const newCustomerData = {
         name: user.displayName,
         email: user.email,
-        phone: '',
+        phone: "",
         lastLogin: new Date(),
         numberOfLogin: 1,
         createdAt: new Date(),
@@ -83,21 +85,26 @@ export const handleLoginGoogle = async ({
         token,
         isPremium: false,
         expiredAt: new Date(),
-        paymentStatus: 'UNPAID',
-        affiliatorCustomerId: hasCookie('affiliateId') ? getCookie('affiliateId') : null,
+        paymentStatus: "UNPAID",
+        affiliatorCustomerId: hasCookie("affiliateId")
+          ? getCookie("affiliateId")
+          : null,
       };
 
       if (newCustomerData.affiliatorCustomerId) {
-        const resAddAffiliateCustomer = await fetch('/api/affiliate/signup-affiliate', {
-          method: 'POST',
-          body: JSON.stringify({
-            ...newCustomerData
-          })
-        });
+        const resAddAffiliateCustomer = await fetch(
+          "/api/affiliate/signup-affiliate",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              ...newCustomerData,
+            }),
+          },
+        );
         const result = await resAddAffiliateCustomer.json();
         customerId = result.customerId;
       } else {
-        customerId = await addDocumentFirebase('customers', newCustomerData);
+        customerId = await addDocumentFirebase("customers", newCustomerData);
       }
       setCustomer({
         id: customerId,
@@ -107,7 +114,7 @@ export const handleLoginGoogle = async ({
       customerId = findCustomer[0].id;
       setCustomer(findCustomer[0]);
       // console.log(findCustomer, 'this is findcustomer')
-      await updateDocumentFirebase('customers', findCustomer[0].id, {
+      await updateDocumentFirebase("customers", findCustomer[0].id, {
         isNewUser: false,
         lastLogin: new Date(),
         numberOfLogin: increment(1),
@@ -117,24 +124,24 @@ export const handleLoginGoogle = async ({
 
     try {
       const res = await fetch(`/api/drizzle/users/?email=${user.email}`, {
-        method: 'GET',
-      })
+        method: "GET",
+      });
       const { data: findUserPostgres } = await res.json();
       if (findUserPostgres?.length === 0) {
-        await fetch('/api/drizzle/users/insert', {
-          method: 'POST',
+        await fetch("/api/drizzle/users/insert", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            'accept': 'application/json'
+            "Content-Type": "application/json",
+            accept: "application/json",
           },
           body: JSON.stringify({
             user,
-            customerId
-          })
-        })
+            customerId,
+          }),
+        });
       }
     } catch (error) {
-      console.log(error.message, 'error finding or inserting user to postgres');
+      console.log(error.message, "error finding or inserting user to postgres");
     }
 
     // update log
@@ -142,22 +149,22 @@ export const handleLoginGoogle = async ({
       customerId,
       uid: user.uid,
       ipLocation,
-      type: 'LOGIN',
+      type: "LOGIN",
     });
     // update log done
 
     // const name = user?.displayName || user?.email?.split('@')[0];
     // router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
-    router.push('/dashboard');
+    router.push("/dashboard");
     const isNewUser = !findUser && findCustomer?.length === 0;
     try {
-      fetch(isNewUser ? '/api/email/login/new-user' : '/api/email/login', {
-        method: 'post',
+      fetch(isNewUser ? "/api/email/login/new-user" : "/api/email/login", {
+        method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: user?.displayName || user?.email || '',
+          name: user?.displayName || user?.email || "",
           email: user?.email,
         }),
       });
@@ -167,12 +174,12 @@ export const handleLoginGoogle = async ({
       //     title: 'Error fetching email api',
       //     text: error.message,
       //   });
-      console.log(error.message, 'error send emailemail');
+      console.log(error.message, "error send emailemail");
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
+      icon: "error",
+      title: "Error",
       text: error.message,
     });
   } finally {
@@ -193,7 +200,7 @@ export const handleLoginEmail = async ({
     const result = await signInWithEmailAndPassword(
       authFirebase,
       email,
-      password
+      password,
     );
     // console.log(result, 'result');
     const user = result.user;
@@ -203,17 +210,17 @@ export const handleLoginEmail = async ({
     await checkExchangesAutotraders(user.email, user.uid);
 
     // FIND USER
-    const findUser = await getSingleDocumentFirebase('users', user.uid);
+    const findUser = await getSingleDocumentFirebase("users", user.uid);
     //   const findUser = await getSingleDocumentFirebase('users', 'RomXA3UVAbMZB55BLWzE42Dh3kz2');
     // console.log(findUser, 'find user');
     if (findUser !== null) {
-      await updateDocumentFirebase('users', user.uid, {
+      await updateDocumentFirebase("users", user.uid, {
         lastLogin: new Date(),
         numberOfLogin: increment(1),
         token,
       });
     } else {
-      await setDocumentFirebase('users', user.uid, {
+      await setDocumentFirebase("users", user.uid, {
         name: user.displayName,
         email: user.email,
         uid: user.uid,
@@ -226,14 +233,14 @@ export const handleLoginEmail = async ({
     }
 
     // FIND CUSTOMER
-    const findCustomer = await getCollectionFirebase('customers', [
-      { field: 'email', operator: '==', value: user.email },
+    const findCustomer = await getCollectionFirebase("customers", [
+      { field: "email", operator: "==", value: user.email },
     ]);
     if (findCustomer?.length === 0) {
-      await addDocumentFirebase('customers', {
+      await addDocumentFirebase("customers", {
         name: user.displayName,
         email: user.email,
-        phone: '',
+        phone: "",
         lastLogin: new Date(),
         numberOfLogin: 1,
         createdAt: new Date(),
@@ -243,28 +250,27 @@ export const handleLoginEmail = async ({
         token,
         isPremium: false,
         expiredAt: new Date(),
-        paymentStatus: 'UNPAID',
+        paymentStatus: "UNPAID",
       });
     } else {
       // console.log(findCustomer, 'this is findcustomer')
-      await updateDocumentFirebase('customers', findCustomer[0].id, {
+      await updateDocumentFirebase("customers", findCustomer[0].id, {
         isNewUser: false,
         lastLogin: new Date(),
         numberOfLogin: increment(1),
         token,
       });
     }
-    const name = user?.displayName || user?.email?.split('@')[0];
-    router.push(`/${name?.toLowerCase()?.split(' ')?.join('-')}`);
+    router.push("/dashboard");
     const isNewUser = findUser?.length === 0 && findCustomer?.length === 0;
     try {
-      fetch(isNewUser ? '/api/email/login/new-user' : '/api/email/login', {
-        method: 'post',
+      fetch(isNewUser ? "/api/email/login/new-user" : "/api/email/login", {
+        method: "post",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: user?.displayName || user?.email || '',
+          name: user?.displayName || user?.email || "",
           email: user?.email,
         }),
       });
@@ -274,12 +280,12 @@ export const handleLoginEmail = async ({
       //     title: 'Error fetching email api',
       //     text: error.message,
       //   });
-      console.log(error.message, 'error send emailemail');
+      console.log(error.message, "error send emailemail");
     }
   } catch (error) {
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
+      icon: "error",
+      title: "Error",
       text: error.message,
     });
   } finally {

@@ -330,7 +330,7 @@ async function test_cancelSmartTrade({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', body.status);
-        if (body?.for_type !== 'all' && body?.type !== undefined) query = query.where('action', '==', body.for_type.toUpperCase());
+        if (body?.position?.type !== 'all' && body?.type !== undefined) query = query.where('action', '==', body.position?.type.toUpperCase());
 
 
         if (body.account_id !== 'all') {
@@ -433,11 +433,13 @@ async function test_closeAtMarketPrice({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', 'waiting_targets')
-            .where('action', '==', body.for_type.toUpperCase());
 
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
+        }
+        if (body.position.type !== 'all') {
+            query = query.where('action', '==', body.position.type);
         }
 
         const querySnapshot = await query.get();
