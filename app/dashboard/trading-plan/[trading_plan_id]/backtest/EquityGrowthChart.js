@@ -62,7 +62,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
     // CUMULATIVE PROFIT ===============================================================
-    console.log(tradesDataWithCumulativeCalc, 'tradesDataWithCumulativeCalc');
+    // console.log(tradesDataWithCumulativeCalc, 'tradesDataWithCumulativeCalc');
     const cumulativeProfit = tradesDataWithCumulativeCalc
       .sort((a, b) => a.timestamp - b.timestamp)
       .map((trade) => parseFloat(trade.currentBalance));
@@ -250,7 +250,7 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
             </p>
           </div>
         </div>
-        {/* <div className='flex flex-col lg:flex-col mx-auto gap-2 w-full items-center justify-center 
+        {/* <div className='flex flex-col lg:flex-col mx-auto gap-2 w-full items-center justify-center
         justify-evenly pb-5 pt-5'> */}
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-2 p-2'>
           <div>
@@ -386,15 +386,15 @@ const EquityGrowthChart = ({ tradesData, headers }) => {
                   const value = parseFloat(row[column]);
                   const isProfit = headers[colIndex].toLowerCase().includes('profit');
                   const isDrawdown = headers[colIndex].toLowerCase().includes('drawdown');
-                  
+
                   let textColorClass = 'text-gray-500'; // Default color
-                  
+
                   if (isProfit) {
                     textColorClass = !isNaN(value) && value > 0 ? 'text-green-500' : 'text-red-500';
                   } else if (isDrawdown) {
                     textColorClass = !isNaN(value) && value < 0 ? 'text-red-500' : 'text-gray-500';
                   }
-                  
+
                   return (
                     <td
                       key={colIndex}

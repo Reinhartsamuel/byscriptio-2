@@ -85,6 +85,7 @@ export default function Navbar() {
 
         setMenuNavigation([
           { name: "Dashboard", href: `/dashboard` },
+          { name: "Profile", href: `/dashboard/profile` },
           { name: "Subscription", href: `/dashboard/payment` },
           { name: "Affiliate", href: `/dashboard/affiliate` },
           {

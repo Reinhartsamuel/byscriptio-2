@@ -31,6 +31,7 @@ import {
 } from 'firebase/storage';
 // import { auth, db, storage } from '../configs/firebase';
 import { authFirebase as auth, db, storage } from '../config/firebase';
+import { deburr } from 'lodash';
 
 // get Doc Firebase
 export const getSingleDocumentFirebase = async (collectionName, docName) => {
@@ -981,44 +982,6 @@ export const sumDocumentFirebase = async (
   }
 };
 
-// Utility function to sum up a field in documents in a Firestore collection based on conditions
-export const sumDocumentsFieldFirebase = async (
-  collectionName,
-  fieldToSum,
-  conditions = []
-) => {
-  try {
-    let collectionRef = collection(db, collectionName);
-
-    // Add conditions if any
-    if (conditions.length > 0) {
-      conditions.forEach((condition) => {
-        const { field, operator, value } = condition;
-        collectionRef = query(collectionRef, where(field, operator, value));
-      });
-    }
-
-    // const querySnapshot = await getAggregateFromServer(collectionRef, {
-    //   totalSum: sum(fieldToSum)
-    //   // totalSum: sum('amount')
-    // });
-    // return querySnapshot.data().totalSum
-
-    // Dapatkan dokumen yang sesuai dengan kueri
-    const querySnapshot = await getDocs(collectionRef);
-
-    // Hitung total jumlah dari fieldToSum
-    let totalSum = 0;
-    querySnapshot.forEach((doc) => {
-      totalSum += doc.data()[fieldToSum] || 0;
-    });
-
-    return totalSum;
-  } catch (error) {
-    throw new Error('Failed to sum documents field: ' + error.message);
-  }
-};
-
 export const addArrayDocumentFirebase = async (collectionName, dataArray) => {
   try {
     const batch = writeBatch(db);
@@ -1058,3 +1021,25 @@ export const addArrayDocumentFirebase = async (collectionName, dataArray) => {
 // }
 
 // finish
+
+
+export const sumFieldFirebase = async (collectionName, fieldToSum, conditions = []) => {
+  let q = collection(db, collectionName);
+
+  // Apply conditions (e.g., filtering)
+  if (conditions.length > 0) {
+    q = query(q, ...conditions.map((cond) => where(cond.field, cond.operator, cond.value)));
+  }
+
+  const snapshot = await getDocs(q);
+  let total = 0;
+
+  snapshot.forEach((doc) => {
+    const value = doc.data()[fieldToSum];
+    if (typeof value === 'number') {
+      total += value;
+    }
+  });
+
+  return total;
+};

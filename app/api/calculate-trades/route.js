@@ -6,6 +6,7 @@ import * as XLSX from "xlsx";
 import moment from "moment";
 import { adminDb } from "@/lib/firebase-admin-config";
 import cloneDeep from "lodash/cloneDeep";
+import { Timestamp } from "firebase-admin/firestore";
 
 export async function POST(request) {
   try {
@@ -218,6 +219,8 @@ async function getMetrics({ trading_plan_pair, trade, docId }) {
       createdAt: moment(backtest.createdAt).format("DD-MM-YYYY HH:mm:ss"),
       tradingPlanId: trading_plan_pair,
       timeLength,
+      firstTradeTimestamp:calculatedData[0].timestamp,
+      lastTradeTimestamp: calculatedData[calculatedData.length - 1].timestamp,
     },
   };
   Promise.resolve().then(() =>
