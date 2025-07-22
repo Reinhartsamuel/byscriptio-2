@@ -2,7 +2,7 @@
 // Add this import at the top
 import { useMemo } from 'react';
 import BackButton from "@/app/components/ui/BackButton";
-import { getCollectionFirebase } from "@/app/utils/firebaseApi";
+import { getCollectionFirebase, getSingleDocumentFirebase } from "@/app/utils/firebaseApi";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import Papa from "papaparse";
@@ -197,6 +197,20 @@ const AutoGoldMinerCard = ({ data, tradesData }) => {
   });
 
 
+  const [detailTradingPlanPair, setDetailTradingPlanPair] = useState(null);
+  useEffect(() => {
+    (async function () {
+      try {
+        const res = await getSingleDocumentFirebase('trading_plan_pair', data?.trading_plan_pair);
+        console.log(res, 'res');
+        setDetailTradingPlanPair(res);
+      } catch (error) {
+        console.error(error);
+      }
+    })()
+  },[])
+
+
   return (
     <div className="bg-gray-800 text-white w-full lg:w-1/3 rounded-lg shadow-md p-4 dark:bg-gray-900">
       {/* Header */}
@@ -207,7 +221,7 @@ const AutoGoldMinerCard = ({ data, tradesData }) => {
       </div>
       {/* Radar Chart */}
       <div className="mt-4">
-        <RadarChart data={backtest[0]?.metrics} key={backtest[0]?.id} />
+        <RadarChart data={data?.metrics} key={data?.id} />
       </div>
 
       {/* Details */}
@@ -223,7 +237,7 @@ const AutoGoldMinerCard = ({ data, tradesData }) => {
         </div>
         <div>
           <p className="text-sm text-gray-400">Remaining Quota</p>
-          <p className="text-base">{data?.remainingQuota || '-'}</p>
+          <p className="text-base">{detailTradingPlanPair?.remainingQuota || '-'}</p>
         </div>
         <div>
           <p className="text-sm text-gray-400">Total Amount Autotrade</p>
@@ -234,7 +248,7 @@ const AutoGoldMinerCard = ({ data, tradesData }) => {
       {/* Description */}
       <div>
         <h3 className="text-lg font-bold mb-2">Description</h3>
-        <p className="text-sm mb-2">{data?.description || 'No description'}</p>
+        <p className="text-sm mb-2">{detailTradingPlanPair?.description || 'No description'}</p>
       </div>
       {/* <button
         type="button"

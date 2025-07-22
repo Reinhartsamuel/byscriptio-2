@@ -21,9 +21,9 @@ const RadarChart = ({ data }) => {
       const maxDrawdownMax = 100; // Adjust if drawdown can exceed 100%
 
       const normalizedData = [
-        parseFloat(data.winRate), // Win Rate is already in 0-100 scale
-        normalize(parseFloat(data.pnlUsd), pnlUsdMin, pnlUsdMax),
-        normalize(data.maxDrawdown, maxDrawdownMin, maxDrawdownMax),
+        parseFloat(data?.winRate), // Win Rate is already in 0-100 scale
+        normalize(parseFloat(data?.pnlUsd), pnlUsdMin, pnlUsdMax),
+        normalize(data?.maxDrawdown, maxDrawdownMin, maxDrawdownMax),
       ];
 
       const radarChart = new Chart(ctx, {
@@ -54,9 +54,9 @@ const RadarChart = ({ data }) => {
                 color: 'white',
                 callback: (value, index) => {
                   // Customize labels to show original values
-                  if (index === 0) return `Win Rate: ${data.winRate}%`;
-                  if (index === 1) return `PnL: ${parseFloat(data.pnlPercent).toLocaleString()}%`;
-                  if (index === 2) return `Max DD: ${data.maxDrawdown}%`;
+                  if (index === 0) return `Win Rate: ${data?.winRate}%`;
+                  if (index === 1) return `PnL: ${parseFloat(data?.pnlPercent).toLocaleString()}%`;
+                  if (index === 2) return `Max DD: ${data?.maxDrawdown}%`;
                   return value;
                 }
               },
