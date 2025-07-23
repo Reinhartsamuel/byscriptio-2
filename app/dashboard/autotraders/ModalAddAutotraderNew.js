@@ -181,7 +181,7 @@ export default function ModalAddAutotraderNew({
     if (!customer?.isPremium) {
       setShowPricing(true);
       handleClose();
-       Swal.fire({
+      Swal.fire({
         text: 'Subscribe to byScript.io plans to continue',
       })
       return;
@@ -227,6 +227,10 @@ export default function ModalAddAutotraderNew({
           smart_trade: true,
           autocompound: selectedTradingPlan?.autocompound ? true : false,
         };
+        if (config?.leverage) {
+          autotraderData.leverage = config.leverage;
+          autotraderData.leverageType = config?.leverageType || 'isolated';
+        }
         console.log(autotraderData, 'autotraderData');
 
         await addDocumentFirebase(
@@ -459,14 +463,14 @@ export default function ModalAddAutotraderNew({
                     </button>
                   )}
 
-                  <div className="flex lg:flex-row flex-col gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="flex-1">
                       <label className="mb-2 block text-sm font-medium text-gray-200">
                         Select Pair {index + 1}
                       </label>
                       <Listbox value={config.pair} onChange={(pair) => updatePairConfig(index, 'pair', pair)}>
                         <div className="relative mt-1">
-                          <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-white py-2.5 pl-3 pr-10 text-left border border-gray-300 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-300">
+                          <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-white px-3 py-2 pr-10 text-left border border-gray-300 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-300">
                             {config.pair ? (
                               <div className="flex items-center">
                                 <PairImageComponent pair={config.pair?.pair} showUsdt={false} />
@@ -533,7 +537,7 @@ export default function ModalAddAutotraderNew({
                           <FaRegCircleQuestion className="text-gray-400 hover:text-gray-600" />
                         </Tooltip>
                       </div>
-                      <div className="relative mt-1">
+                      <div className="relative">
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                           $
                         </span>
@@ -542,29 +546,54 @@ export default function ModalAddAutotraderNew({
                           value={config.tradeAmount}
                           onChange={(e) => updatePairConfig(index, 'tradeAmount', e.target.value)}
                           placeholder="Enter trade amount"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-7 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-7 h-11 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
                         />
                       </div>
                     </div>
-                    {(marketType === 'futures' && selectedTradingPlan?.userLeverageEnabled) && <div className="flex-1">
-                      <div className="flex items-center space-x-2">
-                        <label className="mb-2 block text-sm font-medium text-gray-200">
-                          Leverage
-                        </label>
-                        {/* <Tooltip text="You can set leverage for this pair. Leverage is the multiplier of amount of money you can trade with relative to your account balance.">
+                    {(marketType === 'futures' && selectedTradingPlan?.userLeverageEnabled) &&
+                      <>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <label className="mb-2 block text-sm font-medium text-gray-200">
+                              Leverage
+                            </label>
+                            {/* <Tooltip text="You can set leverage for this pair. Leverage is the multiplier of amount of money you can trade with relative to your account balance.">
                           <FaRegCircleQuestion className="text-gray-400 hover:text-gray-600" />
                         </Tooltip> */}
-                      </div>
-                      <div className="relative mt-1">
-                        <input
-                          type="number"
-                          value={config.leverage}
-                          onChange={(e) => updatePairConfig(index, 'leverage', e.target.value)}
-                          placeholder="Enter Leverage"
-                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-3 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
-                        />
-                      </div>
-                    </div>}
+                          </div>
+                          <div className="relative mt-1">
+                            <input
+                              type="number"
+                              value={config.leverage}
+                              onChange={(e) => updatePairConfig(index, 'leverage', e.target.value)}
+                              placeholder="Enter Leverage"
+                              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-3 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <label className="mb-2 block text-sm font-medium text-gray-200">
+                              Leverage Type
+                            </label>
+                            {/* <Tooltip text="You can set leverage for this pair. Leverage is the multiplier of amount of money you can trade with relative to your account balance.">
+                          <FaRegCircleQuestion className="text-gray-400 hover:text-gray-600" />
+                        </Tooltip> */}
+                          </div>
+                          <div className="relative mt-1">
+                            <select
+                              value={config.leverageType}
+                              onChange={(e) => updatePairConfig(index, 'leverageType', e.target.value)}
+                              className="w-full rounded-lg border border-gray-300 bg-gray-50 h-11 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="isolated">ISOLATED</option>
+                              <option value="cross">CROSS</option>
+                            </select>
+                          </div>
+                        </div>
+                      </>
+
+                    }
                   </div>
                 </div>
               ))}

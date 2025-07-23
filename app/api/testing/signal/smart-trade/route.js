@@ -202,15 +202,26 @@ async function test_createSmartTrade({
     //     "timestamp": "' + str.tostring(timenow) + '",
     //     "flag": "testing"
     // };
-    let tradingPlanData = { leverage: 1 }
-    if (body.leverage?.value === 'trading_plan') {
-        // get data of trading plan
-        const docSnap = await adminDb
-            .collection('trading_plans')
-            .doc(body.trading_plan_id)
-            .get();
-        tradingPlanData = docSnap.data();
-    }
+
+  function getLeverageValue() {
+    if (typeof body?.leverage?.value === 'number') return body.leverage.value || 1;
+    if (body?.leverage?.value === 'user') return autotrader?.leverage || 1;
+    return 1;
+  };
+  function getLeverageType() {
+    if (typeof body?.leverage?.value === 'number') return body.leverage.type || 'isolated';
+    if (body?.leverage?.value === 'user') return autotrader?.leverageType || 'isolated';
+    return 'isolated';
+  };
+    // let tradingPlanData = { leverage: 1 }
+    // if (body.leverage?.value === 'trading_plan') {
+    //     // get data of trading plan
+    //     const docSnap = await adminDb
+    //         .collection('trading_plans')
+    //         .doc(body.trading_plan_id)
+    //         .get();
+    //     tradingPlanData = docSnap.data();
+    // }
     const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
     const payload = {
         ...body,
@@ -232,11 +243,8 @@ async function test_createSmartTrade({
         },
         "leverage": {
             "enabled": body.leverage?.enabled || false,
-            "type": body.leverage?.type || "isolated",
-            "value": body.leverage?.value && typeof parseFloat(body.leverage?.value) === 'number' ? body?.leverage?.value :
-                body.leverage?.value === 'user' ? autotrader?.leverage || 1 :
-                    body.leverage?.value === 'trading_plan' ? tradingPlanData?.leverage || 1 :
-                        1,
+            "type": getLeverageType(),
+          "value": getLeverageValue(),
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,

@@ -100,15 +100,23 @@ export default function ModalDetailAutotrader({
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Market Type</p>
                   <p className='font-bold text-sm text-gray-300'>
-                    {detail?.marketType?.toUpperCase()}
+                    {detail?.marketType?.toUpperCase()} {detail?.leverage && <span className='text-gray-300 font-light text-xs'>{(`leverage ${detail?.leverage} ${detail?.leverageType}`)}</span>}
                   </p>
                 </div>
+                {detail?.leverage &&
+                  <div className='flex w-full justify-between min-h-10 items-end'>
+                    <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Leverage</p>
+                    <p className='font-bold text-sm text-gray-300 uppercase'>
+                      {detail?.leverage}x {detail?.leverageType}
+                    </p>
+                  </div>
+                }
                 <div className='flex w-full justify-between min-h-10 items-end'>
                   <p className='text-gray-400 dark:text-gray-100 font-light text-sm'>Created at</p>
                   <p className='dark:text-gray-100 font-light text-sm'>
                     {moment
                       .unix(detail?.createdAt?.seconds)
-                      .format('HH:mm DD MMMM YYYY')}
+                      .format('ddd, DD MMMM YYYY HH:mm ')}
                   </p>
                 </div>
                 {/* <div className='flex w-full justify-between min-h-10 items-end'>

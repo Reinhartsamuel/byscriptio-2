@@ -55,3 +55,7 @@ body {
     transform: translateX(-100%);
   }
 }
+
+select {
+  box-sizing: border-box;
+}
