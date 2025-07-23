@@ -546,6 +546,25 @@ export default function ModalAddAutotraderNew({
                         />
                       </div>
                     </div>
+                    {(marketType === 'futures' && selectedTradingPlan?.userLeverageEnabled) && <div className="flex-1">
+                      <div className="flex items-center space-x-2">
+                        <label className="mb-2 block text-sm font-medium text-gray-200">
+                          Leverage
+                        </label>
+                        {/* <Tooltip text="You can set leverage for this pair. Leverage is the multiplier of amount of money you can trade with relative to your account balance.">
+                          <FaRegCircleQuestion className="text-gray-400 hover:text-gray-600" />
+                        </Tooltip> */}
+                      </div>
+                      <div className="relative mt-1">
+                        <input
+                          type="number"
+                          value={config.leverage}
+                          onChange={(e) => updatePairConfig(index, 'leverage', e.target.value)}
+                          placeholder="Enter Leverage"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 pl-3 text-sm text-gray-900 focus:border-indigo-500 focus:ring-indigo-500"
+                        />
+                      </div>
+                    </div>}
                   </div>
                 </div>
               ))}
