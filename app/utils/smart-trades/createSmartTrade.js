@@ -53,15 +53,26 @@ export async function createSmartTrade({
     //     "timestamp": "' + str.tostring(timenow) + '",
     //     "flag": "testing"
     // };
-    let tradingPlanData = { leverage : 1 }
-    if (body.leverage?.value === 'trading_plan') {
-        // get data of trading plan
-        const docSnap = await adminDb
-           .collection('trading_plans')
-           .doc(body.trading_plan_id)
-           .get();
-           tradingPlanData = docSnap.data();
-    }
+
+  function getLeverageValue() {
+    if (typeof body?.leverage?.value === 'number') return body.leverage.value || 1;
+    if (body?.leverage?.value === 'user') return autotrader?.leverage || 1;
+    return 1;
+  };
+  function getLeverageType() {
+    if (typeof body?.leverage?.value === 'number') return body.leverage.type || 'isolated';
+    if (body?.leverage?.value === 'user') return autotrader?.leverageType || 'isolated';
+    return 'isolated';
+  };
+    // let tradingPlanData = { leverage: 1 }
+    // if (body.leverage?.value === 'trading_plan') {
+    //     // get data of trading plan
+    //     const docSnap = await adminDb
+    //         .collection('trading_plans')
+    //         .doc(body.trading_plan_id)
+    //         .get();
+    //     tradingPlanData = docSnap.data();
+    // }
     const multiplier = await getMultiplier(body.pair?.split('_')[1], autotrader);
     const payload = {
         ...body,
@@ -83,11 +94,8 @@ export async function createSmartTrade({
         },
         "leverage": {
             "enabled": body.leverage?.enabled || false,
-            "type": body.leverage?.type || "isolated",
-            "value":body.leverage?.value && typeof parseFloat(body.leverage?.value) === 'number' ? body?.leverage?.value : 
-            body.leverage?.value === 'user' ? autotrader?.leverage || 1 : 
-            body.leverage?.value === 'trading_plan' ? tradingPlanData?.leverage || 1 :
-            1,
+            "type": getLeverageType(),
+          "value": getLeverageValue(),
         },
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,
@@ -99,9 +107,9 @@ export async function createSmartTrade({
     const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
     // console.log(signature, 'signatureddddd');
     const finalUrl = baseUrl + queryParams;
-    // console.log('finalUrl:::', finalUrl);
+    console.log('finalUrl:::', finalUrl);
     const response2 = await fetch(finalUrl, {
-        method: 'POST',
+        method: body.method, // method is supposed to be post
         body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json',
@@ -109,8 +117,17 @@ export async function createSmartTrade({
             Signature: signature,
         }
     });
+    console.log(response2, 'response2')
+    // console.log(response2.statusText,'response2.statusText')
+    // console.log(response2.headers,'response2.headers')
     const responseExecute = await response2.json();
-    // console.log('responseExecute:::', responseExecute, JSON.stringify(body));
+    try {
+        const njiay = await response2.json();
+        console.log(njiay, 'njiay')
+    } catch (error) {
+        console.log(error, 'error njiay')
+    }
+    console.log('responseExecute:::', responseExecute, JSON.stringify(body));
     const smart_trade_id = String(responseExecute.id || '');
     delete responseExecute.id;
     delete responseExecute.pair;

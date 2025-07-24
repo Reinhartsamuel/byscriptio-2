@@ -28,7 +28,7 @@ export async function cancelSmartTrade({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', body.status);
-            if (body?.for_type !== 'all' && body?.type !== undefined) query = query.where('action', '==', body.for_type.toUpperCase());
+        if (body?.position?.type !== 'all' && body?.type !== undefined) query = query.where('action', '==', body.position?.type.toUpperCase());
 
 
         if (body.account_id !== 'all') {
@@ -62,7 +62,7 @@ export async function cancelSmartTrade({
             const finalUrl = baseUrl + totalParams;
             const signature = generateSignatureRsa(PRIVATE_KEY, totalParams);
             const response = await fetch(finalUrl, {
-                method: 'DELETE',
+                method: body.method, // method supposed to be DELETE
                 headers: {
                     'Content-Type': 'application/json',
                     APIKEY: API_KEY,
@@ -92,7 +92,7 @@ export async function cancelSmartTrade({
                 smart_trade: true,
                 marketType: autotrader?.marketType || 'unknown',
                 webhookId,
-                requestBody : null
+                requestBody: null
             };
 
             adminDb

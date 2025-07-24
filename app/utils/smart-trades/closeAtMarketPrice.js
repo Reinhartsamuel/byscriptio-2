@@ -11,48 +11,6 @@ export async function closeAtMarketPrice({
     body,
     webhookId
 }) {
-    // const exampleBody = {
-    //     "account_id": "all",
-    //     "pair": "USDT_SOL",
-    //     "position": {
-    //         "type": "buy",
-    //         "order_type": "limit",
-    //         "units": {
-    //             "value": "trade_amount"
-    //         },
-    //         "price": {
-    //             "value": "' + str.tostring(limit_entry_buy) + '"
-    //         }
-    //     },
-    //     "leverage": {
-    //         "enabled": true,
-    //         "type": "custom",
-    //         "value": "1"
-    //     },
-    //     "take_profit": {
-    //         "enabled": true,
-    //         "steps": [
-    //             {
-    //                 "order_type": "limit",
-    //                 "volume": "100",
-    //                 "price": {
-    //                     "value": "' + str.tostring(limit_entry_price) + '",
-    //                     "type": "last"
-    //                 }
-    //             }
-    //         ]
-    //     },
-    //     "stop_loss": {
-    //         "enabled": false
-    //     },
-    //     "method": "CLOSE",
-    //     "trading_plan_id": "GRID_CUANTERUS",
-    //     "market_type": "futures",
-    //     "timestamp": "' + str.tostring(timenow) + '",
-    //     "compound": "false",
-    //     "flag": "testing"
-    // };
-
     try {
         let tradesHistory = [];
         // build query
@@ -61,11 +19,13 @@ export async function closeAtMarketPrice({
             .where('trading_plan_id', '==', body.trading_plan_id)
             .where('pair', '==', body.pair)
             .where('status_type', '==', 'waiting_targets')
-            .where('action', '==', body.for_type.toUpperCase());
 
 
         if (body.account_id !== 'all') {
             query = query.where('exchange_external_id', '==', Number(body.account_id));
+        }
+        if (body.position.type !== 'all') {
+            query = query.where('action', '==', body.position.type);
         }
 
         const querySnapshot = await query.get();
@@ -95,7 +55,7 @@ export async function closeAtMarketPrice({
             const signatureMessage = queryParamsCloseMarket;
             const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
             const response2 = await fetch(finalUrlCloseMarket, {
-                method: 'POST',
+                method: body.method, // body supposed to be POST
                 headers: {
                     'Content-Type': 'application/json',
                     APIKEY: API_KEY,
