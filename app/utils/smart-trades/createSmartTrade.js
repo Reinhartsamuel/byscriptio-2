@@ -100,6 +100,8 @@ export async function createSmartTrade({
         "pair": await pairNameFor3commas(autotrader, body.pair), // calculate from pairNameFor3Commas
         "instant": body?.instant || false,
     };
+    if (body.take_profit) payload.take_profit = body.take_profit;
+    if (body.stop_loss) payload.stop_loss = body.stop_loss;
     console.log(payload, 'payloadddddd');
     const queryParams = `/public/api/v2/smart_trades`;
     const signatureMessage = queryParams + JSON.stringify(payload);
