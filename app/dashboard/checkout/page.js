@@ -131,7 +131,10 @@ export default function CheckoutPage() {
           //check if already redeemed
           const resultSubscription = await getCollectionFirebase(
             "subscriptions",
-            [{ field: "voucherCode", operator: "==", value: voucherCode }],
+            [
+              { field: "voucherCode", operator: "==", value: voucherCode },
+              { field: "paymentStatus", operator: "==", value: "PAID" },
+            ],
           );
           if (resultSubscription?.length >= voucherData?.maxSlot) {
             return Swal.fire(
