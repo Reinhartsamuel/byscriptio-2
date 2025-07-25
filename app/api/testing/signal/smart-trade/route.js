@@ -362,7 +362,6 @@ async function test_cancelSmartTrade({
             tradesHistory.push({ ...doc.data(), id: doc.id });
         })
 
-
         const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
             const doc = await adminDb
                 .collection('dca_bots')
@@ -449,7 +448,7 @@ async function test_closeAtMarketPrice({
             query = query.where('exchange_external_id', '==', Number(body.account_id));
         }
         if (body.position.type !== 'all') {
-            query = query.where('action', '==', body.position.type);
+            query = query.where('action', '==', (body.position.type || '').toUpperCase());
         }
 
         const querySnapshot = await query.get();
@@ -466,6 +465,7 @@ async function test_closeAtMarketPrice({
         })
 
 
+         return Response.json({ status: true, data:tradesHistory });
         const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
             const doc = await adminDb
                 .collection('dca_bots')

@@ -25,7 +25,7 @@ export async function closeAtMarketPrice({
             query = query.where('exchange_external_id', '==', Number(body.account_id));
         }
         if (body.position.type !== 'all') {
-            query = query.where('action', '==', body.position.type);
+            query = query.where('action', '==', (body.position.type || '').toUpperCase());
         }
 
         const querySnapshot = await query.get();
