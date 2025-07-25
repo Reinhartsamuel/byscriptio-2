@@ -465,7 +465,6 @@ async function test_closeAtMarketPrice({
         })
 
 
-         return Response.json({ status: true, data:tradesHistory });
         const resPromise = await Promise.allSettled(tradesHistory.map(async (item) => {
             const doc = await adminDb
                 .collection('dca_bots')
