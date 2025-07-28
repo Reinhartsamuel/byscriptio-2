@@ -66,7 +66,7 @@ export function PricingComponent() {
       addDocumentFirebase('subscriptions', newData).
         then((id) => {
           console.log(id, 'created id')
-          router.push(`checkout?sid=${id}`)
+          router.push(`/dashboard/checkout?sid=${id}`)
         }).catch((e) => console.error(e.message))
     } else {
       router.push('/auth/login')
@@ -123,7 +123,7 @@ export function PricingComponent() {
                           ></path>
                         </svg>
                         <span>{feature}</span>
-                       
+
                       </li>
                     ))} */}
                   {x?.features?.map((feature, j) => {
