@@ -95,7 +95,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   useEffect(() => {
     setData({
       productId: detail?.id,
-      productName: detail?.name,
+      productName: detail?.productName,
       price: parseInt(detail?.price || 0),
       affiliateCommission: customer?.affiliatorCustomerId
         ? calculateCommission(
