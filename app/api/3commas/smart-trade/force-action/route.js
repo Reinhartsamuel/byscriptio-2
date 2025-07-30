@@ -78,7 +78,8 @@ export async function POST(request) {
             "stop_loss": {
                 "enabled": false
             },
-            "method": "CREATE",
+            "method": "POST",
+            "action" : "CREATE",
             "trading_plan_id": _tradingPlanId,
             "market_type": bot?.marketType || '',
             "timestamp": new Date()
