@@ -250,7 +250,7 @@ export default function Navbar() {
               {!user ? (
                 <a href="/auth/login">
                   <button className="p-[3px] relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-brand_primary to-brand_primary_hover rounded-lg" />
                     <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
                       Sign Up
                     </div>
@@ -279,7 +279,7 @@ export default function Navbar() {
                         )}
                       </div>
                       <img
-                        alt=""
+                        alt={user?.name}
                         src={user.photoURL || authFirebase.currentUser.photoURL}
                         className="h-8 w-8 rounded-full"
                       />

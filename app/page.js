@@ -30,7 +30,8 @@ export default function Home() {
             </span>
           </h1>
           <h1 className='text-md align-left text-slate-200 mt-5'>
-            <span className='italic text-slate-200'>Algorithmic Trading Platform</span>{' '}
+            byScript connects you to battle-tested trading strategies that run 24/7. No guesswork, no missed trades—just hands-off execution and clear results.
+            <span className='italic text-slate-200'> &quot;We are one trading plan away from generational wealth&quot;</span>{' '}
           </h1>
           <div className='mt-10'>
             <a target='_blank' rel='noreferrer' href='https://docs.byscript.io/'>
