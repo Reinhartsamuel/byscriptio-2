@@ -21,7 +21,7 @@ export default function Home() {
       <Navbar />
       {/* <div className="absolute top-0 z-[-20] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]" /> */}
       <div className='h-screen w-full pt-10 inline-block md:flex items-center justify-center lg:px-20 z-20'>
-        <div className='absolute  -z-10 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]' />
+        {/* <div className='absolute  -z-10 size-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]' /> */}
         <div className='w-full md:w-2/3 text-center items-center justify-center'>
           <h1 className='text-4xl font-bold text-white xl:text-8xl'>
             Algorithmic Trading with{' '}
@@ -30,9 +30,7 @@ export default function Home() {
             </span>
           </h1>
           <h1 className='text-md align-left text-slate-200 mt-5'>
-            First Ever{' '}
-            <span className='italic text-slate-200'>Algorithmic Trading</span>{' '}
-            Platform in Indonesia
+            <span className='italic text-slate-200'>Algorithmic Trading Platform</span>{' '}
           </h1>
           <div className='mt-10'>
             <a target='_blank' rel='noreferrer' href='https://docs.byscript.io/'>
@@ -133,8 +131,8 @@ export default function Home() {
           Cara mengaktifkan autotrade
         </h1>
         <StepsComponent />
-      </div> 
-      
+      </div>
+
       <div className='w-full mt-20 inline-block items-center justify-center'>
         <h1 className='text-2xl mt-10 font-bold text-center mx-auto md:text-6xl'>
           Gabung komunitas byScript

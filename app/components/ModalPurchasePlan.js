@@ -11,31 +11,34 @@ import calculateCommission from "../utils/calculateCommission";
 import { uploadFileCompressed } from "../utils/imageUpload";
 import { authFirebase } from "../config/firebase";
 import {
-  addDocumentFirebase,
-  getCollectionFirebase,
+  updateDocumentFirebase,
 } from "../utils/firebaseApi";
 import { priceFormat } from "../utils/priceFormat";
 import { copyTextToClipboard } from "../utils/copyTextToClipboard";
 import blu_logo from "../../public/blu_logo.jpg";
 import Image from "next/image";
-import moment from "moment";
+import { useRouter } from "next/navigation";
 
 const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
   const { customer } = useUserStore();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [checkReadTc, setCheckReadTc] = useState(false);
-  const [voucherCode, setVoucherCode] = useState("");
+  const router = useRouter();
 
   const [data, setData] = useState({});
 
   async function handleUpload(e) {
+    // console.log(detail.id,'id')
     setUploading(true);
     // console.log(e.target.files[0], 'this is filesss');
     try {
       const { url, error } = await uploadFileCompressed(e.target.files[0]);
       if (error) throw new Error(error);
-      if (url) setData({ ...data, receiptUrl: url });
+      if (url) {
+        setData({ ...data, receiptUrl: url });
+        // await updateDocumentFirebase('subscriptions', detail.id, { receiptUrl: url });
+      }
     } catch (error) {
       console.error(error.message, "::::errorrr!!!");
       Swal.fire("Error", error.message, "error");
@@ -52,18 +55,33 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
 
     try {
       setLoading(true);
-      await addDocumentFirebase("subscriptions", { ...data }, "byscript");
-      await fetch("/api/email/purchase/new", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      // await addDocumentFirebase("subscriptions", { ...data }, "byscript");
+      await Promise.all([
+        await updateDocumentFirebase('subscriptions', detail.id, { receiptUrl: data.receiptUrl }),
+        await fetch("/api/email/purchase/new", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+      ])
+      Swal.fire({
+        showDenyButton: false,
+        showCancelButton: true,
+        text: 'Your purchase is being processed. Please wait until we confirm your payment.',
+        confirmButtonText: "Continue to Dashboard",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          setPurchaseModal(false);
+
+          router.push('/dashboard/profile');
+        } else if (result.isDenied) {
+          setPurchaseModal(false);
+        }
       });
-      Swal.fire(
-        "Your purchase is being processed. Please wait until we confirm your payment. For help please contact WA 0813 1338 3848 - Edwin",
-      );
-      setPurchaseModal(false);
+
     } catch (error) {
       console.error(error.message, "errrorrr handleupload");
       Swal.fire("", error.message, "error");
@@ -72,92 +90,7 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
     }
   }
 
-  async function redeemVoucher() {
-    try {
-      // find voucher code
-      const result = await getCollectionFirebase("vouchers", [
-        { field: "voucherCode", operator: "==", value: voucherCode },
-      ]);
 
-      if (Array.isArray(result) && result?.length > 0) {
-        const voucherData = result[0];
-        //check if still active
-        if (voucherData?.expiredAt?.seconds < moment().unix()) {
-          return Swal.fire("", "Voucher code has expired", "warning");
-        } else if (!voucherData?.active) {
-          return Swal.fire("", "This voucher cannot be used", "warning");
-        } else {
-          // check if voucher is for only new customers
-          if (voucherData?.isForNewUser) {
-            // search for previous subscriptions
-            const searchPreviousSubscriptions = await getCollectionFirebase(
-              "subscriptions",
-              [
-                {
-                  field: "email",
-                  operator: "==",
-                  value: authFirebase.currentUser?.email,
-                },
-              ],
-            );
-            if (searchPreviousSubscriptions?.length > 0)
-              return Swal.fire("", "Voucher is only for new users", "warning");
-          }
-
-          //check if already redeemed
-          const resultSubscription = await getCollectionFirebase(
-            "subscriptions",
-            [{ field: "voucherCode", operator: "==", value: voucherCode }],
-          );
-          if (resultSubscription?.length >= voucherData?.maxSlot) {
-            return Swal.fire(
-              "",
-              "Oops! The voucher's quota has been reached",
-              "warning",
-            );
-          } else if (!voucherData?.productIds?.includes(detail?.id)) {
-            return Swal.fire(
-              "",
-              "Oops! The voucher code is not valid for this product",
-              "warning",
-            );
-          } else {
-            let discount =
-              voucherData?.type === "DISCOUNT"
-                ? voucherData?.amount
-                : (detail?.price * voucherData?.amount) / 100;
-            let previousPrice = detail?.price;
-            let price =
-              voucherData?.type === "DISCOUNT"
-                ? detail?.price - parseInt(voucherData?.amount)
-                : detail?.price * ((100 - voucherData?.amount) / 100);
-            setData({
-              ...data,
-              voucherCode,
-              price,
-              previousPrice,
-              discount,
-              affiliateCommission: customer?.affiliatorCustomerId
-                ? calculateCommission(
-                    customer?.affiliateLevel,
-                    parseInt(price) || 0,
-                  ).amount
-                : 0,
-            });
-            Swal.fire(
-              "Voucher code redeemed successfully",
-              `You get Rp ${discount} discount`,
-              "success",
-            );
-          }
-        }
-      } else {
-        return Swal.fire("", "Voucher code not found", "warning");
-      }
-    } catch (error) {
-      Swal.fire("", error.message, "error");
-    }
-  }
 
   useEffect(() => {
     setData({
@@ -166,15 +99,15 @@ const ModalPurchasePlan = ({ purchaseModal, setPurchaseModal, detail }) => {
       price: parseInt(detail?.price || 0),
       affiliateCommission: customer?.affiliatorCustomerId
         ? calculateCommission(
-            customer?.affiliateLevel,
-            parseInt(detail?.price) || 0,
-          ).amount
+          customer?.affiliateLevel,
+          parseInt(detail?.price) || 0,
+        ).amount
         : 0,
       affiliatePercentage: customer?.affiliatorCustomerId
         ? calculateCommission(
-            customer?.affiliateLevel,
-            parseInt(detail?.price) || 0,
-          ).percentage
+          customer?.affiliateLevel,
+          parseInt(detail?.price) || 0,
+        ).percentage
         : 0,
       affiliator: customer?.affiliator || {},
       affiliatorCustomerId: customer?.affiliatorCustomerId || "",

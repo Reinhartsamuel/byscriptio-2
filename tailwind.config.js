@@ -88,6 +88,13 @@ module.exports = {
         // eco_coding: ['Eco Coding WGL4 W01 Regular', 'sans-serif'],
         ecoCoding : ['var(--font-ecoCoding)']
       },
+      colors: {
+        brand_primary : '#68FE1D',
+        brand_secondary : '#00F7D5',
+        brand_primary_hover: '#AFFF5C',
+        brand_border: '#D9D9D9',
+
+      }
     },
   },
   plugins: [

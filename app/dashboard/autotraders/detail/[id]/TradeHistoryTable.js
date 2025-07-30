@@ -12,6 +12,7 @@ import useCountDocuments from '@/app/hooks/CountHook';
 import { cn } from '@/lib/util';
 import Modal from '@/app/components/ui/Modal';
 import { authFirebase } from '@/app/config/firebase';
+import ProfitCard from "@/app/components/ProfitCard";
 
 const TradeHistoryTable = ({
   collectionName = '3commas_logs',
@@ -69,9 +70,9 @@ const TradeHistoryTable = ({
             </thead>
             <tbody className="text-gray-300 text-[0.6rem] lg:text-xs">
               {data?.map((trade, index) => (
-                <TableRow 
-                  key={index} 
-                  trade={trade} 
+                <TableRow
+                  key={index}
+                  trade={trade}
                   showPair={showPair}
                   showAutotrader={showAutotrader}
                   showExchange={showExchange}
@@ -109,12 +110,12 @@ const TableRow = ({ trade, showPair, showAutotrader, showExchange }) => {
     setLoading(true);
     try {
       if (!trade?.smart_trade_id) throw new Error('Invalid smart trade id');
-      
+
       const res = await fetch('/api/3commas/smart-trade/execute/close-at-market-price-test', {
         method: 'POST',
         body: JSON.stringify({ id: trade.smart_trade_id })
       });
-      
+
       const result = await res.json();
       if (result.error || result?.data?.error) {
         Swal.fire({
@@ -168,7 +169,7 @@ const TableRow = ({ trade, showPair, showAutotrader, showExchange }) => {
         "p-1",
         trade?.profit?.usd > 0 ? "text-green-400" : "text-red-400"
       )}>
-        {!isNaN(parseFloat(trade?.profit?.usd)) ? 
+        {!isNaN(parseFloat(trade?.profit?.usd)) ?
           `$ ${parseFloat(trade?.profit?.usd)?.toFixed(3)}` : '-'}
       </td>
       <td className="p-1">
@@ -228,6 +229,8 @@ const TableRow = ({ trade, showPair, showAutotrader, showExchange }) => {
 
 const TradeDetails = ({ trade }) => {
   const [showRaw, setShowRaw] = useState(false);
+  const [showProfitCard, setShowProfitCard] = useState(false);
+
 
   if (!trade) return null;
 
@@ -277,9 +280,16 @@ const TradeDetails = ({ trade }) => {
     );
   }
 
+  if (showProfitCard) return <ProfitCard trade={trade} setShowProfitCard={setShowProfitCard} />
+
   return (
-    <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-300">
-      <TradeBasicInfo trade={trade} />
+    <div className="flex flex-col w-full">
+      <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-300">
+        <TradeBasicInfo trade={trade} />
+      </div>
+      <button onClick={() => setShowProfitCard(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Share
+        </button>
     </div>
   );
 };
@@ -334,6 +344,7 @@ const TradeBasicInfo = ({ trade }) => (
           : "N/A"}
       </p>
     </div>
+
   </>
 );
 

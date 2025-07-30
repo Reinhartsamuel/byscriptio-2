@@ -18,7 +18,8 @@ import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import React from "react";
-import logo from "../../../public/logo_byScript_white_green.svg";
+// import logo from "../../../public/logo_byScript_white_green.svg";
+import logo from "../../../public/combination-mini.png";
 import Image from "next/image";
 import { setCookie } from "cookies-next";
 

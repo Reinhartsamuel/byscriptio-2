@@ -169,7 +169,7 @@ export function PricingComponent() {
                 </ul>
                 <button
                   onClick={() => handlePurchase(x)}
-                  className='bg-green-400 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-xl font-bold px-5 py-2.5 text-center text-black dark:text-gray-700  dark:focus:ring-primary-900'
+                  className='bg-brand_primary hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 rounded-lg text-xl font-bold px-5 py-2.5 text-center text-black dark:text-gray-700  dark:focus:ring-primary-900'
                 >
                   Buy Now
                 </button>

@@ -71,13 +71,13 @@ const ExchangesComponent = () => {
       <div className='mx-2 lg:mx-6 mt-10'>
         <ExchangeDrawer drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
         <div className='flex items-center gap-4'>
-          <h2 className='text-xl font-bold text-slate-800 dark:text-slate-200 font-bold'>
+          <h2 className='text-xl text-slate-800 dark:text-slate-200 font-bold'>
             Exhcange
           </h2>
           <button
             onClick={toggleDrawer}
             type='button'
-            className='connect-exchange text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 min-w-[3rem]'
+            className='connect-exchange text-white border-2 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center min-w-[3rem] border-brand_primary'
           >
             Add New
           </button>

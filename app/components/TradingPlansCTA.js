@@ -24,7 +24,6 @@ const TradingPlanCTA = () => {
 
   return (
     <section className="px-4 py-12">
-      {console.log(JSON.stringify(data), "data")}
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center text-gray-100">
           Algorithmic Trading Strategies
@@ -57,7 +56,6 @@ function TraderCard({ trade }) {
 
   return (
     <div
-      onClick={() => console.log(trade)}
       className="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow p-5 flex flex-col justify-between"
     >
       <div>
