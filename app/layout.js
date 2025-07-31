@@ -15,7 +15,7 @@ const ecoCoding = localfont({
 });
 
 export const metadata = {
-  title: 'Trade Smarter. Automate Everything.',
+  title: 'Auto-Trade Made byScript',
   description: 'byScript connects you to battle-tested trading strategies that run 24/7. No guesswork, no missed trades—just hands-off execution and clear results.',
 };
 
