@@ -16,7 +16,7 @@ const ecoCoding = localfont({
 
 export const metadata = {
   title: 'Auto-Trade Made byScript',
-  description: 'byScript connects you to battle-tested trading strategies that run 24/7. No guesswork, no missed trades—just hands-off execution and clear results.',
+  description: 'Fully automated crypto trading. Connect your exchange, activate a proven strategy, and let the system execute — reliably, 24/7.',
 };
 
 export default function RootLayout({ children }) {
