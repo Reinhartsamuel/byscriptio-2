@@ -59,8 +59,9 @@ export default function ModalAddAutotraderNew({
           },
         ]);
         console.log('Fetched trading _tradingPlans:', _tradingPlans);
+        console.log('userPackage',userPackage)
         const allTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === 'all'); // filter by availability to "all"
-        const specificTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === userPackage?.id); // filter by availability specific to my userPackage.id
+        const specificTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === userPackage?.productName); // filter by availability specific to my userPackage.id
         _tradingPlans = [...allTradingPlans, ...specificTradingPlans];
         setTradingPlans(_tradingPlans);
       } catch (error) {

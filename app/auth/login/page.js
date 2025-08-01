@@ -8,7 +8,7 @@ import { setCookie, getCookie } from 'cookies-next';
 import { updateDocumentFirebase } from '@/app/utils/firebaseApi';
 import { increment } from 'firebase/firestore';
 import Image from 'next/image';
-import logo from '../../../public/logo_byScript_white_green.svg';
+import logo from '../../../public/combination-mini.png';
 
 // import TurnstileWidget from '@/app/components/TurnstileWidget';
 
@@ -84,7 +84,7 @@ const page = () => {
         <TurnstileWidget />
       </div> */}
       <div id='login-screen' className='flex h-screen w-full'>
-        <div className='h-full hidden md:flex flex-col items-center justify-between py-10 w-[50%] bg-[#18181B] bg-slate-900'>
+        <div className='h-full hidden md:flex flex-col items-center justify-between py-10 w-[50%] bg-black'>
           <p></p>
           <Image
             alt='byScript'
