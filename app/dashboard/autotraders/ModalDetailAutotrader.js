@@ -43,7 +43,6 @@ export default function ModalDetailAutotrader({
         )
         if (res?.length > 0) {
           setLatestSignal(res[0]);
-          console.log(res[0], 'res[0]')
         }
       } catch (error) {
         console.log(error, 'error')

@@ -1,82 +1,107 @@
 import React from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
-import Mascot from '../../public/Mascot 2D transparent bg-min.png';
-import logo from "../../public/combination-mini.png";
+import logo_combination_transparent from "../../public/logo_combination_transparent.png";
+import NeonRobot from '../../public/NeonRobot.png';
+import { cn } from '@/lib/util';
+import { IoMdClose } from 'react-icons/io';
+import _ from 'lodash';
+import { useScreenshotStore } from '../store/screenshotStore';
 
 
 const ProfitCard = ({
-  profitPercent,
-  profitUsd,
-  entryPrice,
-  exitPrice,
+  profitPercent = 12,
+  profitUsd = 512,
+  entryPrice = 321321,
+  exitPrice = 12123,
   qrValue,
-  setShowProfitCard
+  pair,
+  futures = false,
+  side = 'long',
+  sideColor,
+  leverage = 12,
+  exchangeThumbnail
 }) => {
   const isProfit = profitUsd >= 0;
   const profitColor = isProfit ? 'text-green-500' : 'text-red-500';
+  const isPositive = profitPercent >= 0;
+  const {
+    setShowProfitCard,
+  } = useScreenshotStore();
 
   return (
-    <div className="w-[400px] h-[700px] bg-black grid grid-rows-[auto_auto_1fr_auto] text-white font-sans px-6 py-8 relative">
-      {/* Background Grid Pattern */}
-      <div className="relative h-screen">
-        <div className="absolute inset-0">
-          <div className="relative h-full w-full bg-slate-950 [&>div]:absolute [&>div]:inset-0 [&>div]:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [&>div]:bg-[size:14px_24px]">
+    <div className="h-screen w-full md:w-[700px] flex flex-col text-white font-sans px-6 py-8 relative">
+      <button
+        onClick={() => setShowProfitCard(false)}
+        className='z-20 absolute top-2 right-2 p-1 rounded-lg text-gray-700 dark:text-gray-400 dark:bg-gray-600 hover:bg-gray-50 hover:text-gray-600'
+      >
+        <IoMdClose />
+      </button>
+      <Image
+        src={NeonRobot}
+        alt="NeonRobot"
+        layout="fill"
+        objectFit="cover"
+        className="-z-2"
+      />
+
+      <div className='z-2 absolute bottom-5 left-5 flex w-full justfiy-center'>
+        <Image
+          src={logo_combination_transparent}
+          alt="logo"
+          objectFit=""
+          className="w-3/5 mx-auto"
+        />
+      </div>
+      <div className="z-10 w-full justify-center">
+        <p className='text-white text-3xl font-thin mx-auto text-center mt-5'>Auto-trade Result</p>
+        <div className='flex flex-col mt-20  text-center'>
+          <p className={cn(profitColor, 'text-6xl font-bold mt-5')}>
+            {isPositive && '+'}{profitPercent}%
+          </p>
+          <p className={cn(profitColor, 'text-4xl font-bold')}>
+            {isPositive && '+'}{profitUsd} USDT
+          </p>
+          <p className='text-slate-200 text-4xl font-extralight mt-[4rem]'>
+            {pair}
+            {' '}
+            {futures ? 'Futures' : 'Spot'}
+            {' '}
+            <span className={cn(sideColor)}>
+              {_.capitalize(side || '')}
+            </span>
+            {leverage > 1 ? ` ${leverage}x` : ''}
+          </p>
+          <div className=' flex flex-col gap-2 text-4xl mx-[12%] mt-[2rem] text-center'>
+            <div className='flex flex-row justify-between w-full px-3 gap-2'>
+              <p>Entry Price</p>
+              <p>${entryPrice}</p>
+            </div>
+            <div className='flex flex-row justify-between w-full px-3 gap-2'>
+              <p>Exit Price</p>
+              <p>${exitPrice}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className='flex mt-20 mx-[10%]'>
+          <div className='flex flex-col items-center'>
+            <QRCodeCanvas
+              value={qrValue}
+              size={200}
+              level="H"
+              fgColor="#000000"
+              bgColor="#ffffff"
+              marginSize={2}
+              style={{
+                borderRadius: '10%'
+              }}
+            />
+            <p className='text-2xl mt-1'>Scan to start<br /> auto-trading</p>
           </div>
         </div>
       </div>
-
-      {/* Result Text */}
-      <div className="z-10 text-center mb-2">
-        <button onClick={() => setShowProfitCard(false)}>close</button>
-        <p className="text-lg font-light">Auto-Trade Result</p>
-        <h1 className={`text-5xl font-bold ${profitColor}`}>
-          {isProfit ? '+' : '-'}
-          {Math.abs(profitPercent).toFixed(2)}%
-        </h1>
-        <h2 className={`text-2xl font-semibold ${profitColor}`}>
-          {isProfit ? '+' : '-'}${Math.abs(profitUsd).toLocaleString()}
-        </h2>
-      </div>
-
-      {/* Asset Info */}
-      <div className="z-10 text-center mb-4">
-        <p className="text-green-400 text-xl font-medium">BITCOIN SPOT</p>
-      </div>
-
-      {/* Price Table */}
-      <div className="z-10 flex justify-between text-lg mb-4 px-2">
-        <div>
-          <p className="text-gray-300">Entry Price</p>
-          <p className="text-gray-300">Exit Price</p>
-        </div>
-        <div className="text-right">
-          <p className="text-white">${entryPrice.toLocaleString()}</p>
-          <p className="text-white">${exitPrice.toLocaleString()}</p>
-        </div>
-      </div>
-
-      {/* Mascot + QR Code */}
-      <div className="z-10 flex justify-between items-end mt-auto">
-        <Image
-          src={Mascot} // Put your mascot image in /public
-          alt="mascot"
-          width={120}
-          height={120}
-        />
-        <div className="flex flex-col items-center">
-          <QRCode value={qrValue} size={100} fgColor="#ffffff" bgColor="#000000" />
-          <p className="text-sm mt-2 text-gray-300">Scan to start auto-trading</p>
-        </div>
-      </div>
-
-      {/* Branding */}
-      <Image
-        alt="byScript"
-        src={logo}
-        className="h-8 w-auto rounded-lg"
-      />
     </div>
   );
 };
@@ -89,13 +114,10 @@ ProfitCard.propTypes = {
   entryPrice: PropTypes.number.isRequired,
   exitPrice: PropTypes.number.isRequired,
   qrValue: PropTypes.string.isRequired,
-  setShowProfitCard: PropTypes.func,
-};
-
-ProfitCard.defaultProps = {
-  profitPercent: 0,
-  profitUsd: 0,
-  entryPrice: 0,
-  exitPrice: 0,
-  qrValue: '',
+  pair: PropTypes.string.isRequired,
+  leverage: PropTypes.number.isRequired,
+  side: PropTypes.string.isRequired,
+  futures: PropTypes.bool.isRequired,
+  sideColor: PropTypes.string.isRequired,
+  exchangeThumbnail: PropTypes.string,
 };

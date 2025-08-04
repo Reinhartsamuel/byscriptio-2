@@ -278,11 +278,17 @@ export default function Navbar() {
                           </div>
                         )}
                       </div>
-                      <img
-                        alt={user?.name}
-                        src={user.photoURL || authFirebase.currentUser.photoURL}
-                        className="h-8 w-8 rounded-full"
-                      />
+
+                        { authFirebase.currentUser?.photoURL ?
+                          <img
+                            alt={user?.name}
+                            src={authFirebase.currentUser?.photoURL}
+                            className="h-8 w-8 rounded-full"
+                          />
+                          // <p className="text-white">{authFirebase.currentUser?.photoURL}</p>
+                          :
+                            <p className="text-white">no img</p>
+                        }
                     </div>
                   </MenuButton>
 

@@ -57,12 +57,13 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
           // onClick={() => router.push(`${params?.name}/autotraders/new`)}
           onClick={handleAddAutotrader}
           type='button'
-          className='add-autotrader text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 min-w-[3rem]'
+          id='add-autotrader'
+          className='text-white border-2 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center min-w-[3rem] border-brand_primary'
         >
           Add New
         </button>
       </div>
-      {/* 
+      {/*
       <p>data:{JSON.stringify(data)}</p>
       <br />
       <p>autotraders:{JSON.stringify(autotraders)}</p> */}
@@ -121,7 +122,7 @@ const AutotraderBotComponent = ({ setShowPricing }) => {
                     <td className="px-4 py-3">{x.pnl || '-'}</td>
                     <td className="px-4 py-3">{x.pnl_percentage || '-'}</td>
                     <td className="px-4 py-3">
-                      {x?.lastSignal ? 
+                      {x?.lastSignal ?
                       `${x?.lastSignal?.position?.type?.toUpperCase()} ${moment.unix(parseInt(x?.lastSignal?.timestamp)/1000).fromNow()}` :
                         '-'}
                     </td>

@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import localfont from 'next/font/local';
 import Spinner from './components/ui/Spinner';
 import React from 'react';
+import ShareProfitScreenshot from './components/ShareProfitScreenshot';
 
 const ecoCoding = localfont({
   src: [
@@ -13,6 +14,15 @@ const ecoCoding = localfont({
   ],
   variable: '--font-ecoCoding',
 });
+const leagueSpartan = localfont({
+  src: [
+    {
+      path: '../public/fonts/LeagueSpartan-VariableFont_wght.ttf',
+      weight: '800',
+    },
+  ],
+  variable: '--font-leagueSpartan',
+});
 
 export const metadata = {
   title: 'Auto-Trade Made byScript',
@@ -22,7 +32,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en' className='dark'>
-      <body className={ecoCoding.variable}>
+      <body className={` ${leagueSpartan.variable} ${ecoCoding.variable}`}>
         <Suspense
           fallback={
             <div className='w-full h-screen flex justify-center items-center'>
@@ -32,6 +42,7 @@ export default function RootLayout({ children }) {
           }
         >
           {children}
+          <ShareProfitScreenshot />
         </Suspense>
       </body>
     </html>

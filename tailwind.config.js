@@ -86,7 +86,8 @@ module.exports = {
       },
       fontFamily: {
         // eco_coding: ['Eco Coding WGL4 W01 Regular', 'sans-serif'],
-        ecoCoding : ['var(--font-ecoCoding)']
+        ecoCoding : ['var(--font-ecoCoding)'],
+        leagueSpartan : ['var(--font-leagueSpartan)'],
       },
       colors: {
         brand_primary : '#68FE1D',

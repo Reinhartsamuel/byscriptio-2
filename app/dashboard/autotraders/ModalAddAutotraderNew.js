@@ -59,11 +59,12 @@ export default function ModalAddAutotraderNew({
           },
         ]);
         console.log('Fetched trading _tradingPlans:', _tradingPlans);
-        console.log('userPackage',userPackage)
+        console.log('userPackage', userPackage)
         const allTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === 'all'); // filter by availability to "all"
         const specificTradingPlans = _tradingPlans.filter((tradingPlan) => tradingPlan?.availability === userPackage?.productName); // filter by availability specific to my userPackage.id
         _tradingPlans = [...allTradingPlans, ...specificTradingPlans];
         setTradingPlans(_tradingPlans);
+        console.log(_tradingPlans, '_tradingPlans')
       } catch (error) {
         console.error('Error fetching trading plans:', error);
         Swal.fire({
@@ -393,33 +394,52 @@ export default function ModalAddAutotraderNew({
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             {tradingPlans
               ?.filter(plan => plan.marketType?.toLowerCase() === marketType)
-              ?.map((plan) => (
-                <label
-                  key={plan.id}
-                  className={cn(
-                    'flex cursor-pointer flex-col space-y-2 rounded-lg border p-4 transition-colors',
-                    selectedTradingPlan?.id === plan.id
-                      ? 'border-indigo-600 bg-indigo-500'
-                      : 'border-gray-200 hover:border-indigo-200'
-                  )}
-                >
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="radio"
-                      name="tradingPlan"
-                      checked={selectedTradingPlan?.id === plan.id}
-                      onChange={() => setSelectedTradingPlan(plan)}
-                      className="h-4 w-4 text-indigo-600"
-                    />
-                    <p className='text-lg font-bold text-gray-50'>
-                      {plan?.name}
-                    </p>
-                  </div>
-                  {plan.description && (
-                    <p className="text-sm text-gray-700">{plan.description}</p>
-                  )}
-                </label>
-              ))}
+              ?.map((plan) => {
+                const isEligible =
+                  plan?.availability === "all" ||
+                  plan?.availability?.toLowerCase() ===
+                    userPackage?.productName?.toLowerCase();
+
+                const isSelected = selectedTradingPlan?.id === plan.id;
+
+                return (
+                  <label
+                    key={plan.id}
+                    className={cn(
+                      'flex cursor-pointer flex-col space-y-2 rounded-lg border p-4 transition-colors',
+                      isSelected
+                        ? 'border-indigo-600 bg-indigo-500'
+                        : isEligible
+                          ? 'border-gray-200 hover:border-indigo-200'
+                          : 'border-[#66ff33] bg-gray-800 opacity-80 cursor-not-allowed'
+                    )}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name="tradingPlan"
+                        checked={isSelected}
+                        onChange={() => {
+                          if (isEligible) setSelectedTradingPlan(plan);
+                        }}
+                        disabled={!isEligible}
+                        className="h-4 w-4 text-indigo-600"
+                      />
+                      <p className={cn("text-lg font-bold text-gray-50", )}>
+                        {plan?.name}
+                      </p>
+                    </div>
+                    {plan.description && (
+                      <p className="text-sm text-gray-700">{plan.description}</p>
+                    )}
+                    {!isEligible && (
+                      <p className="text-xs font-medium text-red-600">
+                        Requires {plan.availability} subscription
+                      </p>
+                    )}
+                  </label>
+                );
+              })}
           </div>
         </div>
 

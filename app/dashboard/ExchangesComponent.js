@@ -77,7 +77,8 @@ const ExchangesComponent = () => {
           <button
             onClick={toggleDrawer}
             type='button'
-            className='connect-exchange text-white border-2 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center min-w-[3rem] border-brand_primary'
+            id='add-exchange'
+            className='text-white border-2 focus:outline-none focus:ring-4 focus:ring-purple-300 rounded-md text-xs p-2 text-center min-w-[3rem] border-brand_primary'
           >
             Add New
           </button>

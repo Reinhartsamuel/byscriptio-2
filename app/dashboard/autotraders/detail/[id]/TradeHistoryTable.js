@@ -13,6 +13,7 @@ import { cn } from '@/lib/util';
 import Modal from '@/app/components/ui/Modal';
 import { authFirebase } from '@/app/config/firebase';
 import ProfitCard from "@/app/components/ProfitCard";
+import { useScreenshotStore } from "@/app/store/screenshotStore";
 
 const TradeHistoryTable = ({
   collectionName = '3commas_logs',
@@ -221,7 +222,9 @@ const TableRow = ({ trade, showPair, showAutotrader, showExchange }) => {
         onClose={handleClose}
         title="Smart Trade Details"
       >
-        <TradeDetails trade={trade} />
+        <div className="">
+          <TradeDetails trade={trade} />
+        </div>
       </Modal>
     </tr>
   );
@@ -229,10 +232,16 @@ const TableRow = ({ trade, showPair, showAutotrader, showExchange }) => {
 
 const TradeDetails = ({ trade }) => {
   const [showRaw, setShowRaw] = useState(false);
-  const [showProfitCard, setShowProfitCard] = useState(false);
-
+  const {
+    setShowProfitCard,
+    setProfitCardData
+  } = useScreenshotStore();
 
   if (!trade) return null;
+  const handleShare = () => {
+    setProfitCardData(trade);
+    setShowProfitCard(true);
+  };
 
   if (showRaw) {
     return (
@@ -280,16 +289,14 @@ const TradeDetails = ({ trade }) => {
     );
   }
 
-  if (showProfitCard) return <ProfitCard trade={trade} setShowProfitCard={setShowProfitCard} />
-
   return (
     <div className="flex flex-col w-full">
       <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-300">
         <TradeBasicInfo trade={trade} />
       </div>
-      <button onClick={() => setShowProfitCard(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Share
-        </button>
+      <button onClick={handleShare} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Share
+      </button>
     </div>
   );
 };
