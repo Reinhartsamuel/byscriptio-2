@@ -21,7 +21,6 @@ const ProfitCard = ({
   side = 'long',
   sideColor,
   leverage = 12,
-  exchangeThumbnail
 }) => {
   const isProfit = profitUsd >= 0;
   const profitColor = isProfit ? 'text-green-500' : 'text-red-500';
@@ -56,7 +55,7 @@ const ProfitCard = ({
       </div>
       <div className="z-10 w-full justify-center">
         <p className='text-white text-3xl font-thin mx-auto text-center mt-5'>Auto-trade Result</p>
-        <div className='flex flex-col mt-20  text-center'>
+        <div className='flex flex-col mt-10  text-center'>
           <p className={cn(profitColor, 'text-6xl font-bold mt-5')}>
             {isPositive && '+'}{profitPercent}%
           </p>
@@ -89,7 +88,7 @@ const ProfitCard = ({
           <div className='flex flex-col items-center'>
             <QRCodeCanvas
               value={qrValue}
-              size={200}
+              size={120}
               level="H"
               fgColor="#000000"
               bgColor="#ffffff"
@@ -98,7 +97,7 @@ const ProfitCard = ({
                 borderRadius: '10%'
               }}
             />
-            <p className='text-2xl mt-1'>Scan to start<br /> auto-trading</p>
+            <p className='text-xl mt-1'>Scan to start<br /> auto-trading</p>
           </div>
         </div>
       </div>
@@ -119,5 +118,4 @@ ProfitCard.propTypes = {
   side: PropTypes.string.isRequired,
   futures: PropTypes.bool.isRequired,
   sideColor: PropTypes.string.isRequired,
-  exchangeThumbnail: PropTypes.string,
 };

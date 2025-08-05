@@ -214,7 +214,7 @@ export default function Navbar() {
               <a href="/">
                 <Image
                   alt="byScript"
-                  src={logo}
+                  src={logo||""}
                   className="h-8 w-auto rounded-lg"
                 />
               </a>
@@ -282,7 +282,7 @@ export default function Navbar() {
                         { authFirebase.currentUser?.photoURL ?
                           <img
                             alt={user?.name}
-                            src={authFirebase.currentUser?.photoURL}
+                            src={authFirebase.currentUser?.photoURL || 'https://avatar.iran.liara.run/public'}
                             className="h-8 w-8 rounded-full"
                           />
                           // <p className="text-white">{authFirebase.currentUser?.photoURL}</p>

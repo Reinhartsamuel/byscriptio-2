@@ -47,7 +47,7 @@ export default function LandingPage() {
               No guesswork. No sleepless nights. Just strategy.
             </p>
             <div className="mt-20 flex flex-col sm:flex-row gap-4 md:text-xl">
-              <button className="px-6 py-3 bg-cyan-400 text-black font-semibold rounded-md">
+              <button className="px-6 py-3 bg-brand_primary text-black font-semibold rounded-md">
                 Start Auto Trading Now
               </button>
               <button className="px-6 py-3 border border-white text-white rounded-md">
@@ -59,15 +59,15 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="border border-gray-700 p-6 text-center rounded-md">
-              <div className="text-2xl font-bold text-cyan-400">$330K+</div>
-              <div className="text-gray-400 mt-1 text-sm">Assets Under Management</div>
+              <div className="text-2xl font-bold text-brand_primary">$330K+</div>
+              <div className="text-gray-400 mt-1 text-sm">Assets Unxxxder Management</div>
             </div>
             <div className="border border-gray-700 p-6 text-center rounded-md">
-              <div className="text-2xl font-bold text-cyan-400">200+</div>
+              <div className="text-2xl font-bold text-brand_primary">200+</div>
               <div className="text-gray-400 mt-1 text-sm">Exchange Accounts Connected</div>
             </div>
             <div className="border border-gray-700 p-6 text-center rounded-md">
-              <div className="text-2xl font-bold text-cyan-400">500+</div>
+              <div className="text-2xl font-bold text-brand_primary">500+</div>
               <div className="text-gray-400 mt-1 text-sm">Peak Active Users</div>
             </div>
           </div>
