@@ -9,6 +9,7 @@ import logo from "../../../public/combination-mini.png";
 import Image from 'next/image';
 import herobackground from "../../../public/herobackground.png";
 
+
 const Navbar2 = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,151 +19,210 @@ const Navbar2 = () => {
 
   return (
     <nav className="flex flex-col border-b border-white/10 bg-black">
-          {/* Top Bar: Logo + Hamburger (Mobile) + Desktop Buttons */}
-          <div className="flex items-center justify-between px-6 py-4">
-             <div className="hidden md:flex items-center gap-6">
-               {/* Logo */}
-               <a href="/">
-                 <Image
-                   alt="byScript"
-                   src={logo}
-                   className="h-8 w-auto"
-                 />
-               </a>
-               {/* Navigation Links */}
-               <ul className="flex gap-6 text-sm font-medium">
-                 <li className="hover:text-cyan-400 cursor-pointer">Home</li>
-                 <li className="hover:text-cyan-400 cursor-pointer">Strategies</li>
-                 <li className="hover:text-cyan-400 cursor-pointer">Performance</li>
-                 <li className="hover:text-cyan-400 cursor-pointer">How It Works</li>
-                 <li className="hover:text-cyan-400 cursor-pointer">FAQ</li>
-               </ul>
-             </div>
-            {/* Desktop Nav Links & Buttons (visible only on md and up) */}
-            <div className="hidden md:flex items-center gap-6">
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <a href="/auth/login">
-                  <button className="border border-white/20 px-4 py-1.5 rounded-md hover:bg-white/10 transition">
-                    Login
-                  </button>
-                </a>
-
-                <button className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition">
-                  Start Trading
-                </button>
-              </div>
-            </div>
-
-            {/* Logo */}
-            <a className='md:hidden' href="/">
-              <Image
-                alt="byScript"
-                src={logo}
-                className="h-8 w-auto"
-              />
-            </a>
-            {/* Hamburger Button (visible only on mobile) */}
-            <button
-              onClick={toggleMenu}
-              className="md:hidden flex flex-col space-y-1"
-              aria-label="Toggle menu"
-            >
-              <span
-                className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${
-                  isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
-                }`}
-              ></span>
-              <span
-                className={`block w-6 h-0.5 bg-white transition-opacity duration-300 ${
-                  isMenuOpen ? 'opacity-0' : ''
-                }`}
-              ></span>
-              <span
-                className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${
-                  isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
-                }`}
-              ></span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Dropdown (only visible when open) */}
-          <div
-            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-              isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-            }`}
-          >
-            <ul className="px-6 pb-4 gap-2 flex flex-col text-sm font-medium">
-              <li
-                className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </li>
-              <li
-                className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Strategies
-              </li>
-              <li
-                className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Performance
-              </li>
-              <li
-                className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                How It Works
-              </li>
-              <li
-                className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                FAQ
-              </li>
-            </ul>
-
-            {/* Mobile Action Buttons */}
-            <div className="flex flex-col px-6 pb-6 gap-3">
-              <button
-                className="border border-white/20 px-4 py-1.5 rounded-md hover:bg-white/10 transition text-left"
-                onClick={() => setIsMenuOpen(false)}
-              >
+      {/* Top Bar: Logo + Hamburger (Mobile) + Desktop Buttons */}
+      <div className="flex items-center justify-between px-6 py-4">
+        <div className="hidden md:flex items-center gap-6">
+          {/* Logo */}
+          <a href="/">
+            <Image
+              alt="byScript"
+              src={logo}
+              className="h-8 w-auto"
+            />
+          </a>
+          {/* Navigation Links */}
+          <ul className="flex gap-6 text-sm font-medium">
+            <li className="hover:text-cyan-400 cursor-pointer">Home</li>
+            <li className="hover:text-cyan-400 cursor-pointer">Strategies</li>
+            <li className="hover:text-cyan-400 cursor-pointer">Performance</li>
+            <li className="hover:text-cyan-400 cursor-pointer">How It Works</li>
+            <li className="hover:text-cyan-400 cursor-pointer">FAQ</li>
+          </ul>
+        </div>
+        {/* Desktop Nav Links & Buttons (visible only on md and up) */}
+        <div className="hidden md:flex items-center gap-6">
+          {/* Action Buttons */}
+          <div className="flex gap-4">
+            <a href="/auth/login">
+              <button className="border border-white/20 px-4 py-1.5 rounded-md hover:bg-white/10 transition">
                 Login
               </button>
-              <button
-                className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition text-left"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Start Trading
-              </button>
-            </div>
+            </a>
+
+            <button className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition">
+              Start Trading
+            </button>
           </div>
-        </nav>
+        </div>
+
+        {/* Logo */}
+        <a className='md:hidden' href="/">
+          <Image
+            alt="byScript"
+            src={logo}
+            className="h-8 w-auto"
+          />
+        </a>
+        {/* Hamburger Button (visible only on mobile) */}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden flex flex-col space-y-1"
+          aria-label="Toggle menu"
+        >
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+              }`}
+          ></span>
+          <span
+            className={`block w-6 h-0.5 bg-white transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : ''
+              }`}
+          ></span>
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+              }`}
+          ></span>
+        </button>
+      </div>
+
+      {/* Mobile Menu Dropdown (only visible when open) */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+      >
+        <ul className="px-6 pb-4 gap-2 flex flex-col text-sm font-medium">
+          <li
+            className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Home
+          </li>
+          <li
+            className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Strategies
+          </li>
+          <li
+            className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Performance
+          </li>
+          <li
+            className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            How It Works
+          </li>
+          <li
+            className="py-3 hover:text-cyan-400 border-b border-white/10 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            FAQ
+          </li>
+        </ul>
+
+        {/* Mobile Action Buttons */}
+        <div className="flex flex-col px-6 pb-6 gap-3">
+          <button
+            className="border border-white/20 px-4 py-1.5 rounded-md hover:bg-white/10 transition text-left"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Login
+          </button>
+          <button
+            className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition text-left"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Start Trading
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 };
+
+const LiveTradingDashboard = () => {
+  return (
+    <div className='w-full flex flex-col md:flex-row items-center justify-center h-screen p-4'>
+      {/* Left Section: Title and Description */}
+      <div className="md:w-1/2 p-6 mb-6 md:mb-0">
+        <h2 className="text-3xl font-bold mb-4">Real-Time Performance, Unmatched Results</h2>
+        <p className="text-lg text-gray-600 mb-6">
+          Monitor your algorithmic trading strategies in real-time with ByScriptio. Our platform delivers consistent, high-performance results, giving you the edge in volatile markets.
+        </p>
+        <button className="bg-brand_primary text-white px-6 py-2 rounded-lg hover:bg-brand_primary_hover transition">
+          Start Trading Now
+        </button>
+      </div>
+
+      {/* Right Section: Existing Dashboard */}
+      <div className="bg-gray-900 text-white p-6 rounded-lg md:w-[40%] h-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Live Trading Dashboard</h2>
+          <span className="flex items-center space-x-2">
+            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+            <span className="text-green-500">Active</span>
+          </span>
+        </div>
+
+        {/* BTC/USDT Strategy Card */}
+        <div className="bg-gray-800 p-4 mb-4 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-lg font-semibold">BTC/USDT Strategy</p>
+              <p className="text-sm text-gray-400">24h Performance</p>
+            </div>
+            <div className="flex flex-col items-end">
+              <p className="text-green-500 font-bold">+2.4%</p>
+              <p className="text-sm">$1,240</p>
+            </div>
+          </div>
+        </div>
+
+        {/* ETH/USDT Strategy Card */}
+        <div className="bg-gray-800 p-4 rounded-lg">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-lg font-semibold">ETH/USDT Strategy</p>
+              <p className="text-sm text-gray-400">24h Performance</p>
+            </div>
+            <div className="flex flex-col items-end">
+              <p className="text-green-500 font-bold">+1.8%</p>
+              <p className="text-sm">$890</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Hero = () => {
   return (<>
     {/* Hero Section */}
-    <section className="relative flex flex-col items-start justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url(${herobackground.src})`}}>
+    <section className="relative flex flex-col items-start justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url(${herobackground.src})` }}>
       <div className="absolute inset-0 bg-black opacity-10"></div>
-      <div className="z-10 max-w-8xl px-6 py-32 lg:ml-[5%] text-left">
-        <h1 className="text-5xl font-bold leading-tight sm:text-6xl">
-          Let the Algorithm <span className="text-brand_primary">Trade</span> for You.
-        </h1>
-        <p className="mt-4 text-xl">
-          No guesswork. No sleepless nights. Just strategy.
-        </p>
-        <div className="mt-8 flex justify-start space-x-4">
-          <button className="px-6 py-3 text-black font-bold bg-brand_primary rounded-full hover:bg-green-600">
-            Start Auto Trading Now
-          </button>
-          <button className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
-            View Strategies
-          </button>
+      <div className='w-full flex flex-col md:flex-row md:justify-between'>
+        <div className="w-full z-10 max-w-8xl px-6 py-32 lg:ml-[5%] text-left">
+          <h1 className="text-5xl font-bold leading-tight sm:text-6xl">
+            Let the Algorithm <span className="text-brand_primary">Trade</span> for You.
+          </h1>
+          <p className="mt-4 text-xl">
+            No guesswork. No sleepless nights. Just strategy.
+          </p>
+          <div className="mt-8 flex justify-start space-x-4">
+            <button className="px-6 py-3 text-black font-bold bg-brand_primary rounded-full hover:bg-green-600">
+              Start Auto Trading Now
+            </button>
+            <button className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
+              View Strategies
+            </button>
+          </div>
+        </div>
+        <div className='w-full flex justify-center items-center '>
+
         </div>
       </div>
       {/* Stats Section */}
@@ -175,13 +235,24 @@ const Hero = () => {
           <h2 className="text-4xl font-bold text-brand_primary">200+</h2>
           <p className="text-sm">Exchange Accounts Connected</p>
         </div>
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-          <h2 className="text-4xl font-bold text-brand_primary">500+</h2>
-          <p className="text-sm">Peak Active Users</p>
+        {/* Stats Section */}
+        <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
+          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+            <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>
+            <p className="text-sm">Assets Under Management</p>
+          </div>
+          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+            <h2 className="text-4xl font-bold text-brand_primary">200+</h2>
+            <p className="text-sm">Exchange Accounts Connected</p>
+          </div>
+          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+            <h2 className="text-4xl font-bold text-brand_primary">500+</h2>
+            <p className="text-sm">Peak Active Users</p>
+          </div>
         </div>
       </div>
     </section>
-</>)
+  </>)
 }
 
 const WhyByScript = () => {
@@ -208,7 +279,7 @@ const WhyByScript = () => {
     },
   ];
   return (
-    <section className="bg-black text-white py-16">
+    <section className=" text-white py-16">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -236,7 +307,7 @@ const WhyByScript = () => {
 
 const HowItWorks = () => {
   return (
-    <section className="bg-black text-white py-16">
+    <section className=" text-white py-16">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -252,10 +323,8 @@ const HowItWorks = () => {
         {/* Card 1: Connect Your Exchange */}
         <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8h.01" />
-              </svg>
+            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+              1
             </div>
           </div>
           <div>
@@ -269,10 +338,8 @@ const HowItWorks = () => {
         {/* Card 2: Choose a Strategy */}
         <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8h.01" />
-              </svg>
+            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+              2
             </div>
           </div>
           <div>
@@ -286,10 +353,8 @@ const HowItWorks = () => {
         {/* Card 3: Activate Auto-Trade */}
         <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary text-white rounded-full w-10 h-10 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8h.01" />
-              </svg>
+            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+              3
             </div>
           </div>
           <div>
@@ -304,6 +369,18 @@ const HowItWorks = () => {
   );
 };
 
+const Section2 = () => {
+  return (
+    <div className='md: h-screen'>
+      <div className="relative h-full w-full bg-slate-950">
+        <WhyByScript />
+        <HowItWorks />
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]">
+        </div>
+      </div>
+    </div>
+  )
+}
 const LiveStrategyPreview = () => {
   return (
     <section className="bg-black text-white py-16">
@@ -323,7 +400,7 @@ const LiveStrategyPreview = () => {
         <div className="bg-gray-800 p-6 rounded-lg">
           <div className="flex justify-between items-center">
             <h3 className="text-xl font-bold">Momentum Hunter</h3>
-            <span className="px-4 py-2 text-sm font-semibold text-white bg-brand_primary rounded-full">Active</span>
+            <span className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary rounded-full">Active</span>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4">
             {/* Column 1 */}
@@ -352,7 +429,7 @@ const LiveStrategyPreview = () => {
         <div className="bg-gray-800 p-6 rounded-lg">
           <div className="flex justify-between items-center">
             <h3 className="text-xl font-bold">Trend Surfer</h3>
-            <span className="px-4 py-2 text-sm font-semibold text-white bg-brand_primary rounded-full">Active</span>
+            <span className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary rounded-full">Active</span>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4">
             {/* Column 1 */}
@@ -584,8 +661,8 @@ export default function page() {
         {/* Header */}
         <Navbar2 />
         <Hero />
-        <WhyByScript />
-        <HowItWorks />
+        <LiveTradingDashboard />
+        <Section2 />
         <LiveStrategyPreview />
         <UserTestimonialsAndSecurity />
         <Footer />
