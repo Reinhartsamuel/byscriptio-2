@@ -20,7 +20,7 @@ export function TestimonialsComponent() {
   );
 }
 
-const testimonials1 = [
+export const testimonials1 = [
   {
     quote:
       'Kurang dari seminggu aktifin auto trade porto udah mulai hijau, proses cepat dan transparan bisa ketemuan langsung',
@@ -31,8 +31,8 @@ const testimonials1 = [
   {
     quote:
       'Bisa belajar coding pine script dari 0 sampai sekarang punya trading plan sendiri bahkan sudah bisa mengaktifkan auto trade sendiri untuk tradingnya sendiri',
-    name: 'Diajarin Bikin Trading Plan',
-    title: 'Alvin',
+    name: 'Alvin',
+    title: 'Diajarin Bikin Trading Plan',
     avatar: 'https://i.ibb.co.com/dbFLJX1/alvin.jpg',
   },
   {

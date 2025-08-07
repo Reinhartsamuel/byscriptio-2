@@ -8,6 +8,10 @@ import { FaRobot, FaPlug } from "react-icons/fa6";
 import logo from "../../../public/combination-mini.png";
 import Image from 'next/image';
 import herobackground from "../../../public/herobackground.png";
+import { FaLink } from "react-icons/fa6"; // Link icon
+import { BsGraphUp } from "react-icons/bs";
+import { testimonials1 } from "../../components/TestimonialsComponent";
+import HorizontalScrollingCards from "../../components/HorizontalScrollingCards";
 
 
 const Navbar2 = () => {
@@ -151,7 +155,7 @@ const LiveTradingDashboard = () => {
         <p className="text-lg text-gray-600 mb-6">
           Monitor your algorithmic trading strategies in real-time with ByScriptio. Our platform delivers consistent, high-performance results, giving you the edge in volatile markets.
         </p>
-        <button className="bg-brand_primary text-white px-6 py-2 rounded-lg hover:bg-brand_primary_hover transition">
+        <button className="bg-brand_primary text-black font-bold px-6 py-2 rounded-lg hover:bg-brand_primary_hover transition">
           Start Trading Now
         </button>
       </div>
@@ -235,21 +239,11 @@ const Hero = () => {
           <h2 className="text-4xl font-bold text-brand_primary">200+</h2>
           <p className="text-sm">Exchange Accounts Connected</p>
         </div>
-        {/* Stats Section */}
-        <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
-          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-            <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>
-            <p className="text-sm">Assets Under Management</p>
-          </div>
-          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-            <h2 className="text-4xl font-bold text-brand_primary">200+</h2>
-            <p className="text-sm">Exchange Accounts Connected</p>
-          </div>
-          <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-            <h2 className="text-4xl font-bold text-brand_primary">500+</h2>
-            <p className="text-sm">Peak Active Users</p>
-          </div>
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+          <h2 className="text-4xl font-bold text-brand_primary">500+</h2>
+          <p className="text-sm">Peak Active Users</p>
         </div>
+
       </div>
     </section>
   </>)
@@ -279,7 +273,7 @@ const WhyByScript = () => {
     },
   ];
   return (
-    <section className=" text-white py-16">
+    <section className=" text-white py-16  bg-slate-950">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -307,7 +301,7 @@ const WhyByScript = () => {
 
 const HowItWorks = () => {
   return (
-    <section className=" text-white py-16">
+    <section className=" text-white py-16 bg-gray-900">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -321,9 +315,9 @@ const HowItWorks = () => {
       {/* Cards */}
       <div className="max-w-6xl px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Card 1: Connect Your Exchange */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
+        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
               1
             </div>
           </div>
@@ -336,9 +330,9 @@ const HowItWorks = () => {
         </div>
 
         {/* Card 2: Choose a Strategy */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
+        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
               2
             </div>
           </div>
@@ -351,9 +345,9 @@ const HowItWorks = () => {
         </div>
 
         {/* Card 3: Activate Auto-Trade */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4">
+        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
           <div className="flex-shrink-0">
-            <div className="bg-brand_primary font-bold text-black rounded-full w-10 h-10 flex items-center justify-center">
+            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
               3
             </div>
           </div>
@@ -369,21 +363,133 @@ const HowItWorks = () => {
   );
 };
 
+const HowItWorks2 = () => {
+  return (
+    <section className="bg-gray-900 text-white py-20">
+      <div className="container mx-auto px-4 flex flex-col items-center">
+        {/* Title */}
+        <h1 className="text-4xl font-bold mb-6">How It Works</h1>
+        <p className="text-xl mb-12">Get started in 3 simple steps</p>
+
+        {/* Steps Container */}
+        <div className="flex justify-around max-w-5xl">
+          {/* Step 1: Connect Exchange */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="bg-green-500 rounded-full p-4">
+              <FaLink size={32} className="text-white" />
+            </div>
+            <h2 className="text-xl font-bold">1. Connect Exchange</h2>
+            <p className="text-center">
+              Link your exchange account securely via 3Commas integration
+            </p>
+          </div>
+
+          {/* Step 2: Choose Strategy */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="bg-red-500 rounded-full p-4">
+              <BsGraphUp size={32} className="text-white" />
+            </div>
+            <h2 className="text-xl font-bold">2. Choose Strategy</h2>
+            <p className="text-center">
+              Select from our battle-tested trading plans across 20+ pairs
+            </p>
+          </div>
+
+          {/* Step 3: Auto-Trade */}
+          <div className="flex flex-col items-center space-y-4">
+            <div className="bg-green-500 rounded-full p-4">
+              <FaRobot size={32} className="text-white" />
+            </div>
+            <h2 className="text-xl font-bold">3. Auto-Trade</h2>
+            <p className="text-center">
+              Sit back while our algorithms execute trades 24/7
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProvenPerformance = () => {
+  return (
+    <section className="bg-gray-900 text-white items-center w-full grid grid-cols-1 md:grid-cols-2">
+      <div className="w-full py-10 px-6 mx-auto flex justify-center">
+        <div className='w-[80%] '>
+          <h2 className="text-4xl font-bold mb-4">
+            Proven Performance
+          </h2>
+          <p className="text-lg text-gray-300 mb-8">
+            Our strategies are backtested and battle-tested with real money. No fake promises, just transparent results.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-green-500">
+                +127%
+              </h3>
+              <p className="text-gray-300">
+                Best Strategy Return
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-orange-400">
+                99.3%
+              </h3>
+              <p className="text-gray-300">
+                Uptime Reliablilty
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-blue-400">
+                40+
+              </h3>
+              <p className="text-gray-300">
+                Running Algo
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-purple-500">
+                24/7
+              </h3>
+              <p className="text-gray-300">
+                Autotrade Active
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className=" w-full py-10 px-6 mx-auto flex justify-center">
+        <div className="w-[80%] bg-gray-800 rounded-lg p-6">
+          <h3 className="text-xl font-bold mb-2">
+            Strategy Performance Chart
+          </h3>
+          <div className="flex justify-center">
+            <img src="/chart.png" alt="Strategy Performance Chart" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
+
 const Section2 = () => {
   return (
     <div className='md: h-screen'>
-      <div className="relative h-full w-full bg-slate-950">
+      <div className="relative h-full w-full">
         <WhyByScript />
         <HowItWorks />
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]">
-        </div>
+        <HowItWorks2 />
+        {/* <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]">
+        </div>*/}
       </div>
     </div>
   )
 }
 const LiveStrategyPreview = () => {
   return (
-    <section className="bg-black text-white py-16">
+    <section className=" text-white py-16 bg-gray-950">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -460,108 +566,71 @@ const LiveStrategyPreview = () => {
 
 const UserTestimonialsAndSecurity = () => {
   return (
-    <section className="bg-black text-white">
-      {/* Testimonials */}
-      <div className="max-w-6xl px-6 py-16 mx-auto">
-        <h2 className="text-4xl font-bold mb-4 text-center">
-          What Our <span className="text-brand_primary">Users</span> Say
-        </h2>
-        <p className="text-xl max-w-3xl mx-auto text-center">
-          Real people, real results.
-        </p>
+    <>
+      <section className="bg-black text-white">
+        {/* Testimonials */}
+        <div className="max-w-6xl px-6 py-16 mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-center">
+            What Our <span className="text-brand_primary">Users</span> Say
+          </h2>
+          <p className="text-xl max-w-3xl mx-auto text-center">
+            Real people, real results.
+          </p>
 
-        {/* Testimonial Cards */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1: Alex K. */}
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <div className="flex items-center space-x-4">
-              <img src="https://avatar.iran.liara.run/public" alt="Alex K." className="w-12 h-12 rounded-full" />
-              <div>
-                <p className="text-xl font-bold">Alex K.</p>
-                <p className="text-sm">Trading since 2021</p>
-              </div>
-            </div>
-            <p className="mt-4 text-sm">
-              "Now my account trades itself. I just check it every night. Up 143% since I started 6 months ago."
-            </p>
-          </div>
+          {/* Testimonial Cards */}
+          <HorizontalScrollingCards items={testimonials1} />
+        </div>
 
-          {/* Card 2: Sarah M. */}
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <div className="flex items-center space-x-4">
-              <img src="https://avatar.iran.liara.run/public" alt="Sarah M." className="w-12 h-12 rounded-full" />
-              <div>
-                <p className="text-xl font-bold">Sarah M.</p>
-                <p className="text-sm">Trading since 2022</p>
-              </div>
-            </div>
-            <p className="mt-4 text-sm">
-              "I work full-time and couldn't keep up with the markets. byScript has been a game-changer for my portfolio."
-            </p>
-          </div>
 
-          {/* Card 3: Michael T. */}
-          <div className="bg-gray-800 p-6 rounded-lg">
-            <div className="flex items-center space-x-4">
-              <img src="https://avatar.iran.liara.run/public" alt="Michael T." className="w-12 h-12 rounded-full" />
-              <div>
-                <p className="text-xl font-bold">Michael T.</p>
-                <p className="text-sm">Trading since 2020</p>
-              </div>
+      </section>
+      <section className="bg-gray-950 text-white">
+        {/* Security & Compliance */}
+        <div className="max-w-6xl px-6 py-16 mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-center">
+            Security & <span className="text-brand_primary">Compliance</span>
+          </h2>
+          <p className="text-xl max-w-3xl mx-auto text-center">
+            Your safety is our priority.
+          </p>
+
+          {/* Icons with Descriptions */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1: Your Funds Stay Safe */}
+            <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h3 className="text-xl font-bold">Your Funds Stay Safe</h3>
+              <p className="text-sm">
+                Funds remain on your exchange. We never touch your crypto directly.
+              </p>
             </div>
-            <p className="mt-4 text-sm">
-              "After losing money with manual trading, byScript's algorithms have consistently delivered results. No more emotional decisions."
-            </p>
+
+            {/* Card 2: Trusted Execution */}
+            <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <h3 className="text-xl font-bold">Trusted Execution</h3>
+              <p className="text-sm">
+                Execution runs via 3Commas and TradingView — industry standard platforms.
+              </p>
+            </div>
+
+            {/* Card 3: Regulatory Compliance */}
+            <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+              <h3 className="text-xl font-bold">Regulatory Compliance</h3>
+              <p className="text-sm">
+                On track for WPA EA licensing — becoming one of the first regulated algo trading services.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Security & Compliance */}
-      <div className="max-w-6xl px-6 py-16 mx-auto">
-        <h2 className="text-4xl font-bold mb-4 text-center">
-          Security & <span className="text-brand_primary">Compliance</span>
-        </h2>
-        <p className="text-xl max-w-3xl mx-auto text-center">
-          Your safety is our priority.
-        </p>
-
-        {/* Icons with Descriptions */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1: Your Funds Stay Safe */}
-          <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 className="text-xl font-bold">Your Funds Stay Safe</h3>
-            <p className="text-sm">
-              Funds remain on your exchange. We never touch your crypto directly.
-            </p>
-          </div>
-
-          {/* Card 2: Trusted Execution */}
-          <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <h3 className="text-xl font-bold">Trusted Execution</h3>
-            <p className="text-sm">
-              Execution runs via 3Commas and TradingView — industry standard platforms.
-            </p>
-          </div>
-
-          {/* Card 3: Regulatory Compliance */}
-          <div className="bg-gray-800 p-6 rounded-lg flex flex-col items-center space-y-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-brand_primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-            <h3 className="text-xl font-bold">Regulatory Compliance</h3>
-            <p className="text-sm">
-              On track for WPA EA licensing — becoming one of the first regulated algo trading services.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
@@ -658,11 +727,11 @@ export default function page() {
   return (
     <>
       <div className="bg-black text-white">
-        {/* Header */}
         <Navbar2 />
         <Hero />
         <LiveTradingDashboard />
         <Section2 />
+        <ProvenPerformance />
         <LiveStrategyPreview />
         <UserTestimonialsAndSecurity />
         <Footer />
