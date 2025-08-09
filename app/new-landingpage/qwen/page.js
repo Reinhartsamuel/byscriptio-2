@@ -12,6 +12,7 @@ import { FaLink } from "react-icons/fa6"; // Link icon
 import { BsGraphUp } from "react-icons/bs";
 import { testimonials1 } from "../../components/TestimonialsComponent";
 import HorizontalScrollingCards from "../../components/HorizontalScrollingCards";
+import CountUp from 'react-countup';
 
 
 const Navbar2 = () => {
@@ -148,20 +149,55 @@ const Navbar2 = () => {
 
 const LiveTradingDashboard = () => {
   return (
-    <div className='w-full flex flex-col md:flex-row items-center justify-center h-screen p-4'>
+    <div className='w-full grid grid-cols-1 md:grid-cols-2 items-center justify-center h-screen p-4'>
       {/* Left Section: Title and Description */}
-      <div className="md:w-1/2 p-6 mb-6 md:mb-0">
-        <h2 className="text-3xl font-bold mb-4">Real-Time Performance, Unmatched Results</h2>
-        <p className="text-lg text-gray-600 mb-6">
-          Monitor your algorithmic trading strategies in real-time with ByScriptio. Our platform delivers consistent, high-performance results, giving you the edge in volatile markets.
-        </p>
-        <button className="bg-brand_primary text-black font-bold px-6 py-2 rounded-lg hover:bg-brand_primary_hover transition">
-          Start Trading Now
-        </button>
+      <div className="py-10 px-6 mx-auto flex justify-center">
+        <div className='w-[80%] '>
+          <h2 className="text-4xl font-bold mb-4">
+            Proven Performance
+          </h2>
+          <p className="text-lg text-gray-300 mb-8">
+            Our strategies are backtested and battle-tested with real money. No fake promises, just transparent results.
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-green-500">
+                +127%
+              </h3>
+              <p className="text-gray-300">
+                Best Strategy Return
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-orange-400">
+                99.3%
+              </h3>
+              <p className="text-gray-300">
+                Uptime Reliablilty
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-blue-400">
+                40+
+              </h3>
+              <p className="text-gray-300">
+                Running Algo
+              </p>
+            </div>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-bold mb-2 text-purple-500">
+                24/7
+              </h3>
+              <p className="text-gray-300">
+                Autotrade Active
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Right Section: Existing Dashboard */}
-      <div className="bg-gray-900 text-white p-6 rounded-lg md:w-[40%] h-auto">
+      <div className="bg-gray-900 text-white p-6 rounded-lg md:w-[80%] mx-auto h-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Live Trading Dashboard</h2>
@@ -232,7 +268,16 @@ const Hero = () => {
       {/* Stats Section */}
       <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
         <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-          <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>
+          {/* <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>*/}
+          <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={330}
+            delay={0}
+            prefix={'$'}
+            suffix={'+'}
+          />
           <p className="text-sm">Assets Under Management</p>
         </div>
         <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
@@ -283,7 +328,7 @@ const WhyByScript = () => {
           Last year, byScript users grew their assets by 300% — no noisy signals, no endless charts.
         </p>
       </div>
-      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-[5%] md:mx-auto">
         {features.map((feature, idx) => (
           <div
             key={idx}
@@ -294,70 +339,6 @@ const WhyByScript = () => {
             <p className="mt-2 text-sm text-white/70">{feature.desc}</p>
           </div>
         ))}
-      </div>
-    </section>
-  );
-};
-
-const HowItWorks = () => {
-  return (
-    <section className=" text-white py-16 bg-gray-900">
-      {/* Section Title */}
-      <div className="max-w-6xl px-6 mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-4">
-          How It <span className="text-brand_primary">Works</span>
-        </h2>
-        <p className="text-xl max-w-3xl mx-auto">
-          Three simple steps to automated trading success.
-        </p>
-      </div>
-
-      {/* Cards */}
-      <div className="max-w-6xl px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Card 1: Connect Your Exchange */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
-          <div className="flex-shrink-0">
-            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
-              1
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">Connect Your Exchange</h3>
-            <p className="mt-2 text-sm">
-              Securely link your Binance, OKX, or Bybit account via 3Commas. Your funds remain in your exchange.
-            </p>
-          </div>
-        </div>
-
-        {/* Card 2: Choose a Strategy */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
-          <div className="flex-shrink-0">
-            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
-              2
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">Choose a Strategy</h3>
-            <p className="mt-2 text-sm">
-              Select from our proven trading strategies based on your risk tolerance and investment goals.
-            </p>
-          </div>
-        </div>
-
-        {/* Card 3: Activate Auto-Trade */}
-        <div className="bg-gray-800 p-6 rounded-lg flex items-start space-x-4 relative">
-          <div className="flex-shrink-0">
-            <div className="absolute top-[-1rem] left-[-1rem] bg-brand_primary font-bold text-black rounded-full w-[2rem] h-[2rem] flex items-center justify-center">
-              3
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-bold">Activate Auto-Trade</h3>
-            <p className="mt-2 text-sm">
-              Hit start and let the algorithm do its work. Monitor performance anytime, anywhere.
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -413,7 +394,7 @@ const HowItWorks2 = () => {
 
 const ProvenPerformance = () => {
   return (
-    <section className="bg-gray-900 text-white items-center w-full grid grid-cols-1 md:grid-cols-2">
+    <section className="bg-slate-950 text-white items-center w-full grid grid-cols-1 md:grid-cols-2">
       <div className="w-full py-10 px-6 mx-auto flex justify-center">
         <div className='w-[80%] '>
           <h2 className="text-4xl font-bold mb-4">
@@ -479,7 +460,6 @@ const Section2 = () => {
     <div className='md: h-screen'>
       <div className="relative h-full w-full">
         <WhyByScript />
-        <HowItWorks />
         <HowItWorks2 />
         {/* <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]">
         </div>*/}
@@ -489,7 +469,7 @@ const Section2 = () => {
 }
 const LiveStrategyPreview = () => {
   return (
-    <section className=" text-white py-16 bg-gray-950">
+    <section className=" text-white py-16 bg-black">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -501,62 +481,79 @@ const LiveStrategyPreview = () => {
       </div>
 
       {/* Cards */}
-      <div className="max-w-6xl px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Card 1: Momentum Hunter */}
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold">Momentum Hunter</h3>
-            <span className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary rounded-full">Active</span>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            {/* Column 1 */}
-            <div>
-              <p className="text-sm font-medium">Timeframe</p>
-              <p className="text-sm">4H</p>
+      <div className="max-w-6xl h-[calc(60vh-240px)] px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-bold">XMA</h3>
+              <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full">Active</span>
             </div>
-            <div>
-              <p className="text-sm font-medium">Take Profit</p>
-              <p className="text-sm">1.5–3.0%</p>
-            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              {/* Column 1 */}
+              <div>
+                <p className="text-sm font-medium">Timeframe</p>
+                <p className="text-sm">4H</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Profit Factor</p>
+                <p className="text-sm">1.9</p>
+              </div>
 
-            {/* Column 2 */}
-            <div>
-              <p className="text-sm font-medium">Trading Pairs</p>
-              <p className="text-sm">BTC, ETH, SOL, BNB</p>
+              {/* Column 2 */}
+              <div>
+                <p className="text-sm font-medium">Trading Pairs</p>
+                <p className="text-sm">XRP, BTC, ETH, SOL, BNB</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Market</p>
+                <p className="text-sm">SPOT</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium">Stop Loss</p>
-              <p className="text-sm">1.2%</p>
+          </div>
+          <div className='flex w-full justify-between'>
+            <div className="flex flex-col items-start">
+              <p className="text-sm font-small">YTD Performance</p>
+              <h3 className="text-lg font-bold text-green-500">+127%</h3>
             </div>
+            <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
           </div>
         </div>
 
         {/* Card 2: Trend Surfer */}
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold">Trend Surfer</h3>
-            <span className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary rounded-full">Active</span>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-4">
-            {/* Column 1 */}
-            <div>
-              <p className="text-sm font-medium">Timeframe</p>
-              <p className="text-sm">1D</p>
+        <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-bold">GRID CUANTERUS</h3>
+              <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full">Active</span>
             </div>
-            <div>
-              <p className="text-sm font-medium">Take Profit</p>
-              <p className="text-sm">2.5–5.0%</p>
-            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              {/* Column 1 */}
+              <div>
+                <p className="text-sm font-medium">Timeframe</p>
+                <p className="text-sm">1M</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Profit Factor</p>
+                <p className="text-sm">1.5</p>
+              </div>
 
-            {/* Column 2 */}
-            <div>
-              <p className="text-sm font-medium">Trading Pairs</p>
-              <p className="text-sm">BTC, ETH, ADA, DOT</p>
+              {/* Column 2 */}
+              <div>
+                <p className="text-sm font-medium">Trading Pairs</p>
+                <p className="text-sm">XRP, BTC, ETH, SOL, BNB</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Market</p>
+                <p className="text-sm">Futures</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium">Stop Loss</p>
-              <p className="text-sm">2.0%</p>
+          </div>
+          <div className='flex w-full justify-between'>
+            <div className="flex flex-col items-start">
+              <p className="text-sm font-small">YTD Performance</p>
+              <h3 className="text-lg font-bold text-green-500">+127%</h3>
             </div>
+            <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
           </div>
         </div>
       </div>
@@ -567,7 +564,7 @@ const LiveStrategyPreview = () => {
 const UserTestimonialsAndSecurity = () => {
   return (
     <>
-      <section className="bg-black text-white">
+      <section className="bg-gray-950 text-white">
         {/* Testimonials */}
         <div className="max-w-6xl px-6 py-16 mx-auto">
           <h2 className="text-4xl font-bold mb-4 text-center">
@@ -655,7 +652,13 @@ const Footer = () => {
         <div className="max-w-6xl px-6 mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Column 1: byScript.io */}
           <div>
-            <img src="/logo.png" alt="byScript.io" className="h-8 mb-2" />
+            <a href="/">
+              <Image
+                alt="byScript"
+                src={logo}
+                className="h-8 w-auto"
+              />
+            </a>
             <p className="text-sm mb-4">
               Automated crypto trading, done right.
             </p>
@@ -729,9 +732,9 @@ export default function page() {
       <div className="bg-black text-white">
         <Navbar2 />
         <Hero />
-        <LiveTradingDashboard />
-        <Section2 />
-        <ProvenPerformance />
+        {/* <LiveTradingDashboard />*/}
+        {/* <Section2 />*/}
+        {/* <ProvenPerformance />*/}
         <LiveStrategyPreview />
         <UserTestimonialsAndSecurity />
         <Footer />

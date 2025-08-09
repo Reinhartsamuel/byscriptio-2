@@ -90,7 +90,7 @@ module.exports = {
         leagueSpartan : ['var(--font-leagueSpartan)'],
       },
       colors: {
-        brand_primary : '#68FE1D',
+        brand_primary : '#66ff33',
         brand_secondary : '#00F7D5',
         brand_primary_hover: '#AFFF5C',
         brand_border: '#D9D9D9',

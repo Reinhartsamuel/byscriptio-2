@@ -1,111 +1,145 @@
-import React from 'react';
-import { QRCodeCanvas } from 'qrcode.react';
-import Image from 'next/image';
 import PropTypes from 'prop-types';
-import logo_combination_transparent from "../../public/logo_combination_transparent.png";
-import NeonRobot from '../../public/NeonRobot.png';
-import { cn } from '@/lib/util';
+import Image from 'next/image';
 import { IoMdClose } from 'react-icons/io';
+import { QRCodeCanvas } from 'qrcode.react';
 import _ from 'lodash';
+import NeonRobot from '../../public/NeonRobot.png';
+import React from 'react';
+import logo_combination_transparent from '@/public/logo_combination_transparent.png';
+import { cn } from '@/lib/util';
 import { useScreenshotStore } from '../store/screenshotStore';
 
-
-const ProfitCard = ({
-  profitPercent = 12,
-  profitUsd = 512,
-  entryPrice = 321321,
-  exitPrice = 12123,
-  qrValue,
+export default function ProfitCard({
+  profitPercent,
+  profitUsd,
   pair,
-  futures = false,
-  side = 'long',
+  futures,
+  side,
   sideColor,
-  leverage = 12,
-}) => {
+  leverage,
+  entryPrice,
+  exitPrice,
+  qrValue
+}) {
   const isProfit = profitUsd >= 0;
-  const profitColor = isProfit ? 'text-green-500' : 'text-red-500';
+  const profitColor = isProfit ? 'text-brand_primary' : 'text-red-500';
   const isPositive = profitPercent >= 0;
-  const {
-    setShowProfitCard,
-  } = useScreenshotStore();
+  const { setShowProfitCard } = useScreenshotStore();
+  const pairNameWithSlash = () => {
+    if (!pair) return '';
+    if (!pair?.includes('_')) return '';
+    const coins = pair?.split('_');
+    return `${coins[1]}/${coins[0]}`;
+  }
 
   return (
-    <div className="h-screen w-full md:w-[700px] flex flex-col text-white font-sans px-6 py-8 relative">
-      <button
-        onClick={() => setShowProfitCard(false)}
-        className='z-20 absolute top-2 right-2 p-1 rounded-lg text-gray-700 dark:text-gray-400 dark:bg-gray-600 hover:bg-gray-50 hover:text-gray-600'
-      >
-        <IoMdClose />
-      </button>
-      <Image
+    <div className="relative flex items-center justify-center min-h-[100dvh] w-full bg-black overflow-y-auto">
+      {/* Background Image */}
+      {/* <Image
         src={NeonRobot}
         alt="NeonRobot"
-        layout="fill"
-        objectFit="cover"
-        className="-z-2"
-      />
+        fill
+        priority
+        className="absolute inset-0 object-cover z-0 w-full md:aspect-[9/16]"
+      />*/}
 
-      <div className='z-2 absolute bottom-5 left-5 flex w-full justfiy-center'>
-        <Image
-          src={logo_combination_transparent}
-          alt="logo"
-          objectFit=""
-          className="w-3/5 mx-auto"
-        />
-      </div>
-      <div className="z-10 w-full justify-center">
-        <p className='text-white text-3xl font-thin mx-auto text-center mt-5'>Auto-trade Result</p>
-        <div className='flex flex-col mt-10  text-center'>
-          <p className={cn(profitColor, 'text-6xl font-bold mt-5')}>
-            {isPositive && '+'}{profitPercent}%
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40 z-0 " />
+
+      {/* Card Content */}
+      <div
+        className="
+          relative z-10
+          w-full
+          sm:max-w-[500px]
+          md:aspect-[9/16] md:h-auto md:w-auto
+          px-4 sm:px-6 md:px-8
+          py-6 sm:py-8 md:py-10
+          flex flex-col justify-between
+          min-h-[100dvh] sm:min-h-[unset] md:min-h-0
+        "
+        style={{ backgroundImage: `url(${NeonRobot.src})`, backgroundSize: 'contain' }}
+      >
+        {/* Close Button */}
+        <button
+          onClick={() => setShowProfitCard(false)}
+          className="absolute top-3 right-3 p-1 rounded-lg text-gray-200 bg-gray-800/70 hover:bg-gray-700"
+        >
+          <IoMdClose size={20} />
+        </button>
+
+        {/* Main Content */}
+        <div>
+          <p className="text-brand_primary text-center font-thin text-2xl sm:text-3xl md:text-4xl mt-2">
+            Auto-trade Result
           </p>
-          <p className={cn(profitColor, 'text-4xl font-bold')}>
-            {isPositive && '+'}{profitUsd} USDT
-          </p>
-          <p className='text-slate-200 text-4xl font-extralight mt-[4rem]'>
-            {pair}
-            {' '}
-            {futures ? 'Futures' : 'Spot'}
-            {' '}
-            <span className={cn(sideColor)}>
-              {_.capitalize(side || '')}
-            </span>
+
+          <div className="flex flex-col mt-8 sm:mt-10 text-center">
+            <p className={cn(profitColor, 'font-bold mt-3 text-4xl sm:text-5xl md:text-6xl')}>
+              {isPositive && '+'}{profitPercent}%
+            </p>
+            <p className={cn(profitColor, 'font-bold text-2xl sm:text-3xl md:text-4xl')}>
+              {isPositive && '+'}{profitUsd} USDT
+            </p>
+          </div>
+
+          <p className="text-slate-200 font-extralight mt-10 text-lg sm:text-xl md:text-2xl text-center">
+            {pairNameWithSlash()} {futures ? 'Futures' : 'Spot'}{' '}
+            <span className={cn(sideColor)}>{_.capitalize(side || '')}</span>
             {leverage > 1 ? ` ${leverage}x` : ''}
           </p>
-          <div className=' flex flex-col gap-2 text-4xl mx-[12%] mt-[2rem] text-center'>
-            <div className='flex flex-row justify-between w-full px-3 gap-2'>
+
+          <div className="text-white flex flex-col gap-2 text-sm sm:text-base md:text-lg mt-6 sm:mt-8 mx-6">
+            <div className="flex justify-between">
               <p>Entry Price</p>
               <p>${entryPrice}</p>
             </div>
-            <div className='flex flex-row justify-between w-full px-3 gap-2'>
+            <div className="flex justify-between">
               <p>Exit Price</p>
               <p>${exitPrice}</p>
             </div>
           </div>
         </div>
 
-        <div className='flex mt-20 mx-[10%]'>
-          <div className='flex flex-col items-center'>
-            <QRCodeCanvas
-              value={qrValue}
-              size={120}
-              level="H"
-              fgColor="#000000"
-              bgColor="#ffffff"
-              marginSize={2}
-              style={{
-                borderRadius: '10%'
-              }}
-            />
-            <p className='text-xl mt-1'>Scan to start<br /> auto-trading</p>
-          </div>
+        {/* QR & Logo Section */}
+        <div className="flex self-start flex-col items-center mt-8 pb-6 sm:pb-8">
+          <QRCodeCanvas
+            value={qrValue}
+            size={100}
+            level="H"
+            fgColor="#000000"
+            bgColor="#ffffff"
+            marginSize={2}
+            style={{ borderRadius: '10%' }}
+          />
+          <p className="text-white text-sm sm:text-base md:text-lg mt-2 text-center">
+            Scan to start<br />auto-trading
+          </p>
+        </div>
+
+        {/* Logo */}
+        <div className="mt-auto flex justify-center pb-4 sm:pb-6">
+          <Image
+            src={logo_combination_transparent}
+            alt="logo"
+            className="w-2/3 sm:w-1/2"
+          />
         </div>
       </div>
+
+      <style jsx global>{`
+        @media only screen
+          and (min-device-width: 768px)
+          and (max-device-width: 834px)
+          and (orientation: portrait) {
+          .ipad\\:aspect-[9\\/16] {
+            aspect-ratio: 9 / 16;
+          }
+        }
+      `}</style>
     </div>
   );
-};
-
-export default ProfitCard;
+}
 
 ProfitCard.propTypes = {
   profitPercent: PropTypes.number.isRequired,
