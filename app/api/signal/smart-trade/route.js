@@ -115,7 +115,7 @@ export async function POST(request) {
       flag: body?.flag || '',
       // result: result.map((x) => x?.status),
     });
-    if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS' && body?.method === 'CREATE') {
+    if (body?.flag !== 'testing' && body?.trading_plan_id !== 'GRID CUANTERUS' && body?.method === 'POST') {
       adminDb.collection('webhooks_safe_preview').add({
         ...body,
         action: determineAction(body),
@@ -125,6 +125,8 @@ export async function POST(request) {
         rawSignal: JSON.stringify(body),
         flag: body?.flag || '',
         // result: result.map((x) => x?.status),
+      }).catch((error) => {
+        console.error(error, 'error saving to webhooks_safe_preview') ;
       });
     }
     console.log(`added webhook with id ${addWebhookResult.id}`)
