@@ -54,7 +54,7 @@ const ShareProfitScreenshot = () => {
           profitUsd={profitCardData?.profit?.usd}               // Number: +$3,250.75
           entryPrice={profitCardData?.position?.price?.value}             // Number: BTC entry price
           exitPrice={profitCardData?.take_profit?.steps?.[0]?.price?.value}              // Number: BTC exit price
-          qrValue="https://trade.byscript.io/xyz123" // String: QR code link
+          qrValue="https://byscript.io" // String: QR code link
           pair={profitCardData?.pair}                   // String: Trading pair
           side={side()}                       // String: "LONG" or "SHORT" or "BUY" or "SELL"
           futures={profitCardData?.requestBody?.market_type === 'futures'}                    // Boolean: true for futures trade
