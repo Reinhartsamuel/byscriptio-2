@@ -53,7 +53,7 @@ const ShareProfitScreenshot = () => {
           profitPercent={profitCardData?.profit?.percent}               // Number: +8.42%
           profitUsd={profitCardData?.profit?.usd}               // Number: +$3,250.75
           entryPrice={profitCardData?.position?.price?.value}             // Number: BTC entry price
-          exitPrice={profitCardData?.take_profit?.steps?.[0]?.price?.value}              // Number: BTC exit price
+          exitPrice={profitCardData?.data?.current_price?.last}              // Number: BTC exit price
           qrValue="https://byscript.io" // String: QR code link
           pair={profitCardData?.pair}                   // String: Trading pair
           side={side()}                       // String: "LONG" or "SHORT" or "BUY" or "SELL"
