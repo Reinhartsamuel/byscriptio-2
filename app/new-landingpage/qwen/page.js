@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ShieldCheckIcon,
   LockClosedIcon,
@@ -13,6 +13,7 @@ import { BsGraphUp } from "react-icons/bs";
 import { testimonials1 } from "../../components/TestimonialsComponent";
 import HorizontalScrollingCards from "../../components/HorizontalScrollingCards";
 import CountUp from 'react-countup';
+import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 
 
 const Navbar2 = () => {
@@ -276,16 +277,34 @@ const Hero = () => {
             end={330}
             delay={0}
             prefix={'$'}
-            suffix={'+'}
+            suffix={'k+'}
           />
           <p className="text-sm">Assets Under Management</p>
         </div>
         <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-          <h2 className="text-4xl font-bold text-brand_primary">200+</h2>
+          {/* <h2 className="text-4xl font-bold text-brand_primary">200+</h2>*/}
+          <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={200}
+            delay={0}
+            prefix={''}
+            suffix={''}
+          />
           <p className="text-sm">Exchange Accounts Connected</p>
         </div>
         <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
-          <h2 className="text-4xl font-bold text-brand_primary">500+</h2>
+          {/* <h2 className="text-4xl font-bold text-brand_primary">500+</h2>*/}
+          <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={500}
+            delay={0}
+            prefix={''}
+            suffix={''}
+          />
           <p className="text-sm">Peak Active Users</p>
         </div>
 
@@ -393,6 +412,22 @@ const HowItWorks2 = () => {
 };
 
 const ProvenPerformance = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getProfitLive() {
+      try {
+        const r = await getCollectionFirebase('3commas_logs',
+          [],
+          {
+
+          }
+        )
+      } catch (error) {
+
+      }
+    }
+    getProfitLive();
+  }, []);
   return (
     <section className="bg-slate-950 text-white items-center w-full grid grid-cols-1 md:grid-cols-2">
       <div className="w-full py-10 px-6 mx-auto flex justify-center">
@@ -732,9 +767,9 @@ export default function page() {
       <div className="bg-black text-white">
         <Navbar2 />
         <Hero />
-        {/* <LiveTradingDashboard />*/}
-        {/* <Section2 />*/}
-        {/* <ProvenPerformance />*/}
+        <LiveTradingDashboard />
+        <Section2 />
+        <ProvenPerformance />
         <LiveStrategyPreview />
         <UserTestimonialsAndSecurity />
         <Footer />
