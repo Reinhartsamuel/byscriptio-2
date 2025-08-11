@@ -2,6 +2,7 @@ import { adminDb } from "@/lib/firebase-admin-config";
 import generateSignatureRsa from "../generateSignatureRsa";
 import { getMultiplier } from "../getMultiplier";
 import { pairNameFor3commas } from "../pairNameFor3commas";
+import { redisClient } from "@/app/config/redis";
 
 const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
@@ -163,6 +164,12 @@ export async function createSmartTrade({
     const added = await adminDb
         .collection('3commas_logs')
         .add(dataToAdd);
+
+    try {
+    await redisClient.hSet(`smart_trade_id:${smart_trade_id}`,dataToAdd);
+    } catch(error) {
+      console.log(error.message, `:::::::REDIS SET ERROR`);
+    }
 
     console.log(`added to 3commas_logs ${added.id}`)
     return { ...responseExecute, smart_trade_id };

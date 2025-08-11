@@ -10,6 +10,31 @@ const API_KEY = process.env.THREE_COMMAS_API_KEY_CREATE_SMART_TRADE;
 const PRIVATE_KEY = process.env.THREE_COMMAS_RSA_PRIVATE_KEY_SMART_TRADE;
 const baseUrl = "https://api.3commas.io";
 
+
+export async function POST(request) {
+  try {
+    // await redisClient.set("test1", "kudaa");
+    const data= await redisClient.hGetAll('smart_trade_id:123321')
+    // const data = await redisClient.hSet('smart_trade_id:123321',{
+    //   smart_trade_id:123123,
+    //   exchange : 'binance',
+    //   kuda :'liar'
+    // })
+    return NextResponse.json({
+      status: true,
+      message: "Redis set successfully",
+      data
+    });
+  } catch (error) {
+    return NextResponse.json({
+      status: false,
+      error: error.message,
+    });
+  }
+}
+
+
+
 // export async function POST(request) {
 //   try {
 //     trackIp(request);
@@ -144,19 +169,3 @@ const baseUrl = "https://api.3commas.io";
 // }
 //
 //
-export async function POST(request) {
-  try {
-    // await redisClient.set("test1", "kudaa");
-    const data= await redisClient.get('test1')
-    return NextResponse.json({
-      status: true,
-      message: "Redis set successfully",
-      data
-    });
-  } catch (error) {
-    return NextResponse.json({
-      status: false,
-      error: error.message,
-    });
-  }
-}
