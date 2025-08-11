@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ShieldCheckIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/solid";
 import { FaRobot, FaPlug } from "react-icons/fa6";
 import logo from "../../../public/combination-mini.png";
+import discord_logo from "../../../public/Discord-logo.png";
+import logo_mark from "../../../public/Logo-Mark.png";
 import Image from 'next/image';
 import herobackground from "../../../public/herobackground.png";
 import { FaLink } from "react-icons/fa6"; // Link icon
@@ -14,6 +16,8 @@ import { testimonials1 } from "../../components/TestimonialsComponent";
 import HorizontalScrollingCards from "../../components/HorizontalScrollingCards";
 import CountUp from 'react-countup';
 import { getCollectionFirebase } from '@/app/utils/firebaseApi';
+import useCountDocuments from '@/app/hooks/CountHook';
+import Spinner from '@/app/components/ui/Spinner';
 
 
 const Navbar2 = () => {
@@ -55,9 +59,11 @@ const Navbar2 = () => {
               </button>
             </a>
 
-            <button className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition">
-              Start Trading
-            </button>
+            <a href="/dashboard/profile">
+              <button className="bg-brand_primary text-black px-4 py-1.5 rounded-md font-semibold hover:bg-cyan-300 transition">
+                Start Trading
+              </button>
+            </a>
           </div>
         </div>
 
@@ -148,7 +154,12 @@ const Navbar2 = () => {
   );
 };
 
-const LiveTradingDashboard = () => {
+const ProvenPerformance = () => {
+  const { count = 200, loading: loadingRunningAlgo } = useCountDocuments({
+    collectionName: 'trading_plan_pair',
+    conditions: [],
+    authRequired: false
+  })
   return (
     <div className='w-full grid grid-cols-1 md:grid-cols-2 items-center justify-center h-screen p-4'>
       {/* Left Section: Title and Description */}
@@ -179,7 +190,7 @@ const LiveTradingDashboard = () => {
             </div>
             <div className="bg-gray-800 rounded-lg p-6">
               <h3 className="text-xl font-bold mb-2 text-blue-400">
-                40+
+                {count}+
               </h3>
               <p className="text-gray-300">
                 Running Algo
@@ -201,9 +212,9 @@ const LiveTradingDashboard = () => {
       <div className="bg-gray-900 text-white p-6 rounded-lg md:w-[80%] mx-auto h-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Live Trading Dashboard</h2>
+          <h2 className="text-xl font-bold">Top Running Autotrade Performance</h2>
           <span className="flex items-center space-x-2">
-            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-faster-pulse"></span>
             <span className="text-green-500">Active</span>
           </span>
         </div>
@@ -241,6 +252,11 @@ const LiveTradingDashboard = () => {
 };
 
 const Hero = () => {
+  const { count = 200, loading: loadingActiveAutotrades } = useCountDocuments({
+    collectionName: 'dca_bots',
+    conditions: [{ field: 'status', operator: '==', value: 'ACTIVE' }],
+    authRequired: false
+  })
   return (<>
     {/* Hero Section */}
     <section className="relative flex flex-col items-start justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url(${herobackground.src})` }}>
@@ -254,12 +270,12 @@ const Hero = () => {
             No guesswork. No sleepless nights. Just strategy.
           </p>
           <div className="mt-8 flex justify-start space-x-4">
-            <button className="px-6 py-3 text-black font-bold bg-brand_primary rounded-full hover:bg-green-600">
+            <a href='/dashboard/profile' className="px-6 py-3 text-black font-bold bg-brand_primary rounded-full hover:bg-green-600">
               Start Auto Trading Now
-            </button>
-            <button className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
+            </a>
+            <a href='/dashboard' className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
               View Strategies
-            </button>
+            </a>
           </div>
         </div>
         <div className='w-full flex justify-center items-center '>
@@ -274,7 +290,7 @@ const Hero = () => {
             className='text-4xl font-bold text-brand_primary'
             separator={','}
             start={0}
-            end={330}
+            end={364}
             delay={0}
             prefix={'$'}
             suffix={'k+'}
@@ -300,12 +316,12 @@ const Hero = () => {
             className='text-4xl font-bold text-brand_primary'
             separator={','}
             start={0}
-            end={500}
+            end={count}
             delay={0}
             prefix={''}
             suffix={''}
           />
-          <p className="text-sm">Peak Active Users</p>
+          <p className="text-sm">Active Autotrades</p>
         </div>
 
       </div>
@@ -411,82 +427,7 @@ const HowItWorks2 = () => {
   );
 };
 
-const ProvenPerformance = () => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    async function getProfitLive() {
-      try {
-        const r = await getCollectionFirebase('3commas_logs',
-          [],
-          {
 
-          }
-        )
-      } catch (error) {
-
-      }
-    }
-    getProfitLive();
-  }, []);
-  return (
-    <section className="bg-slate-950 text-white items-center w-full grid grid-cols-1 md:grid-cols-2">
-      <div className="w-full py-10 px-6 mx-auto flex justify-center">
-        <div className='w-[80%] '>
-          <h2 className="text-4xl font-bold mb-4">
-            Proven Performance
-          </h2>
-          <p className="text-lg text-gray-300 mb-8">
-            Our strategies are backtested and battle-tested with real money. No fake promises, just transparent results.
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-2 text-green-500">
-                +127%
-              </h3>
-              <p className="text-gray-300">
-                Best Strategy Return
-              </p>
-            </div>
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-2 text-orange-400">
-                99.3%
-              </h3>
-              <p className="text-gray-300">
-                Uptime Reliablilty
-              </p>
-            </div>
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-2 text-blue-400">
-                40+
-              </h3>
-              <p className="text-gray-300">
-                Running Algo
-              </p>
-            </div>
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-bold mb-2 text-purple-500">
-                24/7
-              </h3>
-              <p className="text-gray-300">
-                Autotrade Active
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className=" w-full py-10 px-6 mx-auto flex justify-center">
-        <div className="w-[80%] bg-gray-800 rounded-lg p-6">
-          <h3 className="text-xl font-bold mb-2">
-            Strategy Performance Chart
-          </h3>
-          <div className="flex justify-center">
-            <img src="/chart.png" alt="Strategy Performance Chart" />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 
 
@@ -503,6 +444,36 @@ const Section2 = () => {
   )
 }
 const LiveStrategyPreview = () => {
+  const [tradingPlans, setTradingPlans] = useState([]);
+  async function getTpp() {
+    try {
+      const tradingPlans = await getCollectionFirebase(
+        'trading_plans',
+        [{ field: 'status', operator: '==', value: 'ACTIVE' }],
+        null,
+        2
+      );
+      const promises = tradingPlans.map(async (tradingPlan) => {
+        const arr = await getCollectionFirebase(
+          'trading_plan_pair',
+          [{ field: 'trading_plan_id', operator: '==', value: tradingPlan.id || '' }],
+          null,
+          1
+        );
+        return { ...tradingPlan, ...arr[0] };
+      });
+      const promiseResult = await Promise.all(promises);
+      console.log(tradingPlans, 'tradingPlans')
+      console.log(promiseResult, 'promiseResult')
+
+      setTradingPlans(promiseResult);
+    } catch (error) {
+      console.error(error, ':::::::ERROR on LIVESTRATEGYPREVIEW')
+    }
+  }
+  useEffect(() => {
+    getTpp();
+  }, [])
   return (
     <section className=" text-white py-16 bg-black">
       {/* Section Title */}
@@ -514,83 +485,46 @@ const LiveStrategyPreview = () => {
           Real performance, real results. No screenshots, just live data.
         </p>
       </div>
-
       {/* Cards */}
       <div className="max-w-6xl h-[calc(60vh-240px)] px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-bold">XMA</h3>
-              <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full">Active</span>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              {/* Column 1 */}
-              <div>
-                <p className="text-sm font-medium">Timeframe</p>
-                <p className="text-sm">4H</p>
+        {tradingPlans?.length > 0 && tradingPlans?.map((x, i) => (
+          <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between" key={i}>
+            <div>
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold">{x?.marketingName || x?.id}</h3>
+                <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full animate-faster-pulse">Active</span>
               </div>
-              <div>
-                <p className="text-sm font-medium">Profit Factor</p>
-                <p className="text-sm">1.9</p>
-              </div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                {/* Column 1 */}
+                <div>
+                  <p className="text-sm font-medium">Timeframe</p>
+                  <p className="text-sm">{x?.timeframe || '4H'}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Profit Factor</p>
+                  <p className="text-sm">{x?.profitFactor || '1.9'}</p>
+                </div>
 
-              {/* Column 2 */}
-              <div>
-                <p className="text-sm font-medium">Trading Pairs</p>
-                <p className="text-sm">XRP, BTC, ETH, SOL, BNB</p>
+                {/* Column 2 */}
+                <div>
+                  <p className="text-sm font-medium">Trading Pairs</p>
+                  <p className="text-sm">XRP, BTC, ETH, SOL, BNB</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Market</p>
+                  <p className="text-sm">{(x?.marketType || '')?.toUpperCase()}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium">Market</p>
-                <p className="text-sm">SPOT</p>
+            </div>
+            <div className='flex w-full justify-between'>
+              <div className="flex flex-col items-start">
+                <p className="text-sm font-small">YTD Performance</p>
+                <h3 className="text-lg font-bold text-green-500">+127%</h3>
               </div>
+              <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
             </div>
           </div>
-          <div className='flex w-full justify-between'>
-            <div className="flex flex-col items-start">
-              <p className="text-sm font-small">YTD Performance</p>
-              <h3 className="text-lg font-bold text-green-500">+127%</h3>
-            </div>
-            <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
-          </div>
-        </div>
-
-        {/* Card 2: Trend Surfer */}
-        <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-bold">GRID CUANTERUS</h3>
-              <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full">Active</span>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              {/* Column 1 */}
-              <div>
-                <p className="text-sm font-medium">Timeframe</p>
-                <p className="text-sm">1M</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Profit Factor</p>
-                <p className="text-sm">1.5</p>
-              </div>
-
-              {/* Column 2 */}
-              <div>
-                <p className="text-sm font-medium">Trading Pairs</p>
-                <p className="text-sm">XRP, BTC, ETH, SOL, BNB</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium">Market</p>
-                <p className="text-sm">Futures</p>
-              </div>
-            </div>
-          </div>
-          <div className='flex w-full justify-between'>
-            <div className="flex flex-col items-start">
-              <p className="text-sm font-small">YTD Performance</p>
-              <h3 className="text-lg font-bold text-green-500">+127%</h3>
-            </div>
-            <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );
@@ -599,7 +533,7 @@ const LiveStrategyPreview = () => {
 const UserTestimonialsAndSecurity = () => {
   return (
     <>
-      <section className="bg-gray-950 text-white">
+      <section className="bg-gray-900 text-white">
         {/* Testimonials */}
         <div className="max-w-6xl px-6 py-16 mx-auto">
           <h2 className="text-4xl font-bold mb-4 text-center">
@@ -666,6 +600,42 @@ const UserTestimonialsAndSecurity = () => {
   );
 };
 
+const JoinCommunity = () => {
+  return (
+    <section className='h-screen flex flex-col justify-center items-center'>
+      <div className='text-center'>
+        <h2 className='text-3xl font-bold mb-4 text-white'>
+          Join Our
+          <span className='text-3xl text-brand_primary'> Community</span>
+        </h2>
+        <p className='text-lg mb-8'>Follow our social media channels for the latest news and updates. Feel free to reach out
+          anytime for inquiries or assistance.</p>
+      </div>
+
+      <a target="_blank" rel="noreferrer" href="https://discord.gg/eHaNsARNps" className='mx-auto relative w-full md:w-[70%] border  border-gray-900 rounded-lg flex flex-col justify-center items-center h-[50%] bg-gradient-to-tr from-transparent to-slate-600'>
+        <Image
+          alt="byScript"
+          src={discord_logo}
+          className="h-20 w-auto absolute top-0 left-5"
+        />
+        <div className='flex items-center gap-2 cursor-pointer'>
+          <Image
+            alt="logo_mark"
+            src={logo_mark}
+            className="h-20 w-20 rounded-full border-2 border-gray-900 object-cover"
+          />
+          <h2 className='text-xl font-bold text-white text-center'>
+            Discord Channel Algotrading Community
+            <span className='text-xl text-brand_primary'> by</span>
+            Script.io
+          </h2>
+        </div>
+      </a>
+
+    </section>
+  )
+}
+
 const Footer = () => {
   return (
     <div>
@@ -674,7 +644,7 @@ const Footer = () => {
         <div className="max-w-6xl px-6 mx-auto text-center">
           <h2 className="text-4xl font-bold mb-4 text-black">Stop Guessing. Start Automating.</h2>
           <p className="text-xl max-w-3xl mx-auto mb-8 text-black">
-            Every trade is made byScript. Join hundreds of traders who've already made the switch.
+            Autotrade, made byScript.
           </p>
           <button className="px-6 py-3 text-white bg-black rounded-full hover:bg-gray-800">
             Connect Your Exchange
@@ -695,7 +665,7 @@ const Footer = () => {
               />
             </a>
             <p className="text-sm mb-4">
-              Automated crypto trading, done right.
+              Autotrade, made byScript.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-white hover:text-brand_primary">
@@ -761,17 +731,193 @@ const Footer = () => {
 };
 
 
+const ScrollableRow = ({ direction, data }) => {
+
+  return (
+    <div
+      className="flex overflow-x-hidden whitespace-nowrap"
+    >
+      {data.map((item, index) => (
+        <Card key={index} {...item} />
+      ))}
+      {data.map((item, index) => (
+        <Card key={index + data.length} {...item} />
+      ))}
+    </div>
+  );
+};
+
+const Card = ({ icon, name, change }) => {
+  return (
+    <div
+      className="
+      bg-gray-800
+      text-white
+      rounded-lg p-4
+      m-2 flex items-center
+      space-x-4 scroll-snap-
+      align-start
+      min-w-xs
+      "
+    >
+      <img src={icon} alt={name} className="w-8 h-8 rounded-full" />
+      <div>
+        <p className="text-xl font-bold">{name}</p>
+        <p className={`${change > 0 ? "text-green-500" : "text-red-500"}`}>
+          {change > 0 ? `+${change}%` : `${change}%`}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const TrackPerformanceSection = () => {
+  const data = [
+    {
+      icon: "/neiro.png",
+      name: "NEIRO",
+      change: 75.00,
+    },
+    {
+      icon: "/apu.png",
+      name: "APU",
+      change: 4.00,
+    },
+    {
+      icon: "/act.png",
+      name: "ACT",
+      change: 7.40,
+    },
+    {
+      icon: "/iq6900.png",
+      name: "IQ6900",
+      change: 50.00,
+    },
+    {
+      icon: "/game.png",
+      name: "G.A.M.E",
+      change: 3.00,
+    },
+    {
+      icon: "/pepe.png",
+      name: "PEPE",
+      change: 100.00,
+    },
+    {
+      icon: "/ponke.png",
+      name: "PONKE",
+      change: 2.883,
+    },
+    {
+      icon: "/floki.png",
+      name: "FLOKI",
+      change: 1.614,
+    },
+    {
+      icon: "/turbo.png",
+      name: "TURBO",
+      change: 1.70,
+    },
+    {
+      icon: "/btc.png",
+      name: "BTC",
+      change: 2.50,
+    },
+    {
+      icon: "/sekoia.png",
+      name: "SEKOIA",
+      change: 2.61,
+    },
+    {
+      icon: "/eth.png",
+      name: "ETH",
+      change: 2.781,
+    },
+    {
+      icon: "/power.png",
+      name: "POWER",
+      change: 1.30,
+    },
+    {
+      icon: "/sui.png",
+      name: "SUI",
+      change: 800,
+    },
+    {
+      icon: "/wen.png",
+      name: "WEN",
+      change: 1.059,
+    },
+    {
+      icon: "/kuromi.png",
+      name: "KUROMI",
+      change: 902,
+    },
+    {
+      icon: "/bakkt.png",
+      name: "BAKKT",
+      change: 843,
+    },
+    {
+      icon: "/ryu.png",
+      name: "RYU",
+      change: 1.60,
+    },
+  ];
+
+  return (
+    <div className="bg-black text-white">
+      <h2 className="text-center text-2xl font-bold mt-8 mb-4">
+        Track record performa koin kami di masa lalu
+      </h2>
+      <div className="flex flex-col space-y-4 animate-infinite-scroll">
+        {/* Row 1: Scrolls to the right */}
+        <ScrollableRow direction="left" data={data.slice(0, 6)} />
+
+        {/* Row 2: Scrolls to the left */}
+        <ScrollableRow direction="rig" data={data.slice(6, 12)} />
+
+        {/* Row 3: Scrolls to the right */}
+        <ScrollableRow direction="right" data={data.slice(12, 18)} />
+      </div>
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(calc(-250px * 10));
+          }
+        }
+
+        .animate-infinite-scroll {
+          animation: scroll 40s linear infinite;
+          display: flex;
+          width: calc(250px * 20);
+        }
+
+        .animate-infinite-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+
+
 export default function page() {
   return (
     <>
       <div className="bg-black text-white">
         <Navbar2 />
         <Hero />
-        <LiveTradingDashboard />
-        <Section2 />
+        {/* <TrackPerformanceSection />*/}
         <ProvenPerformance />
+        <Section2 />
         <LiveStrategyPreview />
         <UserTestimonialsAndSecurity />
+        <JoinCommunity />
         <Footer />
       </div>
     </>

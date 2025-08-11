@@ -32,14 +32,16 @@ const TradingPlanCTA = () => {
           {data.length > 0 &&
             data.map((trade, i) => <TraderCard key={i} trade={trade} />)}
         </div>
-        {count !== data.length && count !== 0 && (
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={loadMore}
-          >
-            Load More
-          </button>
-        )}
+        <div className="w-full flex justify-end mt-10">
+          {count !== data.length && count !== 0 && (
+            <button
+              className="border border-gray-600  text-gray-300 font-thin py-2 px-4 rounded-lg"
+              onClick={loadMore}
+            >
+              Load More
+            </button>
+          )}
+        </div>
       </div>
     </section>
     // <></>
@@ -60,7 +62,7 @@ function TraderCard({ trade }) {
     >
       <div>
         <div className="flex justify-between text-xl mb-2">
-          <span className="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 px-2 py-0.5 rounded">
+          <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 px-2 py-0.5 rounded">
             byScript
           </span>
           {/* <span className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-0.5 rounded">
@@ -152,9 +154,9 @@ function TraderCard({ trade }) {
         >
           Details
         </button>
-        <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+        {/* <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
           Subscribe
-        </button>
+        </button>*/}
       </div>
     </div>
   );

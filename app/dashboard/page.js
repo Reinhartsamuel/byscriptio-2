@@ -72,13 +72,10 @@ const page = () =>
             <h1 className='text-3xl font-bold text-slate-900 dark:text-slate-100 flex gap-3'>
               {/* Welcome, {params?.name?.split('-')?.join(' ')}! */}
               Welcome {customer?.name && ', ' + customer?.name}!
-              <span>
-                <TourButton />
-              </span>
             </h1>
             <h3 className='font-light text-sm text-gray-800 dark:text-gray-300 leading--5'>
               Welcome to{' '}
-              <span className='font-ecoCoding text-indigo-500'>byScript</span>{' '}
+              <span className='font-leagueSpartan text-brand_primary'>byScript</span>{' '}
               dashboard.
 
               {userPackage ? ` Your active subscription is ${userPackage?.productName}${' '}
