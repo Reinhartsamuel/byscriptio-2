@@ -12,12 +12,16 @@ import Image from 'next/image';
 import herobackground from "../../../public/herobackground.png";
 import { FaLink } from "react-icons/fa6"; // Link icon
 import { BsGraphUp } from "react-icons/bs";
-import { testimonials1 } from "../../components/TestimonialsComponent";
-import HorizontalScrollingCards from "../../components/HorizontalScrollingCards";
+import { testimonials1, TestimonialsComponent } from "../../components/TestimonialsComponent";
+import TestimonialScrollingCards from "../../components/TestimonialScrollingCards";
 import CountUp from 'react-countup';
 import { getCollectionFirebase } from '@/app/utils/firebaseApi';
 import useCountDocuments from '@/app/hooks/CountHook';
 import Spinner from '@/app/components/ui/Spinner';
+import { InfiniteMovingCards } from '@/app/components/ui/InfiniteMovingCards';
+import { InfiniteMovingCards2 } from '@/app/components/ui/InfiniteMovingCards2';
+import useFetchData from '@/app/hooks/QueryHook';
+import { cn } from '@/lib/util';
 
 
 const Navbar2 = () => {
@@ -161,7 +165,7 @@ const ProvenPerformance = () => {
     authRequired: false
   })
   return (
-    <div className='w-full grid grid-cols-1 md:grid-cols-2 items-center justify-center h-screen p-4'>
+    <div className='w-full bg-gradient-to-t from-gray-900 to-transparent grid grid-cols-1 md:grid-cols-2 items-center justify-center h-screen p-4'>
       {/* Left Section: Title and Description */}
       <div className="py-10 px-6 mx-auto flex justify-center">
         <div className='w-[80%] '>
@@ -270,7 +274,9 @@ const Hero = () => {
             No guesswork. No sleepless nights. Just strategy.
           </p>
           <div className="mt-8 flex justify-start space-x-4">
-            <a href='/dashboard/profile' className="px-6 py-3 text-black font-bold bg-brand_primary rounded-full hover:bg-green-600">
+            <a href='/dashboard/profile' className="px-6 py-3 text-white font-bold rounded-full hover:bg-green-600"style={{
+              background: 'linear-gradient(120deg, var(--brand_primary), black, var(--brand_primary))'
+            }}>
               Start Auto Trading Now
             </a>
             <a href='/dashboard' className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
@@ -284,7 +290,7 @@ const Hero = () => {
       </div>
       {/* Stats Section */}
       <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
           {/* <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>*/}
           <CountUp
             className='text-4xl font-bold text-brand_primary'
@@ -297,7 +303,7 @@ const Hero = () => {
           />
           <p className="text-sm">Assets Under Management</p>
         </div>
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
           {/* <h2 className="text-4xl font-bold text-brand_primary">200+</h2>*/}
           <CountUp
             className='text-4xl font-bold text-brand_primary'
@@ -310,7 +316,7 @@ const Hero = () => {
           />
           <p className="text-sm">Exchange Accounts Connected</p>
         </div>
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-900 border-2 rounded-lg">
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
           {/* <h2 className="text-4xl font-bold text-brand_primary">500+</h2>*/}
           <CountUp
             className='text-4xl font-bold text-brand_primary'
@@ -498,7 +504,7 @@ const LiveStrategyPreview = () => {
                 {/* Column 1 */}
                 <div>
                   <p className="text-sm font-medium">Timeframe</p>
-                  <p className="text-sm">{x?.timeframe || '4H'}</p>
+                  <p className="text-sm">{x?.timeFrame || '4H'}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium">Profit Factor</p>
@@ -512,14 +518,16 @@ const LiveStrategyPreview = () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium">Market</p>
-                  <p className="text-sm">{(x?.marketType || '')?.toUpperCase()}</p>
+                  <p className="text-sm">{(x?.market || 'SPOT')?.toUpperCase()}</p>
                 </div>
               </div>
             </div>
             <div className='flex w-full justify-between'>
               <div className="flex flex-col items-start">
                 <p className="text-sm font-small">YTD Performance</p>
-                <h3 className="text-lg font-bold text-green-500">+127%</h3>
+                <h3 className={cn("text-lg font-bold ", parseFloat(x?.ytdPerformance) > 0 ? 'text-green-500' : 'text-red-500')}>
+                  {x?.ytdPerformance || '127%'}
+                </h3>
               </div>
               <button className="px-4 py-2 text-sm font-semibold text-black bg-brand_primary hover:bg-brand_primary_hover rounded-md">Select Strategy</button>
             </div>
@@ -544,7 +552,7 @@ const UserTestimonialsAndSecurity = () => {
           </p>
 
           {/* Testimonial Cards */}
-          <HorizontalScrollingCards items={testimonials1} />
+          <TestimonialScrollingCards />
         </div>
 
 
@@ -730,157 +738,45 @@ const Footer = () => {
   );
 };
 
-
-const ScrollableRow = ({ direction, data }) => {
-
-  return (
-    <div
-      className="flex overflow-x-hidden whitespace-nowrap"
-    >
-      {data.map((item, index) => (
-        <Card key={index} {...item} />
-      ))}
-      {data.map((item, index) => (
-        <Card key={index + data.length} {...item} />
-      ))}
-    </div>
-  );
-};
-
-const Card = ({ icon, name, change }) => {
-  return (
-    <div
-      className="
-      bg-gray-800
-      text-white
-      rounded-lg p-4
-      m-2 flex items-center
-      space-x-4 scroll-snap-
-      align-start
-      min-w-xs
-      "
-    >
-      <img src={icon} alt={name} className="w-8 h-8 rounded-full" />
-      <div>
-        <p className="text-xl font-bold">{name}</p>
-        <p className={`${change > 0 ? "text-green-500" : "text-red-500"}`}>
-          {change > 0 ? `+${change}%` : `${change}%`}
-        </p>
-      </div>
-    </div>
-  );
-};
-
 const TrackPerformanceSection = () => {
-  const data = [
-    {
-      icon: "/neiro.png",
-      name: "NEIRO",
-      change: 75.00,
-    },
-    {
-      icon: "/apu.png",
-      name: "APU",
-      change: 4.00,
-    },
-    {
-      icon: "/act.png",
-      name: "ACT",
-      change: 7.40,
-    },
-    {
-      icon: "/iq6900.png",
-      name: "IQ6900",
-      change: 50.00,
-    },
-    {
-      icon: "/game.png",
-      name: "G.A.M.E",
-      change: 3.00,
-    },
-    {
-      icon: "/pepe.png",
-      name: "PEPE",
-      change: 100.00,
-    },
-    {
-      icon: "/ponke.png",
-      name: "PONKE",
-      change: 2.883,
-    },
-    {
-      icon: "/floki.png",
-      name: "FLOKI",
-      change: 1.614,
-    },
-    {
-      icon: "/turbo.png",
-      name: "TURBO",
-      change: 1.70,
-    },
-    {
-      icon: "/btc.png",
-      name: "BTC",
-      change: 2.50,
-    },
-    {
-      icon: "/sekoia.png",
-      name: "SEKOIA",
-      change: 2.61,
-    },
-    {
-      icon: "/eth.png",
-      name: "ETH",
-      change: 2.781,
-    },
-    {
-      icon: "/power.png",
-      name: "POWER",
-      change: 1.30,
-    },
-    {
-      icon: "/sui.png",
-      name: "SUI",
-      change: 800,
-    },
-    {
-      icon: "/wen.png",
-      name: "WEN",
-      change: 1.059,
-    },
-    {
-      icon: "/kuromi.png",
-      name: "KUROMI",
-      change: 902,
-    },
-    {
-      icon: "/bakkt.png",
-      name: "BAKKT",
-      change: 843,
-    },
-    {
-      icon: "/ryu.png",
-      name: "RYU",
-      change: 1.60,
-    },
-  ];
-
+  const  {data} = useFetchData({
+    collectionName: 'preview_history_metrics',
+    authRequired:false,
+    dependencies:[],
+    limitQuery:20,
+    type:'getDocs',
+    conditions:[]
+  })
   return (
-    <div className="bg-black text-white">
-      <h2 className="text-center text-2xl font-bold mt-8 mb-4">
+    <div className="h-[70vh] bg-gradient-to-t from-transparent to-gray-900 flex flex-col justify-center items-center bg-black text-white">
+      <h2 className="text-center text-2xl font-bold mb-4">
         Track record performa koin kami di masa lalu
       </h2>
-      <div className="flex flex-col space-y-4 animate-infinite-scroll">
-        {/* Row 1: Scrolls to the right */}
-        <ScrollableRow direction="left" data={data.slice(0, 6)} />
-
-        {/* Row 2: Scrolls to the left */}
+      <div className="flex justify-center flex-col space-y-4 animate-infinite-scroll">
+        {/* <ScrollableRow direction="left" data={data.slice(0, 6)} />
         <ScrollableRow direction="rig" data={data.slice(6, 12)} />
+        <ScrollableRow direction="right" data={data.slice(12, 18)} />*/}
 
-        {/* Row 3: Scrolls to the right */}
-        <ScrollableRow direction="right" data={data.slice(12, 18)} />
+        <InfiniteMovingCards2
+          className='mx-auto'
+          items={data}
+          direction='right'
+          speed='fast'
+        />
+        <InfiniteMovingCards2
+          className='mx-auto'
+          items={data}
+          direction='left'
+          speed='fast'
+        />
+        <InfiniteMovingCards2
+          className='mx-auto'
+          items={data}
+          direction='right'
+          speed='fast'
+        />
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         @keyframes scroll {
           0% {
             transform: translateX(0);
@@ -899,7 +795,7 @@ const TrackPerformanceSection = () => {
         .animate-infinite-scroll:hover {
           animation-play-state: paused;
         }
-      `}</style>
+      `}</style>*/}
     </div>
   );
 };
@@ -912,7 +808,7 @@ export default function page() {
       <div className="bg-black text-white">
         <Navbar2 />
         <Hero />
-        {/* <TrackPerformanceSection />*/}
+        <TrackPerformanceSection />
         <ProvenPerformance />
         <Section2 />
         <LiveStrategyPreview />

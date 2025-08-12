@@ -14,7 +14,7 @@ const baseUrl = "https://api.3commas.io";
 export async function POST(request) {
   try {
     // await redisClient.set("test1", "kudaa");
-    const data= await redisClient.hGetAll('smart_trade_id:123321')
+    const data = await redisClient.keys('smart_trade_id:*')
     // const data = await redisClient.hSet('smart_trade_id:123321',{
     //   smart_trade_id:123123,
     //   exchange : 'binance',

@@ -1,14 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import useFetchData from '../hooks/QueryHook';
+import { testimonials1 } from './TestimonialsComponent';
 
-const HorizontalScrollingCards = ({ items }) => {
-  const [loopedItems, setLoopedItems] = useState([...items, ...items]);
+const TestimonialScrollingCards = () => {
 
+  const  { data } = useFetchData({
+    collectionName: 'preview_testimonials',
+    authRequired:false,
+    dependencies:[],
+    limitQuery:20,
+    type:'getDocs',
+    conditions:[]
+  })
   return (
     <div className="relative w-full overflow-hidden py-8">
       <div className="animate-infinite-scroll flex w-[calc(250px*20)]">
-        {loopedItems.map((item, index) => (
+        {(data?.length > 0 ? data : testimonials1)?.map((item, index) => (
           <div
             key={index}
             className="flex-shrink-0 mx-4 w-[300px] rounded-xl p-6 backdrop-blur-lg border border-white/10"
@@ -26,15 +35,15 @@ const HorizontalScrollingCards = ({ items }) => {
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-white/20 flex items-center justify-center">
-                  <span className="text-white font-bold">{item.name.charAt(0)}</span>
+                  <span className="text-white font-bold">{item?.name?.charAt(0)}</span>
                 </div>
               )}
               <div>
-                <p className="text-xl font-bold text-white">{item.name}</p>
-                <p className="text-sm text-gray-300">{item.title}</p>
+                <p className="text-xl font-bold text-white">{item?.name}</p>
+                <p className="text-sm text-gray-300">{item?.title}</p>
               </div>
             </div>
-            <p className="mt-4 text-gray-200 italic">"{item.quote}"</p>
+            <p className="mt-4 text-gray-200 italic">"{item?.description}"</p>
           </div>
         ))}
       </div>
@@ -63,4 +72,4 @@ const HorizontalScrollingCards = ({ items }) => {
   );
 };
 
-export default HorizontalScrollingCards;
+export default TestimonialScrollingCards;
