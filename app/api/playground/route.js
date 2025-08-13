@@ -12,18 +12,51 @@ const baseUrl = "https://api.3commas.io";
 
 
 export async function POST(request) {
+
   try {
-    // await redisClient.set("test1", "kudaa");
-    const data = await redisClient.keys('smart_trade_id:*')
-    // const data = await redisClient.hSet('smart_trade_id:123321',{
-    //   smart_trade_id:123123,
-    //   exchange : 'binance',
-    //   kuda :'liar'
-    // })
+
+    const noduplicate = new Set();
+    let data = [];
+    const unique = [];
+    const querySnapshot = await adminDb
+      .collection("3commas_logs")
+      .where("status_type", "==", "created")
+      .limit(50)
+      .get();
+    querySnapshot.forEach((doc) => {
+      data.push({ ...doc.data(), id: doc.id });
+    });
+    for (const obj of data) {
+      if (!noduplicate.has(obj.smart_trade_id)) {
+        noduplicate.add(obj.smart_trade_id);
+        unique.push(obj);
+      }
+    }
+    
+    const promises = unique.map(async (obj) => {
+      const queryParams = '/public/api' + `/v2/smart_trades/${obj.smart_trade_id}`;
+      const finalUrl = baseUrl + queryParams;
+
+      let signatureMessage = queryParams
+      const signature = generateSignatureRsa(PRIVATE_KEY, signatureMessage);
+      const config = {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              APIKEY: API_KEY,
+              Signature: signature,
+          }
+      }
+
+      const response = await fetch(finalUrl, config);
+    });
+
+    const results = await Promise.all(promises);
+    const successful = results.filter((result) => result.status === "success");
+    const failed = results.filter((result) => result.status === "error");
+
     return NextResponse.json({
-      status: true,
-      message: "Redis set successfully",
-      data
+      
     });
   } catch (error) {
     return NextResponse.json({
