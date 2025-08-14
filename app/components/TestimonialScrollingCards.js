@@ -43,7 +43,7 @@ const TestimonialScrollingCards = () => {
                 <p className="text-sm text-gray-300">{item?.title}</p>
               </div>
             </div>
-            <p className="mt-4 text-gray-200 italic">"{item?.description}"</p>
+            <p className="mt-4 text-gray-200 italic">"{item?.description || item?.quote}"</p>
           </div>
         ))}
       </div>

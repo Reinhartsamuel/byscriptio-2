@@ -32,7 +32,7 @@ const Navbar2 = () => {
   };
 
   return (
-    <nav className="flex flex-col border-b border-white/10 bg-black">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex flex-col border-b border-white/10 bg-black">
       {/* Top Bar: Logo + Hamburger (Mobile) + Desktop Buttons */}
       <div className="flex items-center justify-between px-6 py-4">
         <div className="hidden md:flex items-center gap-6">
@@ -158,6 +158,93 @@ const Navbar2 = () => {
   );
 };
 
+const Hero = () => {
+  const { count:activeAutotradesCount = 200, loading: loadingActiveAutotrades } = useCountDocuments({
+    collectionName: 'dca_bots',
+    conditions: [{ field: 'status', operator: '==', value: 'ACTIVE' }],
+    authRequired: false
+  })
+  const { count:exchangeCount = 200, loading: loadingExchangeAccounts } = useCountDocuments({
+    collectionName: 'exchange_accounts',
+    conditions: [],
+    authRequired: false
+  })
+  return (<>
+    {/* Hero Section */}
+    <section className="relative flex flex-col items-center justify-center md:h-screen bg-cover bg-center pt-20 md:pt-24" style={{ backgroundImage: `url(${herobackground.src})` }}>
+      <div className="absolute inset-0 bg-black opacity-10"></div>
+      <div className='w-full flex flex-col md:flex-row md:justify-between'>
+        <div className="w-full z-10 max-w-8xl px-6 py-32 lg:ml-[5%] text-left">
+          <h1 className="text-5xl font-bold leading-tight sm:text-6xl">
+            Let the Algorithm <span className="text-brand_primary">Trade</span> for You.
+          </h1>
+          <p className="mt-4 text-xl">
+            No guesswork. No sleepless nights. Just strategy.
+          </p>
+          <div className="mt-8 flex flex-col md:flex-row justify-start gap-2">
+            <a href='/dashboard/profile' className="px-6 py-3 text-white font-bold rounded-full hover:bg-green-600"style={{
+              background: 'linear-gradient(120deg, var(--brand_primary), black, var(--brand_primary))'
+            }}>
+              Start Auto Trading Now
+            </a>
+            <a href='/dashboard' className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
+              View Strategies
+            </a>
+          </div>
+        </div>
+        <div className='w-full flex justify-center items-center '>
+
+        </div>
+      </div>
+      {/* Stats Section */}
+      <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-700 border-2 rounded-lg">
+          {/* <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>*/}
+          <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={364}
+            delay={0}
+            prefix={'$'}
+            suffix={'k+'}
+          />
+          <p className="text-sm">Assets Under Management</p>
+        </div>
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-700 border-2 rounded-lg">
+          {/* <h2 className="text-4xl font-bold text-brand_primary">200+</h2>*/}
+          {loadingExchangeAccounts ? <Spinner /> : <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={exchangeCount}
+            delay={0}
+            prefix={''}
+            suffix={''}
+          />}
+          <p className="text-sm">Exchange Accounts Connected</p>
+        </div>
+        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-700 border-2 rounded-lg">
+          {/* <h2 className="text-4xl font-bold text-brand_primary">500+</h2>*/}
+          { loadingActiveAutotrades ? <Spinner /> :
+          <CountUp
+            className='text-4xl font-bold text-brand_primary'
+            separator={','}
+            start={0}
+            end={activeAutotradesCount}
+            delay={0}
+            prefix={''}
+            suffix={''}
+          />
+          }
+          <p className="text-sm">Active Autotrades</p>
+        </div>
+
+      </div>
+    </section>
+  </>)
+}
+
 const ProvenPerformance = () => {
   const { count = 200, loading: loadingRunningAlgo } = useCountDocuments({
     collectionName: 'trading_plan_pair',
@@ -165,10 +252,10 @@ const ProvenPerformance = () => {
     authRequired: false
   })
   return (
-    <div className='w-full bg-gradient-to-t from-gray-900 to-transparent grid grid-cols-1 md:grid-cols-2 items-center justify-center h-screen p-4'>
+    <div className='w-full bg-gradient-to-t from-gray-900 to-transparent grid grid-cols-1 md:grid-cols-2 items-center justify-center md:h-screen p-4'>
       {/* Left Section: Title and Description */}
       <div className="py-10 px-6 mx-auto flex justify-center">
-        <div className='w-[80%] '>
+        <div className='md:w-[80%] w-full'>
           <h2 className="text-4xl font-bold mb-4">
             Proven Performance
           </h2>
@@ -255,85 +342,6 @@ const ProvenPerformance = () => {
   );
 };
 
-const Hero = () => {
-  const { count = 200, loading: loadingActiveAutotrades } = useCountDocuments({
-    collectionName: 'dca_bots',
-    conditions: [{ field: 'status', operator: '==', value: 'ACTIVE' }],
-    authRequired: false
-  })
-  return (<>
-    {/* Hero Section */}
-    <section className="relative flex flex-col items-start justify-center h-screen bg-cover bg-center" style={{ backgroundImage: `url(${herobackground.src})` }}>
-      <div className="absolute inset-0 bg-black opacity-10"></div>
-      <div className='w-full flex flex-col md:flex-row md:justify-between'>
-        <div className="w-full z-10 max-w-8xl px-6 py-32 lg:ml-[5%] text-left">
-          <h1 className="text-5xl font-bold leading-tight sm:text-6xl">
-            Let the Algorithm <span className="text-brand_primary">Trade</span> for You.
-          </h1>
-          <p className="mt-4 text-xl">
-            No guesswork. No sleepless nights. Just strategy.
-          </p>
-          <div className="mt-8 flex justify-start space-x-4">
-            <a href='/dashboard/profile' className="px-6 py-3 text-white font-bold rounded-full hover:bg-green-600"style={{
-              background: 'linear-gradient(120deg, var(--brand_primary), black, var(--brand_primary))'
-            }}>
-              Start Auto Trading Now
-            </a>
-            <a href='/dashboard' className="px-6 py-3 text-brand_primary border border-brand_primary rounded-full hover:bg-brand_primary hover:text-white">
-              View Strategies
-            </a>
-          </div>
-        </div>
-        <div className='w-full flex justify-center items-center '>
-
-        </div>
-      </div>
-      {/* Stats Section */}
-      <div className="w-full md:max-w-6xl px-6 py-12 mx-auto space-y-8 md:space-y-0 md:grid md:grid-cols-3 md:gap-3">
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
-          {/* <h2 className="text-4xl font-bold text-brand_primary">$330K+</h2>*/}
-          <CountUp
-            className='text-4xl font-bold text-brand_primary'
-            separator={','}
-            start={0}
-            end={364}
-            delay={0}
-            prefix={'$'}
-            suffix={'k+'}
-          />
-          <p className="text-sm">Assets Under Management</p>
-        </div>
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
-          {/* <h2 className="text-4xl font-bold text-brand_primary">200+</h2>*/}
-          <CountUp
-            className='text-4xl font-bold text-brand_primary'
-            separator={','}
-            start={0}
-            end={200}
-            delay={0}
-            prefix={''}
-            suffix={''}
-          />
-          <p className="text-sm">Exchange Accounts Connected</p>
-        </div>
-        <div className="flex flex-col items-center justify-center p-6 space-y-2 bg-transparent border-gray-800 border-2 rounded-lg">
-          {/* <h2 className="text-4xl font-bold text-brand_primary">500+</h2>*/}
-          <CountUp
-            className='text-4xl font-bold text-brand_primary'
-            separator={','}
-            start={0}
-            end={count}
-            delay={0}
-            prefix={''}
-            suffix={''}
-          />
-          <p className="text-sm">Active Autotrades</p>
-        </div>
-
-      </div>
-    </section>
-  </>)
-}
 
 const WhyByScript = () => {
   const features = [
@@ -439,7 +447,7 @@ const HowItWorks2 = () => {
 
 const Section2 = () => {
   return (
-    <div className='md: h-screen'>
+    <div className='md:h-screen'>
       <div className="relative h-full w-full">
         <WhyByScript />
         <HowItWorks2 />
@@ -481,7 +489,7 @@ const LiveStrategyPreview = () => {
     getTpp();
   }, [])
   return (
-    <section className=" text-white py-16 bg-black">
+    <section className=" md:h-screen text-white py-16 md:pt-32 bg-black">
       {/* Section Title */}
       <div className="max-w-6xl px-6 mx-auto text-center">
         <h2 className="text-4xl font-bold mb-4">
@@ -492,13 +500,16 @@ const LiveStrategyPreview = () => {
         </p>
       </div>
       {/* Cards */}
-      <div className="max-w-6xl h-[calc(60vh-240px)] px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="max-w-6xl md:h-[calc(60vh-240px)] px-6 mx-auto mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
         {tradingPlans?.length > 0 && tradingPlans?.map((x, i) => (
           <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between" key={i}>
             <div>
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold">{x?.marketingName || x?.id}</h3>
-                <span className="px-4 py-2 text-sm font-semibold text-green-500 bg-green-800 rounded-full animate-faster-pulse">Active</span>
+              <div className="flex md:flex-row flex-col justify-between items-center">
+                <h3 className="text-md md:text-xl font-bold">{x?.marketingName || x?.id}</h3>
+                <span className="flex items-center space-x-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-faster-pulse"></span>
+                  <span className="text-green-500">Active</span>
+                </span>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-4">
                 {/* Column 1 */}
@@ -610,7 +621,7 @@ const UserTestimonialsAndSecurity = () => {
 
 const JoinCommunity = () => {
   return (
-    <section className='h-screen flex flex-col justify-center items-center'>
+    <section className='md:h-screen flex flex-col justify-center items-center px-6 py-12'>
       <div className='text-center'>
         <h2 className='text-3xl font-bold mb-4 text-white'>
           Join Our
@@ -620,21 +631,22 @@ const JoinCommunity = () => {
           anytime for inquiries or assistance.</p>
       </div>
 
-      <a target="_blank" rel="noreferrer" href="https://discord.gg/eHaNsARNps" className='mx-auto relative w-full md:w-[70%] border  border-gray-900 rounded-lg flex flex-col justify-center items-center h-[50%] bg-gradient-to-tr from-transparent to-slate-600'>
+      <a target="_blank" rel="noreferrer" href="https://discord.gg/eHaNsARNps"
+        className='mx-auto relative w-full md:w-[70%] border border-gray-900 rounded-lg flex flex-col justify-center items-center h-48 md:h-[50%] bg-gradient-to-tr from-transparent to-slate-600 p-6'>
         <Image
           alt="byScript"
           src={discord_logo}
-          className="h-20 w-auto absolute top-0 left-5"
+          className="h-12 md:h-20 w-auto absolute top-2 md:top-0 left-3 md:left-5"
         />
-        <div className='flex items-center gap-2 cursor-pointer'>
+        <div className='flex flex-col md:flex-row items-center gap-2 cursor-pointer mt-4 md:mt-0'>
           <Image
             alt="logo_mark"
             src={logo_mark}
-            className="h-20 w-20 rounded-full border-2 border-gray-900 object-cover"
+            className="h-16 w-16 md:h-20 md:w-20 rounded-full border-2 border-gray-900 object-cover"
           />
-          <h2 className='text-xl font-bold text-white text-center'>
+          <h2 className='text-lg md:text-xl font-bold text-white text-center'>
             Discord Channel Algotrading Community
-            <span className='text-xl text-brand_primary'> by</span>
+            <span className='text-lg md:text-xl text-brand_primary'> by</span>
             Script.io
           </h2>
         </div>
