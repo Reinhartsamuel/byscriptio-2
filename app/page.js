@@ -847,7 +847,7 @@ const TrackPerformanceSection = () => {
   return (
     <div className="h-[70vh] bg-gradient-to-t from-transparent to-gray-900 flex flex-col justify-center items-center bg-black text-white">
       <h2 className="text-center text-2xl font-bold mb-4">
-        Track record performa koin kami di masa lalu
+        Algo Performance
       </h2>
       <div className="flex justify-center flex-col space-y-4 animate-infinite-scroll">
         {/* <ScrollableRow direction="left" data={data.slice(0, 6)} />
