@@ -14,10 +14,13 @@ const TestimonialScrollingCards = () => {
     type:'getDocs',
     conditions:[]
   })
+  const items = data?.length > 0 ? data : testimonials1;
+  const duplicatedItems = [...items, ...items]; // Duplicate items for seamless scroll
+
   return (
     <div className="relative w-full overflow-hidden py-8">
-      <div className="animate-infinite-scroll flex w-[calc(250px*20)]">
-        {(data?.length > 0 ? data : testimonials1)?.map((item, index) => (
+      <div className="animate-infinite-scroll flex">
+        {duplicatedItems?.map((item, index) => (
           <div
             key={index}
             className="flex-shrink-0 mx-4 w-[300px] rounded-xl p-6 backdrop-blur-lg border border-white/10"
@@ -54,14 +57,14 @@ const TestimonialScrollingCards = () => {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(calc(-250px * 10));
+            transform: translateX(-50%);
           }
         }
 
         .animate-infinite-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 60s linear infinite;
           display: flex;
-          width: calc(250px * 20);
+          width: max-content;
         }
 
         .animate-infinite-scroll:hover {
