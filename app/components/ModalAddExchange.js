@@ -18,7 +18,7 @@ export default function ModalAddExchange({
   const [loading, setLoading] = useState(false);
   // const [openDialogue, setOpenDialogue] = useState(false);
   const newlyCreatedId = useMemo(() => generateRandomString(), [openModal]);
-  const lowercaseExchangeName = exchangeName && exchangeName.toLowerCase();
+  const lowercaseExchangeName = exchangeName ? (exchangeName || '').toLowerCase() : '';
 
   return (
     <Modal open={openModal} onClose={() => setOpenModal(false)}>

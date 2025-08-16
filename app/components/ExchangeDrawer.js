@@ -4,7 +4,7 @@ import { exchanges } from '../dummy';
 import Drawer from './ui/Drawer';
 import PropTypes from 'prop-types';
 import { IoMdClose } from 'react-icons/io';
-import ModalAddExchange from './ModalAddExhcange';
+import ModalAddExchange from './ModalAddExchange';
 //  ${open ? 'visible bg-gray-900 bg-opacity-90' : 'invisible'}
 const ExchangeDrawer = ({ drawerOpen, toggleDrawer }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -12,9 +12,9 @@ const ExchangeDrawer = ({ drawerOpen, toggleDrawer }) => {
   const [exchangeThumbnail, setExchangeThumbnail] = useState('');
 
   function handleAddExchange(x) {
-    toggleDrawer();
     setExchangeName(x?.exchange_name);
     setExchangeThumbnail(x?.exchange_thumbnail);
+    toggleDrawer();
     return setOpenModal(true);
   }
   return (
