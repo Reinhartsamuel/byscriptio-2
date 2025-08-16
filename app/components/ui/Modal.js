@@ -19,7 +19,7 @@ export default function Modal({ open, onClose, children, size = '2xl' }) {
     <div
       onClick={onClose}
       className={`
-        fixed z-100 inset-0 flex justify-center items-center transition-colors
+        fixed z-[9999] inset-0 flex justify-center items-center transition-colors
         ${open ? 'visible bg-gray-900 bg-opacity-90' : 'invisible'}
       `}
     >
@@ -27,7 +27,7 @@ export default function Modal({ open, onClose, children, size = '2xl' }) {
       <div
         onClick={(e) => e.stopPropagation()}
         className={`
-          z-10
+          z-[10000]
           bg-white dark:bg-gray-800 rounded-xl shadow p-6 transition-ease-in-out duration-100 overflow-scroll max-h-screen
           ${open ? 'scale-100 opacity-100' : 'scale-110 opacity-0'}
          w-${size}

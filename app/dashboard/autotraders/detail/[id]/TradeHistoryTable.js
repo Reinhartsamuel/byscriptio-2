@@ -53,7 +53,7 @@ const TradeHistoryTable = ({
       <div className="h-full flex flex-col">
         <div className="flex-grow overflow-auto">
           <table className="w-full border-collapse">
-            <thead className="bg-gray-800 text-gray-400 text-[0.6rem] lg:text-xs uppercase sticky top-0">
+            <thead className="bg-gray-800 text-gray-400 text-[0.6rem] lg:text-xs uppercase sticky top-0 z-10">
               <tr>
                 <th className="p-3 text-center"></th>
                 {showPair && <th className="p-3 text-center">Pair</th>}
